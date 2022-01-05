@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "@/*": ["./*"],
+            "@components/*": ["components/*"],
+            "@assets/*": ["assets/*"],
+            "@constants/*": ["constants/*"],
+            "@hooks/*": ["hooks/*"],
+            "@utils/*": ["utils/*"],
+            "@api/*": ["api/*"],
+            "@styles/*": ["styles/*"]
+        },
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true
+    }
+}
