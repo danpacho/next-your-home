@@ -1,10 +1,13 @@
-import { GlobalStyle } from "@/styles/GlobalStyle"
-import { lightTheme } from "@/styles/utils/CustomeTheme"
 import type { AppProps } from "next/app"
 import Head from "next/head"
+
 import { ThemeProvider } from "styled-components"
 
-function MyApp({ Component, pageProps }: AppProps) {
+import { GlobalStyle } from "@styles/global/GlobalStyle"
+import { lightTheme } from "@styles/utils/CustomeTheme"
+import Layout from "@components/Layout/Layout"
+
+function AppParent({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
@@ -16,10 +19,12 @@ function MyApp({ Component, pageProps }: AppProps) {
             </Head>
             <GlobalStyle />
             <ThemeProvider theme={lightTheme}>
-                <Component {...pageProps} />
+                <Layout>
+                    <Component {...pageProps} />
+                </Layout>
             </ThemeProvider>
         </>
     )
 }
 
-export default MyApp
+export default AppParent

@@ -1,0 +1,6 @@
+//! Blog Footer Contents
+function Footer() {
+    return <footer></footer>
+}
+
+export default Footer
