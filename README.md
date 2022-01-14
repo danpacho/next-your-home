@@ -1,1 +1,1 @@
-# Danpacho Blog
+# Danpacho Blog Template

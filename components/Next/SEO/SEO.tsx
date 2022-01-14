@@ -1,12 +1,10 @@
-import Head from "next/head"
-
 function SEO() {
     return (
-        <Head>
+        <>
             {/*//* meta 링크 https://developer.mozilla.org/ko/docs/Web/HTML/Element/meta/name */}
             <meta charSet="utf-8" />
 
-            {/*//* favicon ICON 설정 */}
+            {/*//* favicon ICON 설정 public folder */}
             <link rel="shortcut icon" href="/favicon.svg" type="image/svg" />
 
             {/*//* page 기본 정보 제공 */}
@@ -27,9 +25,7 @@ function SEO() {
             <meta name="googlebot" content="" />
             <meta name="NaverBot" content="All" />
             <meta name="NaverBot" content="index,follow" />
-
-            {/*//* font preload HERE */}
-        </Head>
+        </>
     )
 }
 
