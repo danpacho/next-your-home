@@ -20,14 +20,14 @@ export type BorderRadiusSize =
     | "bRound"
 
 const borderRadius: BorderRadius = {
-    bxsm: ".5px",
-    bsm: "1px",
-    bmd: "1.5px",
-    blg: "2px",
-    bxlg: "2.5px",
-    bxxlg: "5px",
-    bxxxlg: "7.5px",
-    bRound: "10px",
+    bxsm: ".15rem",
+    bsm: ".25rem",
+    bmd: ".35rem",
+    blg: ".5rem",
+    bxlg: ".75rem",
+    bxxlg: "1rem",
+    bxxxlg: "1.25rem",
+    bRound: "50%",
 }
 
 export default borderRadius

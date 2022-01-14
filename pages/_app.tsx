@@ -1,3 +1,5 @@
+import "../styles/globals.css"
+
 import type { AppProps } from "next/app"
 import Head from "next/head"
 
@@ -5,7 +7,8 @@ import { ThemeProvider } from "styled-components"
 
 import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { lightTheme } from "@styles/utils/CustomeTheme"
-import Layout from "@components/Layout/Layout"
+
+import Layout from "@components/Next/Layout/Layout"
 
 function AppParent({ Component, pageProps }: AppProps) {
     return (
@@ -17,7 +20,9 @@ function AppParent({ Component, pageProps }: AppProps) {
                 />
                 <title>boilerplate</title>
             </Head>
+
             <GlobalStyle />
+
             <ThemeProvider theme={lightTheme}>
                 <Layout>
                     <Component {...pageProps} />
