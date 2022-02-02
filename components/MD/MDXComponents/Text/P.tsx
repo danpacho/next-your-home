@@ -2,9 +2,9 @@ import styled from "styled-components"
 
 const PStyled = styled.p`
     margin: 1.5rem 0;
-    line-height: 1.75rem;
+    line-height: 1.9rem;
     font-size: ${(props) => props.theme.md};
-    font-weight: 400;
+    font-weight: 500;
 
     ::selection {
         background-color: ${(props) => props.theme.trueDeepDark};

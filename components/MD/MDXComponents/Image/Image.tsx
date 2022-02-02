@@ -14,10 +14,13 @@ interface ImageContainerSize {
 }
 
 const ImageContainer = styled.div<ImageContainerSize>`
-    transition: all 0.25s ease-out;
+    position: relative;
 
-    width: ${({ width }) => `${width}px`};
-    height: ${({ height }) => `${height}px`};
+    transition: transform 0.25s ease-out;
+
+    width: max(30vw, 15rem);
+    max-width: 30rem;
+    aspect-ratio: ${({ width, height }) => Number(width) / Number(height)};
 
     border-radius: ${(props) => props.theme.bmd};
 
@@ -65,11 +68,10 @@ function Image({ src, alt, title }: ImageProps) {
         <>
             <ImageContainer width={width} height={height}>
                 <NextImageStyled
+                    layout="fill"
                     src={src}
                     alt={filteredAlt}
                     quality={100}
-                    width={width}
-                    height={height}
                     onContextMenu={(e) => e.preventDefault()}
                 />
             </ImageContainer>
