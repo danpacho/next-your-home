@@ -4,12 +4,14 @@ import pallete, { Pallete } from "./pallete"
 import width, { Width } from "./width"
 import fontSize, { FontSize } from "./font"
 import borderRadius, { BorderRadius } from "./borderRadius"
+import { shadow, Shadow } from "./shadow"
 
 export interface CommonThemeProperty
     extends Pallete,
         Width,
         FontSize,
-        BorderRadius {
+        BorderRadius,
+        Shadow {
     fontSize: string
 }
 
@@ -22,6 +24,7 @@ const commonThemeProperty: CommonThemeProperty = {
     ...pallete,
     ...fontSize,
     ...borderRadius,
+    ...shadow,
 
     //* common Theme property
     fontSize: fontSize.md,

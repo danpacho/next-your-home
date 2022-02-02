@@ -1,3 +1,5 @@
+export type ZIndexes = typeof zIndexes
+
 const zIndexes = {
     contnet: 10,
     blurBackground: 50,

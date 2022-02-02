@@ -1,6 +1,8 @@
 const mediaQuery = (maxWidth: number) => `
   @media (max-width: ${maxWidth}px)
-`;
+`
+
+export type MedialType = keyof typeof media
 
 const media = {
     xxxlarge: mediaQuery(2200),
@@ -12,6 +14,6 @@ const media = {
     xsmall: mediaQuery(375),
 
     custom: mediaQuery,
-};
+}
 
-export default media;
+export default media

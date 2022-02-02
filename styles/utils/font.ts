@@ -1,16 +1,7 @@
-export interface FontSize {
-    xsm: string
-    sm: string
-    md: string
-    lg: string
-    xlg: string
-    xxlg: string
-    title: string
-}
+export type FontSize = typeof fontSize
+export type FontSizeType = keyof FontSize
 
-export type FontSizeType = "xsm" | "sm" | "md" | "lg" | "xlg" | "xxlg" | "title"
-
-const fontSize: FontSize = {
+const fontSize = {
     xsm: ".5rem",
     sm: ".75rem",
     md: "1rem",

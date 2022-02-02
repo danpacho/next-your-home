@@ -1,25 +1,7 @@
-export interface BorderRadius {
-    bxsm: string
-    bsm: string
-    bmd: string
-    blg: string
-    bxlg: string
-    bxxlg: string
-    bxxxlg: string
-    bRound: string
-}
+export type BorderRadius = typeof borderRadius
+export type BorderRadiusType = keyof BorderRadius
 
-export type BorderRadiusSize =
-    | "bxsm"
-    | "bsm"
-    | "bmd"
-    | "blg"
-    | "bxlg"
-    | "bxxlg"
-    | "bxxxlg"
-    | "bRound"
-
-const borderRadius: BorderRadius = {
+const borderRadius = {
     bxsm: ".15rem",
     bsm: ".25rem",
     bmd: ".35rem",

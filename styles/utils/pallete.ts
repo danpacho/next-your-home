@@ -1,60 +1,6 @@
-export interface Pallete {
-    white: string;
+export type PalleteType = keyof Pallete
 
-    dark: string;
-    middleDark: string;
-    deepDark: string;
-    trueDeepDark: string;
-
-    gray1: string;
-    gray2: string;
-    gray3: string;
-    gray4: string;
-    gray5: string;
-    gray6: string;
-    gray7: string;
-    gray8: string;
-    gray9: string;
-    gray10: string;
-
-    red1: string;
-    red2: string;
-    red3: string;
-    red4: string;
-    red5: string;
-    red6: string;
-
-    blue1: string;
-    blue2: string;
-    blue3: string;
-    blue4: string;
-    blue5: string;
-    blue6: string;
-    blue7: string;
-    blue8: string;
-    blue9: string;
-    blue10: string;
-
-    teal1: string;
-    teal2: string;
-    teal3: string;
-    teal4: string;
-    teal5: string;
-    teal6: string;
-    teal7: string;
-    teal8: string;
-    teal9: string;
-    teal10: string;
-
-    yellow1: string;
-    yellow2: string;
-    yellow3: string;
-    yellow4: string;
-    yellow5: string;
-    yellow6: string;
-    yellow7: string;
-    yellow8: string;
-}
+export type Pallete = typeof pallete
 
 const pallete = {
     white: "#FFFFFF",
@@ -125,6 +71,6 @@ const pallete = {
     // green1: "#",
     // green1: "#",
     // green1: "#",
-};
+}
 
-export default pallete;
+export default pallete
