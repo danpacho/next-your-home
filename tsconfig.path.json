@@ -9,7 +9,8 @@
             "@hooks/*": ["hooks/*"],
             "@utils/*": ["utils/*"],
             "@api/*": ["api/*"],
-            "@styles/*": ["styles/*"]
+            "@styles/*": ["styles/*"],
+            "@atoms/*": ["atoms/*"]
         },
         "importHelpers": true,
         "forceConsistentCasingInFileNames": true,
