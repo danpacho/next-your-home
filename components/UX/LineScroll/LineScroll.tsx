@@ -1,5 +1,5 @@
 import { FontSizeType } from "@/styles/utils/font"
-import React, { useEffect, useRef, useState } from "react"
+import React, { useRef } from "react"
 import styled from "styled-components"
 
 interface LineScrollBtnStyleProps {
@@ -22,11 +22,12 @@ function LineScroll({ fontSize, fontWeight }: LineScrollProps) {
             block: "start",
             inline: "center",
         })
+
     return (
         <LineScrollBtn
+            ref={ref}
             fontSize={fontSize}
             fontWeight={fontWeight}
-            ref={ref}
             onClick={onClickMove}
         >
             🪝

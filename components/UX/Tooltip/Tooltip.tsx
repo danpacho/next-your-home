@@ -17,7 +17,7 @@ interface TooltipElementPostion {}
 
 const TooltipElement = styled.div`
     position: absolute;
-    top: -10px;
+    top: 0px;
     right: -50px;
 
     min-width: 35px;
