@@ -1,27 +1,8 @@
-import { atom, selector, useRecoilState, useRecoilValue } from "recoil"
+import { atom, useRecoilState } from "recoil"
 
-export interface CurrentFocusingArray {
-    title: string
-    isFocusing: boolean
-}
-
-export const currentFocusingTitleArray = atom<CurrentFocusingArray[]>({
-    key: "currentFocusingTitleArray",
-    default: [],
+const focusTitle = atom<string>({
+    key: "focusTitle",
+    default: "",
 })
 
-export const useCurrentFocusingTitleArray = () =>
-    useRecoilState(currentFocusingTitleArray)
-
-const focusingTitle = selector({
-    key: "focusingTitle",
-    get: ({ get }) => {
-        const currentFocusingTitle = get(currentFocusingTitleArray)
-            .filter(({ isFocusing }) => isFocusing === true)
-            .at(0)?.title
-        if (currentFocusingTitle) return currentFocusingTitle
-        return ""
-    },
-})
-
-export const useFocusingTitle = () => useRecoilValue(focusingTitle)
+export const useFocusTitle = () => useRecoilState(focusTitle)

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react"
 import { Meta } from "@utils/types/post/post"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import animation from "@/styles/utils/animation"
-import { useCurrentFocusingTitleArray, useFocusingTitle } from "@/atoms/atoms"
+import { useFocusTitle } from "@/atoms/atoms"
 import media from "@/styles/utils/media"
 
 const TOCPosition = styled.nav`
@@ -35,8 +35,6 @@ interface LinkStyle {
 }
 
 const HeaderLinkCommon = styled.div<LinkStyle>`
-    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
-
     width: 100%;
 
     padding: 0.75rem 0.25rem;
@@ -45,7 +43,7 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
     font-size: ${({ theme }) => theme.sm};
     text-decoration: none;
 
-    animation: ${animation.fadeIn} 3s cubic-bezier(0.19, 1, 0.22, 1);
+    animation: ${animation.fadeIn} 3.5s cubic-bezier(0.19, 1, 0.22, 1);
 
     &:hover {
         font-size: 0.825rem;
@@ -55,10 +53,14 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
 `
 
 const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
+    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+
     font-weight: 700;
 
     border-color: ${({ theme, isFocusing }) => isFocusing && theme.yellow3};
     border-width: ${({ isFocusing }) => isFocusing && "0.25rem"};
+
+    height: ${(p) => (p.isFocusing ? "fit-content" : ".95rem")};
 
     &:hover {
         border-color: ${(p) => p.theme.teal4};
@@ -69,6 +71,8 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
 `
 
 const H2Link = styled(HeaderLinkCommon)`
+    transition: all 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+
     &:first-child {
         margin-top: 1.25rem;
     }
@@ -82,6 +86,11 @@ const H2Link = styled(HeaderLinkCommon)`
         border-color: ${(p) => p.theme.teal2};
         color: ${(p) => p.theme.trueDeepDark};
     }
+
+    visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
+    transform-origin: left;
+    transform: scale(${(p) => (p.isFocusing ? "1" : "0")})
+        translateX(${(p) => (p.isFocusing ? "0" : "25px")});
 `
 
 interface HeaderInfoArray {
@@ -99,9 +108,7 @@ const sliceTextByMaxLength = (text: string, max: number) =>
 interface TableOfContentProp extends Pick<Meta, "title"> {}
 
 function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
-    const focusingTitle = useFocusingTitle()
-    const [currentFocusingTitleArray, setCurrentFocusingTitleArray] =
-        useCurrentFocusingTitleArray()
+    const [focusTitle, setFocusTitle] = useFocusTitle()
 
     const [headerInfoArray, setHeaderInfoArray] = useState<HeaderInfoArray[]>(
         []
@@ -114,7 +121,6 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
             onClick: () => void
             type: string
         }[] = []
-        const initialTitleArray: typeof currentFocusingTitleArray = []
 
         document.querySelectorAll("h1, h2").forEach((item) => {
             const title = item.textContent?.trim()
@@ -128,11 +134,6 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                         }),
                     type: nodeName,
                 })
-                nodeName === "H1" &&
-                    initialTitleArray.push({
-                        title,
-                        isFocusing: false,
-                    })
             }
         })
 
@@ -186,8 +187,7 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
 
         //@ts-ignore
         setHeaderInfoArray(documentHeaderInfoArray)
-        setCurrentFocusingTitleArray(initialTitleArray)
-    }, [setHeaderInfoArray, updateTrigger, setCurrentFocusingTitleArray])
+    }, [setHeaderInfoArray, updateTrigger])
 
     return (
         <TOCPosition>
@@ -196,31 +196,37 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                 onMouseLeave={() => setIsFocusing(false)}
             >
                 {headerInfoArray.map(({ title, onClick, children }, index) => {
-                    const isTitleFocusing = focusingTitle === title
+                    const isTitleFocusing = focusTitle === title
                     return (
                         <>
                             <H1Link
                                 index={index}
-                                isFocusing={isTitleFocusing}
+                                isFocusing={isTitleFocusing || isFocusing}
                                 onClick={onClick}
                                 key={title}
                             >
                                 🍞
                                 {sliceTextByMaxLength(title, 16)}
-                                {(isTitleFocusing || isFocusing) &&
-                                    children?.map(({ title, onClick }) => (
+                                {children?.map(
+                                    ({ title: childTitle, onClick }) => (
                                         <H2Link
-                                            key={title}
-                                            isFocusing={isTitleFocusing}
+                                            key={childTitle}
+                                            isFocusing={
+                                                isTitleFocusing || isFocusing
+                                            }
                                             onClick={(e) => {
                                                 e.stopPropagation()
                                                 onClick()
                                             }}
                                         >
                                             🥛
-                                            {sliceTextByMaxLength(title, 15)}
+                                            {sliceTextByMaxLength(
+                                                childTitle,
+                                                15
+                                            )}
                                         </H2Link>
-                                    ))}
+                                    )
+                                )}
                             </H1Link>
                         </>
                     )

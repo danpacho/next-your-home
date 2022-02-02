@@ -1,10 +1,10 @@
-import styled from "styled-components"
-import { useCallback, useEffect, useRef, useState } from "react"
-
+import { useFocusTitle } from "@/atoms/atoms"
+import useElementObserver from "@/hooks/useElementObserver"
 import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
-import useElementObserver from "@/hooks/useElementObserver"
-import { useCurrentFocusingTitleArray } from "@/atoms/atoms"
+
+import { useCallback, useRef, useState } from "react"
+import styled from "styled-components"
 
 const H1Container = styled.div`
     margin: 3rem 0 2rem 0;
@@ -30,64 +30,39 @@ const H3Styled = styled.h3`
     font-weight: 700;
     margin-bottom: 1rem;
 `
+
 interface H1Props {
     children: string
 }
 
 function H1(props: H1Props) {
-    const [currentFocusingTitleArray, setCurrentFocusingTitleArray] =
-        useCurrentFocusingTitleArray()
+    const [_, setFocustitle] = useFocusTitle()
     const [active, setActive] = useState(false)
 
     const ref = useRef<HTMLHeadingElement>(null)
 
-    const { isVisible } = useElementObserver<HTMLHeadingElement>({
+    const updateFocusTitle: IntersectionObserverCallback = useCallback(
+        (entries) => {
+            entries.forEach((entry) => {
+                const top = entry.boundingClientRect.top
+                if (top <= 175 && top >= -175) setFocustitle(props.children)
+            })
+        },
+        [props.children, setFocustitle]
+    )
+
+    const {} = useElementObserver<HTMLHeadingElement>({
         ref,
         options: {
             root: null,
-            rootMarginTop: "100px",
-            rootMarginBottom: "-50%",
+            rootMarginTop: "-42.5px",
+            rootMarginBottom: "0px",
             rootMarginLeft: "0px",
             rootMarginRight: "0px",
-            threshold: 0,
+            threshold: [0, 1],
         },
+        customeCallback: updateFocusTitle,
     })
-
-    const getUpdatedFocusingTitleArray = useCallback(
-        (
-            titleArray: typeof currentFocusingTitleArray,
-            isVisble: boolean,
-            updateObjectTitle: string
-        ) => {
-            const updatedFocusingTitleArray = titleArray.map((titleObject) => {
-                //* state업데이트 대상
-                if (titleObject.title === updateObjectTitle) {
-                    return {
-                        title: titleObject.title,
-                        isFocusing: isVisble,
-                    }
-                }
-                return titleObject
-            })
-            return updatedFocusingTitleArray
-        },
-        []
-    )
-
-    useEffect(() => {
-        setCurrentFocusingTitleArray((currentFocusingTitleArray) =>
-            getUpdatedFocusingTitleArray(
-                currentFocusingTitleArray,
-                isVisible,
-                props.children
-            )
-        )
-    }, [
-        isVisible,
-        props.children,
-        getUpdatedFocusingTitleArray,
-        setCurrentFocusingTitleArray,
-    ])
 
     return (
         <H1Container>
