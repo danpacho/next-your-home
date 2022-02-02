@@ -11,27 +11,33 @@ import Italic from "./MDXComponents/Text/TextHightlight/Italic"
 import Code from "./MDXComponents/Code/Code"
 import InlineCode from "./MDXComponents/Code/InlineCode"
 import P from "./MDXComponents/Text/P"
+import Pre from "./MDXComponents/Code/Pre"
 
 const MDXAtoms: MDXProviderProps["components"] = {
+    p: P,
+    strong: Bold,
+    em: Italic,
+
     h1: H1,
     h2: H2,
     h3: H3,
+
     ol: OL,
     ul: UL,
     li: LI,
+
     a: Link,
+
     blockquote: Quote,
-    img: Image,
+
+    pre: Pre,
     code: Code,
     inlineCode: InlineCode,
 
+    img: Image,
+
     hr: Divider,
-    strong: Bold,
-    em: Italic,
-    p: P,
     // delete,
-    // p,
-    // pre,
     // table,
     // td,
     // th,
