@@ -1,4 +1,4 @@
-import MDXPost from "@/components/MD/MDXPost/MDXPost"
+import MDXPost from "@/components/MD/MDXPost/MDXPost/MDXPost"
 import {
     getFilteredPostPath,
     getPurePostPath,

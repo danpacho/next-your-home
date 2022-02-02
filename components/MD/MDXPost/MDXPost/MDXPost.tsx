@@ -2,8 +2,8 @@ import Link from "@/components/Next/Link/Link"
 import Button from "@/components/UI/Atoms/Button/Button"
 import { Post } from "@/utils/types/post/post"
 import styled from "styled-components"
-import HeaderOfContent from "./HeaderOfContent"
-import MDXCompiler from "./MDXCompiler"
+import TableOfContent from "../TableOfContent/TableOfContent"
+import MDXCompiler from "../MDXCompiler/MDXCompiler"
 
 const PostContainer = styled.div`
     width: fit-content;
@@ -44,7 +44,7 @@ function MDXPost({ content: comiledSource, meta, href }: MDXPostProps) {
     return (
         <>
             <PostContainer>
-                <HeaderOfContent title={meta.title} />
+                <TableOfContent title={meta.title} />
                 <MDXCompiler comiledSource={comiledSource} />
             </PostContainer>
             <Link

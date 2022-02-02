@@ -1,4 +1,4 @@
-import MDXPostLink from "@/components/MD/MDXPost/MDXPostLink"
+import MDXPostLink from "@/components/MD/MDXPost/MDXPostLink/MDXPostLink"
 import {
     getAllPostContent,
     getPurePostPath,
@@ -9,11 +9,7 @@ import { GetStaticProps, InferGetStaticPropsType } from "next"
 type PostGalleryProps = InferGetStaticPropsType<typeof getStaticProps>
 
 export default function PostGallery({ AllPost }: PostGalleryProps) {
-    return (
-        <>
-            <MDXPostLink AllPost={AllPost} />
-        </>
-    )
+    return <MDXPostLink AllPost={AllPost} />
 }
 
 interface GetStaticPostGallery {
