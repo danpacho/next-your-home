@@ -1,6 +1,7 @@
 import styled from "styled-components"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
+
 import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx"
 import javascript from "react-syntax-highlighter/dist/cjs/languages/prism/javascript"
 import typescript from "react-syntax-highlighter/dist/cjs/languages/prism/typescript"
@@ -8,7 +9,7 @@ import python from "react-syntax-highlighter/dist/cjs/languages/prism/python"
 import c from "react-syntax-highlighter/dist/cjs/languages/prism/c"
 import matlab from "react-syntax-highlighter/dist/cjs/languages/prism/matlab"
 
-import { atomDark, nord } from "react-syntax-highlighter/dist/cjs/styles/prism"
+import { nord } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
 SyntaxHighlighter.registerLanguage("tsx", tsx)
 SyntaxHighlighter.registerLanguage("javascript", javascript)
@@ -36,12 +37,12 @@ const CodeCopyButton = styled.button`
 
     padding: 0.25rem;
 
-    font-size: ${(props) => props.theme.md};
+    font-size: ${(props) => props.theme.sm};
     font-weight: 700;
     color: ${(props) => props.theme.teal6};
 
     border-radius: ${(props) => props.theme.bsm};
-    border: 0.15rem solid ${(props) => props.theme.blue7};
+    border: 0.15rem solid ${(props) => props.theme.blue8};
 
     transition: all 0.075s ease-in;
     font-style: italic;
@@ -56,6 +57,8 @@ const CodeCopyButton = styled.button`
 `
 
 const CodeLanguageBox = styled.div`
+    transition: all 0.15s ease-in;
+
     position: absolute;
 
     top: 1rem;
@@ -69,42 +72,40 @@ const CodeLanguageBox = styled.div`
     height: fit-content;
     padding: 0.25rem 0.5rem;
 
-    background-color: ${(props) => props.theme.blue7};
+    background-color: transparent;
+    border: 0.15rem solid ${(props) => props.theme.blue8};
 
     border-radius: ${(props) => props.theme.bsm};
-    /* border: 0.15rem solid ${(props) => props.theme.blue2}; */
 
     color: ${(props) => props.theme.blue3};
-    font-weight: 700;
-    font-size: ${(props) => props.theme.md};
+    font-weight: 800;
+    letter-spacing: 0.05rem;
+    font-size: ${(props) => props.theme.sm};
     user-select: none;
 
     color: ${(props) => props.theme.white};
+
     &:hover {
+        border-color: ${(props) => props.theme.blue5};
     }
 `
 
 const CodeBox = styled(SyntaxHighlighter)`
-    margin: 2rem 0;
-
-    font-weight: 700;
-    font-size: ${(props) => props.theme.md};
-
-    line-height: 25px;
-    word-spacing: 0.5px;
-
     border-radius: ${(props) => props.theme.blg};
-    background-color: ${(props) => props.theme.gray8};
 
-    border: 0.2rem solid ${(props) => props.theme.gray7};
+    border: 0.1rem solid ${(props) => props.theme.gray6};
 
-    box-shadow: 0 10px 15px ${(props) => props.theme.gray4};
+    box-shadow: 0 10px 10px ${(props) => props.theme.gray4};
 
     user-select: text;
+
+    font-size: 0.85rem;
 `
 
 const CodeContainer = styled.div`
     position: relative;
+    width: 100%;
+    min-width: 25rem;
 `
 
 function Code({ children: code, className: language }: CodeProps) {
@@ -115,8 +116,15 @@ function Code({ children: code, className: language }: CodeProps) {
                 language={fixedLanguage}
                 style={nord}
                 customStyle={{
-                    fontWeight: 800,
+                    fontWeight: 500,
+                    margin: 0,
+                    padding: "1rem 5rem 1rem 1.25rem",
+                    backgroundColor: "#0c1c2b",
+                    // textAlighn: "none",
+                    lineHight: "1.25rem",
+                    // fontSize: "1rem",
                 }}
+                useInlineStyles={true}
             >
                 {code}
             </CodeBox>
