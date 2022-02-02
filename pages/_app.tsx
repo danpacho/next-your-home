@@ -9,6 +9,7 @@ import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { lightTheme } from "@styles/utils/CustomeTheme"
 
 import Layout from "@components/Next/Layout/Layout"
+import { RecoilRoot } from "recoil"
 
 function AppParent({ Component, pageProps }: AppProps) {
     return (
@@ -23,9 +24,12 @@ function AppParent({ Component, pageProps }: AppProps) {
 
             <GlobalStyle />
 
+            {/* //TODO: light dark mode toggling */}
             <ThemeProvider theme={lightTheme}>
                 <Layout>
-                    <Component {...pageProps} />
+                    <RecoilRoot>
+                        <Component {...pageProps} />
+                    </RecoilRoot>
                 </Layout>
             </ThemeProvider>
         </>

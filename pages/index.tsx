@@ -1,3 +1,6 @@
+import { readdirSync, readFileSync } from "fs"
+import { GetStaticProps } from "next"
+import path from "path"
 import { useState } from "react"
 import styled from "styled-components"
 
@@ -81,3 +84,9 @@ function Home() {
 }
 
 export default Home
+
+interface StaticProps {
+    props: {
+        posts: number[]
+    }
+}

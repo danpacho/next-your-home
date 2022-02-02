@@ -1,17 +1,35 @@
-import styled from "styled-components"
+import MDXPostLink from "@/components/MD/MDXPost/MDXPostLink"
+import {
+    getAllPostContent,
+    getPurePostPath,
+} from "@/utils/types/mdx/post/getMDXPost"
+import { Post } from "@/utils/types/post/post"
+import { GetStaticProps, InferGetStaticPropsType } from "next"
 
-const Container = styled.div`
-    width: 90%;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-`
+type PostGalleryProps = InferGetStaticPropsType<typeof getStaticProps>
 
-export default function Post(props: any) {
+export default function PostGallery({ AllPost }: PostGalleryProps) {
     return (
-        <Container>
-            <h1> 이것은 포스트</h1>
-        </Container>
+        <>
+            <MDXPostLink AllPost={AllPost} />
+        </>
     )
+}
+
+interface GetStaticPostGallery {
+    AllPost: Post[]
+}
+
+//@ts-ignore
+export const getStaticProps: GetStaticProps<
+    GetStaticPostGallery
+> = async () => {
+    const allPostPathArray = await getPurePostPath()
+    const allPost = await getAllPostContent(allPostPathArray)
+
+    return {
+        props: {
+            AllPost: allPost,
+        },
+    }
 }
