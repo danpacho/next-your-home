@@ -1,5 +1,5 @@
 import { FontSizeType } from "@/styles/utils/font"
-import React, { useRef } from "react"
+import React, { RefObject, useRef } from "react"
 import styled from "styled-components"
 
 interface LineScrollBtnStyleProps {
@@ -12,12 +12,13 @@ const LineScrollBtn = styled.button<LineScrollBtnStyleProps>`
     font-weight: ${({ fontWeight }) => fontWeight};
     background-color: transparent;
 `
-interface LineScrollProps extends LineScrollBtnStyleProps {}
+interface LineScrollProps extends LineScrollBtnStyleProps {
+    scrollRef: RefObject<HTMLElement>
+}
 
-function LineScroll({ fontSize, fontWeight }: LineScrollProps) {
-    const ref = useRef<HTMLButtonElement>(null)
+function LineScroll({ fontSize, fontWeight, scrollRef }: LineScrollProps) {
     const onClickMove = () =>
-        ref.current?.scrollIntoView({
+        scrollRef.current?.scrollIntoView({
             behavior: "smooth",
             block: "start",
             inline: "center",
@@ -25,7 +26,6 @@ function LineScroll({ fontSize, fontWeight }: LineScrollProps) {
 
     return (
         <LineScrollBtn
-            ref={ref}
             fontSize={fontSize}
             fontWeight={fontWeight}
             onClick={onClickMove}

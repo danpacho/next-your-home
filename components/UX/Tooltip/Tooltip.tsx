@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react"
+import React, { Dispatch, ReactElement, SetStateAction } from "react"
 import styled from "styled-components"
 
 const TooltipButtonArea = styled.div`
@@ -13,12 +13,19 @@ const TooltipButtonArea = styled.div`
     justify-content: space-evenly;
 `
 
-interface TooltipElementPostion {}
+interface TooltipElementPostion {
+    right?: number
+    left?: number
+    top?: number
+    bottom?: number
+}
 
-const TooltipElement = styled.div`
+const TooltipElement = styled.div<TooltipElementPostion>`
     position: absolute;
-    top: 0px;
-    right: -50px;
+    top: ${({ top }) => top}px;
+    bottom: ${({ bottom }) => bottom}px;
+    left: ${({ left }) => left}px;
+    right: ${({ right }) => right}px;
 
     min-width: 35px;
     min-height: 35px;
@@ -30,31 +37,47 @@ const TooltipElement = styled.div`
     justify-content: center;
 `
 
-interface TooltipProps {
+export interface TooltipProps extends TooltipElementPostion {
     children: ReactElement
     tooltipElement: ReactElement
     active: boolean
-    setActive: (active: boolean) => void
+    setActive: Dispatch<SetStateAction<boolean>>
+    isUnvisibleElementClickAbled?: boolean
 }
 
 function Tooltip({
-    children,
+    children: parentContent,
     tooltipElement,
     active,
     setActive,
+    top,
+    bottom,
+    left,
+    right,
+    isUnvisibleElementClickAbled = false,
 }: TooltipProps) {
     return (
         <TooltipButtonArea
-            onMouseOver={() => setActive(true)}
+            onMouseEnter={() => setActive(true)}
             onMouseLeave={() => setActive(false)}
         >
+            {parentContent}
             <TooltipElement
-                onMouseEnter={() => setActive(true)}
-                onMouseLeave={() => setActive(false)}
+                onMouseEnter={(e) => {
+                    e.stopPropagation()
+                    setActive(isUnvisibleElementClickAbled)
+                }}
+                onMouseLeave={(e) => {
+                    e.stopPropagation()
+                    setActive(!isUnvisibleElementClickAbled)
+                }}
+                top={top}
+                bottom={bottom}
+                left={left}
+                right={right}
             >
                 {active && tooltipElement}
             </TooltipElement>
-            {children}
         </TooltipButtonArea>
     )
 }

@@ -14,17 +14,17 @@ const H1Styled = styled.h1`
     font-size: ${(props) => props.theme.title};
     font-weight: 900;
 
-    padding: 0.35rem 0;
-    margin-bottom: 0.25rem;
+    padding: 1.25rem 0 0.35rem 0;
 
-    border-bottom: 4px solid ${(props) => props.theme.teal5};
+    border-bottom: 0.35rem solid ${(props) => props.theme.teal5};
 
-    width: max-content;
+    width: fit-content;
 `
 
 const H2Styled = styled.h2`
     font-size: ${(props) => props.theme.xlg};
     font-weight: 700;
+    padding: 0.35rem 0;
 `
 
 const H3Styled = styled.h3`
@@ -81,8 +81,15 @@ function H1(props: H1Props) {
                 active={active}
                 setActive={setActive}
                 tooltipElement={
-                    <LineScroll fontWeight={900} fontSize="title" />
+                    <LineScroll
+                        fontWeight={900}
+                        fontSize="title"
+                        scrollRef={ref}
+                    />
                 }
+                right={-50}
+                bottom={7}
+                isUnvisibleElementClickAbled={true}
             >
                 <H1Styled {...props} ref={ref} />
             </Tooltip>

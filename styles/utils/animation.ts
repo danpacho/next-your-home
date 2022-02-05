@@ -118,7 +118,7 @@ const zoomIn = keyframes`
   }
 `
 
-const ZoomOutIn = keyframes`
+const pureZoomIn = keyframes`
   0% {
       transform: scale(1);
     }
@@ -153,7 +153,7 @@ const animation = {
     appearMotion,
     lineRender,
     zoomIn,
-    pureZoomIn: ZoomOutIn,
+    pureZoomIn,
     boxZoom,
 }
 
