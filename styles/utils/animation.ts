@@ -118,6 +118,18 @@ const zoomIn = keyframes`
   }
 `
 
+const ZoomOutIn = keyframes`
+  0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0);
+    }
+  100% {
+      transform: scale(1);
+  }
+`
+
 const boxZoom = keyframes`
   50% {
         opacity: 0.8;
@@ -141,6 +153,7 @@ const animation = {
     appearMotion,
     lineRender,
     zoomIn,
+    pureZoomIn: ZoomOutIn,
     boxZoom,
 }
 

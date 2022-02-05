@@ -14,7 +14,9 @@ const H1Styled = styled.h1`
     font-size: ${(props) => props.theme.title};
     font-weight: 900;
 
-    padding: 0.5rem 0;
+    padding: 0.35rem 0;
+    margin-bottom: 0.25rem;
+
     border-bottom: 4px solid ${(props) => props.theme.teal5};
 
     width: max-content;
@@ -31,10 +33,15 @@ const H3Styled = styled.h3`
     margin-bottom: 1rem;
 `
 
+const HEADER_UPDATE_CONSTANTS = {
+    top: 225,
+    bottom: -225,
+    rootMarginTop: "-42.5px",
+    rootMarginBottom: "0px",
+}
 interface H1Props {
     children: string
 }
-
 function H1(props: H1Props) {
     const [_, setFocustitle] = useFocusTitle()
     const [active, setActive] = useState(false)
@@ -45,7 +52,11 @@ function H1(props: H1Props) {
         (entries) => {
             entries.forEach((entry) => {
                 const top = entry.boundingClientRect.top
-                if (top <= 175 && top >= -175) setFocustitle(props.children)
+                if (
+                    top <= HEADER_UPDATE_CONSTANTS.top &&
+                    top >= HEADER_UPDATE_CONSTANTS.bottom
+                )
+                    setFocustitle(props.children)
             })
         },
         [props.children, setFocustitle]
@@ -55,8 +66,8 @@ function H1(props: H1Props) {
         ref,
         options: {
             root: null,
-            rootMarginTop: "-42.5px",
-            rootMarginBottom: "0px",
+            rootMarginTop: HEADER_UPDATE_CONSTANTS.rootMarginTop,
+            rootMarginBottom: HEADER_UPDATE_CONSTANTS.rootMarginBottom,
             rootMarginLeft: "0px",
             rootMarginRight: "0px",
             threshold: [0, 1],

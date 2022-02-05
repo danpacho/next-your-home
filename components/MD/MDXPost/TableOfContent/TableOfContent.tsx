@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { Meta } from "@utils/types/post/post"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import animation from "@/styles/utils/animation"
 import { useFocusTitle } from "@/atoms/atoms"
 import media from "@/styles/utils/media"
@@ -17,7 +17,7 @@ const TOCPosition = styled.nav`
     z-index: 100;
 
     ${media.xlarge} {
-        display: none;
+        visibility: hidden;
     }
 `
 
@@ -36,42 +36,42 @@ interface LinkStyle {
 
 const HeaderLinkCommon = styled.div<LinkStyle>`
     width: 100%;
-
     padding: 0.75rem 0.25rem;
     border-left: 0.15rem solid ${(p) => p.theme.gray2};
 
     font-size: ${({ theme }) => theme.sm};
     text-decoration: none;
 
-    animation: ${animation.fadeIn} 3.5s cubic-bezier(0.19, 1, 0.22, 1);
-
-    &:hover {
-        font-size: 0.825rem;
-    }
+    animation: ${animation.pureZoomIn} 1.35s cubic-bezier(0.19, 1, 0.22, 1);
+    transform-origin: left;
 
     cursor: pointer;
 `
 
 const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
-    transition: all 1s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: border-color,
+        border-width 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     font-weight: 700;
 
     border-color: ${({ theme, isFocusing }) => isFocusing && theme.yellow3};
     border-width: ${({ isFocusing }) => isFocusing && "0.25rem"};
 
-    height: ${(p) => (p.isFocusing ? "fit-content" : ".95rem")};
+    height: ${(p) => (p.isFocusing ? "fit-content" : "1.25rem")};
+    min-height: 1.25rem;
 
     &:hover {
         border-color: ${(p) => p.theme.teal4};
         border-width: 0.25rem;
+        background-color: ${(p) => p.theme.gray1};
     }
 
-    animation-delay: ${({ index }) => index * 70}ms;
+    animation-delay: ${({ index }) => index * 85}ms;
 `
 
 const H2Link = styled(HeaderLinkCommon)`
-    transition: all 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: transform, border-color,
+        border-width 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     &:first-child {
         margin-top: 1.25rem;
@@ -83,14 +83,19 @@ const H2Link = styled(HeaderLinkCommon)`
 
     &:hover {
         border-width: 0.25rem;
-        border-color: ${(p) => p.theme.teal2};
+        border-color: ${(p) => p.theme.teal3};
         color: ${(p) => p.theme.trueDeepDark};
     }
 
-    visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
     transform-origin: left;
     transform: scale(${(p) => (p.isFocusing ? "1" : "0")})
-        translateX(${(p) => (p.isFocusing ? "0" : "25px")});
+        translateX(${(p) => (p.isFocusing ? "0" : "200px")});
+
+    visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
+
+    ${media.xlarge} {
+        visibility: hidden;
+    }
 `
 
 interface HeaderInfoArray {
@@ -105,14 +110,19 @@ interface HeaderInfoArray {
 const sliceTextByMaxLength = (text: string, max: number) =>
     text.length <= max ? text : `${text.slice(0, max + 1)} ...`
 
+const TITLE_MAX_LENGTH = {
+    h1: 16,
+    h2: 15,
+}
+
 interface TableOfContentProp extends Pick<Meta, "title"> {}
 
 function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
-    const [focusTitle, setFocusTitle] = useFocusTitle()
-
+    const [focusTitle, _] = useFocusTitle()
     const [headerInfoArray, setHeaderInfoArray] = useState<HeaderInfoArray[]>(
         []
     )
+
     const [isFocusing, setIsFocusing] = useState(false)
 
     useEffect(() => {
@@ -206,7 +216,10 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                                 key={title}
                             >
                                 🍞
-                                {sliceTextByMaxLength(title, 16)}
+                                {sliceTextByMaxLength(
+                                    title,
+                                    TITLE_MAX_LENGTH.h1
+                                )}
                                 {children?.map(
                                     ({ title: childTitle, onClick }) => (
                                         <H2Link
@@ -222,7 +235,7 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                                             🥛
                                             {sliceTextByMaxLength(
                                                 childTitle,
-                                                15
+                                                TITLE_MAX_LENGTH.h2
                                             )}
                                         </H2Link>
                                     )
