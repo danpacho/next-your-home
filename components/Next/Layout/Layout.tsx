@@ -1,31 +1,31 @@
-import animation from "@/styles/utils/animation"
 import { ReactElement } from "react"
-import styled from "styled-components"
-import Footer from "./Footer/Footer"
-import NavBar from "./NavBar/NavBar"
 
-interface LayoutProps {
+import styled from "styled-components"
+
+import Footer from "./Footer/Footer"
+import Main from "./Main/Main"
+import NavBar from "./NavBar/NavBar"
+interface LayoutProp {
     children: ReactElement
 }
 
-const MainLayout = styled.main`
+const Layout = styled.main`
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-direction: column;
-    padding: 2.5rem 0;
+    align-items: center;
+    justify-content: space-between;
 
-    animation: ${animation.fadeIn} 1s ease-out;
+    min-height: 100vh;
 `
 
-function Layout({ children }: LayoutProps) {
+function MainLayout({ children }: LayoutProp) {
     return (
-        <>
+        <Layout>
             <NavBar />
-            <MainLayout>{children}</MainLayout>
+            <Main>{children}</Main>
             <Footer />
-        </>
+        </Layout>
     )
 }
 
-export default Layout
+export default MainLayout
