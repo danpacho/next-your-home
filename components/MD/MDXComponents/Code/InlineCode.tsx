@@ -1,27 +1,20 @@
 import styled from "styled-components"
 
+const INLINE_COLOR = "#ff4da0"
+
 const InlineCodeStyled = styled.code`
-    transition: border-color 0.15s ease-out;
+    transition: all 0.15s ease-out;
 
-    padding: 0.05rem 0.25rem;
-    margin: 0.3rem 0.2rem;
+    padding: 0rem 0.25rem;
+    margin: 0.15rem 0.2rem;
 
-    background-color: ${(props) => props.theme.white};
+    font-weight: 900;
 
-    color: ${(props) => props.theme.gray8};
-    font-weight: 800;
+    border: 0.2rem solid ${(props) => props.theme.red2};
+    border-radius: ${(props) => props.theme.bmd};
 
-    border: 0.15rem solid ${(props) => props.theme.gray3};
-    border-radius: ${(props) => props.theme.bsm};
-
-    ::selection {
-        background-color: ${(props) => props.theme.dark};
-        color: ${(props) => props.theme.gray2};
-    }
-
-    &:hover {
-        border-color: ${(props) => props.theme.gray8};
-    }
+    background-color: ${(p) => p.theme.white};
+    color: ${INLINE_COLOR};
 
     cursor: pointer;
 `

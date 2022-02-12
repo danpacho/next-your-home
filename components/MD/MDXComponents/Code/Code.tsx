@@ -9,6 +9,7 @@ import tsx from "react-syntax-highlighter/dist/cjs/languages/prism/tsx"
 import python from "react-syntax-highlighter/dist/cjs/languages/prism/python"
 import c from "react-syntax-highlighter/dist/cjs/languages/prism/c"
 import matlab from "react-syntax-highlighter/dist/cjs/languages/prism/matlab"
+import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash"
 
 import { nord } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
@@ -23,6 +24,7 @@ SyntaxHighlighter.registerLanguage("typescript", typescript)
 SyntaxHighlighter.registerLanguage("python", python)
 SyntaxHighlighter.registerLanguage("c", c)
 SyntaxHighlighter.registerLanguage("matlab", matlab)
+SyntaxHighlighter.registerLanguage("bash", bash)
 
 interface CodeProps {
     children: string
@@ -66,12 +68,16 @@ const CodeContentBox = styled.div`
 const CodeBox = styled(SyntaxHighlighter)`
     font-size: 0.9rem;
 
+    min-height: 4rem;
+
     border: 0.1rem solid ${(props) => props.theme.gray6};
     border-radius: ${(props) => props.theme.blg};
 
     box-shadow: 0 10px 10px ${(props) => props.theme.gray4};
 
-    user-select: text;
+    user-select: none;
+
+    overflow-x: auto;
 `
 
 const CodeContainer = styled.div`
