@@ -1,5 +1,7 @@
 import { join as pathJoin } from "path"
-import { readdirSync, readFileSync } from "fs"
+import { readdirSync } from "fs"
+import { readFile } from "fs/promises"
+
 import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
 import { MDXCompiledSource } from "@/utils/types/mdx/mdx"
@@ -48,7 +50,7 @@ const getHrefOfPost = async (fileName: string) => {
 
 const getSpecificPostContent = async (fileName: string) => {
     const filePath = pathJoin(getPostDirectoryURL(), fileName)
-    const pureMdxContent = readFileSync(filePath, "utf-8")
+    const pureMdxContent = await readFile(filePath, "utf-8")
 
     const { content, data: meta } = matter(pureMdxContent)
 
