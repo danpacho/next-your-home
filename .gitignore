@@ -1,6 +1,7 @@
 # blog posts -> temporary dev posts and image
 /posts
 /public/assets/image
+/blog-contents
 
 # dependencies
 /node_modules
