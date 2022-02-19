@@ -1,92 +1,47 @@
-import { readdirSync, readFileSync } from "fs"
+import LatestPostLink from "@/components/Post/Main/LatestPostLink/LatestPostLink"
+import { getLatestPost } from "@/utils/function/blog-contents-loader/category/post/getCategoryPost"
+import { PostMeta } from "@/utils/types/main/meta"
 import { GetStaticProps } from "next"
-import path from "path"
-import { useState } from "react"
 import styled from "styled-components"
 
-const HellowContainer = styled.div`
-    width: 100%;
-    height: 100vh;
-
+const Container = styled.div`
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    gap: 1.75rem;
 
-    gap: 1.5rem;
-`
-const HellowTitle = styled.h1`
-    font-size: ${(props) => props.theme.xxlg};
-    font-weight: 700;
-`
+    /* background-color: whitesmoke; */
 
-const HellowNumber = styled.h2`
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 50px;
-    height: 50px;
-
-    font-size: ${(props) => props.theme.xlg};
-    background-color: ${(props) => props.theme.teal7};
-    color: ${(props) => props.theme.white};
-    font-weight: 900;
-
-    align-self: center;
-    border-radius: 35%;
+    padding: 5rem;
 `
 
-const CustomeButton = styled.button`
-    transition: background-color ease-in-out 0.25s;
-
-    background-color: ${(props) => props.theme.blue3};
-    width: 100px;
-    height: 50px;
-    padding: 5px;
-    border-radius: 2.5px;
-
-    &:hover {
-        background-color: aliceblue;
-    }
-
-    &:active {
-        border: 2px solid ${(props) => props.theme.blue3};
-    }
-`
-
-const CustomeInput = styled.input`
-    transition: background-color, border ease-in-out 0.25s;
-
-    width: 100px;
-    height: 35px;
-    background-color: ${(props) => props.theme.white};
-    border: 2px solid skyblue;
-    border-radius: 2.5px;
-
-    &:focus {
-        border: 3px solid ${(props) => props.theme.teal6};
-    }
-`
-
-function Home() {
-    const [number, setNumber] = useState(0)
+//TODO 메인페이지 피그마 시안 컴포넌트 제작
+function MainPage({ latestPostArray }: { latestPostArray: PostMeta[] }) {
     return (
-        <HellowContainer>
-            <HellowTitle>Hola Blog 😊!</HellowTitle>
-            <CustomeButton onClick={() => setNumber((num) => num + 1)}>
-                Click Me!
-            </CustomeButton>
-            <HellowNumber>{number}</HellowNumber>
-            <CustomeInput placeholder="Text!" />
-        </HellowContainer>
+        <Container>
+            {latestPostArray.map((latestPost, idx) => {
+                return (
+                    <LatestPostLink
+                        {...latestPost}
+                        order={idx}
+                        isFirst={idx === 0}
+                        isLast={idx === latestPostArray.length - 1}
+                        key={latestPost.title}
+                    />
+                )
+            })}
+        </Container>
     )
 }
 
-export default Home
+export default MainPage
 
-interface StaticProps {
-    props: {
-        posts: number[]
+export const getStaticProps: GetStaticProps = async () => {
+    const latestPostArray = await getLatestPost(3)
+    return {
+        props: {
+            latestPostArray,
+        },
     }
 }

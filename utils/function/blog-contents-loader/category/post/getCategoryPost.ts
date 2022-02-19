@@ -9,6 +9,7 @@ import { readdirSync } from "fs"
 import { readFile } from "fs/promises"
 import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
+import { PostMeta } from "@/utils/types/main/meta"
 
 const POST_DIRECTORY_NAME = "posts"
 
@@ -108,7 +109,9 @@ const getSepcificCategoryPostContent = async (categoryName: string) =>
     )[0]
 
 const DEFAULT_POST_NUMBER = 5
-const getLatestPost = async (postSliceNumber: number = DEFAULT_POST_NUMBER) => {
+const getLatestPost = async (
+    postSliceNumber: number = DEFAULT_POST_NUMBER
+): Promise<PostMeta[]> => {
     const sortedByUpdateDate = (await returnAllPostInfo(false))
         .flatMap(({ contentsInfo }) => contentsInfo)
         .map(({ postMeta, postUrl }) => ({
@@ -116,8 +119,6 @@ const getLatestPost = async (postSliceNumber: number = DEFAULT_POST_NUMBER) => {
             url: postUrl,
         }))
         .sort(
-            //* 업데이트 날짜로 오름차순 정렬
-            //* 2020/02/01 형식으로 저장
             ({ update: currUpdateDate }, { update: nextUpdateDate }) =>
                 Number(nextUpdateDate.replaceAll("/", "")) -
                 Number(currUpdateDate.replaceAll("/", ""))

@@ -9,7 +9,6 @@ const LinkContainer = styled.div`
 
     cursor: pointer;
 `
-
 interface LinkProps extends NextLinkProps {
     innerContent: ReactElement
 }
