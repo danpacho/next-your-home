@@ -1,3 +1,4 @@
+import { CategoryInfo } from "@/utils/types/category/category"
 import { readdirSync } from "fs"
 import { readFile } from "fs/promises"
 import { addPathNotation, blogContentsDirectory } from "../common/commonUtils"
@@ -19,7 +20,7 @@ const DESCRIPTION_FILE_NAME = "description.txt"
 /**
  * @returns 카테고리의 설명을 반환
  */
-const getCategoryDescription = async (pureCategoryArray: string[]) => {
+const readCategoryTXTFileArray = async (pureCategoryArray: string[]) => {
     const descriptionArray = Promise.all(
         pureCategoryArray.map(async (category) => {
             const description = await readFile(
@@ -32,23 +33,47 @@ const getCategoryDescription = async (pureCategoryArray: string[]) => {
     return descriptionArray
 }
 
+const EXTRACT_COLOR_REGEX = /color:/
+/**
+ * @note `.txt`파일 -> 줄바꿈 후, color = {내가 원하는 색}
+ * @returns `카테고리.txt` 파일에서 색상 | 설명 정보 추출
+ */
+const extractCategoryDescriptionAndColor = (
+    categoryTXTFile: string
+): {
+    description: string
+    color: string
+} => {
+    const [description, color] = categoryTXTFile.split(EXTRACT_COLOR_REGEX)
+    return {
+        description: description.replace(/\n/g, ""),
+        color,
+    }
+}
+
 /**
  * @note 전체 카테고리의 이름 - 설명 배열
  * @return 모든 카테
  */
-const getAllCategoryInfo = async () => {
-    const categories = await getPureCategoryName()
-    const categoriesDescription = await getCategoryDescription(categories)
-
-    const allCategoryInfo = new Array(categories.length)
+const getCategoryInfoArray = async (): Promise<CategoryInfo[]> => {
+    const categoryArray = await getPureCategoryName()
+    const categoryTXTFileArray = await readCategoryTXTFileArray(categoryArray)
+    const allCategoryInfo = new Array(categoryArray.length)
         .fill(0)
-        .map((_, idx) => ({
-            category: categories[idx],
-            description: categoriesDescription[idx],
-            url: `/${categories[idx]}`,
-        }))
+        .map((_, idx) => {
+            const { description, color } = extractCategoryDescriptionAndColor(
+                categoryTXTFileArray[idx]
+            )
+
+            return {
+                category: categoryArray[idx],
+                description,
+                url: `/${categoryArray[idx]}`,
+                color,
+            }
+        })
 
     return allCategoryInfo
 }
 
-export { getCategoryPath, getPureCategoryName, getAllCategoryInfo }
+export { getCategoryPath, getPureCategoryName, getCategoryInfoArray }
