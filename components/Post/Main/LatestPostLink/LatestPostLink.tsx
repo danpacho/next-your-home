@@ -1,5 +1,6 @@
 import Link from "@/components/Next/Link/Link"
 import { PostMeta } from "@/utils/types/main/meta"
+import { useState } from "react"
 import styled, { css } from "styled-components"
 
 interface LatestPostLinkButtonStyle {
@@ -71,7 +72,7 @@ const ContentContainer = styled.div`
 
     gap: 0.85rem;
 `
-const LatestPostTitle = styled.div<{ color: any }>`
+const LatestPostTitle = styled.div<{ color: any; isHover: boolean }>`
     font-size: ${(p) => p.theme.xlg};
     font-weight: 200;
     color: ${(p) => p.theme.gray8};
@@ -87,9 +88,13 @@ const LatestPostTitle = styled.div<{ color: any }>`
         height: 0.5rem;
     }
 
-    :hover::after {
-        transform: scaleX(1);
-    }
+    ${({ isHover }) =>
+        isHover &&
+        css`
+            ::after {
+                transform: scaleX(1);
+            }
+        `}
 `
 const LatestPostPreview = styled.div`
     font-size: ${(p) => p.theme.md};
@@ -112,18 +117,22 @@ function LatestPostLink({
     isFirst,
     isLast,
 }: LatestProps) {
-    console.log(title, color)
+    const [isHover, setIsHover] = useState<boolean>(false)
     return (
         <LatestPostLinkButton
             color={color}
             order={order}
             isFirst={isFirst}
             isLast={isLast}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
         >
             <Link
                 innerContent={
                     <ContentContainer>
-                        <LatestPostTitle color={color}>{title}</LatestPostTitle>
+                        <LatestPostTitle color={color} isHover={isHover}>
+                            {title}
+                        </LatestPostTitle>
                         <LatestPostPreview>{preview}</LatestPostPreview>
                         <LatestPostMeta
                             author={author}
@@ -135,7 +144,7 @@ function LatestPostLink({
                 }
                 href={url}
             />
-            <OrderText order={order} color={color} />
+            <OrderText order={order} color={color} isHover={isHover} />
         </LatestPostLinkButton>
     )
 }
@@ -147,6 +156,8 @@ const STYLE = {
 }
 const ORDER_TEXT_SHADOW = `${STYLE.X} ${STYLE.Y} ${STYLE.BLUR}`
 const OrderTextStyled = styled.p<OrderTextProp>`
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -157,16 +168,24 @@ const OrderTextStyled = styled.p<OrderTextProp>`
 
     text-shadow: ${({ color: shadowColor }) =>
         `${ORDER_TEXT_SHADOW} ${shadowColor}`};
+
+    ${({ isHover, color }) =>
+        isHover &&
+        css`
+            color: ${color};
+            text-shadow: ${ORDER_TEXT_SHADOW} black;
+        `}
 `
 
 interface OrderTextProp {
     order: number
     color: any
+    isHover: boolean
 }
 const ORDER_TEXT_ARRAY = ["A", "B", "C", "D", "E"]
-const OrderText = ({ order, color }: OrderTextProp) => {
+const OrderText = ({ order, color, isHover }: OrderTextProp) => {
     return (
-        <OrderTextStyled order={order} color={color}>
+        <OrderTextStyled order={order} color={color} isHover={isHover}>
             {ORDER_TEXT_ARRAY[order]}
         </OrderTextStyled>
     )
