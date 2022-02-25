@@ -1,8 +1,9 @@
-import Link from "@/components/Next/Link/Link"
-import { PostMeta } from "@/utils/types/main/meta"
+import Link from "next/link"
 import { useState } from "react"
 import styled, { css } from "styled-components"
 
+import { PostMeta } from "@/utils/types/main/meta"
+import LatestPostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
 interface LatestPostLinkButtonStyle {
     order: number
     //* container 첫번째 | 마지막 요소 border~스타일 변경
@@ -10,7 +11,7 @@ interface LatestPostLinkButtonStyle {
     isLast?: boolean
     color: any
 }
-const BORDER_WIDTH = "0.125rem"
+const BORDER_WIDTH = "0.1rem"
 const latestPostLinkButtonStyle = {
     first: (borderColor: any) => css`
         border-top-right-radius: ${(p) => p.theme.bxxxlg};
@@ -38,9 +39,11 @@ const LatestPostLinkButton = styled.div<LatestPostLinkButtonStyle>`
 
     gap: 2.5rem;
 
-    padding: 0.25rem 2rem;
+    padding: 0.25rem 1.5rem;
 
-    width: min(35rem, 85%);
+    width: min(30rem, 85%);
+    height: 8.75rem;
+
     background-color: ${(p) => p.theme.white};
     ${({ color }) => latestPostLinkButtonStyle.middle(color)};
 
@@ -52,15 +55,7 @@ const LatestPostLinkButton = styled.div<LatestPostLinkButtonStyle>`
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     user-select: none;
 
-    /* perspective-origin: top;
-    perspective-origin: -150% 50%;
-    perspective: 2rem; */
-
     &:hover {
-        /* transform: rotateZ(10deg) scale(1.05); */
-        box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px,
-            rgba(17, 17, 26, 0.1) 0px 16px 56px,
-            rgba(17, 17, 26, 0.1) 0px 24px 80px;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     }
 `
@@ -68,36 +63,12 @@ const ContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: space-between;
 
-    gap: 0.85rem;
-`
-const LatestPostTitle = styled.div<{ color: any; isHover: boolean }>`
-    font-size: ${(p) => p.theme.xlg};
-    font-weight: 200;
-    color: ${(p) => p.theme.gray8};
-    ::after {
-        transition: transform 0.25s ease-in-out;
-        content: "";
-        display: block;
-        background-color: ${({ color }) => color};
-        opacity: 0.35;
-        margin-top: -0.35rem;
-        transform: scaleX(0);
-        transform-origin: center;
-        height: 0.5rem;
-    }
-
-    ${({ isHover }) =>
-        isHover &&
-        css`
-            ::after {
-                transform: scaleX(1);
-            }
-        `}
+    gap: 0.75rem;
 `
 const LatestPostPreview = styled.div`
-    font-size: ${(p) => p.theme.md};
+    font-size: ${(p) => p.theme.sm};
     color: ${(p) => p.theme.gray5};
     font-weight: 200;
     line-height: 1.15rem;
@@ -113,7 +84,7 @@ function LatestPostLink({
     update,
     author,
     color,
-    url,
+    postUrl,
     isFirst,
     isLast,
 }: LatestProps) {
@@ -127,23 +98,26 @@ function LatestPostLink({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
         >
-            <Link
-                innerContent={
-                    <ContentContainer>
-                        <LatestPostTitle color={color} isHover={isHover}>
-                            {title}
-                        </LatestPostTitle>
-                        <LatestPostPreview>{preview}</LatestPostPreview>
-                        <LatestPostMeta
-                            author={author}
-                            category={category}
-                            color={color}
-                            update={update}
-                        />
-                    </ContentContainer>
-                }
-                href={url}
-            />
+            <Link href={postUrl} passHref>
+                <ContentContainer>
+                    <LatestPostTitle
+                        isHover={isHover}
+                        fontColor="gray8"
+                        fontSize="lg"
+                        fontWeight={200}
+                        underscoreColor={color}
+                    >
+                        {title}
+                    </LatestPostTitle>
+                    <LatestPostPreview>{preview}</LatestPostPreview>
+                    <LatestPostMeta
+                        author={author}
+                        category={category}
+                        color={color}
+                        update={update}
+                    />
+                </ContentContainer>
+            </Link>
             <OrderText order={order} color={color} isHover={isHover} />
         </LatestPostLinkButton>
     )
