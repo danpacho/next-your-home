@@ -13,7 +13,7 @@ const Layout = styled.main`
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 
     min-height: 100vh;
 `
@@ -23,7 +23,7 @@ function MainLayout({ children }: LayoutProp) {
         <Layout>
             <NavBar />
             <Main>{children}</Main>
-            <Footer />
+            {/* <Footer /> */}
         </Layout>
     )
 }

@@ -9,20 +9,18 @@ const FooterContainer = styled.footer`
     width: 100%;
     height: max-content;
 
-    margin-top: 15rem;
     padding: 1.75rem 0;
 
     font-size: ${(p) => p.theme.sm};
-    color: ${(p) => p.theme.white};
+    color: ${(p) => p.theme.gray3};
     font-weight: 700;
     letter-spacing: 0.05rem;
 
+    border-top: 0.1rem solid ${(p) => p.theme.gray3};
+
+    background-image: linear-gradient(to left, #f7c380 0%, #dbc785 100%);
     background-image: linear-gradient(to left, #09203f 0%, #537895 100%);
     background-image: linear-gradient(to left, #91b895 0%, #83a576 100%);
-    /* background-image: linear-gradient(to left, #f7c380 0%, #dbc785 100%); */
-    &:last-child {
-        border-right: none;
-    }
 `
 
 const FooterContent = styled.div`
@@ -35,7 +33,9 @@ function Footer() {
         <FooterContainer>
             <FooterContent>© danpacho Blog.</FooterContent>
             <FooterContent>June.</FooterContent>
-            <FooterContent>Make People Move.</FooterContent>
+            <FooterContent style={{ borderRight: "none" }}>
+                Make People Move.
+            </FooterContent>
         </FooterContainer>
     )
 }
