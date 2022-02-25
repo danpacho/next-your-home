@@ -35,7 +35,7 @@ const readCategoryTXTFileArray = async (pureCategoryArray: string[]) => {
 
 const EXTRACT_COLOR_REGEX = /color:/
 /**
- * @note `.txt`파일 -> 줄바꿈 후, color = {내가 원하는 색}
+ * @note `.txt`파일 -> 줄바꿈 후, color: {내가 원하는 색}
  * @returns `카테고리.txt` 파일에서 색상 | 설명 정보 추출
  */
 const extractCategoryDescriptionAndColor = (
@@ -68,7 +68,7 @@ const getCategoryInfoArray = async (): Promise<CategoryInfo[]> => {
             return {
                 category: categoryArray[idx],
                 description,
-                url: `/${categoryArray[idx]}`,
+                categoryUrl: `/${categoryArray[idx]}`,
                 color,
             }
         })

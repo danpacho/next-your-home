@@ -5,5 +5,5 @@ export interface PostMeta {
     update: any
     color: any
     category: string
-    url: string
+    postUrl: string
 }
