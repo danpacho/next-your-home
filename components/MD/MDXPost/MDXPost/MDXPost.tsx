@@ -1,9 +1,12 @@
-import Link from "@/components/Next/Link/Link"
-import Button from "@/components/UI/Atoms/Button/Button"
-import { Post } from "@/utils/types/post/post"
 import styled from "styled-components"
+
+import { Post } from "@/utils/types/post/post"
+
+import Button from "@/components/UI/Atoms/Button/Button"
+
 import TableOfContent from "../TableOfContent/TableOfContent"
 import MDXCompiler from "../MDXCompiler/MDXCompiler"
+import Link from "next/link"
 
 const PostContainer = styled.div`
     width: fit-content;
@@ -16,7 +19,7 @@ const PostContainer = styled.div`
 
     scroll-behavior: smooth;
 `
-
+// 피라코드는 무엇일까용
 interface MDXPostProps extends Post {}
 
 const PreviousPostBtn = styled.div`
@@ -47,28 +50,23 @@ function MDXPost({ content: comiledSource, meta, href }: MDXPostProps) {
                 <TableOfContent title={meta.title} />
                 <MDXCompiler comiledSource={comiledSource} />
             </PostContainer>
-            <Link
-                href={href.previous}
-                innerContent={
-                    <PreviousPostBtn>
-                        <Button
-                            innerContent={<CursorBtn>{"<"}</CursorBtn>}
-                            buttonStyleType="default"
-                        />
-                    </PreviousPostBtn>
-                }
-            />
-            <Link
-                href={href.next}
-                innerContent={
-                    <NextPostBtn>
-                        <Button
-                            innerContent={<CursorBtn>{">"}</CursorBtn>}
-                            buttonStyleType="success"
-                        />
-                    </NextPostBtn>
-                }
-            />
+
+            <Link href={href.previous} passHref>
+                <PreviousPostBtn>
+                    <Button
+                        innerContent={<CursorBtn>{"<"}</CursorBtn>}
+                        buttonStyleType="default"
+                    />
+                </PreviousPostBtn>
+            </Link>
+            <Link href={href.next} passHref>
+                <NextPostBtn>
+                    <Button
+                        innerContent={<CursorBtn>{">"}</CursorBtn>}
+                        buttonStyleType="success"
+                    />
+                </NextPostBtn>
+            </Link>
         </>
     )
 }

@@ -2,9 +2,9 @@ import styled from "styled-components"
 
 import { Href, Meta, Post } from "@/utils/types/post/post"
 
-import Link from "@/components/Next/Link/Link"
-import { getTagArray } from "@/utils/types/mdx/post/getTag"
+import { getTagArray } from "@/utils/function/blog-contents-loader/category/posts/getTag"
 import Button from "@/components/UI/Atoms/Button/Button"
+import Link from "next/link"
 
 interface MDXLayoutProps {
     AllPost: Post[]
@@ -42,10 +42,9 @@ function PostBox({ href, meta }: PostBoxProps) {
     const tagArray = getTagArray(tag)
     return (
         <PostBoxContainer>
-            <Link
-                href={href.current}
-                innerContent={<PostTitle>{title}</PostTitle>}
-            />
+            <Link href={href.current} passHref>
+                <PostTitle>{title}</PostTitle>
+            </Link>
             <PostTagContainer>
                 {tagArray.map((tag) => (
                     <Button
