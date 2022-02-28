@@ -1,17 +1,26 @@
 import { MDXCompiledSource } from "../mdx/mdx"
-
-export interface PostContent {
+import { PostMeta } from "./meta"
+export interface CategoryPostContent {
     category: string
-    contentsInfo: {
-        postMeta: {
-            title: any
-            preview: any
-            update: any
-            author: any
-            color: any
-            category: string
-        }
-        postContent: string | MDXCompiledSource
-        postUrl: string
-    }[]
+    postContentArray: PostContent[]
 }
+
+//TODO: 이전 포스트 다음 포스트 들어가야 한다.
+export interface PostContent {
+    postMeta: PostMeta
+    postSource: string | MDXCompiledSource
+}
+
+export interface SpecificPostContent extends PostContent {
+    postController: PostController
+}
+
+interface PostControllerInfo {
+    title: string
+    postUrl: string
+}
+export interface PostController {
+    prevPost: PostControllerInfo
+    nextPost: PostControllerInfo
+}
+// export interface PostContent

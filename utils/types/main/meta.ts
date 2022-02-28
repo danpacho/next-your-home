@@ -1,9 +1,9 @@
 export interface PostMeta {
-    title: any
-    preview: any
-    author: any
-    update: any
-    color: any
+    title: string
+    preview: string
+    author: string
+    update: string
+    color: string
     category: string
     postUrl: string
 }

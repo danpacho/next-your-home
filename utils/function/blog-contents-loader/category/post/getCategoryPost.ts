@@ -10,7 +10,12 @@ import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
 
 import { PostMeta } from "@utils/types/main/meta"
-import { PostContent } from "@utils/types/main/post"
+import {
+    CategoryPostContent,
+    PostContent,
+    PostController,
+    SpecificPostContent,
+} from "@utils/types/main/post"
 import { MDXCompiledSource } from "@utils/types/mdx/mdx"
 
 const transformContentToMDXCompileSource = async (
@@ -46,8 +51,8 @@ const extractCategoryPostFileArray = async (
 /**
  * @returns 포스트의 순수 파일 이름을 받아온다, .mdx를 제거한 파일 이름 반환
  */
-const getCategoryPostName = (postInfo: DirPostInfo[]): string[][] =>
-    postInfo.map(({ categoryPostFileArray: categoryPostArray }) =>
+const getCategoryPostName = (postInfo: DirPostInfo[]): string[] =>
+    postInfo.flatMap(({ categoryPostFileArray: categoryPostArray }) =>
         categoryPostArray.map((fileName) => removeFileFormat(fileName, "mdx"))
     )
 
@@ -59,45 +64,38 @@ const getCategoryPostName = (postInfo: DirPostInfo[]): string[][] =>
 const transformCategoryPostFileArrayToPostContentArray = async (
     dirPostInfo: DirPostInfo[],
     compileToMDX: true | false = true
-): Promise<PostContent[]> => {
-    const postContentInfoArray = await Promise.all(
+): Promise<CategoryPostContent[]> => {
+    const CategoryPostContentArray = await Promise.all(
         dirPostInfo.map(async ({ category, categoryPostFileArray }) => {
-            const postContentArray = await Promise.all(
+            const postContentArray: PostContent[] = await Promise.all(
                 categoryPostFileArray.map(async (postFileName) => {
+                    const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
+                    const fileContent = await readFile(postContentPath, "utf-8")
+                    const { content, data } = matter(fileContent)
+
                     const postUrl = `/${category}/${removeFileFormat(
                         postFileName,
                         "mdx"
                     )}`
-                    const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
-
-                    const fileContent = await readFile(postContentPath, "utf-8")
-                    const { content, data: meta } = matter(fileContent)
-                    const postContent = compileToMDX
+                    const postMeta = { ...data, category, postUrl } as PostMeta
+                    const postSource = compileToMDX
                         ? await transformContentToMDXCompileSource(content)
                         : content
 
                     return {
-                        postMeta: {
-                            //* 인수를 지정, 인자 추정 가능
-                            title: meta?.title,
-                            preview: meta?.preview,
-                            update: meta?.update,
-                            author: meta?.author,
-                            color: meta?.color,
-                            category,
-                        },
-                        postContent,
-                        postUrl,
+                        postMeta,
+                        postSource,
                     }
                 })
             )
+
             return {
                 category,
-                contentsInfo: postContentArray,
+                postContentArray,
             }
         })
     )
-    return postContentInfoArray
+    return CategoryPostContentArray
 }
 
 /**
@@ -106,48 +104,93 @@ const transformCategoryPostFileArrayToPostContentArray = async (
  */
 const getCategoryPostContentArray = async (
     compileToMDX: true | false = true
-): Promise<PostContent[]> =>
+): Promise<CategoryPostContent[]> =>
     await await transformCategoryPostFileArrayToPostContentArray(
         await extractCategoryPostFileArray(await getPureCategoryName()),
         compileToMDX
     )
 
 /**
- * @note 특정 카테고리의 `PostContent`만을 가져오는 함수
- * @param categoryName 추출할 카테고리 이름
+ * @returns 모든 포스트의 url 배열 반환 `postUrl[]`
  */
-const getCategoryPostContent = async (
-    categoryName: string
-): Promise<PostContent> =>
-    (await getCategoryPostContentArray()).filter(
-        ({ category }) => category === categoryName
-    )[0]
+const getCategoryPostContentPathArray = async () =>
+    await (
+        await getCategoryPostContentArray(false)
+    ).flatMap(({ postContentArray }) =>
+        postContentArray.map(({ postMeta: { postUrl } }) => postUrl)
+    )
 
 /**
- * @note 각 포스트로 이동할 `PostMeta` 데이터 추출 반환
+ * @note 특정 포스트 정보를 가져오는 함수
+ * @param categoryName 추출할 카테고리 이름
+ * @param postTitle 추출할 포스트 이름
+ * @return `postMeta` `postSource` `postController`반환
+ */
+const getSpecificPostContent = async (
+    categoryName: string,
+    postTitle: string
+): Promise<SpecificPostContent> => {
+    const specificPostContent = (await getCategoryPostContentArray())
+        .filter(({ category }) => category === categoryName)[0]
+        .postContentArray.reduce<SpecificPostContent>(
+            (acc, curr, idx, totPost) => {
+                if (curr.postMeta.postUrl === `/${categoryName}/${postTitle}`) {
+                    const isFirst = idx === 0
+                    const prevPost = isFirst
+                        ? {
+                              title: "홈으로 돌아가기",
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx - 1].postMeta.title,
+                              postUrl: totPost[idx - 1].postMeta.postUrl,
+                          }
+
+                    const isLast = idx === totPost.length - 1
+                    const nextPost = isLast
+                        ? {
+                              title: `${categoryName}의 마지막 글이에요!`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx + 1].postMeta.title,
+                              postUrl: totPost[idx + 1].postMeta.postUrl,
+                          }
+
+                    const postController: PostController = {
+                        prevPost,
+                        nextPost,
+                    }
+                    const specificPostContent: SpecificPostContent = {
+                        ...curr,
+                        postController,
+                    }
+                    return specificPostContent
+                }
+                return acc
+            },
+            {} as SpecificPostContent
+        )
+    return specificPostContent
+}
+
+/**
+ * @note 각 포스트로 이동할 `PostMeta` 데이터 추출 반환, 날짜별로 정렬
  */
 const extractPostMeta = async (): Promise<PostMeta[]> =>
     (await getCategoryPostContentArray(false))
-        .flatMap(({ contentsInfo }) => contentsInfo)
-        .map(({ postMeta, postUrl }) => ({
-            ...postMeta,
-            postUrl,
-        }))
-
-const DEFAULT_POST_NUMBER = 5
-const getLatestPostMeta = async (
-    postSliceNumber: number = DEFAULT_POST_NUMBER
-): Promise<PostMeta[]> => {
-    const sortedByUpdateDate = (await extractPostMeta())
+        .flatMap(({ postContentArray }) => postContentArray)
+        .map(({ postMeta }) => postMeta)
         .sort(
             ({ update: currUpdateDate }, { update: nextUpdateDate }) =>
                 Number(nextUpdateDate.replaceAll("/", "")) -
                 Number(currUpdateDate.replaceAll("/", ""))
         )
-        .slice(0, postSliceNumber)
 
-    return sortedByUpdateDate
-}
+const DEFAULT_POST_NUMBER = 5
+const getLatestPostMeta = async (
+    postSliceNumber: number = DEFAULT_POST_NUMBER
+): Promise<PostMeta[]> => (await extractPostMeta()).slice(0, postSliceNumber)
 
 const getCategoryPostMeta = async (categoryName: string): Promise<PostMeta[]> =>
     (await extractPostMeta()).filter(
@@ -155,9 +198,11 @@ const getCategoryPostMeta = async (categoryName: string): Promise<PostMeta[]> =>
     )
 
 export {
-    //* post info
-    getCategoryPostContentArray,
+    //* post content
+    getSpecificPostContent,
     //* meta
     getLatestPostMeta,
     getCategoryPostMeta,
+    //* post url path array
+    getCategoryPostContentPathArray,
 }
