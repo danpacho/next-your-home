@@ -26,7 +26,7 @@ function AppParent({ Component, pageProps }: AppProps) {
 
             {/* //TODO: light dark mode toggling */}
             <ThemeProvider theme={lightTheme}>
-                <MainLayout>
+                <MainLayout {...pageProps}>
                     <RecoilRoot>
                         <Component {...pageProps} />
                     </RecoilRoot>

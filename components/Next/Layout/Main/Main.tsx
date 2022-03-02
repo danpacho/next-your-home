@@ -8,11 +8,10 @@ const MainLayout = styled.div`
     justify-content: center;
     flex-direction: column;
 
+    flex: 1;
     min-width: 100%;
 
-    padding: 2.5rem 0;
-
-    animation: ${animation.fadeIn} 1s ease-out;
+    animation: ${animation.fadeIn} 1.25s ease-out;
 `
 
 interface MainProp {
