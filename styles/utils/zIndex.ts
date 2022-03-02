@@ -1,11 +1,12 @@
 export type ZIndexes = typeof zIndexes
 
 const zIndexes = {
-    contnet: 10,
-    blurBackground: 50,
-    modalBackground: 100,
-    modal: 200,
-    toolTip: 500,
+    zBackground: -10,
+    zContnet: 10,
+    zBlurBackground: 50,
+    zModalBackground: 100,
+    zModal: 200,
+    zToolTip: 500,
 }
 
 export default zIndexes

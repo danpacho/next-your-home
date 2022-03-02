@@ -33,7 +33,7 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       ::-webkit-scrollbar {
-            width: 0;        
+            width: 0;
             height: 0.35rem;      
       }
 
