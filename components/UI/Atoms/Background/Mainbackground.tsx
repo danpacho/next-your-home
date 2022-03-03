@@ -1,34 +1,15 @@
 import { PageType } from "@/pages"
+import Image from "next/image"
 import styled from "styled-components"
 
-const MAIN_BACKGROUND_COLOR = {
-    light: {
-        from: "#FAFAFA",
-        to: "#F3ECDA",
-        strokeColor: "#EBEBEB",
-        strokeWidth: 1.25,
-    },
-    dark: {
-        from: "#FAFAFA",
-        to: "#F3ECDA",
-        strokeColor: "#EBEBEB",
-        strokeWidth: 1.25,
-    },
-}
-
-const switchTheme = (isLight: boolean) =>
-    isLight ? MAIN_BACKGROUND_COLOR.light : MAIN_BACKGROUND_COLOR.dark
-
-interface MainbackgroundProps extends BackgroundContainerStyle {}
-
-type BackgroundImgaeType = {
+type BackgroundImgaeURLType = {
     [type in PageType]: {
         light: string
         dark: string
     }
 }
 
-const BACKGROUND_IMAGE: BackgroundImgaeType = {
+const BACKGROUND_IMAGE_URL: BackgroundImgaeURLType = {
     Home: {
         light: "/assets/images/background/main/light.png",
         dark: "/assets/images/background/main/light.png",
@@ -43,28 +24,50 @@ const BACKGROUND_IMAGE: BackgroundImgaeType = {
     },
 }
 const getBackgroundimageURL = (pageType: PageType, isLight: boolean) =>
-    isLight ? BACKGROUND_IMAGE[pageType].light : BACKGROUND_IMAGE[pageType].dark
+    isLight
+        ? BACKGROUND_IMAGE_URL[pageType].light
+        : BACKGROUND_IMAGE_URL[pageType].dark
 
-interface BackgroundContainerStyle {
+const BackgrounContainerPosition = styled.div`
+    position: fixed;
+    top: 0;
+    right: 0;
+
+    width: 100%;
+    height: 100%;
+
+    z-index: ${(p) => p.theme.zBackground};
+    user-select: none;
+`
+
+const BackgroundContainer = styled.div`
+    position: relative;
+    width: inherit;
+    height: inherit;
+`
+
+const BackgroundImage = styled(Image)``
+
+interface MainbackgroundProps {
     pageType: PageType
     isLight: boolean
 }
-const BackgroundContainer = styled.div<BackgroundContainerStyle>`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-image: ${({ isLight, pageType }) =>
-        `url(${getBackgroundimageURL(pageType, isLight)})`};
-    z-index: ${(p) => p.theme.zBackground};
-`
-
 function MainBackground({ isLight, pageType }: MainbackgroundProps) {
-    return <BackgroundContainer pageType={pageType} isLight={isLight} />
+    return (
+        <BackgrounContainerPosition>
+            <BackgroundContainer>
+                <BackgroundImage
+                    src={getBackgroundimageURL(pageType, isLight)}
+                    layout="fill"
+                    priority
+                    objectFit="cover"
+                    objectPosition="center"
+                    quality={100}
+                    alt="background-image"
+                />
+            </BackgroundContainer>
+        </BackgrounContainerPosition>
+    )
 }
 
 export default MainBackground

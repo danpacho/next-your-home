@@ -1,17 +1,10 @@
-import MainBackground from "@/components/UI/Atoms/Background/Mainbackground"
-import { PageType } from "@/pages"
-import media from "@/styles/utils/media"
 import { ReactElement } from "react"
-
 import styled from "styled-components"
 
-import Footer from "./Footer/Footer"
+import media from "@/styles/utils/media"
+
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
-interface LayoutProp {
-    children: ReactElement
-    pageType: PageType
-}
 
 const Layout = styled.main`
     display: flex;
@@ -22,23 +15,22 @@ const Layout = styled.main`
     height: 100%;
     min-height: 100vh;
 
-    ${media.small} {
+    ${media.widePhone} {
         min-height: auto;
         height: auto;
         padding: 3.5rem 0;
     }
 `
+interface LayoutProp {
+    children: ReactElement
+}
 
-function MainLayout({ children, pageType }: LayoutProp) {
-    // const isLight = useThemeMode()
+function MainLayout({ children }: LayoutProp) {
     return (
-        <>
-            <Layout>
-                <NavBar />
-                <Main>{children}</Main>
-            </Layout>
-            <MainBackground pageType={pageType} isLight />
-        </>
+        <Layout>
+            <NavBar />
+            <Main>{children}</Main>
+        </Layout>
     )
 }
 
