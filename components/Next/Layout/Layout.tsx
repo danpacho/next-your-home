@@ -18,7 +18,7 @@ const Layout = styled.main`
     ${media.widePhone} {
         min-height: auto;
         height: auto;
-        padding: 3.5rem 0;
+        padding-top: 2rem;
     }
 `
 interface LayoutProp {
