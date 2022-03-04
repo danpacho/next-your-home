@@ -2,16 +2,16 @@ const mediaQuery = (maxWidth: number) => `
   @media (max-width: ${maxWidth}px)
 `
 
-export type MedialType = keyof typeof media
+export type MediaType = keyof typeof media
 
 const media = {
-    xxxlarge: mediaQuery(2200),
-    xxlarge: mediaQuery(1920),
-    xlarge: mediaQuery(1440),
-    large: mediaQuery(1200),
-    medium: mediaQuery(1024),
-    small: mediaQuery(768),
-    xsmall: mediaQuery(375),
+    wideScreen: mediaQuery(2200),
+    mediumScreen: mediaQuery(1920),
+    smallScreen: mediaQuery(1440),
+    wideTablet: mediaQuery(1200),
+    mediumTablet: mediaQuery(1024),
+    widePhone: mediaQuery(768),
+    mediumPhone: mediaQuery(375),
 
     custom: mediaQuery,
 }
