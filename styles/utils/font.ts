@@ -2,8 +2,8 @@ export type FontSize = typeof fontSize
 export type FontSizeType = keyof FontSize
 
 const fontSize = {
-    xsm: ".7rem",
-    sm: ".8rem",
+    xsm: ".75rem",
+    sm: ".85rem",
     md: "1rem",
     lg: "1.25rem",
     xlg: "1.5rem",
