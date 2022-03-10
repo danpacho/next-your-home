@@ -1,5 +1,6 @@
+import SvgLayersAlt from "@/components/UI/Atoms/Icons/LayersAlt"
 import media from "@/styles/utils/media"
-import { PostMeta } from "@/utils/types/main/meta"
+import { PostMetaType } from "@/utils/types/main/meta"
 import styled, { css } from "styled-components"
 
 const PostMetaTagContainer = styled.ul`
@@ -32,7 +33,7 @@ const postMetaTagStyle = {
 }
 
 interface PostMetaTagStyle {
-    type: keyof Omit<LatestPostMetaProps, "color">
+    type: keyof Omit<PostMetaProps, "color" | "tags" | "isCategoryPage">
     color: string
 }
 const PostMetaTag = styled.li<PostMetaTagStyle>`
@@ -58,20 +59,46 @@ const PostMetaTag = styled.li<PostMetaTagStyle>`
     }
 `
 
-interface LatestPostMetaProps
-    extends Pick<PostMeta, "category" | "author" | "update" | "color"> {}
+interface PostMetaProps
+    extends Pick<
+        PostMetaType,
+        "category" | "author" | "update" | "color" | "tags"
+    > {
+    isCategoryPage?: boolean
+}
 
-function LatestPostMeta({
+const LAST_TAG_ORDER = 1
+
+function PostMeta({
     author,
     category,
     update,
     color,
-}: LatestPostMetaProps) {
+    tags,
+    isCategoryPage,
+}: PostMetaProps) {
+    const isTagSizeOver = tags.length > 2
     return (
         <PostMetaTagContainer>
-            <PostMetaTag type="category" color={color}>
-                {category}
-            </PostMetaTag>
+            {isCategoryPage &&
+                tags.slice(0, 2).map((tag, order) => (
+                    <PostMetaTag
+                        key={tag}
+                        type={order === LAST_TAG_ORDER ? "update" : "category"}
+                        color={color}
+                    >
+                        {tag}
+                        {order === LAST_TAG_ORDER && isTagSizeOver && (
+                            <SvgLayersAlt fill={"white"} />
+                        )}
+                    </PostMetaTag>
+                ))}
+
+            {!isCategoryPage && (
+                <PostMetaTag type="category" color={color}>
+                    {category}
+                </PostMetaTag>
+            )}
             <PostMetaTag type="update" color={color}>
                 {update}
             </PostMetaTag>
@@ -82,4 +109,4 @@ function LatestPostMeta({
     )
 }
 
-export default LatestPostMeta
+export default PostMeta

@@ -41,13 +41,16 @@ const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
     border-right: 0.1rem solid ${({ color }) => `${color}${OPACITY.border}`};
     border-radius: 7rem 0.1rem 0.1rem 7rem;
 
-    background-color: ${(p) => p.theme.white};
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(15px);
 
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 
     &:hover {
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         border-color: ${({ color }) => `${color}${OPACITY.border}`};
+        background-color: ${(p) => p.theme.white};
+        backdrop-filter: none;
     }
 
     user-select: none;
@@ -56,6 +59,9 @@ const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
         height: ${ITEM_HEIGHT.widePhone}rem;
         padding: 1.5rem;
         border-right-width: 0.25rem;
+
+        background-color: ${(p) => p.theme.white};
+        backdrop-filter: none;
     }
 `
 const CategoryTextContainer = styled.div<CategoryLinkContainerStyle>`

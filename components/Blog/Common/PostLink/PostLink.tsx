@@ -4,14 +4,14 @@ import { useState } from "react"
 import styled, { css } from "styled-components"
 import media from "@/styles/utils/media"
 
-import { PostMeta } from "@/utils/types/main/meta"
+import { PostMetaType } from "@/utils/types/main/meta"
 
-import LatestPostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
-import LatestPostMeta from "./LatestPostMeta/LatestPostMeta"
+import PostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
+import PostMeta from "./PostMeta/PostMeta"
 import OrderText from "./OrderText/OrderText"
 
 const BORDER_WIDTH = "0.1rem"
-const latestPostLinkButtonStyle = {
+const postLinkContainerStyle = {
     first: (borderColor: string) => css`
         border-top-right-radius: ${(p) => p.theme.bxxxlg};
         border-left: ${BORDER_WIDTH} solid ${borderColor};
@@ -28,7 +28,7 @@ const latestPostLinkButtonStyle = {
     `,
 }
 
-interface LatestPostLinkButtonStyle {
+interface PostLinkContainerStyle {
     order: number
     color: string
     //* container 첫번째 | 마지막 요소 border~스타일 변경
@@ -36,7 +36,7 @@ interface LatestPostLinkButtonStyle {
     isLast?: boolean
 }
 
-const LatestPostLinkButton = styled.div<LatestPostLinkButtonStyle>`
+const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     transition: background-color, box-shadow ease-out 0.25s;
 
     display: flex;
@@ -51,18 +51,20 @@ const LatestPostLinkButton = styled.div<LatestPostLinkButtonStyle>`
     width: min(30rem, 85%);
     height: 8.75rem;
 
-    background-color: ${(p) => p.theme.white};
-    ${({ color }) => latestPostLinkButtonStyle.middle(color)};
+    background-color: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(5px);
+    ${({ color }) => postLinkContainerStyle.middle(color)};
 
-    ${({ isFirst, color }) =>
-        isFirst && latestPostLinkButtonStyle.first(color)};
+    ${({ isFirst, color }) => isFirst && postLinkContainerStyle.first(color)};
 
-    ${({ isLast, color }) => isLast && latestPostLinkButtonStyle.last(color)};
+    ${({ isLast, color }) => isLast && postLinkContainerStyle.last(color)};
 
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
     user-select: none;
 
     &:hover {
+        background-color: ${(p) => p.theme.white};
+        backdrop-filter: none;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     }
 
@@ -71,6 +73,9 @@ const LatestPostLinkButton = styled.div<LatestPostLinkButtonStyle>`
 
         gap: 0.5rem;
         padding: 0.5rem 1rem;
+
+        background-color: ${(p) => p.theme.white};
+        backdrop-filter: none;
 
         &:hover {
             box-shadow: none;
@@ -91,7 +96,7 @@ const ContentContainer = styled.div`
     }
 `
 
-const LatestPostPreview = styled.div`
+const PostPreview = styled.div`
     font-size: ${(p) => p.theme.sm};
     color: ${(p) => p.theme.gray5};
     font-weight: 200;
@@ -105,9 +110,11 @@ const LatestPostPreview = styled.div`
     }
 `
 
-interface LatestProps extends PostMeta, LatestPostLinkButtonStyle {}
+interface PostLinkProps extends PostMetaType, PostLinkContainerStyle {
+    isCategoryPage?: boolean
+}
 
-function LatestPostLink({
+function PostLink({
     order,
     preview,
     title,
@@ -115,13 +122,15 @@ function LatestPostLink({
     update,
     author,
     color,
+    tags,
     postUrl,
     isFirst,
     isLast,
-}: LatestProps) {
+    isCategoryPage,
+}: PostLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
     return (
-        <LatestPostLinkButton
+        <PostLinkContainer
             color={color}
             order={order}
             isFirst={isFirst}
@@ -133,7 +142,7 @@ function LatestPostLink({
         >
             <Link href={postUrl} passHref>
                 <ContentContainer>
-                    <LatestPostTitle
+                    <PostTitle
                         isHover={isHover}
                         fontColor="gray8"
                         fontSize="lg"
@@ -141,19 +150,21 @@ function LatestPostLink({
                         underscoreColor={color}
                     >
                         {title}
-                    </LatestPostTitle>
-                    <LatestPostPreview>{preview}</LatestPostPreview>
-                    <LatestPostMeta
+                    </PostTitle>
+                    <PostPreview>{preview}</PostPreview>
+                    <PostMeta
                         author={author}
                         category={category}
                         color={color}
                         update={update}
+                        tags={tags}
+                        isCategoryPage={isCategoryPage}
                     />
                 </ContentContainer>
             </Link>
             <OrderText order={order} color={color} isHover={isHover} />
-        </LatestPostLinkButton>
+        </PostLinkContainer>
     )
 }
 
-export default LatestPostLink
+export default PostLink
