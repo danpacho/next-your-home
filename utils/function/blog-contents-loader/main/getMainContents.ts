@@ -1,5 +1,3 @@
-import { getAllCategoryInfo } from "../category/getCategory"
-
 //TODO: 포스트 메타 업데이트
 export interface PostMeta {
     title: string
@@ -21,12 +19,12 @@ interface MainContent {
     }[]
 }
 
-const getMainContents = async (): Promise<MainContent> => {
-    const allCategoryInfo = await getAllCategoryInfo()
-    return {
-        categoryArray: allCategoryInfo,
-        latestPostArray: [],
-    }
-}
+// const getMainContents = async (): Promise<MainContent> => {
+//     const allCategoryInfo = await getAllCategoryInfo()
+//     return {
+//         categoryArray: allCategoryInfo,
+//         latestPostArray: [],
+//     }
+// }
 
-export { getMainContents }
+export {}

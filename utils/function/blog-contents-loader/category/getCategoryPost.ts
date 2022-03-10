@@ -1,22 +1,22 @@
 import {
     blogContentsDirectory,
     removeFileFormat,
-} from "../../common/commonUtils"
-import { getPureCategoryName } from "../getCategory"
+} from "../common/commonUtils"
+import { getPureCategoryName } from "./getCategory"
 
 import { readdirSync } from "fs"
 import { readFile } from "fs/promises"
 import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
 
-import { PostMeta } from "@utils/types/main/meta"
+import { PostMetaType } from "@/utils/types/main/postMeta"
 import {
     CategoryPostContent,
     PostContent,
     PostController,
     SpecificPostContent,
-} from "@utils/types/main/post"
-import { MDXCompiledSource } from "@utils/types/mdx/mdx"
+} from "@/utils/types/main/postContent"
+import { MDXCompiledSource } from "@/utils/types/md/md"
 
 const transformContentToMDXCompileSource = async (
     compileSource: string
@@ -55,6 +55,8 @@ const getCategoryPostName = (postInfo: DirPostInfo[]): string[] =>
     postInfo.flatMap(({ categoryPostFileArray: categoryPostArray }) =>
         categoryPostArray.map((fileName) => removeFileFormat(fileName, "mdx"))
     )
+const getTagArray = (tag: string): string[] =>
+    tag.split(",").map((tag) => tag.trim())
 
 /**
  * @param dirPostInfo `extractCategoryPostFileArray()`로 추출한 값을 입력 받아 가공하는 함수
@@ -77,7 +79,13 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                         postFileName,
                         "mdx"
                     )}`
-                    const postMeta = { ...data, category, postUrl } as PostMeta
+                    const postMeta = {
+                        ...data,
+                        tags: getTagArray(data?.tags),
+                        category,
+                        postUrl,
+                    } as PostMetaType
+
                     const postSource = compileToMDX
                         ? await transformContentToMDXCompileSource(content)
                         : content
@@ -177,7 +185,7 @@ const getSpecificPostContent = async (
 /**
  * @note 각 포스트로 이동할 `PostMeta` 데이터 추출 반환, 날짜별로 정렬
  */
-const extractPostMeta = async (): Promise<PostMeta[]> =>
+const extractPostMeta = async (): Promise<PostMetaType[]> =>
     (await getCategoryPostContentArray(false))
         .flatMap(({ postContentArray }) => postContentArray)
         .map(({ postMeta }) => postMeta)
@@ -190,9 +198,12 @@ const extractPostMeta = async (): Promise<PostMeta[]> =>
 const DEFAULT_POST_NUMBER = 5
 const getLatestPostMeta = async (
     postSliceNumber: number = DEFAULT_POST_NUMBER
-): Promise<PostMeta[]> => (await extractPostMeta()).slice(0, postSliceNumber)
+): Promise<PostMetaType[]> =>
+    (await extractPostMeta()).slice(0, postSliceNumber)
 
-const getCategoryPostMeta = async (categoryName: string): Promise<PostMeta[]> =>
+const getCategoryPostMeta = async (
+    categoryName: string
+): Promise<PostMetaType[]> =>
     (await extractPostMeta()).filter(
         ({ category }) => category === categoryName
     )

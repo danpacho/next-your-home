@@ -1,4 +1,4 @@
-import { CategoryInfo } from "@/utils/types/category/category"
+import { CategoryInfo } from "@/utils/types/category/categoryInfo"
 import { readdirSync } from "fs"
 import { readFile } from "fs/promises"
 import { addPathNotation, blogContentsDirectory } from "../common/commonUtils"
