@@ -1,5 +1,4 @@
 import { PageType } from "@/pages"
-import Image from "next/image"
 import styled from "styled-components"
 
 type BackgroundImgaeURLType = {
@@ -11,16 +10,16 @@ type BackgroundImgaeURLType = {
 
 const BACKGROUND_IMAGE_URL: BackgroundImgaeURLType = {
     Home: {
-        light: "/assets/images/background/main/light.png",
-        dark: "/assets/images/background/main/light.png",
+        light: "/assets/images/background/home/light.svg",
+        dark: "/assets/images/background/home/dark.svg",
     },
     Category: {
-        light: "/assets/images/background/category/light.png",
-        dark: "/assets/images/background/category/light.png",
+        light: "/assets/images/background/category/light.svg",
+        dark: "/assets/images/background/category/dark.svg",
     },
     Post: {
-        light: "/assets/images/background/post/light.png",
-        dark: "/assets/images/background/post/light.png",
+        light: "/assets/images/background/post/light.svg",
+        dark: "/assets/images/background/post/dark.svg",
     },
 }
 const getBackgroundimageURL = (pageType: PageType, isLight: boolean) =>
@@ -28,7 +27,7 @@ const getBackgroundimageURL = (pageType: PageType, isLight: boolean) =>
         ? BACKGROUND_IMAGE_URL[pageType].light
         : BACKGROUND_IMAGE_URL[pageType].dark
 
-const BackgrounContainerPosition = styled.div`
+const BackgrounSVG = styled.div<MainbackgroundProps>`
     position: fixed;
     top: 0;
     right: 0;
@@ -38,36 +37,20 @@ const BackgrounContainerPosition = styled.div`
 
     z-index: ${(p) => p.theme.zBackground};
     user-select: none;
-`
 
-const BackgroundContainer = styled.div`
-    position: relative;
-    width: inherit;
-    height: inherit;
+    background-image: ${({ isLight, pageType }) =>
+        `url(${getBackgroundimageURL(pageType, isLight)})`};
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 `
-
-const BackgroundImage = styled(Image)``
 
 interface MainbackgroundProps {
     pageType: PageType
     isLight: boolean
 }
 function MainBackground({ isLight, pageType }: MainbackgroundProps) {
-    return (
-        <BackgrounContainerPosition>
-            <BackgroundContainer>
-                <BackgroundImage
-                    src={getBackgroundimageURL(pageType, isLight)}
-                    layout="fill"
-                    priority
-                    objectFit="cover"
-                    objectPosition="center"
-                    quality={100}
-                    alt="background-image"
-                />
-            </BackgroundContainer>
-        </BackgrounContainerPosition>
-    )
+    return <BackgrounSVG isLight={isLight} pageType={pageType} />
 }
 
 export default MainBackground
