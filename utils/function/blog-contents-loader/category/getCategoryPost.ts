@@ -1,7 +1,4 @@
-import {
-    blogContentsDirectory,
-    removeFileFormat,
-} from "../common/commonUtils"
+import { blogContentsDirectory, removeFileFormat } from "../common/commonUtils"
 import { getPureCategoryName } from "./getCategory"
 
 import { readdirSync } from "fs"

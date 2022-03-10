@@ -3,7 +3,7 @@ import Link from "next/link"
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 
-import { CategoryInfo } from "@utils/types/category/category"
+import { CategoryInfo } from "@/utils/types/category/categoryInfo"
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 
 interface CategoryLinkContainerStyle {
