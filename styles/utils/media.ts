@@ -11,7 +11,7 @@ const media = {
     wideTablet: mediaQuery(1200),
     mediumTablet: mediaQuery(1024),
     widePhone: mediaQuery(768),
-    mediumPhone: mediaQuery(375),
+    mediumPhone: mediaQuery(374),
 
     custom: mediaQuery,
 }
