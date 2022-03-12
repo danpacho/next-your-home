@@ -1,40 +1,36 @@
 import { useEffect, useState } from "react"
-import { Meta } from "@utils/types/post/post"
 import styled from "styled-components"
 import animation from "@/styles/utils/animation"
 import { useFocusTitle } from "@/atoms/atoms"
 import media from "@/styles/utils/media"
+import { PostMetaType } from "@/utils/types/main/postMeta"
 
 const TOCPosition = styled.nav`
-    position: fixed;
-
-    top: 15%;
-    right: 5%;
-
     width: 200px;
+    min-width: max-content;
     height: fit-content;
 
-    z-index: 100;
+    z-index: ${(p) => p.theme.zContnet};
 
-    ${media.xlarge} {
-        visibility: hidden;
+    ${media.mediumTablet} {
+        display: none;
+    }
+
+    ${media.widePhone} {
     }
 `
 
 const TOCContainer = styled.ul`
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
     justify-content: center;
-
-    padding-left: 0.5rem;
+    flex-direction: column;
 `
 
 interface LinkStyle {
     isFocusing: boolean
 }
 
-const HeaderLinkCommon = styled.div<LinkStyle>`
+const HeaderLinkCommon = styled.li<LinkStyle>`
     width: 100%;
     padding: 0.75rem 0.25rem;
     border-left: 0.15rem solid ${(p) => p.theme.gray2};
@@ -49,40 +45,34 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
 `
 
 const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
-    transition: border-color,
-        border-width 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: border-color 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     font-weight: 700;
 
-    border-color: ${({ theme, isFocusing }) => isFocusing && theme.yellow3};
-    border-width: ${({ isFocusing }) => isFocusing && "0.25rem"};
+    border-color: ${({ theme, isFocusing }) => isFocusing && theme.teal6};
+    border-width: 0.25rem;
 
     height: ${(p) => (p.isFocusing ? "fit-content" : "1.25rem")};
     min-height: 1.25rem;
 
     &:hover {
-        border-color: ${(p) => p.theme.teal4};
-        border-width: 0.25rem;
-        background-color: ${(p) => p.theme.gray1};
+        border-color: ${(p) => p.theme.yellow6};
     }
 
     animation-delay: ${({ index }) => index * 85}ms;
 `
 
 const H2Link = styled(HeaderLinkCommon)`
-    transition: transform, border-color,
-        border-width 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     &:first-child {
         margin-top: 1.25rem;
     }
     margin-left: 1.25rem;
 
-    font-weight: 500;
-    color: ${(p) => p.theme.gray7};
+    color: ${(p) => p.theme.gray5};
 
     &:hover {
-        border-width: 0.25rem;
         border-color: ${(p) => p.theme.teal3};
         color: ${(p) => p.theme.trueDeepDark};
     }
@@ -93,9 +83,11 @@ const H2Link = styled(HeaderLinkCommon)`
 
     visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
 
-    ${media.xlarge} {
-        visibility: hidden;
+    ${media.mediumTablet} {
+        display: none;
     }
+
+    font-weight: 400;
 `
 
 interface HeaderInfoArray {
@@ -115,7 +107,7 @@ const TITLE_MAX_LENGTH = {
     h2: 15,
 }
 
-interface TableOfContentProp extends Pick<Meta, "title"> {}
+interface TableOfContentProp extends Pick<PostMetaType, "title"> {}
 
 function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
     const [focusTitle, _] = useFocusTitle()
@@ -215,7 +207,7 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                                 onClick={onClick}
                                 key={title}
                             >
-                                🍞
+                                🍞{" "}
                                 {sliceTextByMaxLength(
                                     title,
                                     TITLE_MAX_LENGTH.h1
@@ -232,7 +224,7 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                                                 onClick()
                                             }}
                                         >
-                                            🥛
+                                            🥛{" "}
                                             {sliceTextByMaxLength(
                                                 childTitle,
                                                 TITLE_MAX_LENGTH.h2
