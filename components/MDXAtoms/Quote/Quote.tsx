@@ -1,3 +1,5 @@
+import media from "@/styles/utils/media"
+import { shadow } from "@/styles/utils/shadow"
 import styled, {
     css,
     DefaultTheme,
@@ -12,8 +14,8 @@ interface QuoteStyles {
     default: StyleProperty
 }
 interface StyleProperty {
-    containerCss: () => FlattenInterpolation<ThemeProps<DefaultTheme>>
-    iconCss: () => FlattenInterpolation<ThemeProps<DefaultTheme>>
+    containerCss: FlattenInterpolation<ThemeProps<DefaultTheme>>
+    iconCss: FlattenInterpolation<ThemeProps<DefaultTheme>>
     icon: string
 }
 
@@ -21,21 +23,21 @@ type QuoteStyleType = keyof QuoteStyles
 
 const quoteStyles: QuoteStyles = {
     note: {
-        containerCss: () => css`
+        containerCss: css`
             border-color: ${(props) => props.theme.teal6};
         `,
-        iconCss: () => css`
+        iconCss: css`
             background-color: ${(props) => props.theme.teal2};
             border-color: ${(props) => props.theme.teal4};
         `,
-
+        // icon: "🖋",
         icon: "✒️",
     },
     warning: {
-        containerCss: () => css`
+        containerCss: css`
             border-color: ${(props) => props.theme.red4};
         `,
-        iconCss: () => css`
+        iconCss: css`
             background-color: ${(props) => props.theme.red1};
             border-color: ${(props) => props.theme.red3};
         `,
@@ -43,10 +45,10 @@ const quoteStyles: QuoteStyles = {
         icon: "🔥",
     },
     question: {
-        containerCss: () => css`
+        containerCss: css`
             border-color: ${(props) => props.theme.yellow6};
         `,
-        iconCss: () => css`
+        iconCss: css`
             background-color: ${(props) => props.theme.yellow2};
             border-color: ${(props) => props.theme.yellow4};
         `,
@@ -54,15 +56,16 @@ const quoteStyles: QuoteStyles = {
         icon: "🧐",
     },
     default: {
-        containerCss: () => css`
+        containerCss: css`
             border-color: ${(props) => props.theme.gray3};
         `,
-        iconCss: () => css`
+        iconCss: css`
             background-color: ${(props) => props.theme.gray1};
             border-color: ${(props) => props.theme.gray3};
         `,
 
-        icon: "🚩",
+        // icon: "🏷",
+        icon: "💡",
     },
 }
 
@@ -84,7 +87,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
     padding-right: 1rem;
 
     margin: 1rem 0;
-    background-color: ${(props) => props.theme.gray1};
+    background-color: ${(props) => props.theme.white};
 
     border-radius: 0 ${(props) => props.theme.bxxlg} 0 0;
 
@@ -92,8 +95,9 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
     border-bottom-width: 0.15rem;
     border-style: solid;
 
+    box-shadow: ${shadow.shadowSm};
+
     p {
-        font-size: ${(props) => props.theme.lg};
         font-weight: 500;
     }
 
@@ -117,6 +121,15 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp>`
     border-style: solid;
 
     ${({ type }) => quoteStyles[type]?.iconCss};
+
+    ${media.widePhone} {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-width: 0.15rem;
+        border-radius: ${(props) => props.theme.bmd};
+
+        font-size: ${(p) => p.theme.xlg};
+    }
 `
 
 interface QuoteProps {
@@ -126,13 +139,6 @@ interface QuoteProps {
         }
     }
 }
-
-// const QUOTE_TYPE = {
-//     NOTE: "note",
-//     WARNING: "warning",
-//     QUESTION: "question",
-//     DEFAULT: "default",
-// }
 
 const getTextQuoteType = (pureChildren: string): QuoteStyleType => {
     if (pureChildren.includes(":note")) return "note"

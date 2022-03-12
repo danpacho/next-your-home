@@ -38,7 +38,6 @@ const MDXAtoms: MDXProviderProps["components"] = {
 
     hr: Divider,
     // delete,
-    // table,
     // td,
     // th,
     // tr,

@@ -1,5 +1,6 @@
 import { useFocusTitle } from "@/atoms/atoms"
 import useElementObserver from "@/hooks/useElementObserver"
+import media from "@/styles/utils/media"
 import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
 
@@ -7,30 +8,46 @@ import { useCallback, useRef, useState } from "react"
 import styled from "styled-components"
 
 const H1Container = styled.div`
-    margin: 3rem 0 2rem 0;
+    margin: 0 0 2rem 0;
 `
 
 const H1Styled = styled.h1`
-    font-size: ${(props) => props.theme.title};
-    font-weight: 900;
+    font-size: ${(props) => props.theme.xxlg};
+    font-weight: 800;
 
-    padding: 1.25rem 0 0.35rem 0;
+    padding: 0.25rem 0 0.35rem 0;
 
     border-bottom: 0.35rem solid ${(props) => props.theme.teal5};
 
     width: fit-content;
+
+    ${media.widePhone} {
+        font-size: ${(p) => p.theme.lg};
+        font-weight: 700;
+        border-bottom: none;
+        padding-left: 0.5rem;
+        border-left: 0.25rem solid ${(props) => props.theme.teal5};
+    }
 `
 
 const H2Styled = styled.h2`
     font-size: ${(props) => props.theme.xlg};
-    font-weight: 700;
+    font-weight: 600;
     padding: 0.35rem 0;
+
+    ${media.widePhone} {
+        font-size: ${(p) => p.theme.md};
+    }
 `
 
 const H3Styled = styled.h3`
     font-size: ${(props) => props.theme.lg};
-    font-weight: 700;
+    font-weight: 600;
     margin-bottom: 1rem;
+
+    ${media.widePhone} {
+        font-size: ${(p) => p.theme.md};
+    }
 `
 
 const HEADER_UPDATE_CONSTANTS = {

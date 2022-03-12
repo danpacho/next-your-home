@@ -1,3 +1,4 @@
+import media from "@/styles/utils/media"
 import styled from "styled-components"
 
 const PreStyled = styled.pre`

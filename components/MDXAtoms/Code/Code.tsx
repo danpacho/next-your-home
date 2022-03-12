@@ -1,5 +1,5 @@
 import { useState } from "react"
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
@@ -11,12 +11,13 @@ import c from "react-syntax-highlighter/dist/cjs/languages/prism/c"
 import matlab from "react-syntax-highlighter/dist/cjs/languages/prism/matlab"
 import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash"
 
-import { nord } from "react-syntax-highlighter/dist/cjs/styles/prism"
+import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
 import Toast from "@/components/UX/Toast/Toast"
 import useClipboard from "@/hooks/useClipboard"
 
 import animation from "@/styles/utils/animation"
+import media from "@/styles/utils/media"
 
 SyntaxHighlighter.registerLanguage("tsx", tsx)
 SyntaxHighlighter.registerLanguage("javascript", javascript)
@@ -63,21 +64,42 @@ const CodeContentBox = styled.div`
     animation: ${animation.fadeIn} 0.15s ease-out;
 
     user-select: none;
+
+    ${media.widePhone} {
+        padding: 0.25rem;
+        font-size: ${(p) => p.theme.xsm};
+    }
 `
-
 const CodeBox = styled(SyntaxHighlighter)`
-    font-size: 0.9rem;
+    min-height: 4.25rem;
 
-    min-height: 4rem;
-
-    border: 0.1rem solid ${(props) => props.theme.gray6};
-    border-radius: ${(props) => props.theme.blg};
+    border-radius: ${(props) => props.theme.bmd};
 
     box-shadow: 0 10px 10px ${(props) => props.theme.gray4};
 
     user-select: none;
-
     overflow-x: auto;
+
+    background: ${(p) => p.theme.gray10} !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1.5rem !important;
+
+    ${media.widePhone} {
+        box-shadow: none;
+        border-width: 0;
+        border-radius: ${(p) => p.theme.bsm};
+    }
+
+    code {
+        background: ${(p) => p.theme.gray10} !important;
+        font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
+            monospace !important;
+
+        ${media.widePhone} {
+            font-size: ${(p) => p.theme.xsm} !important;
+        }
+    }
 `
 
 const CodeContainer = styled.div`
@@ -85,25 +107,17 @@ const CodeContainer = styled.div`
 
     width: 100%;
     min-width: 25rem;
+
+    ${media.widePhone} {
+        min-width: unset;
+    }
 `
 
 function Code({ children: code, className: language }: CodeProps) {
-    const fixedLanguage = language.replace("language-", "").toLowerCase()
+    const fixedLanguage = language?.replace("language-", "").toLowerCase()
     return (
         <CodeContainer>
-            <CodeBox
-                language={fixedLanguage}
-                style={nord}
-                customStyle={{
-                    fontWeight: 500,
-                    margin: 0,
-                    padding: "1rem 5rem 1rem 1.25rem",
-                    backgroundColor: "#0c1c2b",
-                    lineHight: "1.25rem",
-                    // fontSize: "1rem",
-                }}
-                useInlineStyles={true}
-            >
+            <CodeBox language={fixedLanguage} style={materialDark}>
                 {code}
             </CodeBox>
             <CodeContentBox>{fixedLanguage}</CodeContentBox>
@@ -142,6 +156,12 @@ const CodeCopyButton = styled.button`
     &:active {
         transform: scale(0.9);
     }
+
+    ${media.widePhone} {
+        padding: 0.75rem;
+        width: 1.25rem;
+        height: 1.25rem;
+    }
 `
 
 interface CopyContentProps {
@@ -150,11 +170,11 @@ interface CopyContentProps {
 
 const CopyInfo = {
     success: {
-        message: "Copied!😊",
-        left: 94,
+        message: "Copied!✂️",
+        left: 90,
     },
     fail: {
-        message: "Copy Failed🥲",
+        message: "Copy Failed❗️",
         left: 124,
     },
 }
@@ -174,7 +194,8 @@ function CopyContentBtn({ copyObject }: CopyContentProps) {
                     }
                 }}
             >
-                📝
+                {!isCopySuccess && "📝"}
+                {isCopySuccess && "✅"}
             </CodeCopyButton>
             <Toast
                 tooltipElement={

@@ -1,14 +1,14 @@
+import media from "@/styles/utils/media"
 import styled from "styled-components"
 
 const PStyled = styled.p`
-    margin: 1.5rem 0;
-    line-height: 1.9rem;
+    line-height: 1.75rem;
     font-size: ${(props) => props.theme.md};
-    font-weight: 500;
+    margin: 1.25rem 0;
+    color: ${(p) => p.theme.gray8};
 
-    ::selection {
-        background-color: ${(props) => props.theme.trueDeepDark};
-        color: ${(props) => props.theme.gray2};
+    ${media.widePhone} {
+        margin: 1rem 0;
     }
 `
 
