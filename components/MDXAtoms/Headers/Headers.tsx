@@ -17,7 +17,7 @@ const H1Styled = styled.h1`
 
     padding: 0.25rem 0 0.35rem 0;
 
-    border-bottom: 0.35rem solid ${(props) => props.theme.teal5};
+    border-bottom: 0.25rem solid ${(props) => props.theme.teal4};
 
     width: fit-content;
 
@@ -105,7 +105,7 @@ function H1(props: H1Props) {
                     />
                 }
                 right={-50}
-                bottom={7}
+                bottom={2.5}
                 isUnvisibleElementClickAbled={true}
             >
                 <H1Styled {...props} ref={ref} />

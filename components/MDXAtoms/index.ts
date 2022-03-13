@@ -12,6 +12,7 @@ import Code from "./Code/Code"
 import InlineCode from "./Code/InlineCode"
 import P from "./Text/P"
 import Pre from "./Code/Pre"
+import { Table, Td, Th, Tr } from "./Table/Table"
 
 const MDXAtoms: MDXProviderProps["components"] = {
     p: P,
@@ -37,10 +38,12 @@ const MDXAtoms: MDXProviderProps["components"] = {
     img: Image,
 
     hr: Divider,
-    // delete,
-    // td,
-    // th,
-    // tr,
+
+    table: Table,
+    th: Th,
+    td: Td,
+    tr: Tr,
+
     // thematicBreak,
     // wrapper,
 }
