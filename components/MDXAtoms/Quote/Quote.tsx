@@ -49,8 +49,8 @@ const quoteStyles: QuoteStyles = {
             border-color: ${(props) => props.theme.yellow6};
         `,
         iconCss: css`
-            background-color: ${(props) => props.theme.yellow2};
-            border-color: ${(props) => props.theme.yellow4};
+            background-color: ${(props) => props.theme.yellow1};
+            border-color: ${(props) => props.theme.yellow3};
         `,
 
         icon: "🧐",

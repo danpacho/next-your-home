@@ -1,81 +1,82 @@
-function MainLogo() {
-    return (
-        <svg width="45" height="45" viewBox="0 0 45 45" fill="none">
-            <g filter="url(#filter0_d_340_85)">
-                <path
-                    d="M18.4333 14.0591C11.9836 18.9146 10.6065 24.4924 10.893 27.2142L10.8936 27.2191C10.9262 27.5302 11.3843 31.9033 15.7918 32.7915C21.3324 33.9079 29.1164 29.8104 32.0867 24.1961C35.057 18.5818 34.2473 16.0949 33.0001 14.2432C31.6891 12.2967 26.4954 7.98966 18.4333 14.0591Z"
-                    fill="black"
-                />
-                <path
-                    d="M18.1339 13.6613C11.5658 18.606 10.0905 24.3456 10.398 27.2663L10.3984 27.2709C10.4171 27.4486 10.5482 28.6963 11.2638 30.0249C11.9871 31.3679 13.3136 32.7999 15.6935 33.2795C18.6121 33.8676 22.0621 33.0782 25.1352 31.4582C28.2132 29.8357 30.9849 27.3431 32.5267 24.4289C34.0316 21.5845 34.6089 19.4781 34.6228 17.8128C34.6368 16.1274 34.0732 14.9454 33.413 13.9651C32.6993 12.9054 30.9726 11.2538 28.3587 10.6597C25.719 10.0598 22.258 10.5565 18.1339 13.6613Z"
-                    stroke="#776350"
-                    strokeWidth="0.99567"
-                />
-            </g>
-            <path
-                d="M27.1774 13.2169C27.2706 13.561 26.0403 13.5324 24.7066 13.8936C23.3728 14.2548 22.1476 15.1271 22.0544 14.783C21.9612 14.4389 23.2599 13.6091 24.5937 13.2479C25.9274 12.8867 27.0842 12.8728 27.1774 13.2169Z"
-                fill="url(#paint0_linear_340_85)"
-            />
-            <path
-                d="M26.4885 13.2872C26.5148 13.4153 25.8653 13.4176 25.135 13.5672C24.4046 13.7167 23.6973 14.0569 23.6711 13.9288C23.6449 13.8007 24.3881 13.4757 25.1185 13.3261C25.8489 13.1765 26.4623 13.1591 26.4885 13.2872Z"
-                fill="#EDEDEA"
-            />
-            <path
-                d="M13.2906 29.1823C13.7758 29.0835 19.4049 27.0355 24.1255 22.5192C28.608 18.2306 30.348 14.0355 30.4173 13.5438"
-                stroke="#776350"
-                strokeWidth="0.99567"
-                strokeLinecap="round"
-            />
-            <defs>
-                <filter
-                    id="filter0_d_340_85"
-                    x="9.53029"
-                    y="9.60817"
-                    width="25.9224"
-                    height="24.6952"
-                    filterUnits="userSpaceOnUse"
-                    colorInterpolationFilters="sRGB"
-                >
-                    <feFlood floodOpacity="0" result="BackgroundImageFix" />
-                    <feColorMatrix
-                        in="SourceAlpha"
-                        type="matrix"
-                        values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-                        result="hardAlpha"
-                    />
-                    <feOffset />
-                    <feGaussianBlur stdDeviation="0.165945" />
-                    <feComposite in2="hardAlpha" operator="out" />
-                    <feColorMatrix
-                        type="matrix"
-                        values="0 0 0 0 0.929167 0 0 0 0 0.929167 0 0 0 0 0.929167 0 0 0 0.81 0"
-                    />
-                    <feBlend
-                        mode="normal"
-                        in2="BackgroundImageFix"
-                        result="effect1_dropShadow_340_85"
-                    />
-                    <feBlend
-                        mode="normal"
-                        in="SourceGraphic"
-                        in2="effect1_dropShadow_340_85"
-                        result="shape"
-                    />
-                </filter>
-                <linearGradient
-                    id="paint0_linear_340_85"
-                    x1="25.1354"
-                    y1="13.4126"
-                    x2="23.6606"
-                    y2="8.51212"
-                    gradientUnits="userSpaceOnUse"
-                >
-                    <stop stopColor="white" />
-                    <stop offset="1" stopColor="white" stopOpacity="0" />
-                </linearGradient>
-            </defs>
-        </svg>
-    )
-}
+import { SVGProps } from "react"
 
-export default MainLogo
+const SvgMainLogo = (props: SVGProps<SVGSVGElement>) => (
+    <svg
+        width="1em"
+        height="1em"
+        viewBox="0 0 391 394"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        {...props}
+    >
+        <g filter="url(#mainLogo_svg__a)">
+            <path
+                d="M134.476 77.165C37.31 150.314 16.563 234.345 20.88 275.35l.008.073c.49 4.687 7.393 70.57 73.793 83.95 83.47 16.819 200.738-44.911 245.486-129.492 44.748-84.58 32.55-122.046 13.761-149.942-19.751-29.325-97.995-94.211-219.452-2.774Z"
+                fill="#000"
+            />
+            <path
+                d="M129.965 71.173C31.015 145.665 8.789 232.134 13.421 276.135l.008.07v.001c.28 2.683 2.259 21.477 13.036 41.488C37.362 337.926 57.346 359.5 93.2 366.725c43.969 8.86 95.944-3.033 142.242-27.438 46.37-24.444 88.127-61.996 111.354-105.898 22.672-42.852 31.368-74.585 31.577-99.673.212-25.392-8.278-43.199-18.225-57.967-10.752-15.965-36.764-40.846-76.144-49.796-39.768-9.039-91.908-1.555-154.039 45.22Z"
+                stroke="#776350"
+                strokeWidth={15}
+            />
+        </g>
+        <path
+            d="M266.206 64.478c1.404 5.184-17.13 4.753-37.223 10.194-20.094 5.442-38.552 18.583-39.956 13.4-1.404-5.184 18.161-17.686 38.255-23.127 20.093-5.442 37.521-5.651 38.924-.467Z"
+            fill="url(#mainLogo_svg__b)"
+        />
+        <path
+            d="M255.829 65.536c.396 1.93-9.388 1.964-20.391 4.218-11.004 2.253-21.658 7.378-22.053 5.448-.396-1.93 10.802-6.827 21.805-9.08 11.004-2.254 20.244-2.516 20.639-.586Z"
+            fill="#EDEDEA"
+        />
+        <path
+            d="M57 305c7.309-1.488 92.113-32.341 163.23-100.382 67.53-64.608 93.743-127.808 94.788-135.216"
+            stroke="#776350"
+            strokeWidth={15}
+            strokeLinecap="round"
+        />
+        <defs>
+            <linearGradient
+                id="mainLogo_svg__b"
+                x1={235.443}
+                y1={67.426}
+                x2={213.225}
+                y2={-6.401}
+                gradientUnits="userSpaceOnUse"
+            >
+                <stop stopColor="#fff" />
+                <stop offset={1} stopColor="#fff" stopOpacity={0} />
+            </linearGradient>
+            <filter
+                id="mainLogo_svg__a"
+                x={0.35}
+                y={10.111}
+                width={390.527}
+                height={372.038}
+                filterUnits="userSpaceOnUse"
+                colorInterpolationFilters="sRGB"
+            >
+                <feFlood floodOpacity={0} result="BackgroundImageFix" />
+                <feColorMatrix
+                    in="SourceAlpha"
+                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                    result="hardAlpha"
+                />
+                <feOffset />
+                <feGaussianBlur stdDeviation={2.5} />
+                <feComposite in2="hardAlpha" operator="out" />
+                <feColorMatrix values="0 0 0 0 0.929167 0 0 0 0 0.929167 0 0 0 0 0.929167 0 0 0 0.81 0" />
+                <feBlend
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow_205_3"
+                />
+                <feBlend
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow_205_3"
+                    result="shape"
+                />
+            </filter>
+        </defs>
+    </svg>
+)
+
+export default SvgMainLogo
