@@ -1,10 +1,11 @@
 import { FontSizeType } from "@/styles/utils/font"
+import media from "@/styles/utils/media"
 import { PalleteType } from "@/styles/utils/pallete"
 import styled, { css } from "styled-components"
 interface UnderscoreTextStyle {
     isHover: boolean
 
-    underscoreColor: any | string
+    underscoreColor: string
     underscoreHeight?: number
     underscoreMargin?: number
     underscoreOpacity?: number
@@ -46,6 +47,11 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
                 transform: scaleX(1);
             }
         `}
+
+    ${media.widePhone} {
+        font-size: ${(p) => p.theme.md};
+        font-weight: 300;
+    }
 `
 
 interface UnderscoreTextProps extends UnderscoreTextStyle {

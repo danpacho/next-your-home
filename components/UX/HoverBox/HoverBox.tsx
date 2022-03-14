@@ -1,7 +1,5 @@
-import { MouseEvent, ReactElement, useRef, useState } from "react"
+import { MouseEvent, ReactElement, useCallback, useRef, useState } from "react"
 import styled from "styled-components"
-
-import { throttle } from "lodash-es"
 
 interface CoordinateBoxStyle {
     coordWidth: number
@@ -46,7 +44,7 @@ function HoverBox({
         }
     )
 
-    const onMouseMove = throttle(
+    const onMouseMove = useCallback(
         (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => {
             const { offsetX, offsetY } = e.nativeEvent
             // if (Math.abs(offsetX - hoverBoxContainerCoord.x) <= 25) return
@@ -55,7 +53,7 @@ function HoverBox({
             setHoverBoxContainerCoord({ x: offsetX, y: offsetY })
             console.log(offsetX, offsetY)
         },
-        1000
+        []
     )
 
     return (

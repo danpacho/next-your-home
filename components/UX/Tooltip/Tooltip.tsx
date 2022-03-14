@@ -1,10 +1,11 @@
+import media from "@/styles/utils/media"
 import React, { Dispatch, ReactElement, SetStateAction } from "react"
 import styled from "styled-components"
 
 const TooltipButtonArea = styled.div`
     position: relative;
 
-    width: max-content;
+    width: fit-content;
     height: max-content;
 
     display: flex;
@@ -27,14 +28,18 @@ const TooltipElement = styled.div<TooltipElementPostion>`
     left: ${({ left }) => left}px;
     right: ${({ right }) => right}px;
 
+    width: fit-content;
+    height: fit-content;
     min-width: 35px;
     min-height: 35px;
-    max-width: max-content;
-    max-height: max-content;
 
     display: flex;
     align-items: center;
     justify-content: center;
+
+    ${media.widePhone} {
+        display: none;
+    }
 `
 
 export interface TooltipProps extends TooltipElementPostion {
@@ -60,6 +65,8 @@ function Tooltip({
         <TooltipButtonArea
             onMouseEnter={() => setActive(true)}
             onMouseLeave={() => setActive(false)}
+            onTouchStart={() => setActive(true)}
+            onTouchEnd={() => setActive(false)}
         >
             {parentContent}
             <TooltipElement
