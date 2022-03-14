@@ -58,7 +58,7 @@ const getTagArray = (tag: string): string[] =>
 /**
  * @param dirPostInfo `extractCategoryPostFileArray()`로 추출한 값을 입력 받아 가공하는 함수
  * @param compileToMDX `.mdx` 파일 형식으로 컴파일 할 것인지, 선택형 인자
- * @returns 모든 카테고리의 콘텐츠를 `PostContent`형식으로 변환 한 후, 반환
+ * @returns 모든 카테고리의 콘텐츠를 `PostContent`형식으로 변환 한 후, 날짜 오름차순 정렬 후 반환
  */
 const transformCategoryPostFileArrayToPostContentArray = async (
     dirPostInfo: DirPostInfo[],
@@ -66,32 +66,44 @@ const transformCategoryPostFileArrayToPostContentArray = async (
 ): Promise<CategoryPostContent[]> => {
     const CategoryPostContentArray = await Promise.all(
         dirPostInfo.map(async ({ category, categoryPostFileArray }) => {
-            const postContentArray: PostContent[] = await Promise.all(
-                categoryPostFileArray.map(async (postFileName) => {
-                    const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
-                    const fileContent = await readFile(postContentPath, "utf-8")
-                    const { content, data } = matter(fileContent)
+            const postContentArray: PostContent[] = await (
+                await Promise.all(
+                    categoryPostFileArray.map(async (postFileName) => {
+                        const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
+                        const fileContent = await readFile(
+                            postContentPath,
+                            "utf-8"
+                        )
+                        const { content, data } = matter(fileContent)
 
-                    const postUrl = `/${category}/${removeFileFormat(
-                        postFileName,
-                        "mdx"
-                    )}`
-                    const postMeta = {
-                        ...data,
-                        tags: getTagArray(data?.tags),
-                        category,
-                        postUrl,
-                    } as PostMetaType
+                        const postUrl = `/${category}/${removeFileFormat(
+                            postFileName,
+                            "mdx"
+                        )}`
+                        const postMeta = {
+                            ...data,
+                            tags: getTagArray(data?.tags),
+                            category,
+                            postUrl,
+                        } as PostMetaType
 
-                    const postSource = compileToMDX
-                        ? await transformContentToMDXCompileSource(content)
-                        : content
+                        const postSource = compileToMDX
+                            ? await transformContentToMDXCompileSource(content)
+                            : content
 
-                    return {
-                        postMeta,
-                        postSource,
-                    }
-                })
+                        return {
+                            postMeta,
+                            postSource,
+                        }
+                    })
+                )
+            ).sort(
+                (
+                    { postMeta: { update: currUpdateDate } },
+                    { postMeta: { update: nextUpdateDate } }
+                ) =>
+                    Number(nextUpdateDate.replaceAll("/", "")) -
+                    Number(currUpdateDate.replaceAll("/", ""))
             )
 
             return {
@@ -135,11 +147,14 @@ const getSpecificPostContent = async (
     categoryName: string,
     postTitle: string
 ): Promise<SpecificPostContent> => {
-    const specificPostContent = (await getCategoryPostContentArray())
+    const specificCategoryPostContent = (await getCategoryPostContentArray())
         .filter(({ category }) => category === categoryName)[0]
         .postContentArray.reduce<SpecificPostContent>(
-            (acc, curr, idx, totPost) => {
-                if (curr.postMeta.postUrl === `/${categoryName}/${postTitle}`) {
+            (acc, currValue, idx, totPost) => {
+                if (
+                    currValue.postMeta.postUrl ===
+                    `/${categoryName}/${postTitle}`
+                ) {
                     const isFirst = idx === 0
                     const prevPost = isFirst
                         ? {
@@ -167,7 +182,7 @@ const getSpecificPostContent = async (
                         nextPost,
                     }
                     const specificPostContent: SpecificPostContent = {
-                        ...curr,
+                        ...currValue,
                         postController,
                     }
                     return specificPostContent
@@ -176,7 +191,7 @@ const getSpecificPostContent = async (
             },
             {} as SpecificPostContent
         )
-    return specificPostContent
+    return specificCategoryPostContent
 }
 
 /**
