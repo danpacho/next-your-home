@@ -1,18 +1,13 @@
 import { useState } from "react"
 import Link from "next/link"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { CategoryInfo } from "@/utils/types/category/categoryInfo"
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { CategoryInfo } from "@/utils/types/category/categoryInfo"
 
 interface CategoryLinkContainerStyle {
     color: string
-}
-
-const categoryLinkButtonStyle = {
-    even: () => css``,
-    odd: () => css``,
 }
 
 const OPACITY = {
@@ -85,15 +80,12 @@ const CategoryTextContainer = styled.div<CategoryLinkContainerStyle>`
     }
 `
 const CategoryText = styled.h1`
+    font-size: 2.65rem;
     color: ${(p) => p.theme.white};
     font-weight: 600;
-    font-size: 2.65rem;
-    margin-bottom: 0.5rem;
 
     ${media.widePhone} {
-        font-size: 2.25rem;
-        font-weight: 800;
-        margin-bottom: 0.35rem;
+        font-size: 2.35rem;
     }
 `
 const CategoryInfoContainer = styled.div`
@@ -132,6 +124,7 @@ function CategoryLink({
     category,
     description,
     categoryUrl,
+    emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
     return (
@@ -144,7 +137,7 @@ function CategoryLink({
             color={color}
         >
             <CategoryTextContainer color={color}>
-                <CategoryText>{category.slice(0, 2)}</CategoryText>
+                <CategoryText>{emoji ?? category.slice(0, 2)}</CategoryText>
             </CategoryTextContainer>
 
             <Link href={categoryUrl} passHref>
