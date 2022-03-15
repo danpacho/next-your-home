@@ -1,4 +1,4 @@
-import { PageType } from "@/pages"
+import { PageType } from "@/utils/types/pageType"
 import styled from "styled-components"
 
 type BackgroundImgaeURLType = {
@@ -20,6 +20,10 @@ const BACKGROUND_IMAGE_URL: BackgroundImgaeURLType = {
     Post: {
         light: "/assets/images/background/post/light.svg",
         dark: "/assets/images/background/post/dark.svg",
+    },
+    ErrorPage: {
+        light: "/assets/images/background/home/light.svg",
+        dark: "/assets/images/background/home/dark.svg",
     },
 }
 const getBackgroundimageURL = (pageType: PageType, isLight: boolean) =>

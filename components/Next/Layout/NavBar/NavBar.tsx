@@ -1,7 +1,8 @@
 import media from "@/styles/utils/media"
+import { shadow } from "@/styles/utils/shadow"
 import Link from "next/link"
 import styled from "styled-components"
-import MainLogo from "./MainLogo/MainLogo"
+import SvgMainLogo from "./MainLogo/MainLogo"
 
 const NavContainer = styled.nav`
     display: flex;
@@ -11,11 +12,23 @@ const NavContainer = styled.nav`
 
     width: 70%;
     height: 5rem;
-    cursor: pointer;
 
     ${media.widePhone} {
+        position: sticky;
+        top: 1rem;
+
         width: 85%;
         height: fit-content;
+
+        background-color: ${(p) => p.theme.white}7F;
+        backdrop-filter: blur(5px);
+
+        border: 0.15rem solid ${(p) => p.theme.primary3};
+        border-radius: ${(p) => p.theme.blg};
+
+        box-shadow: ${shadow.shadowSm};
+
+        z-index: ${(p) => p.theme.zContnet};
     }
 `
 
@@ -30,30 +43,40 @@ const LogoContainer = styled.div`
     ${media.widePhone} {
         gap: 0.35rem;
     }
+
+    cursor: pointer;
 `
 
-const LOGO_TEXT_COLOR = "#776350"
-
-const LogoTitle = styled.h1`
+const LogoTitle = styled.header`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
-    color: ${LOGO_TEXT_COLOR};
+    color: ${(p) => p.theme.primary1};
 
     ${media.widePhone} {
-        font-weight: 800;
+        font-weight: 700;
+    }
+`
+
+const MainLogo = styled(SvgMainLogo)`
+    width: 1.5rem;
+    height: 1.5rem;
+
+    ${media.widePhone} {
+        padding: 0.25rem;
+        margin-left: 0.25rem;
     }
 `
 
 function NavBar() {
     return (
-        <Link href="/" passHref>
-            <NavContainer>
+        <NavContainer>
+            <Link href="/" passHref>
                 <LogoContainer>
                     <MainLogo />
                     <LogoTitle>Danpacho</LogoTitle>
                 </LogoContainer>
-            </NavContainer>
-        </Link>
+            </Link>
+        </NavContainer>
     )
 }
 
