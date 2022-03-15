@@ -1,11 +1,21 @@
-# Components Directory ⭐
+# Components Directory 🗂
 
-> **A. MDX Components.** `./MD`
+> **O. Blog.** `./Blog`
 
 ```
-    -   MDXComponents: mdx core components
-    -   MDXComponents: export mdx components
+    -   blog util components
+    -   page base components
 ```
+
+---
+
+> **A. MDXAtom Components.** `./MDXAtoms`
+
+```
+    -   core mdx components
+```
+
+---
 
 > **B. Next Components.** `./Next`
 
@@ -14,6 +24,8 @@
     -   SEO: search engine optimize component
 ```
 
+---
+
 > **C. UI components.** `./UI`
 
 ```
@@ -21,6 +33,8 @@
     -   molecules: synthesis of root element
     -   structure: synthesis of molecules element
 ```
+
+---
 
 > **D. UX components.** `./UX`
 

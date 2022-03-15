@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import animation from "@/styles/utils/animation"
-import { useFocusTitle } from "@/atoms/atoms"
+import { useFocusTitle } from "@/lib/atoms"
 import media from "@/styles/utils/media"
 import { PostMetaType } from "@/utils/types/main/postMeta"
+import { sliceTextByMaxLength } from "@/utils/function/text"
 
 const TOCPosition = styled.nav`
     width: 200px;
@@ -30,10 +31,10 @@ interface LinkStyle {
     isFocusing: boolean
 }
 
-const HeaderLinkCommon = styled.li<LinkStyle>`
+const HeaderLinkCommon = styled.div<LinkStyle>`
     width: 100%;
     padding: 0.75rem 0.25rem;
-    border-left: 0.15rem solid ${(p) => p.theme.gray2};
+    border-left: 0.125rem solid ${(p) => p.theme.gray2};
 
     font-size: ${({ theme }) => theme.sm};
     text-decoration: none;
@@ -41,22 +42,25 @@ const HeaderLinkCommon = styled.li<LinkStyle>`
     animation: ${animation.pureZoomIn} 1.35s cubic-bezier(0.19, 1, 0.22, 1);
     transform-origin: left;
 
+    &:hover {
+        color: ${(p) => p.theme.primary1};
+    }
+
     cursor: pointer;
 `
 
 const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     transition: border-color 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    font-weight: 700;
+    font-weight: 500;
 
-    border-color: ${({ theme, isFocusing }) => isFocusing && theme.teal6};
-    border-width: 0.25rem;
+    border-color: ${({ theme, isFocusing }) => isFocusing && theme.primary1};
 
     height: ${(p) => (p.isFocusing ? "fit-content" : "1.25rem")};
     min-height: 1.25rem;
 
     &:hover {
-        border-color: ${(p) => p.theme.yellow6};
+        border-color: ${(p) => p.theme.primary3};
     }
 
     animation-delay: ${({ index }) => index * 85}ms;
@@ -73,8 +77,7 @@ const H2Link = styled(HeaderLinkCommon)`
     color: ${(p) => p.theme.gray5};
 
     &:hover {
-        border-color: ${(p) => p.theme.teal3};
-        color: ${(p) => p.theme.trueDeepDark};
+        border-color: ${(p) => p.theme.gray3};
     }
 
     transform-origin: left;
@@ -98,9 +101,6 @@ interface HeaderInfoArray {
         onClick: () => void
     }[]
 }
-
-const sliceTextByMaxLength = (text: string, max: number) =>
-    text.length <= max ? text : `${text.slice(0, max + 1)} ...`
 
 const TITLE_MAX_LENGTH = {
     h1: 16,
