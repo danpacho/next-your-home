@@ -1,17 +1,18 @@
 import CategoryLink from "@/components/Blog/Main/CategoryLink/CategoryLink"
-import LatestPostLink from "@/components/Blog/Main/LatestPostLink/LatestPostLink"
-import MainBackground from "@/components/UI/Atoms/Background/Mainbackground"
+import PostLink from "@/components/Blog/Common/PostLink/PostLink"
 import media from "@/styles/utils/media"
-import { getCategoryInfoArray } from "@/utils/function/blog-contents-loader/category/getCategory"
-import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/category/post/getCategoryPost"
-import { CategoryInfo } from "@/utils/types/category/category"
-import { PostMeta } from "@/utils/types/main/meta"
+
+import {
+    getCategoryInfoArray,
+    getCategoryInfoArrayByJson,
+} from "@/utils/function/blog-contents-loader/category/getCategory"
+import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/category/getCategoryPost"
+import { CategoryInfo } from "@/utils/types/category/categoryInfo"
+import { PostMetaType } from "@/utils/types/main/postMeta"
 import { GetStaticProps } from "next"
 import styled from "styled-components"
+import { PageType } from "@/utils/types/pageType"
 
-export type PageType = "Home" | "Category" | "Post"
-
-const CONTAINER_INFO_COLOR = "#776350"
 //* Main
 const MainPageContainer = styled.div`
     width: 70%;
@@ -56,7 +57,7 @@ const LatestPostLinkContainer = styled.div`
     justify-content: flex-start;
 
     width: 100%;
-    height: 35rem;
+    height: 32.5rem;
     overflow-y: scroll;
 
     gap: 1.75rem;
@@ -68,12 +69,12 @@ const LatestPostLinkContainer = styled.div`
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: ${CONTAINER_INFO_COLOR};
+        background-color: ${(p) => p.theme.primary1};
         border-radius: 0.2rem;
     }
 
     ::-webkit-scrollbar-track {
-        background: ${CONTAINER_INFO_COLOR}36;
+        background: ${(p) => p.theme.primary1}36;
         border-radius: 0.2rem;
     }
 
@@ -113,7 +114,8 @@ const CategoryLinkContainer = styled.div`
     justify-content: flex-start;
 
     width: 100%;
-    height: 35rem;
+    height: 32.5rem;
+
     overflow-y: scroll;
 
     gap: 1.75rem;
@@ -136,8 +138,8 @@ const CategoryLinkContainer = styled.div`
 const ContainerTitle = styled.div`
     font-size: ${(p) => p.theme.sm};
     font-weight: 400;
-    color: ${CONTAINER_INFO_COLOR};
-    background-color: ${CONTAINER_INFO_COLOR}36;
+    color: ${(p) => p.theme.primary1};
+    background-color: ${(p) => p.theme.primary1}36;
     border-radius: ${(p) => `0 0 ${p.theme.bsm} ${p.theme.bsm}`};
     padding: 0.15rem 0.35rem;
 
@@ -145,57 +147,55 @@ const ContainerTitle = styled.div`
 
     ${media.widePhone} {
         border-radius: ${(p) => `0 ${p.theme.bsm} ${p.theme.bsm} 0`};
-        border-left: 0.25rem solid ${CONTAINER_INFO_COLOR};
+        border-left: 0.25rem solid ${(p) => p.theme.primary1};
         margin-left: 5%;
     }
 `
-
 interface MainPageProps {
-    latestPostArray: PostMeta[]
+    latestPostArray: PostMetaType[]
     categoryInfoArray: CategoryInfo[]
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
     return (
-        <>
-            <MainPageContainer>
-                <CategoryContainer>
-                    <ContainerTitle>Category</ContainerTitle>
-                    <CategoryLinkContainer>
-                        {categoryInfoArray.map((categoryInfo) => (
-                            <CategoryLink
-                                {...categoryInfo}
-                                key={categoryInfo.category}
-                            />
-                        ))}
-                    </CategoryLinkContainer>
-                </CategoryContainer>
+        <MainPageContainer>
+            <CategoryContainer>
+                <ContainerTitle>Category</ContainerTitle>
+                <CategoryLinkContainer>
+                    {categoryInfoArray.map((categoryInfo) => (
+                        <CategoryLink
+                            {...categoryInfo}
+                            key={categoryInfo.category}
+                        />
+                    ))}
+                </CategoryLinkContainer>
+            </CategoryContainer>
 
-                <LatestPostContainer>
-                    <ContainerTitle>Latest Post</ContainerTitle>
-                    <LatestPostLinkContainer>
-                        {latestPostArray.map((latestPost, order) => (
-                            <LatestPostLink
-                                {...latestPost}
-                                order={order}
-                                isFirst={order === 0}
-                                isLast={order === latestPostArray.length - 1}
-                                key={latestPost.title}
-                            />
-                        ))}
-                    </LatestPostLinkContainer>
-                </LatestPostContainer>
-            </MainPageContainer>
-            <MainBackground pageType={"Home"} isLight={true} />
-        </>
+            <LatestPostContainer>
+                <ContainerTitle>Latest Post</ContainerTitle>
+                <LatestPostLinkContainer>
+                    {latestPostArray.map((latestPost, order) => (
+                        <PostLink
+                            {...latestPost}
+                            order={order}
+                            isFirst={order === 0}
+                            isLast={order === latestPostArray.length - 1}
+                            key={latestPost.title}
+                        />
+                    ))}
+                </LatestPostLinkContainer>
+            </LatestPostContainer>
+        </MainPageContainer>
     )
 }
 
+MainPage.displayName = "Home" as PageType
+
 export default MainPage
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
     const latestPostArray = await getLatestPostMeta()
-    const categoryInfoArray = await getCategoryInfoArray()
+    const categoryInfoArray = await getCategoryInfoArrayByJson()
     return {
         props: {
             latestPostArray,
