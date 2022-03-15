@@ -71,6 +71,11 @@ const pallete = {
     // green1: "#",
     // green1: "#",
     // green1: "#",
+
+    primary1: "#776350",
+    primary2: "#A68A68",
+    primary3: "#D9BD9C",
+    primary4: "#F2E2CE",
 }
 
 export default pallete

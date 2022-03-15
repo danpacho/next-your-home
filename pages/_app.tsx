@@ -9,9 +9,13 @@ import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { lightTheme } from "@styles/utils/CustomeTheme"
 
 import MainLayout from "@components/Next/Layout/Layout"
+
 import { RecoilRoot } from "recoil"
+import { PageType } from "@/utils/types/pageType"
 
 function AppParent({ Component, pageProps }: AppProps) {
+    const pageType = Component?.displayName as PageType
+
     return (
         <>
             <Head>
@@ -26,7 +30,7 @@ function AppParent({ Component, pageProps }: AppProps) {
 
             {/* //TODO: light dark mode toggling */}
             <ThemeProvider theme={lightTheme}>
-                <MainLayout {...pageProps}>
+                <MainLayout pageType={pageType}>
                     <RecoilRoot>
                         <Component {...pageProps} />
                     </RecoilRoot>
