@@ -1,6 +1,5 @@
 import { CategoryInfo } from "@/utils/types/category/categoryInfo"
-import { readdirSync } from "fs"
-import { readFile } from "fs/promises"
+import { readdirSync, readFileSync } from "fs"
 import { addPathNotation, blogContentsDirectory } from "../common/commonUtils"
 
 /**
@@ -17,23 +16,50 @@ const getCategoryPath = async (): Promise<string[]> => {
     ).map((path) => addPathNotation(path))
     return categoryPathArray
 }
-const DESCRIPTION_FILE_NAME = "description.txt"
-
+const DESCRIPTION_FILE_NAME = "description"
+const FILE_FORMAT = {
+    TXT: ".txt",
+    JSON: ".json",
+}
 /**
- * @returns 카테고리의 설명을 반환
+ * @returns 카테고리의 정보가 담긴 .txt파일의 내용을 반환
  */
 const readCategoryTXTFileArray = async (pureCategoryArray: string[]) => {
-    const descriptionArray = Promise.all(
-        pureCategoryArray.map(async (category) => {
-            const description = await readFile(
-                `${blogContentsDirectory}/${category}/${DESCRIPTION_FILE_NAME}`,
-                "utf-8"
-            )
-            return description.trim()
-        })
-    )
+    const descriptionArray = pureCategoryArray.map((category) => {
+        const description = readFileSync(
+            `${blogContentsDirectory}/${category}/${DESCRIPTION_FILE_NAME}${FILE_FORMAT.TXT}`,
+            "utf-8"
+        )
+        return description.trim()
+    })
+
     return descriptionArray
 }
+const readCategoryJSONFileArray = (
+    pureCategoryArray: string[]
+): CategoryInfo[] => {
+    const categoryInfoArray = pureCategoryArray.map((category) => {
+        const { description, color, emoji } = JSON.parse(
+            readFileSync(
+                `${blogContentsDirectory}/${category}/${DESCRIPTION_FILE_NAME}${FILE_FORMAT.JSON}`,
+                "utf-8"
+            )
+        ) as ExtractCategoryInfo
+
+        const categoryInfo = {
+            description,
+            color,
+            emoji,
+            category,
+            categoryUrl: `/${category}`,
+        }
+        return categoryInfo
+    })
+
+    return categoryInfoArray
+}
+const getCategoryInfoArrayByJson = async () =>
+    await readCategoryJSONFileArray(await getPureCategoryName())
 
 const EXTRACT_COLOR_REGEX = /color:/
 const EXTRACT_EMOJI_REGEX = /emoji:/
@@ -117,4 +143,9 @@ const getCategoryInfoArray = async (): Promise<CategoryInfo[]> => {
     return allCategoryInfo
 }
 
-export { getCategoryPath, getPureCategoryName, getCategoryInfoArray }
+export {
+    getCategoryPath,
+    getPureCategoryName,
+    getCategoryInfoArray,
+    getCategoryInfoArrayByJson,
+}

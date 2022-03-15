@@ -1,8 +1,7 @@
 import { blogContentsDirectory, removeFileFormat } from "../common/commonUtils"
 import { getPureCategoryName } from "./getCategory"
 
-import { readdirSync } from "fs"
-import { readFile } from "fs/promises"
+import { readdirSync, readFileSync } from "fs"
 import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
 
@@ -70,7 +69,7 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                 await Promise.all(
                     categoryPostFileArray.map(async (postFileName) => {
                         const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
-                        const fileContent = await readFile(
+                        const fileContent = readFileSync(
                             postContentPath,
                             "utf-8"
                         )
