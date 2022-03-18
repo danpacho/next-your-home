@@ -1,4 +1,4 @@
-export interface CategoryInfo {
+export interface CategoryInfoType {
     category: string
     description: string
     color: string

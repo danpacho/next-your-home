@@ -3,7 +3,7 @@ import styled from "styled-components"
 import animation from "@/styles/utils/animation"
 import { useFocusTitle } from "@/lib/atoms"
 import media from "@/styles/utils/media"
-import { PostMetaType } from "@/utils/types/main/postMeta"
+import { PostMetaType } from "@/types/post/meta"
 import { sliceTextByMaxLength } from "@/utils/function/text"
 
 const TOCPosition = styled.nav`

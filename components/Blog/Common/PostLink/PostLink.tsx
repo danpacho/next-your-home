@@ -4,7 +4,7 @@ import { useState } from "react"
 import styled, { css } from "styled-components"
 import media from "@/styles/utils/media"
 
-import { PostMetaType } from "@/utils/types/main/postMeta"
+import { PostMetaType } from "@/types/post/meta"
 
 import PostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
 import PostMeta from "./PostMeta/PostMeta"

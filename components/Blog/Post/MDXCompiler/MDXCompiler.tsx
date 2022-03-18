@@ -1,12 +1,12 @@
 import { MDXProvider } from "@mdx-js/react"
 import { MDXRemote } from "next-mdx-remote"
 
-import { MDXCompiledSource } from "@/utils/types/md/md"
+import { MDXCompiledSourceType } from "@/types/mdx"
 
 import MDXAtoms from "../../../MDXAtoms"
 
 interface MDXCompilerProp {
-    comiledSource: MDXCompiledSource
+    comiledSource: MDXCompiledSourceType
 }
 
 function MDXCompiler({ comiledSource }: MDXCompilerProp) {

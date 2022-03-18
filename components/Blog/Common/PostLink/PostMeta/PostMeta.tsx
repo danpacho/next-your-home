@@ -1,6 +1,6 @@
 import SvgLayersAlt from "@/components/UI/Atoms/Icons/LayersAlt"
 import media from "@/styles/utils/media"
-import { PostMetaType } from "@/utils/types/main/postMeta"
+import { PostMetaType } from "@/types/post/meta"
 import styled, { css } from "styled-components"
 
 const PostMetaTagContainer = styled.ul`

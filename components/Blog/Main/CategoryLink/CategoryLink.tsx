@@ -4,7 +4,7 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
-import { CategoryInfo } from "@/utils/types/category/categoryInfo"
+import { CategoryInfoType } from "@/types/category/info"
 
 interface CategoryLinkContainerStyle {
     color: string
@@ -118,7 +118,9 @@ const CategoryDescription = styled.div`
         line-height: 1rem;
     }
 `
-interface CategoryLinkProps extends CategoryLinkContainerStyle, CategoryInfo {}
+interface CategoryLinkProps
+    extends CategoryLinkContainerStyle,
+        CategoryInfoType {}
 function CategoryLink({
     color,
     category,

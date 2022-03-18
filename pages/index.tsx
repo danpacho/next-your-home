@@ -5,13 +5,13 @@ import media from "@/styles/utils/media"
 import {
     getCategoryInfoArray,
     getCategoryInfoArrayByJson,
-} from "@/utils/function/blog-contents-loader/category/getCategory"
-import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/category/getCategoryPost"
-import { CategoryInfo } from "@/utils/types/category/categoryInfo"
-import { PostMetaType } from "@/utils/types/main/postMeta"
+} from "@/utils/function/blog-contents-loader/contents/getCategory"
+import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
+import { CategoryInfoType } from "@/types/category/info"
+import { PostMetaType } from "@/types/post/meta"
 import { GetStaticProps } from "next"
 import styled from "styled-components"
-import { PageType } from "@/utils/types/pageType"
+import { PageType } from "@/types/page/type"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -153,7 +153,7 @@ const ContainerTitle = styled.div`
 `
 interface MainPageProps {
     latestPostArray: PostMetaType[]
-    categoryInfoArray: CategoryInfo[]
+    categoryInfoArray: CategoryInfoType[]
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {

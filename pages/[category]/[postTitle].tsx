@@ -12,10 +12,10 @@ import { shadow } from "@/styles/utils/shadow"
 import {
     getSpecificPostContent,
     getCategoryPostContentPathArray,
-} from "@/utils/function/blog-contents-loader/category/getCategoryPost"
-import { SpecificPostContent } from "@/utils/types/main/postContent"
-import { PostMetaType } from "@/utils/types/main/postMeta"
-import { PageType } from "@/utils/types/pageType"
+} from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
+import { SpecificPostContentType } from "@/types/post/content"
+import { PostMetaType } from "@/types/post/meta"
+import { PageType } from "@/types/page/type"
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
 import { ParsedUrlQuery } from "querystring"
@@ -81,7 +81,7 @@ const TableOfContentPositionContainer = styled.div`
     }
 `
 
-interface PostProps extends SpecificPostContent {}
+interface PostProps extends SpecificPostContentType {}
 function Post({ postController, postMeta, postSource }: PostProps) {
     return (
         <>

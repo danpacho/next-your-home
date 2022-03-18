@@ -1,4 +1,4 @@
-import { PostController as PostControllerPreviewProps } from "@/utils/types/main/postContent"
+import { PostControllerType as PostControllerPreviewProps } from "@/types/post/content"
 
 import SvgHome from "@/components/UI/Atoms/Icons/Home"
 import SvgNext from "@/components/UI/Atoms/Icons/Next"

@@ -1,5 +1,5 @@
 import { MDXRemoteSerializeResult } from "next-mdx-remote"
 
-export type MDXCompiledSource = MDXRemoteSerializeResult<
+export type MDXCompiledSourceType = MDXRemoteSerializeResult<
     Record<string, unknown>
 >
