@@ -5,7 +5,6 @@ export interface CategoryPostContentType {
     postContentArray: PostContentType[]
 }
 
-//TODO: 이전 포스트 다음 포스트 들어가야 한다.
 export interface PostContentType {
     postMeta: PostMetaType
     postSource: MDXCompiledSourceType | string

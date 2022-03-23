@@ -11,7 +11,7 @@ import { lightTheme } from "@styles/utils/CustomeTheme"
 import MainLayout from "@components/Next/Layout/Layout"
 
 import { RecoilRoot } from "recoil"
-import { PageType } from "@/utils/types/pageType"
+import { PageType } from "@/types/page/type"
 
 function AppParent({ Component, pageProps }: AppProps) {
     const pageType = Component?.displayName as PageType

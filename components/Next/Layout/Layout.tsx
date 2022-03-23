@@ -6,7 +6,7 @@ import media from "@/styles/utils/media"
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
 import MainBackground from "@/components/UI/Atoms/Background/Mainbackground"
-import { PageType } from "@/utils/types/pageType"
+import { PageType } from "@/types/page/type"
 
 const Layout = styled.main`
     display: flex;

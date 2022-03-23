@@ -4,16 +4,16 @@ import {
     getCategoryInfoArray,
     getCategoryInfoArrayByJson,
     getCategoryPath,
-} from "@/utils/function/blog-contents-loader/category/getCategory"
-import { getCategoryPostMeta } from "@/utils/function/blog-contents-loader/category/getCategoryPost"
+} from "@/utils/function/blog-contents-loader/contents/getCategory"
+import { getCategoryPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ParsedUrlQuery } from "querystring"
 import React, { useEffect, useState } from "react"
 import styled, { css } from "styled-components"
 import SvgFlagFill from "@/components/UI/Atoms/Icons/FlagFill"
 import SvgDelete from "@/components/UI/Atoms/Icons/Delete"
-import { PostMetaType } from "@/utils/types/main/postMeta"
-import { PageType } from "@/utils/types/pageType"
+import { PostMetaType } from "@/types/post/meta"
+import { PageType } from "@/types/page/type"
 
 interface CategoryProps {
     categoryPostArray: PostMetaType[]

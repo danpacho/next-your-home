@@ -10,7 +10,8 @@
             "@utils/*": ["utils/*"],
             "@api/*": ["api/*"],
             "@styles/*": ["styles/*"],
-            "@atoms/*": ["atoms/*"]
+            "@atoms/*": ["atoms/*"],
+            "@types/*": ["types/*"]
         },
         "importHelpers": true,
         "forceConsistentCasingInFileNames": true,

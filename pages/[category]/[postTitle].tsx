@@ -89,7 +89,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 <PostContainer>
                     <PostHeader {...postMeta} />
                     {typeof postSource !== "string" && (
-                        <MDXCompiler comiledSource={postSource} />
+                        <MDXCompiler serializedSource={postSource} />
                     )}
                     <PostInfo {...postMeta} />
                 </PostContainer>
@@ -343,10 +343,12 @@ interface ParamQuery extends ParsedUrlQuery {
 
 export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const { category, postTitle } = params as ParamQuery
+
     const specificPostContent = await getSpecificPostContent(
         category,
         postTitle
     )
+
     return {
         props: {
             ...specificPostContent,

@@ -1,4 +1,4 @@
-import { PageType } from "@/utils/types/pageType"
+import { PageType } from "@/types/page/type"
 import styled from "styled-components"
 
 type BackgroundImgaeURLType = {
