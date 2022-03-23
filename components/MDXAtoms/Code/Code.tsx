@@ -155,9 +155,10 @@ const makeMinToMaxNumberArray = ([min, max]: number[]) => {
     if (min > max)
         throw new BlogPropertyError({
             errorNameDescription: "code highlighter option Error",
-            propertyName:
-                "add(min, max) || remove(min, max) || hightlight(min, max)",
+            propertyName: "add || remove || hightlight",
             propertyType: "number",
+            propertyDescription:
+                " code block should be start with ```[language-name]add(min, max)remove(min, max)hightlight(min, max)",
             errorPropertyValue: String(min),
             customeErrorMessage:
                 "code highlight option's line START number is greater line END number",

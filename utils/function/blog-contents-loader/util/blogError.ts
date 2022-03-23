@@ -55,6 +55,7 @@ interface BlogPropertyErrorConstructorProps<CustomeProperty>
     > {
     propertyName: PropertyName<CustomeProperty>
     propertyType: PropertyType
+    propertyDescription?: string
     errorPropertyValue?: string
 }
 
@@ -64,6 +65,7 @@ class BlogPropertyError<CustomeProperty> extends BlogError {
         errorNameDescription,
         propertyName,
         propertyType,
+        propertyDescription,
         errorPropertyValue,
     }: BlogPropertyErrorConstructorProps<CustomeProperty>) {
         const makePropertyErrorMessage = (
@@ -71,9 +73,13 @@ class BlogPropertyError<CustomeProperty> extends BlogError {
             propertyType: PropertyType,
             errorPropertyValue?: string
         ) => {
+            const description =
+                propertyDescription ??
+                `required❗️, not empty ${propertyType}❗️`
+
             return `[${propertyName}] problem at: \n\n      ${propertyName}: ${String(
                 errorPropertyValue ?? propertyType
-            )} -> required❗️, not empty ${propertyType}❗️\n`
+            )} -> ${description}\n`
         }
 
         super({
