@@ -17,6 +17,7 @@ import {
     SpecificPostContentType,
 } from "@/types/post/content"
 import { MDXCompiledSourceType } from "@/types/mdx"
+
 import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
@@ -103,10 +104,6 @@ const getTagArray = (tags: string): string[] => {
         })
     else return tags.split(",").map((tag) => tag.trim())
 }
-const HEX_REGEX = /#\w{6}g/
-const RGBA_REGEX = /rgba?\(\s?\w{1,3}\s?\,\s?\w{1,3}\s?\,\s?\w{1,3}\s?\)g/
-const validateColorHex = (color: string) => HEX_REGEX.test(color)
-const validateColorRgba = (color: string) => RGBA_REGEX.test(color)
 
 /**
  * @param dirPostInfo `extractCategoryPostFileArray()`로 추출한 값을 입력 받아 가공하는 함수
@@ -153,19 +150,26 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                                 preview: data.preview,
                                 update: data.update,
                                 tags: getTagArray(data.tags),
-                                color: data.color,
+                                color: data.color.trim(),
                             } as PostMetaType
 
-                            const isColorValidate =
-                                validateColorHex(postMeta.color) ||
-                                validateColorRgba(postMeta.color)
+                            const HEX_REGEX =
+                                /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
+                            const RGBA_REGEX =
+                                /rgba?\(\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?(,\s*?([0].[0-9]+|.[0-9]+|[1])\s*?)?\)/g
 
+                            const isColorValidate =
+                                HEX_REGEX.test(postMeta.color) ||
+                                RGBA_REGEX.test(postMeta.color)
+
+                            //TODO: regex 변수를 함수 스코프 외부에서 선언시 정확히 테스트가 안됨, 접근이 불가능한 경우가 생기는것 같음
                             if (!isColorValidate)
                                 throw new BlogPropertyError({
-                                    errorNameDescription:
-                                        "color format Error: [ rgba(⚪️,⚪️,⚪️) or rgb(⚪️,⚪️,⚪️) or HEX ]",
+                                    errorNameDescription: "color format Error",
                                     propertyName: "color",
                                     propertyType: "string",
+                                    propertyDescription:
+                                        "should be rgba(⚪️,⚪️,⚪️,⚪️) or rgb(⚪️,⚪️,⚪️) or HEX ",
                                     errorPropertyValue: postMeta.color,
                                     customeErrorMessage:
                                         "[  ⬇️ post meta info ⬇️  ]",

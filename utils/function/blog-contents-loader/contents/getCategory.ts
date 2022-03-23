@@ -94,7 +94,8 @@ const NOT_FOUND = "NOT_FOUND"
 const extractCategoryDescriptionAndColorAndEmoji = (
     categoryTXTFile: string
 ): ExtractCategoryInfo => {
-    const isColor = (text: string) => text.includes("#")
+    const HEX_REGEX = /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
+    const isColor = (color: string) => HEX_REGEX.test(color)
     const isEmoji = (text: string) => EMOJI_REGEX.test(text)
 
     const [splitFirst, splitSecond] = categoryTXTFile.split(SPLIT_COLOR_REGEX)
@@ -143,7 +144,9 @@ const extractCategoryDescriptionAndColorAndEmoji = (
             emoji: NOT_FOUND,
         }
     )
-    const isColorError = categoryInfo.color === NOT_FOUND
+
+    const isColorError =
+        categoryInfo.color === NOT_FOUND || !isColor(categoryInfo.color)
     const isEmojiError = categoryInfo.emoji === NOT_FOUND
     const isDescriptionError =
         categoryInfo.description === NOT_FOUND ||
@@ -153,9 +156,11 @@ const extractCategoryDescriptionAndColorAndEmoji = (
         throw new BlogPropertyError({
             errorNameDescription:
                 "Error Occured while extracting category description [color]",
-            propertyName:
-                "color => should be HEX: #⚪️⚪️⚪️⚪️⚪️⚪️, if you activate useTXT config option",
+            propertyName: "color",
+            propertyDescription:
+                "should be HEX: #⚪️⚪️⚪️⚪️⚪️⚪️, if you activate useTXT config option",
             propertyType: "string",
+            errorPropertyValue: categoryInfo.color,
             customeErrorMessage: `Track file's description🔎: \n      ${categoryInfo.description}`,
         })
 
@@ -173,6 +178,7 @@ const extractCategoryDescriptionAndColorAndEmoji = (
             errorNameDescription:
                 "Error Occured while extracting category description [description]",
             propertyName: "description",
+            propertyDescription: categoryInfo.description,
             propertyType: "string",
             customeErrorMessage: `Track file's color🔎: ${categoryInfo.color}\n      file's emoji🔎: ${categoryInfo.emoji}`,
         })
@@ -223,7 +229,13 @@ const readCategoryJSONFileArray = async (
                     await readFile(descriptionFilePath, "utf-8")
                 ) as ExtractCategoryInfo
 
-                const isColorError = color === undefined || color === ""
+                const HEX_REGEX = /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
+                const RGBA_REGEX =
+                    /rgba?\(\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?(,\s*?([0].[0-9]+|.[0-9]+|[1])\s*?)?\)/g
+
+                const isColorError =
+                    !HEX_REGEX.test(color) && !RGBA_REGEX.test(color)
+
                 const isDescriptionError =
                     description === undefined || description === ""
                 const emojiExec = EMOJI_REGEX.exec(emoji)
@@ -233,9 +245,11 @@ const readCategoryJSONFileArray = async (
                     throw new BlogPropertyError({
                         errorNameDescription:
                             "Error Occured while extracting category description [color]",
-                        propertyName:
-                            "color => HEX: #⚪️⚪️⚪️⚪️⚪️⚪️ or rgba(⚪️,⚪️,⚪️)",
+                        propertyName: "color",
+                        propertyDescription:
+                            "should be HEX: #⚪️⚪️⚪️⚪️⚪️⚪️ or rgba(⚪️,⚪️,⚪️,⚪️) or rgb(⚪️,⚪️,⚪️) ",
                         propertyType: "string",
+                        errorPropertyValue: color,
                         customeErrorMessage: `Track file's c🔎: \n      ${descriptionFilePath}`,
                     })
 
@@ -245,6 +259,7 @@ const readCategoryJSONFileArray = async (
                             "Error Occured while extracting category description [description]",
                         propertyName: "description",
                         propertyType: "string",
+                        propertyDescription: description,
                         customeErrorMessage: `Track file's description🔎: \n      ${descriptionFilePath}`,
                     })
 
