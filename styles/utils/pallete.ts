@@ -55,6 +55,7 @@ const pallete = {
     teal9: "#099268",
     teal10: "#087F5B",
 
+    //* 노란색
     yellow1: "#FFFDD0",
     yellow2: "#FCF4A3",
     yellow3: "#F8E473",
@@ -63,15 +64,20 @@ const pallete = {
     yellow6: "#FFD300",
     yellow7: "#FFC30B",
     yellow8: "#F9A602",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
-    // green1: "#",
 
+    //* 보라색
+    purple1: "#f5f3ff",
+    purple2: "#ede9fe",
+    purple3: "#ddd6fe",
+    purple4: "#c4b5fd",
+    purple5: "#a78bfa",
+    purple6: "#8b5cf6",
+    purple7: "#7c3aed",
+    purple8: "#6d28d9",
+    purple9: "#5b21b6",
+    purple10: "#4c1d95",
+
+    //* 유저 주요색
     primary1: "#776350",
     primary2: "#A68A68",
     primary3: "#D9BD9C",

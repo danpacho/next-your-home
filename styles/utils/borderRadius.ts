@@ -2,6 +2,7 @@ export type BorderRadius = typeof borderRadius
 export type BorderRadiusType = keyof BorderRadius
 
 const borderRadius = {
+    bxxsm: ".1rem",
     bxsm: ".15rem",
     bsm: ".25rem",
     bmd: ".35rem",
