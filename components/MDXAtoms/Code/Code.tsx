@@ -1,5 +1,5 @@
 import { useState } from "react"
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
@@ -10,6 +10,7 @@ import python from "react-syntax-highlighter/dist/cjs/languages/prism/python"
 import c from "react-syntax-highlighter/dist/cjs/languages/prism/c"
 import matlab from "react-syntax-highlighter/dist/cjs/languages/prism/matlab"
 import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash"
+import css from "react-syntax-highlighter/dist/cjs/languages/prism/css"
 
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
 
@@ -18,18 +19,34 @@ import useClipboard from "@/hooks/useClipboard"
 
 import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
+import pallete from "@/styles/utils/pallete"
+import borderRadius from "@/styles/utils/borderRadius"
+import { BlogPropertyError } from "@/utils/function/blog-contents-loader/util/blogError"
 
-SyntaxHighlighter.registerLanguage("tsx", tsx)
-SyntaxHighlighter.registerLanguage("javascript", javascript)
-SyntaxHighlighter.registerLanguage("typescript", typescript)
-SyntaxHighlighter.registerLanguage("python", python)
-SyntaxHighlighter.registerLanguage("c", c)
-SyntaxHighlighter.registerLanguage("matlab", matlab)
-SyntaxHighlighter.registerLanguage("bash", bash)
+const SUPPORTED_LANGUAGE = {
+    javascript: ["javascript", "js"],
+    typescript: ["typescript", "ts"],
+    tsx: "tsx",
+    python: "python",
+    c: "c",
+    matlab: "matlab",
+    bash: "bash",
+    css: "css",
+}
+const SUPPORTED_LANGUAGE_TYPE = Object.values(SUPPORTED_LANGUAGE).flat()
+
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.tsx, tsx)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.javascript[0], javascript)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.typescript[0], typescript)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.python, python)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.c, c)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.matlab, matlab)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.bash, bash)
+SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.css, css)
 
 interface CodeProps {
     children: string
-    className: string
+    className?: string
 }
 
 const CodeContentBox = styled.div`
@@ -46,7 +63,8 @@ const CodeContentBox = styled.div`
     height: fit-content;
     padding: 0.25rem 0.5rem;
 
-    background-color: transparent;
+    background-color: ${(p) => p.theme.gray10};
+
     border: 0.15rem solid ${(props) => props.theme.blue8};
 
     border-radius: ${(props) => props.theme.bsm};
@@ -100,6 +118,10 @@ const CodeBox = styled(SyntaxHighlighter)`
             font-size: ${(p) => p.theme.xsm} !important;
         }
     }
+
+    .linenumber {
+        display: none !important;
+    }
 `
 
 const CodeContainer = styled.div`
@@ -113,14 +135,142 @@ const CodeContainer = styled.div`
     }
 `
 
-function Code({ children: code, className: language }: CodeProps) {
-    const fixedLanguage = language?.replace("language-", "").toLowerCase()
+interface CodeOption {
+    add?: number[]
+    remove?: number[]
+    hightlight?: number[]
+}
+interface CodeInfo {
+    language: string
+    option?: CodeOption
+}
+
+const WRAP_TYPE: Array<"add" | "remove" | "hightlight" | string> = [
+    "add",
+    "remove",
+    "hightlight",
+]
+
+const makeMinToMaxNumberArray = ([min, max]: number[]) => {
+    if (min > max)
+        throw new BlogPropertyError({
+            errorNameDescription: "code highlighter option Error",
+            propertyName:
+                "add(min, max) || remove(min, max) || hightlight(min, max)",
+            propertyType: "number",
+            errorPropertyValue: String(min),
+            customeErrorMessage:
+                "code highlight option's line START number is greater line END number",
+        })
+    return Array.from({ length: max - min + 1 }, (_, idx) => idx + min)
+}
+
+const extractLanguageAndOption = (classNameLanguage: string): CodeInfo => {
+    const fixedLanguage = classNameLanguage
+        .replace("language-", "")
+        .toLowerCase()
+
+    const isOptionIncluded = fixedLanguage.includes(":")
+    if (!isOptionIncluded)
+        return {
+            language: fixedLanguage,
+        }
+
+    const [language, pureOption] = fixedLanguage.split(":")
+    const option: CodeOption = pureOption
+        .split(")")
+        .map((elem) => elem.split("("))
+        .reduce<CodeOption>((acc, curr) => {
+            const [optionKey, optionVal] = curr
+            const trimedKey = optionKey.trim()
+            if (WRAP_TYPE.includes(trimedKey)) {
+                return {
+                    ...acc,
+                    [trimedKey]: makeMinToMaxNumberArray(
+                        optionVal.split(",").map((_) => Number(_))
+                    ),
+                }
+            } else {
+                //TODO: code error 타입 작성하기
+                // throw blogError("Option Error Occured!", `${trimedKey}`)
+                return acc
+            }
+        }, {})
+
+    return {
+        language,
+        option,
+    }
+}
+
+const colorCode = (lineNumber: number, option?: CodeOption) => {
+    const commonLineStyle = {
+        display: "block",
+        backgroundColor: "transparent",
+        margin: ".1rem 0",
+        paddingLeft: ".5rem",
+        borderLeft: "solid .25rem",
+        borderLeftColor: "transparent",
+        borderRadius: `${borderRadius.bxxsm}`,
+    }
+    if (option?.hightlight?.includes(lineNumber)) {
+        commonLineStyle.backgroundColor = `${pallete.teal6}19`
+        commonLineStyle.borderLeftColor = `${pallete.teal6}66`
+        return { style: commonLineStyle }
+    }
+    if (option?.remove?.includes(lineNumber)) {
+        commonLineStyle.backgroundColor = `${pallete.red5}19`
+        commonLineStyle.borderLeftColor = `${pallete.red5}66`
+        return { style: commonLineStyle }
+    }
+    if (option?.add?.includes(lineNumber)) {
+        commonLineStyle.backgroundColor = `${pallete.blue5}19`
+        commonLineStyle.borderLeftColor = `${pallete.blue5}66`
+        return { style: commonLineStyle }
+    }
+    return {}
+}
+
+const InlineCode = styled.code`
+    padding: 0.1rem 0.15rem;
+    margin: 0 0.25rem;
+
+    color: ${(p) => p.theme.red5};
+    font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
+        monospace;
+    font-weight: 600;
+    font-size: ${(p) => p.theme.sm};
+
+    border-radius: ${(props) => props.theme.bxsm};
+    border: 1.25px solid ${(p) => p.theme.gray3};
+
+    background-color: ${(p) => p.theme.gray1};
+`
+
+function Code({ children: code, className: classNameLanguage }: CodeProps) {
+    if (!classNameLanguage) return <InlineCode>{code}</InlineCode>
+
+    const fixedLanguage = classNameLanguage
+        .replace("language-", "")
+        .toLowerCase()
+
+    const { language, option } = extractLanguageAndOption(fixedLanguage)
+    const languageError = !SUPPORTED_LANGUAGE_TYPE.includes(language)
+
     return (
         <CodeContainer>
-            <CodeBox language={fixedLanguage} style={materialDark}>
+            <CodeBox
+                language={language}
+                style={materialDark}
+                showLineNumbers
+                wrapLines
+                lineProps={(lineNumbers: number) =>
+                    colorCode(lineNumbers, option)
+                }
+            >
                 {code}
             </CodeBox>
-            <CodeContentBox>{fixedLanguage}</CodeContentBox>
+            <CodeContentBox>{language}</CodeContentBox>
             <CopyContentBtn copyObject={code} />
         </CodeContainer>
     )
@@ -143,6 +293,8 @@ const CodeCopyButton = styled.button`
     font-size: ${(props) => props.theme.sm};
     font-weight: 700;
     color: ${(props) => props.theme.teal6};
+
+    background-color: ${(p) => p.theme.gray10};
 
     border-radius: ${(props) => props.theme.bsm};
     border: 0.15rem solid ${(props) => props.theme.blue8};

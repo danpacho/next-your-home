@@ -1,5 +1,6 @@
 import media from "@/styles/utils/media"
 import { shadow } from "@/styles/utils/shadow"
+import { ReactNode } from "react"
 import styled, {
     css,
     DefaultTheme,
@@ -133,68 +134,87 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp>`
 `
 
 interface QuoteProps {
-    children: {
-        props: {
-            children: string | string[]
-        }
-    }
+    children: [
+        divider: "\n",
+        quoteContent: {
+            props: {
+                children: string[] | string
+            }
+        },
+        divider: "\n"
+    ]
 }
 
-const getTextQuoteType = (pureChildren: string): QuoteStyleType => {
-    if (pureChildren.includes(":note")) return "note"
-    if (pureChildren.includes(":warning")) return "warning"
-    if (pureChildren.includes(":question")) return "question"
+const getTextQuoteType = (lastQuoteString: string): QuoteStyleType => {
+    if (lastQuoteString.includes(":note")) return "note"
+    if (lastQuoteString.includes(":warning")) return "warning"
+    if (lastQuoteString.includes(":question")) return "question"
     return "default"
 }
 
-//* 마지막 요소만 검사
-const getArrayQuoteType = (pureChildren: any[]): QuoteStyleType =>
-    getTextQuoteType(pureChildren[pureChildren.length - 1])
-
-const getQuoteType = (pureChildren: string | string[]): QuoteStyleType => {
-    if (typeof pureChildren === "string") return getTextQuoteType(pureChildren)
-    else return getArrayQuoteType(pureChildren)
-}
+//* 마지막 요소 검사
+const getQuoteType = (quoteContent: string[] | string): QuoteStyleType =>
+    typeof quoteContent === "string"
+        ? getTextQuoteType(quoteContent)
+        : getTextQuoteType(quoteContent[quoteContent.length - 1])
 
 const getQuoteProp = (
     type: QuoteStyleType,
-    pureChildren: string | string[]
-) => {
-    if (typeof pureChildren === "string")
-        return pureChildren.replace(`:${type}`, "")
+    quoteContent: QuoteProps
+): QuoteProps => {
+    const modifiChildren = quoteContent.children[1].props.children
+    const isChildrenString = typeof modifiChildren === "string"
 
-    const childRength = pureChildren.length
+    if (isChildrenString)
+        return {
+            children: [
+                quoteContent.children[0],
+                {
+                    ...quoteContent.children[1],
+                    props: {
+                        children: modifiChildren.replace(`:${type}`, ""),
+                    },
+                },
+                quoteContent.children[2],
+            ],
+        }
 
-    const frontModifiedChildren = pureChildren.slice(0, childRength - 1)
-    const backModifiedChildren = pureChildren
-        .slice(childRength - 1, childRength)[0]
-        .replace(`:${type}`, "")
+    //* last element
+    const modifyObjectLocation = modifiChildren.length - 1
+    const modifieLastdChildren = modifiChildren[modifyObjectLocation].replace(
+        `:${type}`,
+        ""
+    )
 
-    return [frontModifiedChildren, backModifiedChildren]
+    const modifiedChildren = modifiChildren
+        .slice(0, modifyObjectLocation)
+        .concat(modifieLastdChildren)
+
+    return {
+        children: [
+            quoteContent.children[0],
+            {
+                ...quoteContent.children[1],
+                props: {
+                    children: modifiedChildren,
+                },
+            },
+            quoteContent.children[2],
+        ],
+    }
 }
 
 function Quote(props: QuoteProps) {
-    const pureChildren = props.children.props.children
-
-    const quoteType = getQuoteType(pureChildren)
-    const fixedProps = getQuoteProp(quoteType, pureChildren)
-
-    const modifiedChildren = {
-        children: {
-            ...props.children,
-            props: {
-                ...props.children.props,
-                children: fixedProps,
-            },
-        },
-    }
+    const lastChildren = props.children[1].props.children as string | string[]
+    const quoteType = getQuoteType(lastChildren)
+    const fixedProps = getQuoteProp(quoteType, props)
 
     return (
         <QuoteStyled type={quoteType}>
             <QuoteIcon type={quoteType}>
                 {quoteStyles[quoteType].icon}
             </QuoteIcon>
-            <p {...modifiedChildren} />
+            <div {...fixedProps} />
         </QuoteStyled>
     )
 }

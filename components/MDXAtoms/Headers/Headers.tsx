@@ -6,6 +6,7 @@ import Tooltip from "@components/UX/Tooltip/Tooltip"
 
 import { useCallback, useRef, useState } from "react"
 import styled from "styled-components"
+import { MDXComponents } from "mdx/types"
 
 const H1Container = styled.div`
     margin: 0 0 2rem 0;
@@ -59,7 +60,8 @@ const HEADER_UPDATE_CONSTANTS = {
 interface H1Props {
     children: string
 }
-function H1(props: H1Props) {
+
+const H1 = (props: H1Props) => {
     const [_, setFocustitle] = useFocusTitle()
     const [active, setActive] = useState(false)
 
@@ -114,11 +116,11 @@ function H1(props: H1Props) {
     )
 }
 
-function H2(props: any) {
+const H2 = (props: any) => {
     return <H2Styled {...props} />
 }
 
-function H3(props: any) {
+const H3 = (props: any) => {
     return <H3Styled {...props} />
 }
 
