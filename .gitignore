@@ -41,3 +41,6 @@ yarn-error.log*
 
 # Env
 .env
+
+# User setting
+.vscode
