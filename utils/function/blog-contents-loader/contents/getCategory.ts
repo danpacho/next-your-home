@@ -5,12 +5,13 @@ import { CategoryInfoType } from "@/types/category/info"
 import {
     addPathNotation,
     blogContentsDirectory,
-} from "@utils/function/blog-contents-loader/util/blogUtilFunction"
+    getValidateColor,
+} from "@/utils/function/blog-contents-loader/util"
 import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
     BlogPropertyError,
-} from "../util/blogError"
+} from "../../blog-error-handler/blogError"
 
 /**
  * @returns 카테고리의 이름(파일 이름) 반환
@@ -39,6 +40,7 @@ const getCategoryPath = async (): Promise<string[]> => {
     ).map((path) => addPathNotation(path))
     return categoryPathArray
 }
+
 const DESCRIPTION_FILE_NAME = "description"
 const FILE_FORMAT = {
     TXT: ".txt",
@@ -229,29 +231,10 @@ const readCategoryJSONFileArray = async (
                     await readFile(descriptionFilePath, "utf-8")
                 ) as ExtractCategoryInfo
 
-                const HEX_REGEX = /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
-                const RGBA_REGEX =
-                    /rgba?\(\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?(,\s*?([0].[0-9]+|.[0-9]+|[1])\s*?)?\)/g
-
-                const isColorError =
-                    !HEX_REGEX.test(color) && !RGBA_REGEX.test(color)
-
                 const isDescriptionError =
                     description === undefined || description === ""
                 const emojiExec = EMOJI_REGEX.exec(emoji)
                 const isEmojiNotExists = emojiExec === null
-
-                if (isColorError)
-                    throw new BlogPropertyError({
-                        errorNameDescription:
-                            "Error Occured while extracting category description [color]",
-                        propertyName: "color",
-                        propertyDescription:
-                            "should be HEX: #⚪️⚪️⚪️⚪️⚪️⚪️ or rgba(⚪️,⚪️,⚪️,⚪️) or rgb(⚪️,⚪️,⚪️) ",
-                        propertyType: "string",
-                        errorPropertyValue: color,
-                        customeErrorMessage: `Track file's c🔎: \n      ${descriptionFilePath}`,
-                    })
 
                 if (isDescriptionError)
                     throw new BlogPropertyError({
@@ -271,16 +254,15 @@ const readCategoryJSONFileArray = async (
                         propertyType: "string",
                         customeErrorMessage: `Track file's description🔎: \n      ${descriptionFilePath}`,
                     })
-                else {
-                    const categoryInfo = {
-                        description,
-                        color,
-                        emoji: emojiExec[0],
-                        category,
-                        categoryUrl: `/${category}`,
-                    }
-                    return categoryInfo
+
+                const categoryInfo = {
+                    description,
+                    color: getValidateColor(color),
+                    emoji: emojiExec[0],
+                    category,
+                    categoryUrl: `/${category}`,
                 }
+                return categoryInfo
             } catch (err) {
                 throw new BlogErrorAdditionalInfo({
                     passedError: err,

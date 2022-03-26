@@ -16,23 +16,37 @@ const addPathNotation = (fileName: string): string => `/${fileName}`
 const addZeroToOneLengthString = (text: string) =>
     text.length === 1 ? `0${text}` : text
 
-const transformRGBAToHEX = (rgba: string) => {
-    const HEX_BIANARY = 16
+const isColorHEX = (testColor: string) => {
+    const HEX_REGEX = /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
+    return HEX_REGEX.test(testColor)
+}
+
+const validateRGBA = (testColor: string) => {
     const RGBA_REGEX =
         /rgba?\(\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?(,\s*?([0].[0-9]+|.[0-9]+|[1])\s*?)?\)/g
 
-    const splited = rgba.replace(/\s/g, "")
+    const splited = testColor.replace(/\s/g, "")
     const rgbaArray = RGBA_REGEX.exec(splited)
 
-    if (!rgbaArray)
+    if (rgbaArray === null)
         throw new BlogPropertyError({
-            errorNameDescription: "",
-            propertyName: "rgba or rgb",
+            errorNameDescription: "Format Error Occured",
+            propertyName: "rgba or rgb or HEX",
             propertyType: "string",
-            propertyDescription: "input color is Not proper rgba or rgb format",
-            errorPropertyValue: rgba,
-            customeErrorMessage: "rgba or rgb format",
+            propertyDescription:
+                "input color is Not proper rgba or rgb or HEX format",
+            errorPropertyValue: testColor,
+            customeErrorMessage:
+                "rgba or rgb or HEX format And Use HEX, if you want fast💨 building process.",
         })
+    else {
+        return rgbaArray
+    }
+}
+
+const HEX_BIANARY = 16
+const transformRGBAToHEX = (testColor: string) => {
+    const rgbaArray = validateRGBA(testColor)
     const hexR = addZeroToOneLengthString(
         Number(rgbaArray[1]).toString(HEX_BIANARY)
     )
@@ -55,9 +69,12 @@ const transformRGBAToHEX = (rgba: string) => {
     return convertedHEX
 }
 
+const getValidateColor = (color: string) =>
+    isColorHEX(color) ? color : transformRGBAToHEX(color)
+
 export {
     blogContentsDirectory,
     removeFileFormat,
     addPathNotation,
-    transformRGBAToHEX,
+    getValidateColor,
 }

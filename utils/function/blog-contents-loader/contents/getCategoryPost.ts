@@ -1,7 +1,8 @@
 import {
     blogContentsDirectory,
+    getValidateColor,
     removeFileFormat,
-} from "../util/blogUtilFunction"
+} from "../util"
 import { getPureCategoryNameArray } from "./getCategory"
 
 import { readFile, readdir } from "fs/promises"
@@ -22,7 +23,7 @@ import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
     BlogPropertyError,
-} from "../util/blogError"
+} from "../../blog-error-handler/blogError"
 
 const transformContentToMDXCompileSource = async (
     compileSource: string
@@ -100,6 +101,8 @@ const getTagArray = (tags: string): string[] => {
             errorNameDescription: "Error Occured while extracting post meta",
             propertyName: "tags",
             propertyType: "string",
+            propertyDescription:
+                "tags: tag1, tag2, tag3, ... be sure to divide tag with , ",
             customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
         })
     else return tags.split(",").map((tag) => tag.trim())
@@ -150,31 +153,10 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                                 preview: data.preview,
                                 update: data.update,
                                 tags: getTagArray(data.tags),
-                                color: data.color.trim(),
+                                color: getValidateColor(data.color),
                             } as PostMetaType
 
-                            const HEX_REGEX =
-                                /^#[a-z|A-Z|0-9]{5}[a-z|A-Z|0-9]{1}$/g
-                            const RGBA_REGEX =
-                                /rgba?\(\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?,\s*?([0-9]{1,3})\s*?(,\s*?([0].[0-9]+|.[0-9]+|[1])\s*?)?\)/g
-
-                            const isColorValidate =
-                                HEX_REGEX.test(postMeta.color) ||
-                                RGBA_REGEX.test(postMeta.color)
-
                             //TODO: regex 변수를 함수 스코프 외부에서 선언시 정확히 테스트가 안됨, 접근이 불가능한 경우가 생기는것 같음
-                            if (!isColorValidate)
-                                throw new BlogPropertyError({
-                                    errorNameDescription: "color format Error",
-                                    propertyName: "color",
-                                    propertyType: "string",
-                                    propertyDescription:
-                                        "should be rgba(⚪️,⚪️,⚪️,⚪️) or rgb(⚪️,⚪️,⚪️) or HEX ",
-                                    errorPropertyValue: postMeta.color,
-                                    customeErrorMessage:
-                                        "[  ⬇️ post meta info ⬇️  ]",
-                                })
-
                             const validationMeta = Object.entries(postMeta)
                                 .filter(
                                     ([_, value]) =>
