@@ -6,9 +6,11 @@ import fontSize, { FontSize } from "./font"
 import borderRadius, { BorderRadius } from "./borderRadius"
 import { shadow, Shadow } from "./shadow"
 import zIndexes, { ZIndexes } from "./zIndex"
+import palleteOpacity, { PalleteOpacity } from "./palleteOpacity"
 
 export interface CommonThemeProperty
     extends Pallete,
+        PalleteOpacity,
         Width,
         FontSize,
         BorderRadius,
@@ -28,6 +30,7 @@ const commonThemeProperty: CommonThemeProperty = {
     ...borderRadius,
     ...shadow,
     ...zIndexes,
+    ...palleteOpacity,
 
     //* common Theme property
     fontSize: fontSize.md,
