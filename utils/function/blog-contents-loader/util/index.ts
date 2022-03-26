@@ -57,15 +57,7 @@ const transformRGBAToHEX = (testColor: string) => {
         Number(rgbaArray[3]).toString(HEX_BIANARY)
     )
 
-    const isRGBA = typeof rgbaArray[5] === "string"
-    const hexA = isRGBA
-        ? addZeroToOneLengthString(
-              Math.round(Number(rgbaArray[5]) * 255).toString(HEX_BIANARY)
-          )
-        : ""
-
-    const convertedHEX = `#${hexR}${hexG}${hexB}${hexA}`
-
+    const convertedHEX = `#${hexR}${hexG}${hexB}`
     return convertedHEX
 }
 
