@@ -8,7 +8,8 @@ import { PostMetaType } from "@/types/post/meta"
 
 import PostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
 import PostMeta from "./PostMeta/PostMeta"
-import OrderText from "./OrderText/OrderText"
+import PostOrderText from "./PostOrderText/PostOrderText"
+import { sliceTextByMaxLength } from "@/utils/function/text"
 
 const BORDER_WIDTH = "0.1rem"
 const postLinkContainerStyle = {
@@ -46,36 +47,38 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
 
     gap: 2.5rem;
 
-    padding: 0.25rem 1.5rem;
-
     width: min(30rem, 85%);
+    min-height: 8.75rem;
     height: 8.75rem;
 
-    background-color: rgba(255, 255, 255, 0.65);
-    backdrop-filter: blur(5px);
-    ${({ color }) => postLinkContainerStyle.middle(color)};
+    padding: 0.25rem 1.5rem;
 
-    ${({ isFirst, color }) => isFirst && postLinkContainerStyle.first(color)};
-
-    ${({ isLast, color }) => isLast && postLinkContainerStyle.last(color)};
+    background-color: ${(p) => `${p.theme.white}${p.theme.opacity70}`};
+    backdrop-filter: blur(15px);
 
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    user-select: none;
-
     &:hover {
-        background-color: ${(p) => p.theme.white};
-        backdrop-filter: none;
         box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     }
 
+    user-select: none;
+
+    ${({ color }) => postLinkContainerStyle.middle(color)};
+    ${({ isFirst, color }) => isFirst && postLinkContainerStyle.first(color)};
+    ${({ isLast, color }) => isLast && postLinkContainerStyle.last(color)};
+
+    ${media.mediumTablet} {
+        gap: 0.5rem;
+    }
+
     ${media.widePhone} {
+        min-height: 8rem;
         height: 8rem;
 
-        gap: 0.5rem;
         padding: 0.5rem 1rem;
 
-        background-color: ${(p) => p.theme.white};
-        backdrop-filter: none;
+        background-color: ${(p) => `${p.theme.white}${p.theme.opacity90}`};
+        backdrop-filter: unset;
 
         &:hover {
             box-shadow: none;
@@ -88,7 +91,9 @@ const ContentContainer = styled.div`
     align-items: flex-start;
     justify-content: space-between;
 
+    min-height: 80%;
     height: fit-content;
+
     gap: 0.75rem;
 
     ${media.widePhone} {
@@ -98,12 +103,12 @@ const ContentContainer = styled.div`
 
 const PostPreview = styled.div`
     font-size: ${(p) => p.theme.sm};
-    color: ${(p) => p.theme.gray5};
+    color: ${(p) => p.theme.gray6};
     font-weight: 200;
     line-height: 1.15rem;
 
     ${media.widePhone} {
-        color: ${(p) => p.theme.gray6};
+        color: ${(p) => p.theme.gray7};
 
         font-weight: 300;
         line-height: 1rem;
@@ -130,28 +135,28 @@ function PostLink({
 }: PostLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
     return (
-        <PostLinkContainer
-            color={color}
-            order={order}
-            isFirst={isFirst}
-            isLast={isLast}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-            onTouchStart={() => setIsHover(true)}
-            onTouchEnd={() => setIsHover(false)}
-        >
-            <Link href={postUrl} passHref>
+        <Link href={postUrl} passHref>
+            <PostLinkContainer
+                color={color}
+                order={order}
+                isFirst={isFirst}
+                isLast={isLast}
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+            >
                 <ContentContainer>
                     <PostTitle
                         isHover={isHover}
-                        fontColor="gray8"
+                        fontColor="trueDeepDark"
                         fontSize="lg"
                         fontWeight={200}
                         underscoreColor={color}
                     >
                         {title}
                     </PostTitle>
-                    <PostPreview>{preview}</PostPreview>
+                    <PostPreview>
+                        {sliceTextByMaxLength(preview, 60)}
+                    </PostPreview>
                     <PostMeta
                         author={author}
                         category={category}
@@ -161,9 +166,9 @@ function PostLink({
                         isCategoryPage={isCategoryPage}
                     />
                 </ContentContainer>
-            </Link>
-            <OrderText order={order} color={color} isHover={isHover} />
-        </PostLinkContainer>
+                <PostOrderText order={order} color={color} isHover={isHover} />
+            </PostLinkContainer>
+        </Link>
     )
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import styled from "styled-components"
 import animation from "@/styles/utils/animation"
-import { useFocusTitle } from "@/lib/atoms"
+import { useFocusTitle } from "@/lib/tableOfContent/tableOfContent.state"
 import media from "@/styles/utils/media"
 import { PostMetaType } from "@/types/post/meta"
 import { sliceTextByMaxLength } from "@/utils/function/text"

@@ -1,13 +1,6 @@
-import media, { MediaType } from "@/styles/utils/media"
+import media from "@/styles/utils/media"
 import React from "react"
-import styled, {
-    css,
-    DefaultTheme,
-    FlattenInterpolation,
-    FlattenSimpleInterpolation,
-    ThemedCssFunction,
-    ThemeProps,
-} from "styled-components"
+import styled, { css } from "styled-components"
 
 const SHADOW_STYLE = {
     mediumScreen: {
@@ -15,8 +8,8 @@ const SHADOW_STYLE = {
         y: "10px",
     },
     widePhone: {
-        x: "7px",
-        y: "7px",
+        x: "5px",
+        y: "5px",
     },
 
     blur: "0px",
@@ -26,7 +19,7 @@ const MEDIUM_TEXT_SHADOW = `${SHADOW_STYLE.mediumScreen.x} ${SHADOW_STYLE.medium
 const SMALL_TEXT_SHADOW = `${SHADOW_STYLE.widePhone.x} ${SHADOW_STYLE.widePhone.y} ${SHADOW_STYLE.blur}`
 
 const OrderTextStyled = styled.p<OrderTextProp>`
-    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+    transition: text-shadow, color cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
 
     display: flex;
     align-items: center;
@@ -46,9 +39,22 @@ const OrderTextStyled = styled.p<OrderTextProp>`
             text-shadow: ${MEDIUM_TEXT_SHADOW} ${theme.trueDeepDark};
         `}
 
+    ${media.mediumTablet} {
+        font-size: 100px;
+
+        text-shadow: ${({ color: shadowColor }) =>
+            `${SMALL_TEXT_SHADOW} ${shadowColor}`};
+
+        ${({ isHover, color, theme }) =>
+            isHover &&
+            css`
+                color: ${color};
+                text-shadow: ${SMALL_TEXT_SHADOW} ${theme.trueDeepDark};
+            `}
+    }
+
     ${media.widePhone} {
-        font-size: 85px;
-        font-weight: 700;
+        font-size: 75px;
 
         text-shadow: ${({ color: shadowColor }) =>
             `${SMALL_TEXT_SHADOW} ${shadowColor}`};
@@ -61,30 +67,6 @@ const OrderTextStyled = styled.p<OrderTextProp>`
             `}
     }
 `
-type MediaStyle = {
-    [media in MediaType]?: (
-        shadowColor: string,
-        isHover: boolean
-    ) => FlattenInterpolation<ThemeProps<DefaultTheme>>
-}
-
-const mediaStyle: MediaStyle = {
-    widePhone: (shadowColor: string, isHover: boolean) => css`
-        ${media.widePhone} {
-            font-size: 85px;
-            font-weight: 700;
-
-            text-shadow: ${SMALL_TEXT_SHADOW} ${shadowColor};
-
-            ${({ theme }) =>
-                isHover &&
-                css`
-                    color: ${shadowColor};
-                    text-shadow: ${SMALL_TEXT_SHADOW} ${theme.trueDeepDark};
-                `}
-        }
-    `,
-}
 
 interface OrderTextProp {
     order: number
@@ -93,7 +75,7 @@ interface OrderTextProp {
 }
 
 const ORDER_TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-function OrderText({ order, color, isHover }: OrderTextProp) {
+function PostOrderText({ order, color, isHover }: OrderTextProp) {
     return (
         <OrderTextStyled order={order} color={color} isHover={isHover}>
             {ORDER_TEXT[order]}
@@ -101,4 +83,4 @@ function OrderText({ order, color, isHover }: OrderTextProp) {
     )
 }
 
-export default OrderText
+export default PostOrderText

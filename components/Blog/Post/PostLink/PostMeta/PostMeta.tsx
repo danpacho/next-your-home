@@ -1,4 +1,4 @@
-import SvgLayersAlt from "@/components/UI/Atoms/Icons/LayersAlt"
+import { LayersAltIcon } from "@/components/UI/Atoms/Icons"
 import media from "@/styles/utils/media"
 import { PostMetaType } from "@/types/post/meta"
 import styled, { css } from "styled-components"
@@ -51,6 +51,11 @@ const PostMetaTag = styled.li<PostMetaTagStyle>`
 
     ${({ type }) => postMetaTagStyle[type]}
 
+    ${media.mediumTablet} {
+        font-size: ${(p) => p.theme.xsm};
+        padding: 0.25rem 0.45rem;
+    }
+
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
         font-weight: 300;
@@ -68,6 +73,7 @@ interface PostMetaProps
 }
 
 const LAST_TAG_ORDER = 1
+const TAG_NUMBER = 2
 
 function PostMeta({
     author,
@@ -81,16 +87,22 @@ function PostMeta({
     return (
         <PostMetaTagContainer>
             {isCategoryPage &&
-                tags.slice(0, 2).map((tag, order) => (
+                tags.slice(0, TAG_NUMBER).map((tag, order) => (
                     <PostMetaTag
                         key={tag}
                         type={order === LAST_TAG_ORDER ? "update" : "category"}
                         color={color}
                     >
-                        {tag}
-                        {order === LAST_TAG_ORDER && isTagSizeOver && (
-                            <SvgLayersAlt fill={"white"} />
-                        )}
+                        <p>
+                            # {tag}
+                            {order === LAST_TAG_ORDER && isTagSizeOver && (
+                                <LayersAltIcon
+                                    fill={"white"}
+                                    width=".65rem"
+                                    height=".65rem"
+                                />
+                            )}
+                        </p>
                     </PostMetaTag>
                 ))}
 
@@ -99,9 +111,11 @@ function PostMeta({
                     {category}
                 </PostMetaTag>
             )}
-            <PostMetaTag type="update" color={color}>
-                {update}
-            </PostMetaTag>
+            {!isCategoryPage && (
+                <PostMetaTag type="update" color={color}>
+                    {update}
+                </PostMetaTag>
+            )}
             <PostMetaTag type="author" color={color}>
                 {author}
             </PostMetaTag>

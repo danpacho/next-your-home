@@ -1,9 +1,5 @@
 import { PostControllerType as PostControllerPreviewProps } from "@/types/post/content"
 
-import SvgHome from "@/components/UI/Atoms/Icons/Home"
-import SvgNext from "@/components/UI/Atoms/Icons/Next"
-import SvgPrev from "@/components/UI/Atoms/Icons/Prev"
-
 import styled, { css } from "styled-components"
 import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
@@ -12,6 +8,7 @@ import { shadow } from "@/styles/utils/shadow"
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { sliceTextByMaxLength } from "@/utils/function/text"
+import { HomeIcon, NextIcon, PrevIcon } from "@/components/UI/Atoms/Icons"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
@@ -58,7 +55,7 @@ const ControllerButtonStyle = {
     next: css`
         border-radius: ${(p) => p.theme.bRound};
     `,
-    home: css`
+    category: css`
         border-radius: ${(p) => p.theme.bxlg};
     `,
 }
@@ -159,12 +156,16 @@ const PostTitleText = styled.p`
 `
 
 interface PostControllerProps extends PostControllerPreviewProps {
-    homeUrl: string
+    categoryURL: string
 }
 
 const TITLE_MAX_LENGTH = 15
 
-function PostController({ prevPost, nextPost, homeUrl }: PostControllerProps) {
+function PostController({
+    prevPost,
+    nextPost,
+    categoryURL,
+}: PostControllerProps) {
     const [isHover, setIsHover] = useState(true)
 
     const prevPostTitle = sliceTextByMaxLength(prevPost.title, TITLE_MAX_LENGTH)
@@ -186,8 +187,12 @@ function PostController({ prevPost, nextPost, homeUrl }: PostControllerProps) {
         >
             <InfoContainer isHover={isHover}>
                 <Link href={prevPost.postUrl} passHref>
-                    <ControllerButton buttonType="prev">
-                        <SvgPrev width="1rem" height="1rem" />
+                    <ControllerButton
+                        buttonType="prev"
+                        type="button"
+                        aria-label="previous post"
+                    >
+                        <PrevIcon width="1rem" height="1rem" />
                     </ControllerButton>
                 </Link>
                 <Link href={prevPost.postUrl} passHref>
@@ -195,9 +200,13 @@ function PostController({ prevPost, nextPost, homeUrl }: PostControllerProps) {
                 </Link>
             </InfoContainer>
 
-            <Link href={homeUrl} passHref>
-                <ControllerButton buttonType="home">
-                    <SvgHome width="1rem" height="1rem" />
+            <Link href={categoryURL} passHref>
+                <ControllerButton
+                    buttonType="category"
+                    type="button"
+                    aria-label="back to category"
+                >
+                    <HomeIcon width="1rem" height="1rem" />
                 </ControllerButton>
             </Link>
 
@@ -206,8 +215,12 @@ function PostController({ prevPost, nextPost, homeUrl }: PostControllerProps) {
                     <PostTitleText>{nextPostTitle}</PostTitleText>
                 </Link>
                 <Link href={nextPost.postUrl} passHref>
-                    <ControllerButton buttonType="next">
-                        <SvgNext width="1rem" height="1rem" />
+                    <ControllerButton
+                        buttonType="next"
+                        type="button"
+                        aria-label="next post"
+                    >
+                        <NextIcon width="1rem" height="1rem" />
                     </ControllerButton>
                 </Link>
             </InfoContainer>
