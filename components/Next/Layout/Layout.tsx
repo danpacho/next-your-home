@@ -3,9 +3,9 @@ import styled from "styled-components"
 
 import media from "@/styles/utils/media"
 
+import Background from "@/components/UI/Atoms/Background/Background"
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
-import MainBackground from "@/components/UI/Atoms/Background/Mainbackground"
 import { PageType } from "@/types/page/type"
 
 const Layout = styled.main`
@@ -21,8 +21,6 @@ const Layout = styled.main`
         height: auto;
         max-height: 70%;
         min-height: min-content;
-
-        /* padding-top: 2rem; */
     }
 `
 interface LayoutProp {
@@ -37,7 +35,7 @@ function MainLayout({ children, pageType }: LayoutProp) {
                 <NavBar />
                 <Main>{children}</Main>
             </Layout>
-            <MainBackground pageType={pageType} isLight={true} />
+            <Background pageType={pageType} />
         </>
     )
 }

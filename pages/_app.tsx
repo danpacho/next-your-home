@@ -30,11 +30,11 @@ function AppParent({ Component, pageProps }: AppProps) {
 
             {/* //TODO: light dark mode toggling */}
             <ThemeProvider theme={lightTheme}>
-                <MainLayout pageType={pageType}>
-                    <RecoilRoot>
+                <RecoilRoot>
+                    <MainLayout pageType={pageType}>
                         <Component {...pageProps} />
-                    </RecoilRoot>
-                </MainLayout>
+                    </MainLayout>
+                </RecoilRoot>
             </ThemeProvider>
         </>
     )
