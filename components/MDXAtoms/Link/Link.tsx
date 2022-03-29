@@ -15,7 +15,7 @@ const LinkStyled = styled.a`
     }
 
     &:hover {
-        font-weight: 1000;
+        color: ${(props) => props.theme.teal10};
     }
 `
 interface LinkProps {

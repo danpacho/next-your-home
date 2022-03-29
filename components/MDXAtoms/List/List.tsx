@@ -1,4 +1,3 @@
-import animation from "@/styles/utils/animation"
 import { RefObject, useRef } from "react"
 import styled, { css } from "styled-components"
 

@@ -9,11 +9,12 @@ const PStyled = styled.p`
 
     ${media.widePhone} {
         margin: 1rem 0;
+        color: ${(p) => p.theme.gray9};
     }
 `
 
 function P(props: any) {
-    return <PStyled {...props} id="mdx-p" />
+    return <PStyled {...props} />
 }
 
 export default P

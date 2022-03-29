@@ -1,4 +1,4 @@
-import { useFocusTitle } from "@/lib/atoms"
+import { useFocusTitle } from "@/lib/tableOfContent/tableOfContent.state"
 import useElementObserver from "@/hooks/useElementObserver"
 import media from "@/styles/utils/media"
 import LineScroll from "@components/UX/LineScroll/LineScroll"
@@ -27,7 +27,7 @@ const H1Styled = styled.h1`
         font-weight: 700;
         border-bottom: none;
         padding-left: 0.5rem;
-        border-left: 0.25rem solid ${(props) => props.theme.teal5};
+        border-left: 0.25rem solid ${(props) => props.theme.gray4};
     }
 `
 

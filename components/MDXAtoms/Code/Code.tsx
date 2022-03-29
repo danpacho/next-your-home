@@ -17,11 +17,9 @@ import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import Toast from "@/components/UX/Toast/Toast"
 import useClipboard from "@/hooks/useClipboard"
 
-import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
 import pallete from "@/styles/utils/pallete"
-import borderRadius from "@/styles/utils/borderRadius"
-import { BlogPropertyError } from "@/utils/function/blog-contents-loader/util/blogError"
+import { BlogPropertyError } from "@/utils/function/blog-error-handler/blogError"
 
 const SUPPORTED_LANGUAGE = {
     javascript: ["javascript", "js"],
@@ -79,7 +77,6 @@ const CodeContentBox = styled.div`
     }
 
     transition: all 0.15s ease-in;
-    animation: ${animation.fadeIn} 0.15s ease-out;
 
     user-select: none;
 
@@ -208,11 +205,9 @@ const colorCode = (lineNumber: number, option?: CodeOption) => {
     const commonLineStyle = {
         display: "block",
         backgroundColor: "transparent",
-        margin: ".1rem 0",
-        paddingLeft: ".5rem",
-        borderLeft: "solid .25rem",
+        paddingLeft: ".25rem",
+        borderLeft: "solid .3rem",
         borderLeftColor: "transparent",
-        borderRadius: `${borderRadius.bxxsm}`,
     }
     if (option?.hightlight?.includes(lineNumber)) {
         commonLineStyle.backgroundColor = `${pallete.teal6}19`
