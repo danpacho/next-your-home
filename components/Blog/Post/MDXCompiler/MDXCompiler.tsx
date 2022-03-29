@@ -2,7 +2,7 @@ import { MDXRemote } from "next-mdx-remote"
 
 import { MDXCompiledSourceType } from "@/types/mdx"
 
-import MDXAtoms from "@components/MDXAtoms/index"
+import MDXAtoms from "@/components/MDXAtoms/MDXAtoms"
 import { MDXComponents } from "mdx/types"
 
 interface MDXCompilerProp {

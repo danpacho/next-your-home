@@ -1,12 +1,14 @@
-import { useFocusTitle } from "@/lib/tableOfContent/tableOfContent.state"
-import useElementObserver from "@/hooks/useElementObserver"
+import styled from "styled-components"
 import media from "@/styles/utils/media"
+
+import { useFocusTitle } from "@/lib/tableOfContent/tableOfContent.state"
+
+import useElementObserver from "@/hooks/useElementObserver"
+
 import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
 
 import { useCallback, useRef, useState } from "react"
-import styled from "styled-components"
-import { MDXComponents } from "mdx/types"
 
 const H1Container = styled.div`
     margin: 0 0 2rem 0;
@@ -28,26 +30,6 @@ const H1Styled = styled.h1`
         border-bottom: none;
         padding-left: 0.5rem;
         border-left: 0.25rem solid ${(props) => props.theme.gray4};
-    }
-`
-
-const H2Styled = styled.h2`
-    font-size: ${(props) => props.theme.xlg};
-    font-weight: 600;
-    padding: 0.35rem 0;
-
-    ${media.widePhone} {
-        font-size: ${(p) => p.theme.md};
-    }
-`
-
-const H3Styled = styled.h3`
-    font-size: ${(props) => props.theme.lg};
-    font-weight: 600;
-    margin-bottom: 1rem;
-
-    ${media.widePhone} {
-        font-size: ${(p) => p.theme.md};
     }
 `
 
@@ -116,12 +98,4 @@ const H1 = (props: H1Props) => {
     )
 }
 
-const H2 = (props: any) => {
-    return <H2Styled {...props} />
-}
-
-const H3 = (props: any) => {
-    return <H3Styled {...props} />
-}
-
-export { H1, H2, H3 }
+export default H1
