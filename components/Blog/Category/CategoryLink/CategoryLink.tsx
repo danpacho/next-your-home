@@ -5,6 +5,7 @@ import media from "@styles/utils/media"
 
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 import { CategoryInfoType } from "@/types/category/info"
+import { sliceTextByMaxLength } from "@/utils/function/text"
 
 interface CategoryLinkContainerStyle {
     color: string
@@ -21,7 +22,7 @@ const ITEM_HEIGHT = {
 }
 
 const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
-    transition: all ease-out 0.25s;
+    transition: box-shadow, border-color ease-out 0.25s;
 
     display: flex;
     align-items: center;
@@ -133,8 +134,6 @@ function CategoryLink({
         <CategoryLinkContainer
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
-            onTouchStart={() => setIsHover(true)}
-            onTouchEnd={() => setIsHover(false)}
             isHover={isHover}
             color={color}
         >
@@ -154,7 +153,9 @@ function CategoryLink({
                     >
                         {category}
                     </CategoryTitle>
-                    <CategoryDescription>{description}</CategoryDescription>
+                    <CategoryDescription>
+                        {sliceTextByMaxLength(description, 35)}
+                    </CategoryDescription>
                 </CategoryInfoContainer>
             </Link>
         </CategoryLinkContainer>
