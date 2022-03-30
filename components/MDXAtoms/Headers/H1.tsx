@@ -36,7 +36,7 @@ const H1Styled = styled.h1`
 const HEADER_UPDATE_CONSTANTS = {
     top: 225,
     bottom: -225,
-    rootMarginTop: "-42.5px",
+    rootMarginTop: "-35px",
     rootMarginBottom: "0px",
 }
 interface H1Props {
