@@ -18,14 +18,6 @@ export const GlobalStyle = createGlobalStyle`
             background: none;
             border: none;
             outline: none;
-            /* &:focus {
-                  outline: none;
-                  border: none;
-            }
-            &:active {
-                  outline: none;
-                  border: none;
-            } */
       }
       button {
             cursor: pointer;
@@ -52,9 +44,5 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       -webkit-font-smoothing: antialiased;
-
-        /* ::placeholder {
-            padding-left: 5px;
-      } */
 
 `

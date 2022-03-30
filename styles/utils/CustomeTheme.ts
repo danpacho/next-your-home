@@ -4,7 +4,7 @@ import pallete, { Pallete } from "./pallete"
 import width, { Width } from "./width"
 import fontSize, { FontSize } from "./font"
 import borderRadius, { BorderRadius } from "./borderRadius"
-import { shadow, Shadow } from "./shadow"
+import shadow, { Shadow } from "./shadow"
 import zIndexes, { ZIndexes } from "./zIndex"
 import palleteOpacity, { PalleteOpacity } from "./palleteOpacity"
 
