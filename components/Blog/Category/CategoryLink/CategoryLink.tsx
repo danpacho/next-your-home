@@ -6,6 +6,8 @@ import media from "@styles/utils/media"
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 import { CategoryInfoType } from "@/types/category/info"
 import { sliceTextByMaxLength } from "@/utils/function/text"
+import shadow from "@/styles/utils/shadow"
+import animation from "@/styles/utils/animation"
 
 interface CategoryLinkContainerStyle {
     color: string
@@ -21,8 +23,12 @@ const ITEM_HEIGHT = {
     widePhone: 4,
 }
 
-const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
-    transition: box-shadow, border-color ease-out 0.25s;
+interface CategoryLinkContainerStyle {
+    isHover: boolean
+    color: string
+}
+const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
+    transition: box-shadow ease-out 0.25s;
 
     display: flex;
     align-items: center;
@@ -31,25 +37,25 @@ const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
     width: min(30rem, 80%);
     height: ${ITEM_HEIGHT.wideScreen}rem;
 
-    padding: 2.05rem;
+    padding: 2.15rem;
 
-    border: 0.1rem solid transparent;
-    border-right: 0.1rem solid ${({ color }) => `${color}${OPACITY.border}`};
-    border-radius: 7rem 0.1rem 0.1rem 7rem;
+    border-right: 0.2rem solid
+        ${({ color, theme }) => `${color}${theme.opacity50}`};
+    border-radius: ${({ theme }) => `7rem ${theme.bxxsm} ${theme.bxxsm} 7rem`};
 
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(15px);
 
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    box-shadow: ${shadow.shadowSm};
+    user-select: none;
+    cursor: pointer;
 
     &:hover {
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-        border-color: ${({ color }) => `${color}${OPACITY.border}`};
-        background-color: ${(p) => p.theme.white};
+        box-shadow: 5px 0 0 0
+            ${({ color, theme }) => `${color}${theme.opacity50}`};
+        border-color: ${({ color, theme }) => `${color}${theme.opacity50}`};
         backdrop-filter: none;
     }
-
-    user-select: none;
 
     ${media.widePhone} {
         height: ${ITEM_HEIGHT.widePhone}rem;
@@ -58,9 +64,14 @@ const CategoryLinkContainer = styled.div<{ isHover: boolean; color: string }>`
 
         background-color: ${(p) => p.theme.white};
         backdrop-filter: none;
+        &:hover {
+            box-shadow: none;
+        }
     }
 `
-const CategoryTextContainer = styled.div<CategoryLinkContainerStyle>`
+const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
+    transition: box-shadow cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -70,35 +81,34 @@ const CategoryTextContainer = styled.div<CategoryLinkContainerStyle>`
     width: ${ITEM_HEIGHT.wideScreen}rem;
     height: ${ITEM_HEIGHT.wideScreen}rem;
 
-    box-shadow: 0 0 0 0.25rem ${({ color }) => `${color}${OPACITY.border}`};
+    box-shadow: ${({ isHover, color, theme }) =>
+        `0 0 0 ${isHover ? "1.1rem" : "0.25rem"} ${color}${theme.opacity20}`};
+
     border-radius: ${ITEM_HEIGHT.wideScreen / 2}rem;
 
+    font-size: 2.65rem;
+
+    animation: ${animation.fadeIn} 0.5s ease-in;
+
     ${media.widePhone} {
+        font-size: 2.35rem;
         width: ${ITEM_HEIGHT.widePhone}rem;
         height: ${ITEM_HEIGHT.widePhone}rem;
 
         border-radius: ${ITEM_HEIGHT.widePhone / 2}rem;
+        box-shadow: ${({ color, theme }) =>
+            `0 0 0 0.25rem ${color}${theme.opacity30}`};
     }
 `
-const CategoryText = styled.h1`
-    font-size: 2.65rem;
-    color: ${(p) => p.theme.white};
-    font-weight: 600;
 
-    ${media.widePhone} {
-        font-size: 2.35rem;
-    }
-`
 const CategoryInfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-between;
 
-    width: 50%;
+    max-width: 50%;
     height: 6rem;
-
-    cursor: pointer;
 
     ${media.widePhone} {
         width: 60%;
@@ -119,9 +129,9 @@ const CategoryDescription = styled.div`
         line-height: 1rem;
     }
 `
-interface CategoryLinkProps
-    extends CategoryLinkContainerStyle,
-        CategoryInfoType {}
+interface CategoryLinkProps extends CategoryInfoType {
+    color: string
+}
 function CategoryLink({
     color,
     category,
@@ -131,17 +141,17 @@ function CategoryLink({
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
     return (
-        <CategoryLinkContainer
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
-            isHover={isHover}
-            color={color}
-        >
-            <CategoryTextContainer color={color}>
-                <CategoryText>{emoji ?? category.slice(0, 2)}</CategoryText>
-            </CategoryTextContainer>
+        <Link href={categoryUrl} passHref>
+            <CategoryLinkContainer
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+                isHover={isHover}
+                color={color}
+            >
+                <CategoryEmojiContainer color={color} isHover={isHover}>
+                    {emoji}
+                </CategoryEmojiContainer>
 
-            <Link href={categoryUrl} passHref>
                 <CategoryInfoContainer>
                     <CategoryTitle
                         isHover={isHover}
@@ -157,8 +167,8 @@ function CategoryLink({
                         {sliceTextByMaxLength(description, 35)}
                     </CategoryDescription>
                 </CategoryInfoContainer>
-            </Link>
-        </CategoryLinkContainer>
+            </CategoryLinkContainer>
+        </Link>
     )
 }
 

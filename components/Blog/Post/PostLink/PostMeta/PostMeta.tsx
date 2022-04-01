@@ -53,7 +53,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle>`
 
     ${media.mediumTablet} {
         font-size: ${(p) => p.theme.xsm};
-        padding: 0.25rem 0.45rem;
+        padding: 0.15rem 0.3rem;
     }
 
     ${media.widePhone} {

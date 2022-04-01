@@ -1,3 +1,4 @@
+import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
 import React from "react"
 import styled, { css } from "styled-components"
@@ -19,52 +20,37 @@ const MEDIUM_TEXT_SHADOW = `${SHADOW_STYLE.mediumScreen.x} ${SHADOW_STYLE.medium
 const SMALL_TEXT_SHADOW = `${SHADOW_STYLE.widePhone.x} ${SHADOW_STYLE.widePhone.y} ${SHADOW_STYLE.blur}`
 
 const OrderTextStyled = styled.p<OrderTextProp>`
-    transition: text-shadow, color cubic-bezier(0.19, 1, 0.22, 1) 0.5s;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-weight: 700;
-    font-size: 150px;
-    color: ${(p) => p.theme.trueDeepDark};
+    font-weight: 800;
+    font-size: 120px;
+    color: ${({ theme, isHover, color }) =>
+        isHover ? color : theme.trueDeepDark};
 
-    text-shadow: ${({ color: shadowColor }) =>
-        `${MEDIUM_TEXT_SHADOW} ${shadowColor}`};
-
-    ${({ isHover, color, theme }) =>
-        isHover &&
-        css`
-            color: ${color};
-            text-shadow: ${MEDIUM_TEXT_SHADOW} ${theme.trueDeepDark};
-        `}
+    text-shadow: ${({ color: shadowColor, theme, isHover }) =>
+        `${MEDIUM_TEXT_SHADOW} ${shadowColor}${
+            isHover ? theme.opacity20 : theme.opacity70
+        }`};
+    animation: ${animation.fadeIn} 0.5s ease-in;
 
     ${media.mediumTablet} {
         font-size: 100px;
-
-        text-shadow: ${({ color: shadowColor }) =>
-            `${SMALL_TEXT_SHADOW} ${shadowColor}`};
-
-        ${({ isHover, color, theme }) =>
-            isHover &&
-            css`
-                color: ${color};
-                text-shadow: ${SMALL_TEXT_SHADOW} ${theme.trueDeepDark};
-            `}
+        text-shadow: ${({ color: shadowColor, theme, isHover }) =>
+            `${SMALL_TEXT_SHADOW} ${shadowColor}${
+                isHover ? theme.opacity20 : theme.opacity70
+            }`};
     }
 
     ${media.widePhone} {
         font-size: 75px;
-
-        text-shadow: ${({ color: shadowColor }) =>
-            `${SMALL_TEXT_SHADOW} ${shadowColor}`};
-
-        ${({ isHover, color, theme }) =>
-            isHover &&
-            css`
-                color: ${color};
-                text-shadow: ${SMALL_TEXT_SHADOW} ${theme.trueDeepDark};
-            `}
+        text-shadow: ${({ color: shadowColor, theme, isHover }) =>
+            isHover
+                ? "none"
+                : `${SMALL_TEXT_SHADOW} ${shadowColor}${theme.opacity70}`};
     }
 `
 

@@ -3,29 +3,32 @@ import { useState } from "react"
 
 import styled, { css } from "styled-components"
 import media from "@/styles/utils/media"
+import shadow from "@/styles/utils/shadow"
 
 import { PostMetaType } from "@/types/post/meta"
 
 import PostTitle from "@/components/UI/Atoms/UnderscoreText/UnderscoreText"
 import PostMeta from "./PostMeta/PostMeta"
 import PostOrderText from "./PostOrderText/PostOrderText"
+
 import { sliceTextByMaxLength } from "@/utils/function/text"
 
-const BORDER_WIDTH = "0.1rem"
+const POST_LINK_BORDER_WIDTH = "0.1rem"
 const postLinkContainerStyle = {
     first: (borderColor: string) => css`
         border-top-right-radius: ${(p) => p.theme.bxxxlg};
-        border-left: ${BORDER_WIDTH} solid ${borderColor};
-        border-bottom: ${BORDER_WIDTH} solid ${borderColor};
+        border-left: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
+        border-bottom: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
     `,
     middle: (borderColor: string) => css`
-        border-radius: 0 ${(p) => p.theme.bxsm} ${(p) => p.theme.bxsm} 0;
-        border-left: ${BORDER_WIDTH} solid ${borderColor};
+        border-radius: ${({ theme }) =>
+            `${theme.bxxsm} ${theme.bxsm} ${theme.bxxsm} ${theme.bxsm}`};
+        border-left: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
     `,
     last: (borderColor: string) => css`
         border-bottom-right-radius: ${(p) => p.theme.bxxxlg};
-        border-left: ${BORDER_WIDTH} solid ${borderColor};
-        border-top: ${BORDER_WIDTH} solid ${borderColor};
+        border-left: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
+        border-top: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
     `,
 }
 
@@ -38,14 +41,14 @@ interface PostLinkContainerStyle {
 }
 
 const PostLinkContainer = styled.div<PostLinkContainerStyle>`
-    transition: background-color, box-shadow ease-out 0.25s;
+    transition: box-shadow ease-out 0.25s;
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
 
-    gap: 2.5rem;
+    gap: 1.5rem;
 
     width: min(30rem, 85%);
     min-height: 8.75rem;
@@ -53,15 +56,18 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
 
     padding: 0.25rem 1.5rem;
 
-    background-color: ${(p) => `${p.theme.white}${p.theme.opacity70}`};
+    background-color: ${(p) => `${p.theme.white}${p.theme.opacity40}`};
     backdrop-filter: blur(15px);
 
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    &:hover {
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
-    }
+    box-shadow: ${shadow.shadowSm};
 
+    cursor: pointer;
     user-select: none;
+
+    &:hover {
+        box-shadow: 5px 3.5px 0 0
+            ${({ color, theme }) => `${color}${theme.opacity50}`};
+    }
 
     ${({ color }) => postLinkContainerStyle.middle(color)};
     ${({ isFirst, color }) => isFirst && postLinkContainerStyle.first(color)};
@@ -91,6 +97,7 @@ const ContentContainer = styled.div`
     align-items: flex-start;
     justify-content: space-between;
 
+    max-width: 75%;
     min-height: 80%;
     height: fit-content;
 
