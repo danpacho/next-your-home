@@ -1,17 +1,17 @@
-import CategoryLink from "@/components/Blog/Main/CategoryLink/CategoryLink"
-import PostLink from "@/components/Blog/Common/PostLink/PostLink"
+import styled from "styled-components"
 import media from "@/styles/utils/media"
 
-import {
-    getCategoryInfoArray,
-    getCategoryInfoArrayByJson,
-} from "@/utils/function/blog-contents-loader/contents/getCategory"
-import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
+import { GetStaticProps } from "next"
+
 import { CategoryInfoType } from "@/types/category/info"
 import { PostMetaType } from "@/types/post/meta"
-import { GetStaticProps } from "next"
-import styled from "styled-components"
 import { PageType } from "@/types/page/type"
+
+import { getLatestCategoryInfoArrayByJson } from "@/utils/function/blog-contents-loader/contents/getCategory"
+import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
+
+import { PostLink } from "@/components/Blog/Post"
+import { CategoryLink } from "@/components/Blog/Category"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -24,6 +24,10 @@ const MainPageContainer = styled.div`
     justify-content: space-between;
 
     gap: 1rem;
+
+    ${media.mediumTablet} {
+        width: 85%;
+    }
 
     ${media.widePhone} {
         width: 100%;
@@ -41,8 +45,6 @@ const LatestPostContainer = styled.div`
     align-items: flex-end;
     justify-content: center;
 
-    flex: 6;
-
     gap: 1rem;
 
     ${media.widePhone} {
@@ -56,15 +58,14 @@ const LatestPostLinkContainer = styled.div`
     align-items: flex-end;
     justify-content: flex-start;
 
-    width: 100%;
-    height: 32.5rem;
+    height: 31.25rem;
     overflow-y: scroll;
 
     gap: 1.75rem;
-    padding-right: 1rem;
+    padding: 0.25rem 1rem 1rem 0;
 
     ::-webkit-scrollbar {
-        width: 0.125rem;
+        width: 0.1rem;
         padding: 0.25rem;
     }
 
@@ -99,8 +100,6 @@ const CategoryContainer = styled.div`
     align-items: flex-start;
     justify-content: center;
 
-    flex: 4;
-
     gap: 1rem;
 
     ${media.widePhone} {
@@ -115,8 +114,7 @@ const CategoryLinkContainer = styled.div`
 
     width: 100%;
     height: 32.5rem;
-
-    overflow-y: scroll;
+    padding: 0.25rem 1rem 1rem 0;
 
     gap: 1.75rem;
 
@@ -129,26 +127,30 @@ const CategoryLinkContainer = styled.div`
 
         gap: 1.5rem;
 
-        overflow-y: auto;
-
         padding-bottom: 2.5rem;
     }
 `
 
 const ContainerTitle = styled.div`
-    font-size: ${(p) => p.theme.sm};
-    font-weight: 400;
+    font-size: ${(p) => p.theme.md};
+    font-weight: 200;
     color: ${(p) => p.theme.primary1};
-    background-color: ${(p) => p.theme.primary1}36;
-    border-radius: ${(p) => `0 0 ${p.theme.bsm} ${p.theme.bsm}`};
-    padding: 0.15rem 0.35rem;
+
+    background-color: ${({ theme }) => `${theme.primary1}${theme.opacity10}`};
+
+    border-radius: ${(p) => p.theme.bxxsm};
+
+    padding: 0.15rem 0.3rem;
 
     user-select: none;
 
     ${media.widePhone} {
-        border-radius: ${(p) => `0 ${p.theme.bsm} ${p.theme.bsm} 0`};
-        border-left: 0.25rem solid ${(p) => p.theme.primary1};
-        margin-left: 5%;
+        font-size: ${(p) => p.theme.sm};
+        font-weight: 500;
+
+        border-radius: ${(p) => `0 ${p.theme.bxsm} ${p.theme.bxsm} 0`};
+        border-left: 0.15rem solid ${(p) => p.theme.primary1};
+        margin-left: 2.5%;
     }
 `
 interface MainPageProps {
@@ -188,14 +190,13 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
         </MainPageContainer>
     )
 }
-
 MainPage.displayName = "Home" as PageType
 
 export default MainPage
 
 export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
     const latestPostArray = await getLatestPostMeta()
-    const categoryInfoArray = await getCategoryInfoArrayByJson()
+    const categoryInfoArray = await getLatestCategoryInfoArrayByJson()
     return {
         props: {
             latestPostArray,
