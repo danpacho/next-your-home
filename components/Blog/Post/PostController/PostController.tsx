@@ -3,7 +3,7 @@ import { PostControllerType as PostControllerPreviewProps } from "@/types/post/c
 import styled, { css } from "styled-components"
 import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
-import { shadow } from "@/styles/utils/shadow"
+import shadow from "@/styles/utils/shadow"
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
@@ -12,9 +12,11 @@ import { HomeIcon, NextIcon, PrevIcon } from "@/components/UI/Atoms/Icons"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
+    width: ${({ isHover }) => (isHover ? "29rem" : "2.75rem")};
+    min-width: 2.75rem;
 
     position: fixed;
-    bottom: 1.5rem;
+    bottom: 1.75rem;
     left: 50%;
     transform: translate(-50%, -1.5rem);
 
@@ -23,15 +25,15 @@ const ControllerContainer = styled.div<IsHover>`
     align-items: center;
     justify-content: space-evenly;
 
-    background-color: ${(p) => p.theme.white}D8;
-    backdrop-filter: blur(15px);
-    box-shadow: ${shadow.shadowXlg};
-    border-radius: 50rem;
-    padding: 0.65rem;
-    border: 0.1rem solid ${(p) => p.theme.gray2};
+    background-color: ${(p) => `${p.theme.white}${p.theme.opacity80}`};
+    backdrop-filter: blur(10px);
 
-    width: ${({ isHover }) => (isHover ? "29rem" : "2.75rem")};
-    min-width: 2.75rem;
+    padding: 0.65rem;
+
+    box-shadow: ${shadow.shadowXxlg};
+
+    border: 0.1rem solid ${(p) => p.theme.gray2};
+    border-radius: 50rem;
 
     ${media.widePhone} {
         width: 83.5%;
@@ -81,7 +83,6 @@ const ControllerButton = styled.button<ControllerButtonType>`
     padding: 0.25rem;
 
     background-color: ${(p) => p.theme.gray1};
-
     border: 0.1rem solid ${(p) => p.theme.gray3};
 
     &:hover {
@@ -99,14 +100,12 @@ const ControllerButton = styled.button<ControllerButtonType>`
     }
 `
 const InfoContainer = styled.div<IsHover>`
-    transition: opacity cubic-bezier(0.075, 0.82, 0.165, 1) 1.5s;
-
     display: ${({ isHover }) => (isHover ? "flex" : "none")};
     flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    animation: ${animation.fadeIn} 0.85s;
+    animation: ${animation.fadeIn} ease-out 1s;
 
     ${media.widePhone} {
         display: flex;
@@ -122,16 +121,18 @@ const InfoContainer = styled.div<IsHover>`
 const PostTitleText = styled.p`
     transition: color, border ease-out 0.25s;
     min-width: 10rem;
+
     color: ${(p) => p.theme.gray5};
     font-weight: 600;
     font-size: ${(p) => p.theme.xsm};
-
     text-align: center;
 
     padding-top: 0.35rem;
     padding-bottom: 0.1rem;
-    border-bottom: 0.25rem solid transparent;
+
     margin: 0 0.25rem;
+
+    border-bottom: 0.25rem solid transparent;
 
     &:hover {
         border-color: ${(p) => p.theme.gray3};
@@ -143,10 +144,12 @@ const PostTitleText = styled.p`
     ${media.widePhone} {
         min-width: unset;
         width: 5rem;
-        padding: 0;
-        border-bottom: none;
 
         font-weight: 400;
+
+        padding: 0;
+
+        border-bottom: none;
     }
 
     ${media.mediumPhone} {
@@ -160,6 +163,7 @@ interface PostControllerProps extends PostControllerPreviewProps {
 }
 
 const TITLE_MAX_LENGTH = 15
+const POST_CONTROLLER_CLOSE_TIME = 5000
 
 function PostController({
     prevPost,
@@ -174,7 +178,7 @@ function PostController({
     useEffect(() => {
         const setHoverFalseAfterSecond = setTimeout(
             () => setIsHover(false),
-            5000
+            POST_CONTROLLER_CLOSE_TIME
         )
         return () => clearTimeout(setHoverFalseAfterSecond)
     }, [])
@@ -185,20 +189,18 @@ function PostController({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
         >
-            <InfoContainer isHover={isHover}>
-                <Link href={prevPost.postUrl} passHref>
+            <Link href={prevPost.postUrl} passHref>
+                <InfoContainer isHover={isHover}>
                     <ControllerButton
                         buttonType="prev"
                         type="button"
                         aria-label="previous post"
                     >
-                        <PrevIcon width="1rem" height="1rem" />
+                        <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
-                </Link>
-                <Link href={prevPost.postUrl} passHref>
                     <PostTitleText>{prevPostTitle}</PostTitleText>
-                </Link>
-            </InfoContainer>
+                </InfoContainer>
+            </Link>
 
             <Link href={categoryURL} passHref>
                 <ControllerButton
@@ -206,24 +208,22 @@ function PostController({
                     type="button"
                     aria-label="back to category"
                 >
-                    <HomeIcon width="1rem" height="1rem" />
+                    <HomeIcon width="18px" height="18px" />
                 </ControllerButton>
             </Link>
 
-            <InfoContainer isHover={isHover}>
-                <Link href={nextPost.postUrl} passHref>
+            <Link href={nextPost.postUrl} passHref>
+                <InfoContainer isHover={isHover}>
                     <PostTitleText>{nextPostTitle}</PostTitleText>
-                </Link>
-                <Link href={nextPost.postUrl} passHref>
                     <ControllerButton
                         buttonType="next"
                         type="button"
                         aria-label="next post"
                     >
-                        <NextIcon width="1rem" height="1rem" />
+                        <NextIcon width="18px" height="18px" />
                     </ControllerButton>
-                </Link>
-            </InfoContainer>
+                </InfoContainer>
+            </Link>
         </ControllerContainer>
     )
 }
