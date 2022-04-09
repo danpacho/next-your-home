@@ -40,30 +40,35 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
     padding: 2.15rem;
 
     border-right: 0.2rem solid
-        ${({ color, theme }) => `${color}${theme.opacity50}`};
+        ${({ color, theme }) => `${color}${theme.opacity20}`};
     border-radius: ${({ theme }) => `7rem ${theme.bxxsm} ${theme.bxxsm} 7rem`};
 
     background: rgba(255, 255, 255, 0.65);
     backdrop-filter: blur(15px);
 
     box-shadow: ${shadow.shadowSm};
+
     user-select: none;
+
     cursor: pointer;
 
     &:hover {
-        box-shadow: 5px 0 0 0
+        box-shadow: 5px 3.5px 0 0
             ${({ color, theme }) => `${color}${theme.opacity50}`};
-        border-color: ${({ color, theme }) => `${color}${theme.opacity50}`};
+
         backdrop-filter: none;
     }
 
     ${media.widePhone} {
         height: ${ITEM_HEIGHT.widePhone}rem;
-        padding: 1.5rem;
-        border-right-width: 0.25rem;
 
         background-color: ${(p) => p.theme.white};
         backdrop-filter: none;
+
+        padding: 1.5rem;
+
+        border-right-width: 0.25rem;
+
         &:hover {
             box-shadow: none;
         }
@@ -82,7 +87,7 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
     height: ${ITEM_HEIGHT.wideScreen}rem;
 
     box-shadow: ${({ isHover, color, theme }) =>
-        `0 0 0 ${isHover ? "1.1rem" : "0.25rem"} ${color}${theme.opacity20}`};
+        `0 0 0 ${isHover ? "1.1rem" : "0.5rem"} ${color}${theme.opacity20}`};
 
     border-radius: ${ITEM_HEIGHT.wideScreen / 2}rem;
 
@@ -97,7 +102,7 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
 
         border-radius: ${ITEM_HEIGHT.widePhone / 2}rem;
         box-shadow: ${({ color, theme }) =>
-            `0 0 0 0.25rem ${color}${theme.opacity30}`};
+            `0 0 0 0.35rem ${color}${theme.opacity20}`};
     }
 `
 
