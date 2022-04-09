@@ -29,8 +29,8 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
         display: block;
 
         background-color: ${({ underscoreColor }) => underscoreColor};
-        opacity: ${({ underscoreOpacity }) =>
-            underscoreOpacity ? underscoreOpacity : 0.35};
+        opacity: ${({ underscoreOpacity, theme }) =>
+            underscoreOpacity ? underscoreOpacity : 0.2};
 
         margin-top: -0.35rem;
         height: 0.5rem;
@@ -48,8 +48,14 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
             }
         `}
 
-    ${media.widePhone} {
+    ${media.mediumTablet} {
         font-size: ${(p) => p.theme.md};
+        ::after {
+            display: none;
+        }
+    }
+
+    ${media.widePhone} {
         font-weight: 300;
     }
 `
