@@ -1,6 +1,5 @@
 import media from "@/styles/utils/media"
-import { shadow } from "@/styles/utils/shadow"
-import { ReactNode } from "react"
+import shadow from "@/styles/utils/shadow"
 import styled, {
     css,
     DefaultTheme,
@@ -90,13 +89,13 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
     margin: 1rem 0;
     background-color: ${(props) => props.theme.white};
 
-    border-radius: 0 ${(props) => props.theme.bxxlg} 0 0;
+    border-radius: 0 ${(props) => props.theme.blg} 0 0;
 
     border-left-width: 0.65rem;
     border-bottom-width: 0.15rem;
     border-style: solid;
 
-    box-shadow: ${shadow.shadowSm};
+    box-shadow: ${shadow.shadowXxsm};
 
     p {
         font-weight: 500;
@@ -118,7 +117,7 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp>`
     user-select: none;
 
     border-radius: ${(props) => props.theme.blg};
-    border-width: 0.2rem;
+    border-width: 0.175rem;
     border-style: solid;
 
     ${({ type }) => quoteStyles[type]?.iconCss};
@@ -208,7 +207,6 @@ function Quote(props: QuoteProps) {
     const lastChildren = props.children[1].props.children as string | string[]
     const quoteType = getQuoteType(lastChildren)
     const fixedProps = getQuoteProp(quoteType, props)
-
     return (
         <QuoteStyled type={quoteType}>
             <QuoteIcon type={quoteType}>

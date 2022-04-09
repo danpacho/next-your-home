@@ -1,5 +1,5 @@
-export { default as Code } from "./Code/Code"
-export { default as Pre } from "./Code/Pre"
+export { default as Code } from "./CodeAtoms/Code/Code"
+export { default as Pre } from "./CodeAtoms/Pre"
 
 export { default as Divider } from "./Divider/Divider"
 

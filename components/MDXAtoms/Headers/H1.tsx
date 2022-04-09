@@ -1,7 +1,7 @@
 import styled from "styled-components"
 import media from "@/styles/utils/media"
 
-import { useFocusTitle } from "@/lib/tableOfContent/tableOfContent.state"
+import { useFocusTitle } from "@/lib/atoms/tableOfContent/tableOfContent.state"
 
 import useElementObserver from "@/hooks/useElementObserver"
 

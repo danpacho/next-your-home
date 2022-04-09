@@ -1,6 +1,7 @@
 import React from "react"
 import NextImage from "next/image"
 import styled from "styled-components"
+import shadow from "@/styles/utils/shadow"
 
 interface ImageProps {
     src: string
@@ -8,79 +9,51 @@ interface ImageProps {
     title: string
 }
 
-interface ImageContainerSize {
-    width: string
-    height: string
-}
+const ImageWrap = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-const ImageContainer = styled.div<ImageContainerSize>`
-    position: relative;
+    & > span {
+        transition: box-shadow ease-out 0.5s;
+        box-shadow: ${shadow.shadowMd};
+        border-radius: ${(p) => p.theme.bmd};
 
-    transition: transform 0.25s ease-out;
-
-    width: max(30vw, 15rem);
-    max-width: 30rem;
-    aspect-ratio: ${({ width, height }) => Number(width) / Number(height)};
-
-    border-radius: ${(props) => props.theme.bmd};
-
-    box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px,
-        rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
-
-    user-select: none;
-    margin-bottom: 1rem;
-
-    &:hover {
-        transform: scale(1.025);
+        &:hover {
+            box-shadow: ${shadow.shadowLg};
+        }
     }
 `
-
 const NextImageStyled = styled(NextImage)`
-    border-radius: ${(props) => props.theme.bmd};
-`
-
-const ImageTitle = styled.div`
-    color: ${(props) => props.theme.gray6};
-`
-const ImageSource = styled.a`
-    transition: font-weight 0.15s ease-in;
-
-    font-size: ${(props) => props.theme.md};
-    font-weight: 700;
-    color: ${(props) => props.theme.teal7};
-    text-decoration: none;
-
-    border-bottom: 0.15rem solid ${(props) => props.theme.teal7};
-
-    &:active {
-        color: ${(props) => props.theme.teal10};
-    }
+    transition: transform ease-out 0.25s;
 
     &:hover {
-        font-weight: 1000;
+        transform: scale(1.05) !important;
     }
 `
-
+const ImageTitle = styled.span`
+    color: ${(p) => p.theme.gray5};
+    text-decoration: underline;
+`
 function Image({ src, alt, title }: ImageProps) {
-    const [filteredAlt, width, height]: string[] = alt.split(":")
-    const isSrcIncluded = title.includes("src:")
+    const [filteredAlt, width, height]: string[] = alt
+        .split(":")
+        .map((text) => text.trim())
+
     return (
         <>
-            <ImageContainer width={width} height={height}>
+            <ImageWrap>
                 <NextImageStyled
-                    layout="fill"
+                    width={width}
+                    height={height}
                     src={src}
                     alt={filteredAlt}
-                    quality={100}
+                    quality={75}
+                    priority
                     onContextMenu={(e) => e.preventDefault()}
                 />
-            </ImageContainer>
-            {!isSrcIncluded && <ImageTitle>{title}</ImageTitle>}
-            {isSrcIncluded && (
-                <ImageSource href={title.replace("src:", "")}>
-                    {title.replace("src:", "")}
-                </ImageSource>
-            )}
+            </ImageWrap>
+            <ImageTitle>{title}</ImageTitle>
         </>
     )
 }

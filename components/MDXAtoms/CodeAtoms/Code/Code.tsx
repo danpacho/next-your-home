@@ -1,5 +1,9 @@
-import { useState } from "react"
 import styled from "styled-components"
+import media from "@/styles/utils/media"
+import pallete from "@/styles/utils/pallete"
+
+import { BlogPropertyError } from "@/utils/function/blog-error-handler/blogError"
+import { CodeContentBox, CodeCopyButton } from "./CodeCopyButton"
 
 import { PrismLight as SyntaxHighlighter } from "react-syntax-highlighter"
 
@@ -13,13 +17,8 @@ import bash from "react-syntax-highlighter/dist/cjs/languages/prism/bash"
 import css from "react-syntax-highlighter/dist/cjs/languages/prism/css"
 
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
-
-import Toast from "@/components/UX/Toast/Toast"
-import useClipboard from "@/hooks/useClipboard"
-
-import media from "@/styles/utils/media"
-import pallete from "@/styles/utils/pallete"
-import { BlogPropertyError } from "@/utils/function/blog-error-handler/blogError"
+import palleteOpacity from "@/styles/utils/palleteOpacity"
+import shadow from "@/styles/utils/shadow"
 
 const SUPPORTED_LANGUAGE = {
     javascript: ["javascript", "js"],
@@ -42,61 +41,30 @@ SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.matlab, matlab)
 SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.bash, bash)
 SyntaxHighlighter.registerLanguage(SUPPORTED_LANGUAGE.css, css)
 
-interface CodeProps {
-    children: string
-    className?: string
-}
+const CodeContainer = styled.div`
+    position: relative;
 
-const CodeContentBox = styled.div`
-    position: absolute;
-
-    top: 1rem;
-    right: 1rem;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: fit-content;
-    height: fit-content;
-    padding: 0.25rem 0.5rem;
-
-    background-color: ${(p) => p.theme.gray10};
-
-    border: 0.15rem solid ${(props) => props.theme.blue8};
-
-    border-radius: ${(props) => props.theme.bsm};
-
-    color: ${(props) => props.theme.white};
-    font-weight: 800;
-    font-size: ${(props) => props.theme.sm};
-    letter-spacing: 0.05rem;
-
-    &:hover {
-        border-color: ${(props) => props.theme.blue5};
-    }
-
-    transition: all 0.15s ease-in;
-
-    user-select: none;
+    width: 100%;
+    min-width: 25rem;
 
     ${media.widePhone} {
-        padding: 0.25rem;
-        font-size: ${(p) => p.theme.xsm};
+        min-width: unset;
     }
 `
+
 const CodeBox = styled(SyntaxHighlighter)`
-    min-height: 4.25rem;
+    min-height: 2.5rem;
 
     border-radius: ${(props) => props.theme.bmd};
 
-    box-shadow: 0 10px 10px ${(props) => props.theme.gray4};
+    box-shadow: ${shadow.shadowLg};
 
     user-select: none;
     overflow-x: auto;
 
     background: ${(p) => p.theme.gray10} !important;
     margin: 0 !important;
+    padding: 1rem 0 !important;
     font-size: 14px !important;
     line-height: 1.5rem !important;
 
@@ -104,6 +72,11 @@ const CodeBox = styled(SyntaxHighlighter)`
         box-shadow: none;
         border-width: 0;
         border-radius: ${(p) => p.theme.bsm};
+
+        padding-left: 0.75rem !important;
+        .linenumber {
+            display: none !important;
+        }
     }
 
     code {
@@ -117,32 +90,13 @@ const CodeBox = styled(SyntaxHighlighter)`
     }
 
     .linenumber {
-        display: none !important;
+        min-width: 2rem !important;
+        font-size: ${(p) => p.theme.xsm};
+        color: ${(p) => p.theme.gray7} !important;
     }
 `
 
-const CodeContainer = styled.div`
-    position: relative;
-
-    width: 100%;
-    min-width: 25rem;
-
-    ${media.widePhone} {
-        min-width: unset;
-    }
-`
-
-interface CodeOption {
-    add?: number[]
-    remove?: number[]
-    hightlight?: number[]
-}
-interface CodeInfo {
-    language: string
-    option?: CodeOption
-}
-
-const WRAP_TYPE: Array<"add" | "remove" | "hightlight" | string> = [
+const CODE_WRAP_TYPE: Array<"add" | "remove" | "hightlight" | string> = [
     "add",
     "remove",
     "hightlight",
@@ -163,6 +117,16 @@ const makeMinToMaxNumberArray = ([min, max]: number[]) => {
     return Array.from({ length: max - min + 1 }, (_, idx) => idx + min)
 }
 
+interface CodeOption {
+    add?: number[]
+    remove?: number[]
+    hightlight?: number[]
+}
+
+interface CodeInfo {
+    language: string
+    option?: CodeOption
+}
 const extractLanguageAndOption = (classNameLanguage: string): CodeInfo => {
     const fixedLanguage = classNameLanguage
         .replace("language-", "")
@@ -181,7 +145,7 @@ const extractLanguageAndOption = (classNameLanguage: string): CodeInfo => {
         .reduce<CodeOption>((acc, curr) => {
             const [optionKey, optionVal] = curr
             const trimedKey = optionKey.trim()
-            if (WRAP_TYPE.includes(trimedKey)) {
+            if (CODE_WRAP_TYPE.includes(trimedKey)) {
                 return {
                     ...acc,
                     [trimedKey]: makeMinToMaxNumberArray(
@@ -190,7 +154,6 @@ const extractLanguageAndOption = (classNameLanguage: string): CodeInfo => {
                 }
             } else {
                 //TODO: code error 타입 작성하기
-                // throw blogError("Option Error Occured!", `${trimedKey}`)
                 return acc
             }
         }, {})
@@ -205,23 +168,17 @@ const colorCode = (lineNumber: number, option?: CodeOption) => {
     const commonLineStyle = {
         display: "block",
         backgroundColor: "transparent",
-        paddingLeft: ".25rem",
-        borderLeft: "solid .3rem",
-        borderLeftColor: "transparent",
     }
     if (option?.hightlight?.includes(lineNumber)) {
-        commonLineStyle.backgroundColor = `${pallete.teal6}19`
-        commonLineStyle.borderLeftColor = `${pallete.teal6}66`
+        commonLineStyle.backgroundColor = `${pallete.teal10}${palleteOpacity.opacity20}`
         return { style: commonLineStyle }
     }
     if (option?.remove?.includes(lineNumber)) {
-        commonLineStyle.backgroundColor = `${pallete.red5}19`
-        commonLineStyle.borderLeftColor = `${pallete.red5}66`
+        commonLineStyle.backgroundColor = `${pallete.red4}${palleteOpacity.opacity20}`
         return { style: commonLineStyle }
     }
     if (option?.add?.includes(lineNumber)) {
-        commonLineStyle.backgroundColor = `${pallete.blue5}19`
-        commonLineStyle.borderLeftColor = `${pallete.blue5}66`
+        commonLineStyle.backgroundColor = `${pallete.blue8}${palleteOpacity.opacity20}`
         return { style: commonLineStyle }
     }
     return {}
@@ -243,6 +200,10 @@ const InlineCode = styled.code`
     background-color: ${(p) => p.theme.gray1};
 `
 
+interface CodeProps {
+    children: string
+    className?: string
+}
 function Code({ children: code, className: classNameLanguage }: CodeProps) {
     if (!classNameLanguage) return <InlineCode>{code}</InlineCode>
 
@@ -267,100 +228,8 @@ function Code({ children: code, className: classNameLanguage }: CodeProps) {
                 {code}
             </CodeBox>
             <CodeContentBox>{language}</CodeContentBox>
-            <CopyContentBtn copyObject={code} />
+            <CodeCopyButton code={code} />
         </CodeContainer>
-    )
-}
-
-const CodeCopyButton = styled.button`
-    position: absolute;
-    bottom: 1rem;
-    right: 1rem;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 2rem;
-    height: 2rem;
-
-    padding: 0.25rem;
-
-    font-size: ${(props) => props.theme.sm};
-    font-weight: 700;
-    color: ${(props) => props.theme.teal6};
-
-    background-color: ${(p) => p.theme.gray10};
-
-    border-radius: ${(props) => props.theme.bsm};
-    border: 0.15rem solid ${(props) => props.theme.blue8};
-
-    transition: all 0.075s ease-in;
-    &:hover {
-        border-color: ${(props) => props.theme.blue5};
-        transform: scale(1.05);
-    }
-
-    &:active {
-        transform: scale(0.9);
-    }
-
-    ${media.widePhone} {
-        padding: 0.75rem;
-        width: 1.25rem;
-        height: 1.25rem;
-    }
-`
-
-interface CopyContentProps {
-    copyObject: string
-}
-
-const CopyInfo = {
-    success: {
-        message: "Copied!✂️",
-        left: 90,
-    },
-    fail: {
-        message: "Copy Failed❗️",
-        left: 124,
-    },
-}
-
-function CopyContentBtn({ copyObject }: CopyContentProps) {
-    const { copyTextToUser } = useClipboard()
-    const [isCopySuccess, setIsCopySuccess] = useState(false)
-    return (
-        <>
-            <CodeCopyButton
-                onClick={async () => {
-                    if (!isCopySuccess) {
-                        const { isCopySucess } = await copyTextToUser(
-                            copyObject
-                        )
-                        setIsCopySuccess(isCopySucess)
-                    }
-                }}
-            >
-                {!isCopySuccess && "📝"}
-                {isCopySuccess && "✅"}
-            </CodeCopyButton>
-            <Toast
-                tooltipElement={
-                    <CodeContentBox>
-                        {isCopySuccess && <>{CopyInfo.success.message}</>}
-                        {!isCopySuccess && <>{CopyInfo.fail.message}</>}
-                    </CodeContentBox>
-                }
-                active={isCopySuccess}
-                setActive={setIsCopySuccess}
-                left={
-                    isCopySuccess ? CopyInfo.success.left : CopyInfo.fail.left
-                }
-                bottom={24}
-                appearSecond={2}
-            />
-        </>
     )
 }
 
