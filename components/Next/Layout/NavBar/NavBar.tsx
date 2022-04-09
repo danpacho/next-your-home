@@ -1,5 +1,5 @@
 import media from "@/styles/utils/media"
-import { shadow } from "@/styles/utils/shadow"
+import shadow from "@/styles/utils/shadow"
 import Link from "next/link"
 import styled from "styled-components"
 import SvgMainLogo from "./MainLogo/MainLogo"
@@ -13,6 +13,10 @@ const NavContainer = styled.nav`
     width: 70%;
     height: 5rem;
 
+    ${media.mediumTablet} {
+        width: 85%;
+    }
+
     ${media.widePhone} {
         position: sticky;
         top: 1rem;
@@ -20,13 +24,13 @@ const NavContainer = styled.nav`
         width: 85%;
         height: fit-content;
 
-        background-color: ${(p) => p.theme.white}7F;
+        background-color: ${(p) => `${p.theme.white}${p.theme.opacity70}`};
         backdrop-filter: blur(5px);
 
-        border: 0.15rem solid ${(p) => p.theme.primary3};
+        border: 1.5px solid ${(p) => p.theme.primary2};
         border-radius: ${(p) => p.theme.blg};
 
-        box-shadow: ${shadow.shadowSm};
+        box-shadow: ${shadow.shadowXxsm};
 
         z-index: ${(p) => p.theme.zContnet};
     }
@@ -53,6 +57,7 @@ const LogoTitle = styled.header`
     color: ${(p) => p.theme.primary1};
 
     ${media.widePhone} {
+        font-size: ${(p) => p.theme.sm};
         font-weight: 700;
     }
 `
