@@ -2,6 +2,8 @@ import { useWindowTheme } from "@/hooks"
 import useToggle from "@/hooks/useToggle"
 import { useSetTheme } from "@/lib/atoms/theme/theme.state"
 import animation from "@/styles/utils/animation"
+import media from "@/styles/utils/media"
+import shadow from "@/styles/utils/shadow"
 import { ThemeMode } from "@/types/theme"
 import { useEffect } from "react"
 import styled from "styled-components"
@@ -11,13 +13,15 @@ interface ThemeButtonContainerStyle {
     themeMode: ThemeMode
 }
 const ThemeButtonContainer = styled.button<ThemeButtonContainerStyle>`
-    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.25s;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s;
 
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-around;
+
     gap: 0.5rem;
+
     width: fit-content;
     height: fit-content;
 
@@ -25,12 +29,11 @@ const ThemeButtonContainer = styled.button<ThemeButtonContainerStyle>`
 
     background-color: ${({ theme, themeMode }) =>
         themeMode === "dark"
-            ? `${theme.gray10}${theme.opacity50}`
-            : `${theme.gray1}${theme.opacity50}`};
+            ? `${theme.gray10}${theme.opacity60}`
+            : `${theme.white}${theme.opacity60}`};
     backdrop-filter: blur(15px);
 
-    border: 0.05rem solid
-        ${(p) => (p.themeMode === "dark" ? p.theme.gray7 : p.theme.gray4)};
+    box-shadow: ${shadow.shadowXxsm};
     border-radius: ${({ theme, themeMode }) =>
         themeMode === "light"
             ? `${theme.blg} ${theme.bsm} ${theme.blg} ${theme.bsm}`
@@ -39,9 +42,8 @@ const ThemeButtonContainer = styled.button<ThemeButtonContainerStyle>`
 
     svg {
         fill: ${(p) =>
-            p.themeMode === "dark" ? p.theme.yellow3 : p.theme.red4};
-        stroke: ${(p) =>
-            p.themeMode === "dark" ? p.theme.yellow3 : p.theme.red4};
+            p.themeMode === "dark" ? p.theme.gray1 : p.theme.trueDeepDark};
+        stroke: ${(p) => p.themeMode === "light" && p.theme.trueDeepDark};
         animation: ${animation.scaleRotation} 0.65s
             cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -49,6 +51,26 @@ const ThemeButtonContainer = styled.button<ThemeButtonContainerStyle>`
         font-size: ${(p) => p.theme.xsm};
         animation: ${animation.boxZoom} 0.6s
             cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    ${media.widePhone} {
+        padding: 0.05rem 0.25rem 0.05rem 0.5rem;
+        margin-right: 0.45rem;
+
+        background-color: transparent;
+        border-left: 1px solid
+            ${({ theme, themeMode }) =>
+                themeMode === "dark" ? theme.gray1 : theme.trueDeepDark};
+
+        border-radius: unset;
+        backdrop-filter: unset;
+        box-shadow: unset;
+
+        svg {
+            fill: ${(p) =>
+                p.themeMode === "dark" ? p.theme.gray1 : p.theme.trueDeepDark};
+            stroke: ${(p) => p.themeMode === "light" && p.theme.trueDeepDark};
+        }
     }
 `
 
