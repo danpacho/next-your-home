@@ -1,3 +1,4 @@
+import ThemeButton from "@/components/UI/Molecules/Button/ThemeButton"
 import media from "@/styles/utils/media"
 import shadow from "@/styles/utils/shadow"
 import Link from "next/link"
@@ -81,6 +82,7 @@ function NavBar() {
                     <LogoTitle>Danpacho</LogoTitle>
                 </LogoContainer>
             </Link>
+            <ThemeButton />
         </NavContainer>
     )
 }
