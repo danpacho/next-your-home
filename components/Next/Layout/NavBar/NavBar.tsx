@@ -1,8 +1,14 @@
-import ThemeButton from "@/components/UI/Molecules/Button/ThemeButton"
+import Link from "next/link"
+
+import styled from "styled-components"
 import media from "@/styles/utils/media"
 import shadow from "@/styles/utils/shadow"
-import Link from "next/link"
-import styled from "styled-components"
+
+import { useTheme } from "@/lib/atoms/theme/theme.state"
+import { IsLight } from "@/types/theme"
+
+import ThemeButton from "@/components/UI/Molecules/Button/ThemeButton"
+
 import SvgMainLogo from "./MainLogo/MainLogo"
 
 const NavContainer = styled.nav`
@@ -13,6 +19,8 @@ const NavContainer = styled.nav`
 
     width: 70%;
     height: 5rem;
+
+    color: ${({ theme }) => theme.themePrimaryColor};
 
     ${media.mediumTablet} {
         width: 85%;
@@ -25,10 +33,11 @@ const NavContainer = styled.nav`
         width: 85%;
         height: fit-content;
 
-        background-color: ${(p) => `${p.theme.white}${p.theme.opacity70}`};
+        background-color: ${(p) =>
+            `${p.theme.containerBackgroundColor}${p.theme.opacity70}`};
         backdrop-filter: blur(5px);
 
-        border: 1.5px solid ${(p) => p.theme.primary2};
+        border: 1.5px solid ${({ theme }) => theme.themePrimaryColor};
         border-radius: ${(p) => p.theme.blg};
 
         box-shadow: ${shadow.shadowXxsm};
@@ -52,10 +61,9 @@ const LogoContainer = styled.div`
     cursor: pointer;
 `
 
-const LogoTitle = styled.header`
+const LogoTitle = styled.header<IsLight>`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
-    color: ${(p) => p.theme.primary1};
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
@@ -74,12 +82,13 @@ const MainLogo = styled(SvgMainLogo)`
 `
 
 function NavBar() {
+    const isLight = useTheme() === "light"
     return (
         <NavContainer>
             <Link href="/" passHref>
                 <LogoContainer>
                     <MainLogo />
-                    <LogoTitle>Danpacho</LogoTitle>
+                    <LogoTitle isLight={isLight}>Danpacho</LogoTitle>
                 </LogoContainer>
             </Link>
             <ThemeButton />
