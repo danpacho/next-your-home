@@ -56,7 +56,8 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
 
     padding: 0.25rem 1.5rem;
 
-    background-color: ${(p) => `${p.theme.white}${p.theme.opacity40}`};
+    background: ${(p) =>
+        `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
     backdrop-filter: blur(15px);
 
     box-shadow: ${shadow.shadowSm};
@@ -83,7 +84,6 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
 
         padding: 0.5rem 1rem;
 
-        background-color: ${(p) => `${p.theme.white}${p.theme.opacity90}`};
         backdrop-filter: unset;
 
         &:hover {
@@ -110,13 +110,11 @@ const ContentContainer = styled.div`
 
 const PostPreview = styled.div`
     font-size: ${(p) => p.theme.sm};
-    color: ${(p) => p.theme.gray6};
+    color: ${(p) => p.theme.descriptionFontColor};
     font-weight: 200;
     line-height: 1.15rem;
 
     ${media.widePhone} {
-        color: ${(p) => p.theme.gray7};
-
         font-weight: 300;
         line-height: 1rem;
     }
@@ -154,7 +152,6 @@ function PostLink({
                 <ContentContainer>
                     <PostTitle
                         isHover={isHover}
-                        fontColor="trueDeepDark"
                         fontSize="lg"
                         fontWeight={200}
                         underscoreColor={color}

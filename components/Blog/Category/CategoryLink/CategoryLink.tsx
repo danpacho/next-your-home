@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import Link from "next/link"
 import styled from "styled-components"
 import media from "@styles/utils/media"
@@ -8,14 +8,12 @@ import { CategoryInfoType } from "@/types/category/info"
 import { sliceTextByMaxLength } from "@/utils/function/text"
 import shadow from "@/styles/utils/shadow"
 import animation from "@/styles/utils/animation"
+import { IsLight } from "@/types/theme"
+import { useTheme } from "@/lib/atoms/theme/theme.state"
+import { shadeColor } from "@/utils/function/color/shadeColor"
 
 interface CategoryLinkContainerStyle {
     color: string
-}
-
-const OPACITY = {
-    border: 66,
-    background: 19,
 }
 
 const ITEM_HEIGHT = {
@@ -27,7 +25,7 @@ interface CategoryLinkContainerStyle {
     isHover: boolean
     color: string
 }
-const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
+const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     transition: box-shadow ease-out 0.25s;
 
     display: flex;
@@ -39,11 +37,13 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
 
     padding: 2.15rem;
 
-    border-right: 0.2rem solid
-        ${({ color, theme }) => `${color}${theme.opacity20}`};
+    border-right: 0.1rem solid
+        ${({ color, theme, isLight }) =>
+            isLight ? `${color}${theme.opacity20}` : color};
     border-radius: ${({ theme }) => `7rem ${theme.bxxsm} ${theme.bxxsm} 7rem`};
 
-    background: rgba(255, 255, 255, 0.65);
+    background: ${(p) =>
+        `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
     backdrop-filter: blur(15px);
 
     box-shadow: ${shadow.shadowSm};
@@ -62,7 +62,6 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
     ${media.widePhone} {
         height: ${ITEM_HEIGHT.widePhone}rem;
 
-        background-color: ${(p) => p.theme.white};
         backdrop-filter: none;
 
         padding: 1.5rem;
@@ -74,7 +73,7 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle>`
         }
     }
 `
-const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
+const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     transition: box-shadow cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
 
     display: flex;
@@ -86,8 +85,10 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
     width: ${ITEM_HEIGHT.wideScreen}rem;
     height: ${ITEM_HEIGHT.wideScreen}rem;
 
-    box-shadow: ${({ isHover, color, theme }) =>
-        `0 0 0 ${isHover ? "1.1rem" : "0.5rem"} ${color}${theme.opacity20}`};
+    box-shadow: ${({ isHover, color, theme, isLight }) =>
+        `0 0 0 ${isHover ? "1.1rem" : "0.5rem"} ${color}${
+            isLight ? theme.opacity20 : theme.opacity50
+        }`};
 
     border-radius: ${ITEM_HEIGHT.wideScreen / 2}rem;
 
@@ -101,8 +102,10 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle>`
         height: ${ITEM_HEIGHT.widePhone}rem;
 
         border-radius: ${ITEM_HEIGHT.widePhone / 2}rem;
-        box-shadow: ${({ color, theme }) =>
-            `0 0 0 0.35rem ${color}${theme.opacity20}`};
+        box-shadow: ${({ color, theme, isLight }) =>
+            `0 0 0 0.35rem ${color}${
+                isLight ? theme.opacity20 : theme.opacity50
+            }`};
     }
 `
 
@@ -123,13 +126,11 @@ const CategoryInfoContainer = styled.div`
 
 const CategoryDescription = styled.div`
     font-size: ${(p) => p.theme.sm};
-    color: ${(p) => p.theme.gray5};
+    color: ${(p) => p.theme.descriptionFontColor};
     font-weight: 200;
     line-height: 1.15rem;
 
     ${media.widePhone} {
-        color: ${(p) => p.theme.gray6};
-
         font-weight: 300;
         line-height: 1rem;
     }
@@ -145,25 +146,31 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
+    const isLight = useTheme() === "light"
+    const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     return (
         <Link href={categoryUrl} passHref>
             <CategoryLinkContainer
                 onMouseEnter={() => setIsHover(true)}
                 onMouseLeave={() => setIsHover(false)}
                 isHover={isHover}
-                color={color}
+                color={isLight ? color : darkModeColor}
+                isLight={isLight}
             >
-                <CategoryEmojiContainer color={color} isHover={isHover}>
+                <CategoryEmojiContainer
+                    isLight={isLight}
+                    color={isLight ? color : darkModeColor}
+                    isHover={isHover}
+                >
                     {emoji}
                 </CategoryEmojiContainer>
 
                 <CategoryInfoContainer>
                     <CategoryTitle
                         isHover={isHover}
-                        fontColor="gray8"
                         fontWeight={200}
                         fontSize="lg"
-                        underscoreColor={color}
+                        underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
                         {category}
