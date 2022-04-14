@@ -15,13 +15,7 @@ export interface CommonThemeProperty
         FontSize,
         BorderRadius,
         Shadow,
-        ZIndexes {
-    fontSize: string
-}
-
-export interface ThemeMode {
-    isLight: boolean
-}
+        ZIndexes {}
 
 const commonThemeProperty: CommonThemeProperty = {
     ...width,
@@ -33,31 +27,30 @@ const commonThemeProperty: CommonThemeProperty = {
     ...palleteOpacity,
 
     //* common Theme property
-    fontSize: fontSize.md,
 }
 
 const lightTheme: DefaultTheme = {
     //* common
     ...commonThemeProperty,
-
-    background: pallete.gray1,
-    color: pallete.deepDark,
-
-    borderWidth: commonThemeProperty.w1,
-    borderColor: pallete.gray3,
-    borderRadius: commonThemeProperty.bsm,
+    containerBackgroundColor: pallete.white,
+    containerBorderColor: pallete.gray2,
+    headerFontColor: pallete.trueDeepDark,
+    descriptionFontColor: pallete.gray6,
+    tagFontColor: pallete.gray1,
+    themeOpacity: 0.3,
+    themePrimaryColor: pallete.primary1,
 }
 
 const darkTheme: DefaultTheme = {
     //* common
     ...commonThemeProperty,
-
-    background: pallete.gray10,
-    color: pallete.gray2,
-
-    borderWidth: commonThemeProperty.w2,
-    borderColor: pallete.gray8,
-    borderRadius: commonThemeProperty.bmd,
+    containerBackgroundColor: "#1F1F24",
+    containerBorderColor: pallete.gray5,
+    headerFontColor: pallete.gray1,
+    descriptionFontColor: pallete.gray4,
+    tagFontColor: pallete.trueDeepDark,
+    themeOpacity: 0.6,
+    themePrimaryColor: pallete.primary3,
 }
 
-export { darkTheme, lightTheme }
+export { lightTheme, darkTheme, commonThemeProperty }
