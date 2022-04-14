@@ -1,12 +1,14 @@
+import styled, { css } from "styled-components"
 import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
-import React from "react"
-import styled, { css } from "styled-components"
+import { IsLight } from "@/types/theme"
+
+import { useTheme } from "@/lib/atoms/theme/theme.state"
 
 const SHADOW_STYLE = {
     mediumScreen: {
-        x: "15px",
-        y: "10px",
+        x: "10px",
+        y: "8px",
     },
     widePhone: {
         x: "5px",
@@ -19,7 +21,8 @@ const SHADOW_STYLE = {
 const MEDIUM_TEXT_SHADOW = `${SHADOW_STYLE.mediumScreen.x} ${SHADOW_STYLE.mediumScreen.y} ${SHADOW_STYLE.blur}`
 const SMALL_TEXT_SHADOW = `${SHADOW_STYLE.widePhone.x} ${SHADOW_STYLE.widePhone.y} ${SHADOW_STYLE.blur}`
 
-const OrderTextStyled = styled.p<OrderTextProp>`
+interface OrderTextStyle extends OrderTextProp, IsLight {}
+const OrderTextStyled = styled.p<OrderTextStyle>`
     transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
 
     display: flex;
@@ -28,29 +31,31 @@ const OrderTextStyled = styled.p<OrderTextProp>`
 
     font-weight: 800;
     font-size: 120px;
-    color: ${({ theme, isHover, color }) =>
-        isHover ? color : theme.trueDeepDark};
+    ${({ isLight, theme, isHover, color }) =>
+        isLight &&
+        css`
+            color: ${isHover ? color : theme.trueDeepDark};
+            text-shadow: ${MEDIUM_TEXT_SHADOW} ${color}${isHover ? theme.opacity20 : theme.opacity70};
+        `}
 
-    text-shadow: ${({ color: shadowColor, theme, isHover }) =>
-        `${MEDIUM_TEXT_SHADOW} ${shadowColor}${
-            isHover ? theme.opacity20 : theme.opacity70
-        }`};
+    ${({ isLight, theme, isHover, color }) =>
+        !isLight &&
+        css`
+            color: ${isHover ? theme.white : theme.gray2};
+            text-shadow: ${MEDIUM_TEXT_SHADOW}
+                ${isHover ? color : `${color}${theme.opacity50}`};
+        `}
+
     animation: ${animation.fadeIn} 0.5s ease-in;
 
     ${media.mediumTablet} {
         font-size: 100px;
-        text-shadow: ${({ color: shadowColor, theme, isHover }) =>
-            `${SMALL_TEXT_SHADOW} ${shadowColor}${
-                isHover ? theme.opacity20 : theme.opacity70
-            }`};
     }
 
     ${media.widePhone} {
         font-size: 75px;
-        text-shadow: ${({ color: shadowColor, theme, isHover }) =>
-            isHover
-                ? "none"
-                : `${SMALL_TEXT_SHADOW} ${shadowColor}${theme.opacity70}`};
+        text-shadow: none;
+        font-weight: 900;
     }
 `
 
@@ -63,7 +68,12 @@ interface OrderTextProp {
 const ORDER_TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 function PostOrderText({ order, color, isHover }: OrderTextProp) {
     return (
-        <OrderTextStyled order={order} color={color} isHover={isHover}>
+        <OrderTextStyled
+            isLight={useTheme() === "light"}
+            order={order}
+            color={color}
+            isHover={isHover}
+        >
             {ORDER_TEXT[order]}
         </OrderTextStyled>
     )
