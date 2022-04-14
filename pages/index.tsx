@@ -12,6 +12,8 @@ import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/content
 
 import { PostLink } from "@/components/Blog/Post"
 import { CategoryLink } from "@/components/Blog/Category"
+import { IsLight } from "@/types/theme"
+import { useTheme } from "@/lib/atoms/theme/theme.state"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -70,12 +72,13 @@ const LatestPostLinkContainer = styled.div`
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: ${(p) => p.theme.primary1};
+        background-color: ${({ theme }) => theme.themePrimaryColor};
         border-radius: 0.2rem;
     }
 
     ::-webkit-scrollbar-track {
-        background: ${(p) => p.theme.primary1}36;
+        background: ${({ theme }) =>
+            `${theme.themePrimaryColor}${theme.opacity50}`};
         border-radius: 0.2rem;
     }
 
@@ -131,12 +134,15 @@ const CategoryLinkContainer = styled.div`
     }
 `
 
-const ContainerTitle = styled.div`
-    font-size: ${(p) => p.theme.md};
+const ContainerTitle = styled.div<IsLight>`
+    font-size: ${(p) => p.theme.sm};
     font-weight: 200;
-    color: ${(p) => p.theme.primary1};
+    color: ${({ theme }) => theme.themePrimaryColor};
 
-    background-color: ${({ theme }) => `${theme.primary1}${theme.opacity10}`};
+    background-color: ${({ theme, isLight }) =>
+        `${isLight ? theme.primary1 : "transparent"}${
+            isLight && theme.opacity10
+        }`};
 
     border-radius: ${(p) => p.theme.bxxsm};
 
@@ -159,10 +165,11 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
+    const isLight = useTheme() === "light"
     return (
         <MainPageContainer>
             <CategoryContainer>
-                <ContainerTitle>Category</ContainerTitle>
+                <ContainerTitle isLight={isLight}>Category</ContainerTitle>
                 <CategoryLinkContainer>
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
@@ -174,7 +181,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
             </CategoryContainer>
 
             <LatestPostContainer>
-                <ContainerTitle>Latest Post</ContainerTitle>
+                <ContainerTitle isLight={isLight}>Latest Post</ContainerTitle>
                 <LatestPostLinkContainer>
                     {latestPostArray.map((latestPost, order) => (
                         <PostLink
