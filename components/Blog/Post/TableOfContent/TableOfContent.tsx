@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import styled from "styled-components"
 import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
@@ -29,6 +29,7 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
     padding: 0.75rem 0.25rem;
     border-left: 0.1rem solid ${(p) => p.theme.gray2};
 
+    color: ${(p) => p.theme.fontColor};
     font-size: ${({ theme }) => theme.sm};
     text-decoration: none;
 
@@ -36,7 +37,7 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
     transform-origin: left;
 
     &:hover {
-        color: ${(p) => p.theme.primary1};
+        color: ${(p) => p.theme.themePrimaryColor};
     }
 
     cursor: pointer;
@@ -47,7 +48,8 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
 
     font-weight: 500;
 
-    border-color: ${({ theme, isFocusing }) => isFocusing && theme.primary1};
+    border-color: ${({ theme, isFocusing }) =>
+        isFocusing && theme.themePrimaryColor};
 
     height: ${(p) => (p.isFocusing ? "fit-content" : "1.25rem")};
     min-height: 1.25rem;
