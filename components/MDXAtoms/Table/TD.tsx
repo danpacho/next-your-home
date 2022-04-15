@@ -4,7 +4,7 @@ import styled from "styled-components"
 const TdStyled = styled.td`
     font-size: ${(p) => p.theme.sm};
     font-weight: 500;
-    color: ${(p) => p.theme.gray7};
+    color: ${(p) => p.theme.fontColor};
     padding: 0.75rem 1.25rem;
 
     text-align: center;

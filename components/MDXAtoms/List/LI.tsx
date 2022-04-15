@@ -4,6 +4,7 @@ const LIStyled = styled.li`
     margin: 0.5rem 0;
     font-size: ${(p) => p.theme.md};
     font-weight: 500;
+    color: ${(p) => p.theme.fontColor};
 
     li:before {
         content: "🍞";

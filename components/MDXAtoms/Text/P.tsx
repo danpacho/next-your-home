@@ -5,11 +5,10 @@ const PStyled = styled.p`
     line-height: 1.75rem;
     font-size: ${(props) => props.theme.md};
     margin: 1.25rem 0;
-    color: ${(p) => p.theme.gray8};
+    color: ${(p) => p.theme.fontColor};
 
     ${media.widePhone} {
         margin: 1rem 0;
-        color: ${(p) => p.theme.gray9};
     }
 `
 

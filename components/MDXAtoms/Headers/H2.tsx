@@ -4,6 +4,8 @@ import styled from "styled-components"
 const H2Styled = styled.h2`
     font-size: ${(props) => props.theme.xlg};
     font-weight: 600;
+    color: ${(p) => p.theme.fontColor};
+
     padding: 0.35rem 0;
 
     ${media.widePhone} {

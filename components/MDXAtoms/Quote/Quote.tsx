@@ -1,5 +1,7 @@
+import { useTheme } from "@/lib/atoms/theme/theme.state"
 import media from "@/styles/utils/media"
 import shadow from "@/styles/utils/shadow"
+import { IsLight } from "@/types/theme"
 import styled, {
     css,
     DefaultTheme,
@@ -73,7 +75,7 @@ interface QuoteStyleTypeProp {
     type: QuoteStyleType
 }
 
-const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
+const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -87,7 +89,8 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
     padding-right: 1rem;
 
     margin: 1rem 0;
-    background-color: ${(props) => props.theme.white};
+    background-color: ${({ theme, isLight }) =>
+        isLight ? theme.white : theme.deepDark};
 
     border-radius: 0 ${(props) => props.theme.blg} 0 0;
 
@@ -104,7 +107,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp>`
     ${({ type }) => quoteStyles[type]?.containerCss};
 `
 
-const QuoteIcon = styled.div<QuoteStyleTypeProp>`
+const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -207,9 +210,12 @@ function Quote(props: QuoteProps) {
     const lastChildren = props.children[1].props.children as string | string[]
     const quoteType = getQuoteType(lastChildren)
     const fixedProps = getQuoteProp(quoteType, props)
+
+    const isLight = useTheme() === "light"
+    // const darkModeColor =
     return (
-        <QuoteStyled type={quoteType}>
-            <QuoteIcon type={quoteType}>
+        <QuoteStyled type={quoteType} isLight={isLight}>
+            <QuoteIcon type={quoteType} isLight={isLight}>
                 {quoteStyles[quoteType].icon}
             </QuoteIcon>
             <div {...fixedProps} />

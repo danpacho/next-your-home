@@ -9,18 +9,22 @@ import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
 
 import { useCallback, useRef, useState } from "react"
+import { IsLight } from "@/types/theme"
+import { useTheme } from "@/lib/atoms/theme/theme.state"
 
 const H1Container = styled.div`
     margin: 0 0 2rem 0;
 `
 
-const H1Styled = styled.h1`
+const H1Styled = styled.h1<IsLight>`
     font-size: ${(props) => props.theme.xxlg};
     font-weight: 800;
+    color: ${(p) => p.theme.headerFontColor};
 
     padding: 0.25rem 0 0.35rem 0;
 
-    border-bottom: 0.25rem solid ${(props) => props.theme.gray3};
+    border-bottom: 0.25rem solid
+        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.gray7)};
 
     width: fit-content;
 
@@ -92,7 +96,11 @@ const H1 = (props: H1Props) => {
                 bottom={2.5}
                 isUnvisibleElementClickAbled={true}
             >
-                <H1Styled {...props} ref={ref} />
+                <H1Styled
+                    {...props}
+                    ref={ref}
+                    isLight={useTheme() === "light"}
+                />
             </Tooltip>
         </H1Container>
     )

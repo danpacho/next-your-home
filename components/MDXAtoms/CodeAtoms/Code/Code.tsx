@@ -19,6 +19,8 @@ import css from "react-syntax-highlighter/dist/cjs/languages/prism/css"
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import palleteOpacity from "@/styles/utils/palleteOpacity"
 import shadow from "@/styles/utils/shadow"
+import { useTheme } from "@/lib/atoms/theme/theme.state"
+import { IsLight } from "@/types/theme"
 
 const SUPPORTED_LANGUAGE = {
     javascript: ["javascript", "js"],
@@ -184,20 +186,22 @@ const colorCode = (lineNumber: number, option?: CodeOption) => {
     return {}
 }
 
-const InlineCode = styled.code`
+const InlineCode = styled.code<IsLight>`
     padding: 0.1rem 0.15rem;
     margin: 0 0.25rem;
 
-    color: ${(p) => p.theme.red5};
+    color: ${({ theme, isLight }) => (isLight ? theme.red5 : theme.gray2)};
     font-family: "Fira Code", Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
         monospace;
     font-weight: 600;
     font-size: ${(p) => p.theme.sm};
 
     border-radius: ${(props) => props.theme.bxsm};
-    border: 1.25px solid ${(p) => p.theme.gray3};
+    border: 1.25px solid
+        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.blue6)};
 
-    background-color: ${(p) => p.theme.gray1};
+    background-color: ${({ theme, isLight }) =>
+        isLight ? theme.gray1 : theme.blue9};
 `
 
 interface CodeProps {
@@ -205,7 +209,9 @@ interface CodeProps {
     className?: string
 }
 function Code({ children: code, className: classNameLanguage }: CodeProps) {
-    if (!classNameLanguage) return <InlineCode>{code}</InlineCode>
+    const isLight = useTheme() === "light"
+    if (!classNameLanguage)
+        return <InlineCode isLight={isLight}>{code}</InlineCode>
 
     const fixedLanguage = classNameLanguage
         .replace("language-", "")
