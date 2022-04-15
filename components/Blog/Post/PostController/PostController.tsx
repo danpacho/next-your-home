@@ -9,6 +9,8 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { sliceTextByMaxLength } from "@/utils/function/text"
 import { HomeIcon, NextIcon, PrevIcon } from "@/components/UI/Atoms/Icons"
+import { IsLight } from "@/types/theme"
+import { useTheme } from "@/lib/atoms/theme/theme.state"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
@@ -25,14 +27,15 @@ const ControllerContainer = styled.div<IsHover>`
     align-items: center;
     justify-content: space-evenly;
 
-    background-color: ${(p) => `${p.theme.white}${p.theme.opacity80}`};
+    background-color: ${(p) =>
+        `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
     backdrop-filter: blur(10px);
 
     padding: 0.65rem;
 
     box-shadow: ${shadow.shadowXxlg};
 
-    border: 0.1rem solid ${(p) => p.theme.gray2};
+    border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
     border-radius: 50rem;
 
     ${media.widePhone} {
@@ -41,7 +44,7 @@ const ControllerContainer = styled.div<IsHover>`
         gap: 0.25rem;
 
         justify-content: space-between;
-        background-color: ${(p) => p.theme.white};
+        background-color: ${(p) => p.theme.containerBackgroundColor};
         backdrop-filter: unset;
 
         bottom: 0.75rem;
@@ -70,7 +73,7 @@ interface IsHover {
     isHover: boolean
 }
 
-const ControllerButton = styled.button<ControllerButtonType>`
+const ControllerButton = styled.button<ControllerButtonType & IsLight>`
     transition: all ease-out 0.25s;
 
     display: flex;
@@ -82,12 +85,18 @@ const ControllerButton = styled.button<ControllerButtonType>`
     min-width: 2.5rem;
     padding: 0.25rem;
 
-    background-color: ${(p) => p.theme.gray1};
-    border: 0.1rem solid ${(p) => p.theme.gray3};
+    background-color: ${({ theme, isLight }) =>
+        isLight ? theme.gray1 : theme.trueDeepDark};
+    border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
+
+    svg {
+        fill: ${(p) => p.theme.fontColor};
+    }
 
     &:hover {
-        background-color: ${(p) => p.theme.gray2};
-        border-color: ${(p) => p.theme.gray5};
+        background-color: ${({ theme, isLight }) =>
+            isLight ? theme.gray2 : theme.deepDark};
+        border-color: ${({ theme }) => theme.gray5};
     }
 
     ${({ buttonType }) => ControllerButtonStyle[buttonType]};
@@ -118,7 +127,7 @@ const InfoContainer = styled.div<IsHover>`
     }
 `
 
-const PostTitleText = styled.p`
+const PostTitleText = styled.p<IsLight>`
     transition: color, border ease-out 0.25s;
     min-width: 10rem;
 
@@ -135,8 +144,9 @@ const PostTitleText = styled.p`
     border-bottom: 0.25rem solid transparent;
 
     &:hover {
-        border-color: ${(p) => p.theme.gray3};
-        color: ${(p) => p.theme.gray7};
+        border-color: ${({ theme, isLight }) =>
+            isLight ? theme.gray3 : theme.gray5};
+        color: ${({ theme, isLight }) => isLight && theme.gray7};
     }
 
     cursor: pointer;
@@ -183,6 +193,8 @@ function PostController({
         return () => clearTimeout(setHoverFalseAfterSecond)
     }, [])
 
+    const isLight = useTheme() === "light"
+
     return (
         <ControllerContainer
             isHover={isHover}
@@ -195,10 +207,13 @@ function PostController({
                         buttonType="prev"
                         type="button"
                         aria-label="previous post"
+                        isLight={isLight}
                     >
                         <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
-                    <PostTitleText>{prevPostTitle}</PostTitleText>
+                    <PostTitleText isLight={isLight}>
+                        {prevPostTitle}
+                    </PostTitleText>
                 </InfoContainer>
             </Link>
 
@@ -207,6 +222,7 @@ function PostController({
                     buttonType="category"
                     type="button"
                     aria-label="back to category"
+                    isLight={isLight}
                 >
                     <HomeIcon width="18px" height="18px" />
                 </ControllerButton>
@@ -214,11 +230,14 @@ function PostController({
 
             <Link href={nextPost.postUrl} passHref>
                 <InfoContainer isHover={isHover}>
-                    <PostTitleText>{nextPostTitle}</PostTitleText>
+                    <PostTitleText isLight={isLight}>
+                        {nextPostTitle}
+                    </PostTitleText>
                     <ControllerButton
                         buttonType="next"
                         type="button"
                         aria-label="next post"
+                        isLight={isLight}
                     >
                         <NextIcon width="18px" height="18px" />
                     </ControllerButton>
