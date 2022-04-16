@@ -11,7 +11,7 @@ interface UnderscoreTextStyle {
     underscoreOpacity?: number
 
     fontSize: FontSizeType
-    fontColor: PalleteType
+    fontColor?: PalleteType
     fontWeight: number
 
     transformOrigin?: "center" | "right" | "left"
@@ -19,7 +19,8 @@ interface UnderscoreTextStyle {
 
 const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
     font-size: ${({ theme, fontSize }) => theme[fontSize]};
-    color: ${({ theme, fontColor }) => theme[fontColor]};
+    color: ${({ theme, fontColor }) =>
+        fontColor ? theme[fontColor] : theme.headerFontColor};
     font-weight: ${({ fontWeight }) => fontWeight};
 
     ::after {
@@ -30,7 +31,7 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
 
         background-color: ${({ underscoreColor }) => underscoreColor};
         opacity: ${({ underscoreOpacity, theme }) =>
-            underscoreOpacity ? underscoreOpacity : 0.2};
+            underscoreOpacity ? underscoreOpacity : theme.themeOpacity};
 
         margin-top: -0.35rem;
         height: 0.5rem;
