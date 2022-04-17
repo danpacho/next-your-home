@@ -5,6 +5,7 @@ declare module "styled-components" {
     export interface DefaultTheme extends CommonThemeProperty {
         containerBackgroundColor: string
         containerBorderColor: string
+        fontColor: string
         headerFontColor: string
         descriptionFontColor: string
         tagFontColor: string

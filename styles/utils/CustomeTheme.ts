@@ -34,10 +34,11 @@ const lightTheme: DefaultTheme = {
     ...commonThemeProperty,
     containerBackgroundColor: pallete.white,
     containerBorderColor: pallete.gray2,
+    fontColor: pallete.gray8,
     headerFontColor: pallete.trueDeepDark,
     descriptionFontColor: pallete.gray6,
     tagFontColor: pallete.gray1,
-    themeOpacity: 0.3,
+    themeOpacity: 0.2,
     themePrimaryColor: pallete.primary1,
 }
 
@@ -45,7 +46,8 @@ const darkTheme: DefaultTheme = {
     //* common
     ...commonThemeProperty,
     containerBackgroundColor: "#1F1F24",
-    containerBorderColor: pallete.gray5,
+    containerBorderColor: pallete.gray7,
+    fontColor: pallete.gray3,
     headerFontColor: pallete.gray1,
     descriptionFontColor: pallete.gray4,
     tagFontColor: pallete.trueDeepDark,

@@ -5,6 +5,7 @@ export type Pallete = typeof pallete
 const pallete = {
     white: "#FFFFFF",
 
+    backgroundDark: "#25242B",
     //* 검정색
     dark: "#3A3A3A",
     middleDark: "#2A2A2A",
