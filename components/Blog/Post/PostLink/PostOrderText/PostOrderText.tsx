@@ -3,7 +3,7 @@ import animation from "@/styles/utils/animation"
 import media from "@/styles/utils/media"
 import { IsLight } from "@/types/theme"
 
-import { useTheme } from "@/lib/atoms/theme/theme.state"
+import { useThemeIsLight } from "@/hooks"
 
 const SHADOW_STYLE = {
     mediumScreen: {
@@ -69,7 +69,7 @@ const ORDER_TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 function PostOrderText({ order, color, isHover }: OrderTextProp) {
     return (
         <OrderTextStyled
-            isLight={useTheme() === "light"}
+            isLight={useThemeIsLight()}
             order={order}
             color={color}
             isHover={isHover}

@@ -1,7 +1,9 @@
-import { useTheme } from "@/lib/atoms/theme/theme.state"
-import media from "@/styles/utils/media"
-import { IsLight } from "@/types/theme"
 import styled from "styled-components"
+
+import media from "@/styles/utils/media"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 const ThStyled = styled.th<IsLight>`
     padding: 0.75rem 1rem;
@@ -17,8 +19,6 @@ const ThStyled = styled.th<IsLight>`
         font-size: ${(p) => p.theme.sm};
     }
 `
-const TH = (props: any) => (
-    <ThStyled {...props} isLight={useTheme() === "light"} />
-)
+const TH = (props: any) => <ThStyled {...props} isLight={useThemeIsLight()} />
 
 export default TH

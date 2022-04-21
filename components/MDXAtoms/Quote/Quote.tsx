@@ -1,13 +1,15 @@
-import { useTheme } from "@/lib/atoms/theme/theme.state"
-import media from "@/styles/utils/media"
-import shadow from "@/styles/utils/shadow"
-import { IsLight } from "@/types/theme"
 import styled, {
     css,
     DefaultTheme,
     FlattenInterpolation,
     ThemeProps,
 } from "styled-components"
+
+import media from "@/styles/utils/media"
+import shadow from "@/styles/utils/shadow"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 interface QuoteStyles {
     note: StyleProperty
@@ -211,7 +213,7 @@ function Quote(props: QuoteProps) {
     const quoteType = getQuoteType(lastChildren)
     const fixedProps = getQuoteProp(quoteType, props)
 
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     // const darkModeColor =
     return (
         <QuoteStyled type={quoteType} isLight={isLight}>

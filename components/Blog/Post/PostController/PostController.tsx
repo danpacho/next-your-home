@@ -10,7 +10,7 @@ import Link from "next/link"
 import { sliceTextByMaxLength } from "@/utils/function/text"
 import { HomeIcon, NextIcon, PrevIcon } from "@/components/UI/Atoms/Icons"
 import { IsLight } from "@/types/theme"
-import { useTheme } from "@/lib/atoms/theme/theme.state"
+import { useThemeIsLight } from "@/hooks"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
@@ -193,7 +193,7 @@ function PostController({
         return () => clearTimeout(setHoverFalseAfterSecond)
     }, [])
 
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
 
     return (
         <ControllerContainer

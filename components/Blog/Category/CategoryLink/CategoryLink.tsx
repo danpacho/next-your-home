@@ -9,7 +9,8 @@ import { sliceTextByMaxLength } from "@/utils/function/text"
 import shadow from "@/styles/utils/shadow"
 import animation from "@/styles/utils/animation"
 import { IsLight } from "@/types/theme"
-import { useTheme } from "@/lib/atoms/theme/theme.state"
+
+import { useThemeIsLight } from "@/hooks"
 import { shadeColor } from "@/utils/function/color/shadeColor"
 
 interface CategoryLinkContainerStyle {
@@ -146,7 +147,7 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     return (
         <Link href={categoryUrl} passHref>

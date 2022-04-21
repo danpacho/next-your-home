@@ -4,8 +4,8 @@ import styled from "styled-components"
 import media from "@/styles/utils/media"
 import shadow from "@/styles/utils/shadow"
 
-import { useTheme } from "@/lib/atoms/theme/theme.state"
 import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 import ThemeButton from "@/components/UI/Molecules/Button/ThemeButton"
 
@@ -82,7 +82,7 @@ const MainLogo = styled(SvgMainLogo)`
 `
 
 function NavBar() {
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     return (
         <NavContainer>
             <Link href="/" passHref>

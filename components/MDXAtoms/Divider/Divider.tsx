@@ -1,6 +1,7 @@
-import { useTheme } from "@/lib/atoms/theme/theme.state"
-import { IsLight } from "@/types/theme"
 import styled from "styled-components"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 const DividerStyled = styled.hr<IsLight>`
     width: 100%;
@@ -14,7 +15,7 @@ const DividerStyled = styled.hr<IsLight>`
 `
 
 function Divider() {
-    return <DividerStyled isLight={useTheme() === "light"} />
+    return <DividerStyled isLight={useThemeIsLight()} />
 }
 
 export default Divider

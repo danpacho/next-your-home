@@ -19,8 +19,9 @@ import css from "react-syntax-highlighter/dist/cjs/languages/prism/css"
 import { materialDark } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import palleteOpacity from "@/styles/utils/palleteOpacity"
 import shadow from "@/styles/utils/shadow"
-import { useTheme } from "@/lib/atoms/theme/theme.state"
+
 import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 const SUPPORTED_LANGUAGE = {
     javascript: ["javascript", "js"],
@@ -209,7 +210,7 @@ interface CodeProps {
     className?: string
 }
 function Code({ children: code, className: classNameLanguage }: CodeProps) {
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     if (!classNameLanguage)
         return <InlineCode isLight={isLight}>{code}</InlineCode>
 

@@ -121,8 +121,8 @@ function CodeCopyButton({ code }: CopyContentProp) {
             <CopyButton
                 onClick={async () => {
                     if (!isCopySuccess) {
-                        const { isCopySucess } = await copyTextToUser(code)
-                        setIsCopySuccess(isCopySucess)
+                        const { isCopySuccess } = await copyTextToUser(code)
+                        setIsCopySuccess(isCopySuccess)
                     }
                 }}
             >

@@ -1,7 +1,9 @@
-import { useTheme } from "@/lib/atoms/theme/theme.state"
-import media from "@/styles/utils/media"
-import { IsLight } from "@/types/theme"
 import styled from "styled-components"
+
+import media from "@/styles/utils/media"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 const TableStyled = styled.table<IsLight>`
     thead {
@@ -25,7 +27,7 @@ const TableStyled = styled.table<IsLight>`
 `
 
 const Table = (props: any) => (
-    <TableStyled {...props} isLight={useTheme() === "light"} />
+    <TableStyled {...props} isLight={useThemeIsLight()} />
 )
 
 export default Table

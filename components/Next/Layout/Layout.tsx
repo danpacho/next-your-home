@@ -1,16 +1,16 @@
-import { ReactElement } from "react"
 import styled, { ThemeProvider } from "styled-components"
-
 import media from "@/styles/utils/media"
 
-import Background from "@/components/UI/Atoms/Background/Background"
+import { ReactElement } from "react"
+
+import Background from "@/components/Blog/Background/Background"
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
 
 import { PageType } from "@/types/page/type"
 
-import { useTheme } from "@/lib/atoms/theme/theme.state"
 import { darkTheme, lightTheme } from "@/styles/utils/CustomeTheme"
+import { useThemeIsLight } from "@/hooks"
 
 const Layout = styled.main`
     display: flex;
@@ -33,7 +33,7 @@ interface LayoutProp {
 }
 
 function MainLayout({ children, pageType }: LayoutProp) {
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     return (
         <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
             <Layout>
