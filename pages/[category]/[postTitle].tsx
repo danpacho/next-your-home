@@ -1,106 +1,157 @@
-import MDXCompiler from "@/components/Blog/Post/MDXCompiler/MDXCompiler"
-import TableOfContent from "@/components/Blog/Post/TableOfContent/TableOfContent"
-import PostController from "@/components/Blog/PostController/PostController"
-import SvgArrowUp from "@/components/UI/Atoms/Icons/ArrowUp"
-import SvgEdit from "@/components/UI/Atoms/Icons/Edit"
-import SvgFlagFill from "@/components/UI/Atoms/Icons/FlagFill"
-import SvgLeaf from "@/components/UI/Atoms/Icons/Leaf"
-import SvgQuote from "@/components/UI/Atoms/Icons/Quote"
+import styled, { css } from "styled-components"
+import shadow from "@/styles/utils/shadow"
 import media from "@/styles/utils/media"
-import pallete from "@/styles/utils/pallete"
-import { shadow } from "@/styles/utils/shadow"
+
+import { useEffect } from "react"
+
+import { GetStaticPaths, GetStaticProps } from "next"
+import Link from "next/link"
+
+import { ParsedUrlQuery } from "querystring"
+
+import { SpecificPostContentType } from "@/types/post/content"
+import { PostMetaType } from "@/types/post/meta"
+import { PageType } from "@/types/page/type"
+
+import { useStateFocusingPageColor } from "@/lib/atoms/pageColor/pageColor.state"
+
 import {
     getSpecificPostContent,
     getCategoryPostContentPathArray,
 } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
-import { SpecificPostContentType } from "@/types/post/content"
-import { PostMetaType } from "@/types/post/meta"
-import { PageType } from "@/types/page/type"
-import { GetStaticPaths, GetStaticProps } from "next"
-import Link from "next/link"
-import { ParsedUrlQuery } from "querystring"
-import styled, { css } from "styled-components"
 
-const PositionContainer = styled.div`
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
+
+import {
+    ArrowUpIcon,
+    EditIcon,
+    FlagFillIcon,
+    LeafIcon,
+    QuoteIcon,
+} from "@/components/UI/Atoms/Icons"
+
+import {
+    PostController,
+    PostMDXCompiler,
+    PostTableOfContent,
+} from "@/components/Blog/Post"
+
+const PostContainer = styled.div<IsLight>`
     display: flex;
     flex-direction: row;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 0.5rem;
 
-    width: 68.5%;
+    width: 69.5%;
 
-    background-color: ${(p) => p.theme.white}3F;
+    background-color: ${(p) =>
+        `${p.theme.containerBackgroundColor}${p.theme.opacity40}`};
     backdrop-filter: blur(25px);
-    box-shadow: ${shadow.shadowSm};
+
+    box-shadow: ${(p) =>
+        p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
+
     border-radius: ${(p) => p.theme.blg};
 
     padding: 0.25rem 0.5rem;
 
     margin-bottom: 1.5rem;
 
+    ${media.wideTablet} {
+        padding-right: 1.5rem;
+    }
+
+    ${media.mediumTablet} {
+        width: 83.5%;
+        padding-right: 0;
+        justify-content: center;
+    }
+
     ${media.widePhone} {
-        gap: 0;
         width: 95%;
+
         background-color: transparent;
         backdrop-filter: unset;
-        justify-content: center;
+
+        padding: 0 0.25rem;
         box-shadow: none;
     }
 `
 
-const PostContainer = styled.div`
+const PostContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     flex-direction: column;
 
-    flex: 10;
+    min-width: 60%;
+    max-width: 67.5%;
+
     min-height: max-content;
     height: fit-content;
-    margin: 2.5rem;
+    margin: 2.5rem 2rem;
+
+    ${media.wideTablet} {
+        max-width: 57.5%;
+    }
+
+    ${media.mediumTablet} {
+        min-width: unset;
+        max-width: unset;
+        width: 85%;
+    }
 
     ${media.widePhone} {
         flex: none;
         width: 100%;
-        margin: 1.5rem 0;
+        margin-top: 1.5rem;
+        margin-bottom: 3.5rem;
     }
 `
 
 const TableOfContentPositionContainer = styled.div`
     position: sticky;
-    top: 2.5rem;
+    top: 6rem;
 
-    flex: 1;
+    margin-right: 2rem;
 
-    margin-top: 2.5rem;
-    margin-right: 1rem;
+    margin-top: 6rem;
+    ${media.smallScreen} {
+        margin-right: 0.5rem;
+    }
 
-    ${media.wideTablet} {
+    ${media.mediumTablet} {
         display: none;
     }
 `
 
 interface PostProps extends SpecificPostContentType {}
 function Post({ postController, postMeta, postSource }: PostProps) {
+    const [_, setFocusingPageColor] = useStateFocusingPageColor()
+    useEffect(
+        () => setFocusingPageColor(postMeta.color),
+        [setFocusingPageColor, postMeta.color]
+    )
+
     return (
         <>
-            <PositionContainer>
-                <PostContainer>
+            <PostContainer isLight={useThemeIsLight()}>
+                <PostContentContainer>
                     <PostHeader {...postMeta} />
                     {typeof postSource !== "string" && (
-                        <MDXCompiler serializedSource={postSource} />
+                        <PostMDXCompiler serializedSource={postSource} />
                     )}
                     <PostInfo {...postMeta} />
-                </PostContainer>
+                </PostContentContainer>
 
                 <TableOfContentPositionContainer>
-                    <TableOfContent title={postMeta.title} />
+                    <PostTableOfContent title={postMeta.title} />
                 </TableOfContentPositionContainer>
-            </PositionContainer>
+            </PostContainer>
 
             <PostController
-                homeUrl={`/${postMeta.category}`}
+                categoryURL={`/${postMeta.category}`}
                 nextPost={postController.nextPost}
                 prevPost={postController.prevPost}
             />
@@ -111,7 +162,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
 Post.displayName = "Post" as PageType
 export default Post
 
-const PostMetaContainer = styled.div`
+const PostMetaContainer = styled.div<IsLight>`
     width: 100%;
     height: fit-content;
     padding: 1.5rem 0;
@@ -125,12 +176,15 @@ const PostMetaContainer = styled.div`
     gap: 1.75rem;
 
     ${media.widePhone} {
-        background-color: ${(p) => p.theme.white}3F;
+        background-color: ${({ theme, isLight }) =>
+            `${theme.containerBackgroundColor}${
+                isLight ? theme.opacity20 : theme.opacity40
+            }`};
         backdrop-filter: blur(25px);
-        box-shadow: ${shadow.shadowSm};
+        box-shadow: ${(p) =>
+            p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
         border-radius: ${(p) =>
             `${p.theme.bxsm} ${p.theme.bxxxlg} ${p.theme.bxsm} ${p.theme.bxxxlg}`};
-
         margin: 0 0 1.5rem 0;
         padding: 1.5rem 0 2.75rem 0;
         gap: 1.25rem;
@@ -139,10 +193,19 @@ const PostMetaContainer = styled.div`
 const PostTitle = styled.header`
     font-size: 2.5rem;
     font-weight: 200;
+    color: ${(p) => p.theme.headerFontColor};
     margin: 2rem 0;
 
+    ${media.smallScreen} {
+        font-size: 2.2rem;
+    }
+
+    ${media.mediumTablet} {
+        font-size: 2.1rem;
+    }
+
     ${media.widePhone} {
-        font-size: 1.75rem;
+        font-size: ${(p) => p.theme.xlg};
         margin: 1.25rem 0;
         max-width: 80%;
     }
@@ -164,34 +227,39 @@ const PostTagContainer = styled.div`
 `
 const tagStyle = {
     info: (color: string) => css`
+        background-color: ${color}${(p) => p.theme.opacity20};
+
         border-left-color: ${color};
-        background-color: ${color}26;
-        border-radius: ${(p) => `0 ${p.theme.bxsm} ${p.theme.bsm} 0`};
+        border-radius: ${(p) =>
+            `${p.theme.bxxsm} ${p.theme.bxsm} ${p.theme.bsm} ${p.theme.bxxsm}`};
 
         cursor: pointer;
     `,
     tag: (color: string) => css`
+        background-color: ${color}${(p) => p.theme.opacity10};
+
         border-left-color: ${color};
-        background-color: ${color}26;
-        border-radius: ${(p) => `0 ${p.theme.bxsm} ${p.theme.bsm} 0`};
-        font-style: italic;
+        border-radius: ${(p) =>
+            `${p.theme.bxxsm} ${p.theme.bxsm} ${p.theme.bxsm} ${p.theme.bxxsm}`};
+
         padding-right: 0.75rem;
+
+        font-style: italic;
 
         ${media.widePhone} {
             padding: 0.25rem;
-            padding-right: 0.5rem;
+            padding-right: 0.65rem;
         }
     `,
     category: (color: string) => css`
         color: white;
+
         border-radius: ${(p) => p.theme.bxsm};
         border-left: none;
+
         background-color: ${color};
-        /* background-image: linear-gradient(
-            -45deg,
-            ${color}66 -20%,
-            ${color} 100%
-        ); */
+
+        cursor: pointer;
     `,
 }
 
@@ -207,6 +275,8 @@ const PostTag = styled.div<TagStyle>`
     padding: 0.25rem 0.5rem;
     border-left-width: 0.2rem;
     border-left-style: solid;
+
+    color: ${(p) => p.theme.fontColor};
     font-weight: 300;
 
     gap: 0.25rem;
@@ -214,35 +284,52 @@ const PostTag = styled.div<TagStyle>`
     user-select: none;
 
     &:hover {
-        background-color: ${(p) => p.color}66;
+        background-color: ${({ theme, color }) => `${color}${theme.opacity40}`};
     }
-
-    ${({ tagType, color }) => tagStyle[tagType](color)};
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
     }
+
+    ${({ tagType, color }) => tagStyle[tagType](color)};
 `
 
 interface QuoteStyle {
     type: "start" | "end"
 }
-const TitleQuote = styled(SvgQuote)<QuoteStyle>`
+const TitleQuote = styled(QuoteIcon)<QuoteStyle>`
     width: 1.5rem;
     height: 1.5rem;
+
     ${({ type }) =>
         type === "start" &&
         css`
             margin-right: 0.75rem;
             margin-bottom: 1rem;
             transform: rotate(180deg);
+
+            ${media.widePhone} {
+                margin-right: 0.5rem;
+                margin-bottom: 0.75rem;
+            }
         `}
+
     ${({ type }) =>
         type === "end" &&
         css`
             margin-left: 0.75rem;
             margin-bottom: -1rem;
+
+            ${media.widePhone} {
+                margin-left: 0.5rem;
+                margin-bottom: -0.75rem;
+            }
         `}
+
+    ${media.smallScreen} {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
 
     ${media.widePhone} {
         width: 1rem;
@@ -286,18 +373,18 @@ const PostInfo = ({
         <PostInfoContainer>
             <Link href="/" passHref>
                 <PostTag color={color} tagType="tag">
-                    <SvgEdit fill={color} />
+                    <EditIcon fill={color} />
                     <p>{author}</p>
                 </PostTag>
             </Link>
             <TagDivider color={color}>•</TagDivider>
             <PostTag color={color} tagType="tag">
-                <SvgArrowUp fill={color} />
+                <ArrowUpIcon fill={color} />
                 <p>{replaceUpateDate}</p>
             </PostTag>
             <TagDivider color={color}>•</TagDivider>
             <PostTag color={color} tagType="tag">
-                <SvgLeaf fill={color} />
+                <LeafIcon fill={color} />
                 <p>Thanks For Reading !</p>
             </PostTag>
         </PostInfoContainer>
@@ -311,7 +398,7 @@ const PostHeader = ({
     category,
 }: Pick<PostMetaType, "color" | "tags" | "title" | "category">) => {
     return (
-        <PostMetaContainer>
+        <PostMetaContainer isLight={useThemeIsLight()}>
             <PostTitle>
                 <TitleQuote type="start" fill={color} />
                 {title}
@@ -327,7 +414,7 @@ const PostHeader = ({
             <PostTagContainer>
                 {tags.map((tag) => (
                     <PostTag key={tag} color={color} tagType="tag">
-                        <SvgFlagFill fill={color} />
+                        <FlagFillIcon fill={color} />
                         <p>{tag}</p>
                     </PostTag>
                 ))}
