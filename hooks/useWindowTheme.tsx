@@ -3,20 +3,20 @@ import { useEffect, useState } from "react"
 import { ThemeMode } from "@/types/theme"
 
 const useWindowTheme = () => {
-    const [theme, setTheme] = useState<ThemeMode>("dark")
+    const [windowTheme, setWindowTheme] = useState<ThemeMode>("dark")
     useEffect(() => {
         const initialTheme: ThemeMode = window.matchMedia(
             "(prefers-color-scheme: dark)"
         ).matches
             ? "dark"
             : "light"
-        setTheme(initialTheme)
-    }, [setTheme])
+        setWindowTheme(initialTheme)
+    }, [setWindowTheme])
 
     useEffect(() => {
         const toggleTheme = (e: MediaQueryListEvent) => {
             const theme: ThemeMode = e.matches ? "dark" : "light"
-            setTheme(theme)
+            setWindowTheme(theme)
         }
         window
             .matchMedia("(prefers-color-scheme: dark)")
@@ -26,9 +26,9 @@ const useWindowTheme = () => {
             window
                 .matchMedia("(prefers-color-scheme: dark)")
                 .removeEventListener("change", toggleTheme)
-    }, [setTheme])
+    }, [setWindowTheme])
 
-    return theme
+    return windowTheme
 }
 
 export default useWindowTheme
