@@ -3,15 +3,16 @@ import { readdir, readFile } from "fs/promises"
 import { CategoryInfoType } from "@/types/category/info"
 
 import {
-    addPathNotation,
-    blogContentsDirectory,
-    getValidateColor,
-} from "@/utils/function/blog-contents-loader/util"
-import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
     BlogPropertyError,
 } from "../../blog-error-handler/blogError"
+import {
+    addPathNotation,
+    blogContentsDirectory,
+    getValidateColor,
+} from "../util"
+import { getCategoryPostMeta } from "./getCategoryPost"
 
 /**
  * @returns 카테고리의 이름(파일 이름) 반환
@@ -284,9 +285,45 @@ const readCategoryJSONFileArray = async (
 const getCategoryInfoArrayByJson = async () =>
     await readCategoryJSONFileArray(await getPureCategoryNameArray())
 
+/**
+ * @returns
+ */
+const getLatestCategoryInfoArrayByJson = async () =>
+    await (await getCategoryInfoArrayByJson()).sort().slice(0, 3)
+
+const getDeduplicatedCategoryTagArray = async (category: string) => {
+    const categoryPostArray = await getCategoryPostMeta(category)
+    const deduplicatedCategoryTagArray = [
+        ...new Set(categoryPostArray.flatMap(({ tags }) => tags)),
+    ].sort()
+
+    return deduplicatedCategoryTagArray
+}
+
+const getSpecificCategoryInfo = async (
+    category: string
+): Promise<CategoryInfoType> => {
+    const categoryInfoArray = await getCategoryInfoArrayByJson()
+
+    const specificCategoryInfo = categoryInfoArray.filter(
+        ({ category: categoryName }) => categoryName === category
+    )[0]
+
+    return {
+        ...specificCategoryInfo,
+    }
+}
+
 export {
+    //*path
     getCategoryPath,
     getPureCategoryNameArray,
+    //* categoryInfo
     getCategoryInfoArray,
+    getSpecificCategoryInfo,
     getCategoryInfoArrayByJson,
+    //* lateset
+    getLatestCategoryInfoArrayByJson,
+    //* specific tag
+    getDeduplicatedCategoryTagArray,
 }
