@@ -3,10 +3,7 @@ import "../styles/globals.css"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 
-import { ThemeProvider } from "styled-components"
-
 import { GlobalStyle } from "@styles/global/GlobalStyle"
-import { lightTheme } from "@styles/utils/CustomeTheme"
 
 import MainLayout from "@components/Next/Layout/Layout"
 
@@ -15,7 +12,6 @@ import { PageType } from "@/types/page/type"
 
 function AppParent({ Component, pageProps }: AppProps) {
     const pageType = Component?.displayName as PageType
-
     return (
         <>
             <Head>
@@ -28,14 +24,11 @@ function AppParent({ Component, pageProps }: AppProps) {
 
             <GlobalStyle />
 
-            {/* //TODO: light dark mode toggling */}
-            <ThemeProvider theme={lightTheme}>
-                <RecoilRoot>
-                    <MainLayout pageType={pageType}>
-                        <Component {...pageProps} />
-                    </MainLayout>
-                </RecoilRoot>
-            </ThemeProvider>
+            <RecoilRoot>
+                <MainLayout pageType={pageType}>
+                    <Component {...pageProps} />
+                </MainLayout>
+            </RecoilRoot>
         </>
     )
 }
