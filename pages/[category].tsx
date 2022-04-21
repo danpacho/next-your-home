@@ -1,27 +1,32 @@
-import PostLink from "@/components/Blog/Common/PostLink/PostLink"
+import styled, { css } from "styled-components"
 import media from "@/styles/utils/media"
+import animation from "@/styles/utils/animation"
+
+import React, { useEffect, useMemo, useState } from "react"
+
+import { GetStaticPaths, GetStaticProps } from "next"
+
+import { ParsedUrlQuery } from "querystring"
+
+import { PageType } from "@/types/page/type"
+import { PostMetaType } from "@/types/post/meta"
+
 import {
-    getCategoryInfoArray,
-    getCategoryInfoArrayByJson,
     getCategoryPath,
+    getDeduplicatedCategoryTagArray,
+    getSpecificCategoryInfo,
 } from "@/utils/function/blog-contents-loader/contents/getCategory"
 import { getCategoryPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
-import { GetStaticPaths, GetStaticProps } from "next"
-import { ParsedUrlQuery } from "querystring"
-import React, { useEffect, useState } from "react"
-import styled, { css } from "styled-components"
-import SvgFlagFill from "@/components/UI/Atoms/Icons/FlagFill"
-import SvgDelete from "@/components/UI/Atoms/Icons/Delete"
-import { PostMetaType } from "@/types/post/meta"
-import { PageType } from "@/types/page/type"
 
-interface CategoryProps {
-    categoryPostArray: PostMetaType[]
-    category: string
-    categoryColor: string
-    categoryDescription: string
-    categoryTagArray: string[]
-}
+import { useStateFocusingPageColor } from "@/lib/atoms/pageColor/pageColor.state"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
+
+import { DeleteIcon, FlagFillIcon } from "@/components/UI/Atoms/Icons"
+import { PostLink } from "@/components/Blog/Post"
+import { CategoryInfoType } from "@/types/category/info"
+import { shadeColor } from "@/utils/function/color/shadeColor"
 
 //* Main
 const Container = styled.div`
@@ -34,6 +39,10 @@ const Container = styled.div`
     justify-content: space-between;
 
     gap: 1rem;
+
+    ${media.mediumTablet} {
+        width: 85%;
+    }
 
     ${media.widePhone} {
         width: 100%;
@@ -63,24 +72,27 @@ const PostContainer = styled.div`
     overflow-y: scroll;
 
     ::-webkit-scrollbar {
-        width: 0.125rem;
+        width: 0.1rem;
         padding: 0.25rem;
     }
 
     ::-webkit-scrollbar-thumb {
-        background-color: ${(p) => p.theme.primary1};
+        background-color: ${(p) => p.theme.themePrimaryColor};
         border-radius: 0.2rem;
     }
 
     ::-webkit-scrollbar-track {
-        background: ${(p) => p.theme.primary1}36;
+        background: ${({ theme }) =>
+            `${theme.themePrimaryColor}${theme.opacity50}`};
         border-radius: 0.2rem;
     }
 
     ${media.widePhone} {
+        width: 100%;
         padding-right: 0;
         overflow-y: auto;
         gap: 1.5rem;
+        height: fit-content;
         justify-content: center;
     }
 `
@@ -104,29 +116,40 @@ const CategoryInfoContainer = styled.div`
     }
 `
 const CategoryTitle = styled.div<{ categoryColor: string }>`
-    font-size: 3.5rem;
+    color: ${(p) => p.theme.headerFontColor};
+    font-size: 3rem;
     font-weight: 1000;
-    text-shadow: 7px 5px 0 ${({ theme, categoryColor }) => theme.teal5};
+    text-shadow: 3.75px 3.75px 0
+        ${({ categoryColor, theme }) => `${categoryColor}${theme.themeOpacity}`};
     text-transform: capitalize;
 
     margin-left: 0.5rem;
 
+    ${media.mediumTablet} {
+        font-size: 2.5rem;
+    }
+
     ${media.widePhone} {
-        padding-bottom: -1.75rem;
-        border-bottom: 0.35rem solid ${(p) => p.theme.teal5};
-        margin-left: 0;
+        border-bottom: 0.3rem solid
+            ${({ categoryColor, theme }) =>
+                `${categoryColor}${theme.opacity30}`};
+        padding-bottom: 0rem;
+        margin: 1rem 0;
         font-size: ${(p) => p.theme.title};
         font-weight: 800;
         text-shadow: none;
-        color: ${(p) => p.theme.gray10};
     }
 `
-
+interface CategoryProps extends CategoryInfoType {
+    categoryPostArray: PostMetaType[]
+    categoryTagArray: string[]
+}
 function Category({
     categoryPostArray,
     category,
-    categoryColor,
-    categoryDescription,
+    color: categoryColor,
+    description: categoryDescription,
+    emoji: categoryEmoji,
     categoryTagArray,
 }: CategoryProps) {
     const [filteredTagArray, setFilteredTagArray] = useState<string[]>([])
@@ -142,10 +165,22 @@ function Category({
         setFilteredCategoryPostArray(updatedFilteredCategoryPostArray)
     }, [filteredTagArray, categoryPostArray])
 
+    const [_, setFocusingPageColor] = useStateFocusingPageColor()
+    useEffect(
+        () => setFocusingPageColor(categoryColor),
+        [setFocusingPageColor, categoryColor]
+    )
+    const isfilterExists = filteredCategoryPostArray?.length !== 0
+
+    const isLight = useThemeIsLight()
+    const darkModeColor = useMemo(
+        () => shadeColor(categoryColor, 35),
+        [categoryColor]
+    )
     return (
         <Container>
             <CategoryInfoContainer>
-                <CategoryTitle categoryColor={`${categoryColor}63`}>
+                <CategoryTitle categoryColor={categoryColor}>
                     {category}
                     {filteredCategoryPostArray.length !== 0 &&
                         ` ${filteredCategoryPostArray.length} 개`}
@@ -155,12 +190,12 @@ function Category({
                     filteredTagArray={filteredTagArray}
                     setFilteredTagArray={setFilteredTagArray}
                     categoryTagArray={categoryTagArray}
+                    categoryColor={isLight ? categoryColor : darkModeColor}
                 />
             </CategoryInfoContainer>
 
             <PostContainer>
-                {filteredCategoryPostArray &&
-                    filteredCategoryPostArray.length !== 0 &&
+                {isfilterExists &&
                     filteredCategoryPostArray.map((categoryPost, order) => (
                         <PostLink
                             {...categoryPost}
@@ -171,7 +206,7 @@ function Category({
                             isCategoryPage={true}
                         />
                     ))}
-                {filteredCategoryPostArray?.length === 0 &&
+                {!isfilterExists &&
                     categoryPostArray.map((categoryPost, order) => (
                         <PostLink
                             {...categoryPost}
@@ -202,30 +237,33 @@ const borderStyle = {
 }
 
 const backgroundStyle = {
-    brightTeal: css`
-        background-color: ${(p) => p.theme.white}59;
+    noneFiltered: (color: string, isLight: boolean) => css`
+        background-color: ${(p) =>
+            `${p.theme.containerBackgroundColor}${p.theme.opacity50}`};
         backdrop-filter: blur(15px);
-        color: ${(p) => p.theme.teal8};
+        color: ${(p) => (isLight ? color : p.theme.gray2)};
 
         svg {
-            fill: ${(p) => p.theme.teal8};
+            fill: ${color};
             width: 0.725rem;
         }
 
         &:hover {
-            box-shadow: 4px 4px 0px ${(p) => p.theme.teal2};
+            box-shadow: 4px 4px 0px ${color}${(p) => p.theme.opacity70};
         }
     `,
-    darkTeal: css`
-        background-color: ${(p) => p.theme.teal8};
-        color: ${(p) => p.theme.gray1};
+    filtered: (color: string) => css`
+        background-color: ${color};
+        color: ${(p) => p.theme.white};
+
+        box-shadow: 0 0 0 2.5px ${color}${(p) => p.theme.opacity40};
 
         svg {
-            fill: ${(p) => p.theme.teal1};
+            fill: ${(p) => p.theme.white};
             width: 0.725rem;
         }
         &:hover {
-            box-shadow: 4px 4px 0px ${(p) => p.theme.teal10};
+            box-shadow: -4px 4px 0px ${color}${(p) => p.theme.opacity30};
         }
     `,
 }
@@ -233,45 +271,26 @@ const backgroundStyle = {
 const tagStyle = [
     css`
         ${borderStyle.topLeftBottomRight}
-        ${backgroundStyle.darkTeal}
     `,
     css`
         ${borderStyle.topRightBottomLeft}
-        ${backgroundStyle.darkTeal}
     `,
     css`
         ${borderStyle.topRightBottomLeft}
-        ${backgroundStyle.brightTeal}
     `,
     css`
         ${borderStyle.topLeftBottomRight}
-        ${backgroundStyle.brightTeal}
-    `,
-    css`
-        ${borderStyle.topLeftBottomRight}
-        ${backgroundStyle.brightTeal}
-    `,
-    css`
-        ${borderStyle.topRightBottomLeft}
-        ${backgroundStyle.brightTeal}
-    `,
-    css`
-        ${borderStyle.topRightBottomLeft}
-        ${backgroundStyle.darkTeal}
-    `,
-    css`
-        ${borderStyle.topLeftBottomRight}
-        ${backgroundStyle.darkTeal}
     `,
 ]
 
 interface TagBoxStyle {
     order: number
     isFiltered: boolean
+    color: string
 }
 
-const Tag = styled.li<TagBoxStyle>`
-    transition: all ease-out 0.15s;
+const Tag = styled.li<TagBoxStyle & IsLight>`
+    transition: box-shadow ease-out 0.15s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,31 +302,45 @@ const Tag = styled.li<TagBoxStyle>`
     padding: 0.85rem 1.5rem;
     margin: 0.5rem;
 
-    border: 2px solid
-        ${({ isFiltered, theme }) => (isFiltered ? theme.teal4 : theme.teal3)};
+    border: 1.75px solid
+        ${({ isFiltered, color, theme }) =>
+            isFiltered ? "transparent" : `${color}${theme.opacity20}`};
 
     font-size: ${(p) => p.theme.sm};
-    font-weight: ${({ isFiltered }) => (isFiltered ? 900 : 600)};
-    letter-spacing: 0.05rem;
+    font-weight: 800;
+    letter-spacing: 0.035rem;
 
-    opacity: ${({ isFiltered }) => (isFiltered ? 1 : 0.65)};
-
-    &:hover {
-        opacity: 1;
-    }
     cursor: pointer;
     user-select: none;
 
     ${({ order }) => tagStyle[order]}
+    ${({ color, isFiltered, isLight }) =>
+        isFiltered
+            ? backgroundStyle.filtered(color)
+            : backgroundStyle.noneFiltered(color, isLight)}
 
-    ${media.widePhone} {
-        width: 6.5rem;
+    ${media.mediumTablet} {
         width: fit-content;
-        height: fit-content;
-        padding: 0.5rem 1rem;
-        margin: 0.25rem;
+        min-width: 4rem;
+
+        letter-spacing: 0.02rem;
+        padding: 0.75rem 1.1rem;
         font-weight: 700;
     }
+
+    ${media.widePhone} {
+        min-width: 2.5rem;
+        width: fit-content;
+        height: fit-content;
+
+        padding: 0.7rem 0.9rem;
+        margin: 0.25rem;
+        font-weight: 600;
+
+        border-width: 1.5px;
+    }
+
+    animation: ${animation.zoomIn} cubic-bezier(0.075, 0.82, 0.165, 1) 0.25s;
 `
 const TagContainer = styled.ul`
     display: flex;
@@ -321,55 +354,68 @@ const TagContainer = styled.ul`
     ${media.widePhone} {
         align-items: center;
         justify-content: center;
+        margin-bottom: 0.75rem;
     }
 `
 
 interface CategoryTagProps {
+    categoryColor: string
     categoryTagArray: string[]
     filteredTagArray: string[]
     setFilteredTagArray: React.Dispatch<React.SetStateAction<string[]>>
 }
+const getUpdatedFileterdTagArray = (
+    slectedTag: string,
+    filteredTagArray: string[]
+) => {
+    const isTagIncluded = filteredTagArray.includes(slectedTag)
+
+    if (isTagIncluded)
+        return filteredTagArray.filter((tag) => tag !== slectedTag)
+    else return [...filteredTagArray, slectedTag]
+}
 const CategoryTag = ({
+    categoryColor,
     categoryTagArray,
     filteredTagArray,
     setFilteredTagArray,
 }: CategoryTagProps) => {
-    const updateFilteredTagArray = (slectedTag: string) => {
-        setFilteredTagArray((filteredTagArray) => {
-            const isTagIncluded = filteredTagArray.includes(slectedTag)
-
-            if (isTagIncluded)
-                return filteredTagArray.filter((tag) => tag !== slectedTag)
-            else return [...filteredTagArray, slectedTag]
-        })
-    }
-
     const resetFilteredTagArray = () => setFilteredTagArray([])
-
+    const isLight = useThemeIsLight()
     return (
         <TagContainer>
             {categoryTagArray?.map((categoryTag, order) => {
                 const isFiltered = filteredTagArray.includes(categoryTag)
                 return (
                     <Tag
-                        onClick={() => updateFilteredTagArray(categoryTag)}
-                        order={order % 8}
+                        onClick={() => {
+                            const updatedFilteredTagArray =
+                                getUpdatedFileterdTagArray(
+                                    categoryTag,
+                                    filteredTagArray
+                                )
+                            setFilteredTagArray(updatedFilteredTagArray)
+                        }}
+                        color={categoryColor}
                         isFiltered={isFiltered}
+                        order={order % 4}
+                        isLight={isLight}
                         key={categoryTag}
                     >
-                        {isFiltered ? <SvgFlagFill /> : <p>#</p>}
+                        {isFiltered ? <FlagFillIcon /> : <p>#</p>}
                         {categoryTag}
                     </Tag>
                 )
             })}
             {filteredTagArray.length !== 0 && (
                 <Tag
-                    order={categoryTagArray.length % 8}
+                    order={categoryTagArray.length % 4}
                     isFiltered={true}
                     onClick={resetFilteredTagArray}
+                    color={categoryColor}
+                    isLight={isLight}
                 >
-                    <SvgDelete />
-                    reset
+                    <DeleteIcon />
                 </Tag>
             )}
         </TagContainer>
@@ -385,25 +431,15 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async ({
 }) => {
     const { category } = params as ParamQuery
 
-    const categoryInfoArray = await getCategoryInfoArrayByJson()
     const categoryPostArray = await getCategoryPostMeta(category)
-
-    const { color: categoryColor, description: categoryDescription } =
-        categoryInfoArray.filter(
-            ({ category: categoryName }) => categoryName === category
-        )[0]
-
-    const deduplicatedCategoryTagStringArray = [
-        ...new Set(categoryPostArray.flatMap(({ tags }) => tags)),
-    ].sort()
+    const specificCategoryInfo = await getSpecificCategoryInfo(category)
+    const categoryTagArray = await getDeduplicatedCategoryTagArray(category)
 
     return {
         props: {
             categoryPostArray,
-            category,
-            categoryColor,
-            categoryDescription,
-            categoryTagArray: deduplicatedCategoryTagStringArray,
+            categoryTagArray,
+            ...specificCategoryInfo,
         },
     }
 }
