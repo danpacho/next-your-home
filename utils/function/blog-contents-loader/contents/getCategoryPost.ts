@@ -1,13 +1,8 @@
-import {
-    blogContentsDirectory,
-    getValidateColor,
-    removeFileFormat,
-} from "../util"
 import { getPureCategoryNameArray } from "./getCategory"
 
 import { readFile, readdir } from "fs/promises"
-import matter from "gray-matter"
 import { serialize } from "next-mdx-remote/serialize"
+import matter from "gray-matter"
 import remarkGfm from "remark-gfm"
 
 import { PostMetaType } from "@/types/post/meta"
@@ -24,6 +19,12 @@ import {
     BlogFileExtractionError,
     BlogPropertyError,
 } from "../../blog-error-handler/blogError"
+
+import {
+    blogContentsDirectory,
+    getValidateColor,
+    removeFileFormat,
+} from "../util"
 
 const transformContentToMDXCompileSource = async (
     compileSource: string
