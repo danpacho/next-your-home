@@ -10,10 +10,11 @@ import { PageType } from "@/types/page/type"
 import { getLatestCategoryInfoArrayByJson } from "@/utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
 
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
+
 import { PostLink } from "@/components/Blog/Post"
 import { CategoryLink } from "@/components/Blog/Category"
-import { IsLight } from "@/types/theme"
-import { useTheme } from "@/lib/atoms/theme/theme.state"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -165,7 +166,7 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
-    const isLight = useTheme() === "light"
+    const isLight = useThemeIsLight()
     return (
         <MainPageContainer>
             <CategoryContainer>
