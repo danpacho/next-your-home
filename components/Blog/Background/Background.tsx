@@ -1,6 +1,10 @@
-import { useFocusingPageColor } from "@/lib/pageColor/pageColor.state"
-import { PageType } from "@/types/page/type"
 import { ReactElement } from "react"
+
+import { PageType } from "@/types/page/type"
+
+import { useFocusingPageColor } from "@/lib/atoms/pageColor/pageColor.state"
+import { useThemeIsLight } from "@/hooks"
+
 import {
     CategoryBackground,
     PostBackground,
@@ -10,9 +14,13 @@ import {
 const BACKGROUND_SVG: {
     [key in PageType]: (color: string, isLight: boolean) => ReactElement
 } = {
-    Category: (color, isLight) => (
-        <CategoryBackground mainColor={color} isLight={isLight} />
-    ),
+    Category: (color, isLight) =>
+        isLight ? (
+            <CategoryBackground mainColor={color} isLight={isLight} />
+        ) : (
+            <HomeBackground mainColor={color} isLight={isLight} />
+        ),
+
     Post: (color, isLight) => (
         <PostBackground mainColor={color} isLight={isLight} />
     ),
@@ -29,7 +37,8 @@ interface MainTransformBackgroundProps {
 }
 function Background({ pageType }: MainTransformBackgroundProps) {
     const focusingPageColor = useFocusingPageColor()
-    return <>{BACKGROUND_SVG[pageType](focusingPageColor, true)}</>
+    const isLight = useThemeIsLight()
+    return <>{BACKGROUND_SVG[pageType](focusingPageColor, isLight)}</>
 }
 
 export default Background

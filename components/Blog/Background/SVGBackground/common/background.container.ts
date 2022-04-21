@@ -13,6 +13,7 @@ const SVGContainer = styled.svg`
     min-height: 100vh;
 
     user-select: none;
+
     z-index: ${(p) => p.theme.zBackground};
 `
 
