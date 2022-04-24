@@ -64,10 +64,11 @@ const PostContainer = styled.div`
 
     flex: 3;
 
-    height: 32.5rem;
+    height: 31.5rem;
 
     gap: 1.75rem;
     padding-right: 0.5rem;
+    padding-bottom: 1rem;
 
     overflow-y: scroll;
 
