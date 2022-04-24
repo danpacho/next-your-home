@@ -3,7 +3,7 @@ import { atom, useRecoilState, useRecoilValue, useSetRecoilState } from "recoil"
 
 const $theme = atom<ThemeMode>({
     key: "theme",
-    default: "light",
+    default: "dark",
 })
 
 const useStateTheme = () => useRecoilState($theme)
