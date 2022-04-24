@@ -17,6 +17,12 @@
         "incremental": true,
         "importHelpers": true
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "mdx.d.ts"],
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        "mdx.d.ts",
+        "blog.config.ts"
+    ],
     "exclude": ["node_modules"]
 }
