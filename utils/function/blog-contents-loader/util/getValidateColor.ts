@@ -49,6 +49,16 @@ const transformRGBAToHEX = (rgbaArray: RegExpExecArray) => {
 }
 
 const getValidateColor = (color: string) => {
+    if (!color)
+        throw new BlogPropertyError({
+            errorNameDescription: "Format Error Occured",
+            propertyName: "color",
+            propertyType: "string",
+            propertyDescription: "input color is Null",
+            errorPropertyValue: color,
+            customeErrorMessage:
+                'color wrapping with ✅colon or ✅semi-colon, "| your-color |" \n\n            CORRECT INPUT   ex) color: "#FFFFFF"\n\n            INCORRECT INPUT ex) color: #FFFFFF',
+        })
     if (isColorHEX(color)) return color
 
     const validationResult = validateRGBA(color)
