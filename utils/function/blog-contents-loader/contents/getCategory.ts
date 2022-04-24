@@ -27,7 +27,21 @@ const getPureCategoryNameArray = async () => {
                 "blog-contents directory name 📝 incorrection",
             message:
                 'Check "blog-contents" and "blog-contents/contens" file name 🔎',
-            customeErrorMessage: `directory name is matching like exact path below ⬇️\n\n${blogContentsDirectory}`,
+            customeErrorMessage: `directory structure should match with following path ⬇️\n\n      ${blogContentsDirectory}\n\n      🔒 Check Post Directory Structure:\n 
+            📦"blog-contents"
+            ┃
+            ┗ 📂"content"                                     | blog content
+            ┃ ┃
+            ┃ ┗ 📂[catgory-name]                             | your category name
+            ┃ ┃ ┃
+            ┃ ┃ ┣ 📂"posts"                                 | inside of category's posts
+            ┃ ┃ ┃ ┣ 📜[post-name].mdx                      | mdx format, post
+            ┃ ┃ ┃ ┗ ... more posts
+            ┃ ┃ ┃
+            ┃ ┃ ┗ 📜"description.json"                      | your category's description
+            ┃ ┃
+            ┃ ┗ 📂[catgory-name2]...
+            `,
         })
     }
 }
@@ -269,8 +283,13 @@ const readCategoryJSONFileArray = async (
                     passedError: err,
                     errorNameDescription: "description.json file problem",
                     message:
-                        "[contents] description file name 📝 incorrection OR .json syntax incorrection",
-                    customeErrorMessage: `"description.json" in ${category} File at\n\n${descriptionFilePath}`,
+                        "1. description file name incorrection \n      2. [.json] file syntax error\n",
+                    customeErrorMessage: `"description.json" in your [${category}] File at\n\n      ${descriptionFilePath}\n\n      🔒 Check description.json format example:\n
+                    {
+                        "description": "my category description!",
+                        "emoji": "🏠",
+                        "color": "#1F2937"
+                    }\n`,
                 })
             }
         })
