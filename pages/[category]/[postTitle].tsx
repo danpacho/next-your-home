@@ -114,6 +114,8 @@ const TableOfContentPositionContainer = styled.div`
     position: sticky;
     top: 6rem;
 
+    flex: 1;
+
     margin-right: 2rem;
 
     margin-top: 6rem;
@@ -129,6 +131,7 @@ const TableOfContentPositionContainer = styled.div`
 interface PostProps extends SpecificPostContentType {}
 function Post({ postController, postMeta, postSource }: PostProps) {
     const [_, setFocusingPageColor] = useStateFocusingPageColor()
+
     useEffect(
         () => setFocusingPageColor(postMeta.color),
         [setFocusingPageColor, postMeta.color]
