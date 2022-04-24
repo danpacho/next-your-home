@@ -119,7 +119,7 @@ class BlogErrorAdditionalInfo extends BlogError {
         if (passedError instanceof BlogError) {
             this.message = `${this.passedError}\n${this.messageTab}${message}\n${this.messageTab}${customeErrorMessage}${this.messageDivider}`
         } else {
-            this.message = `${this.messageDivider}${this.messageTab}Unknown ERROR😓:\n\n${this.passedError}\n${this.messageTab}\n${this.messageTab}Please Follow [ Error Call Stack ] to find error.${this.messageDivider}`
+            this.message = `${this.messageDivider}${this.messageTab}${customeErrorMessage}${this.messageDivider}${this.messageTab}Unknown ERROR😓:\n\n${this.passedError}\n${this.messageTab}\n${this.messageTab}Please Follow [ Error Call Stack ] to find error.${this.messageDivider}`
         }
     }
 }
