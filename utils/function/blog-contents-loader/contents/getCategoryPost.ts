@@ -159,10 +159,7 @@ const transformCategoryPostFileArrayToPostContentArray = async (
 
                             //TODO: regex 변수를 함수 스코프 외부에서 선언시 정확히 테스트가 안됨, 접근이 불가능한 경우가 생기는것 같음
                             const validationMeta = Object.entries(postMeta)
-                                .filter(
-                                    ([_, value]) =>
-                                        value === undefined || value === ""
-                                )
+                                .filter(([_, value]) => !value)
                                 .map(([metaKey, metaValue]) => ({
                                     metaKey,
                                     metaValue,
@@ -196,7 +193,7 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                                 errorNameDescription:
                                     "post meta info 🔎 incorrections",
                                 message:
-                                    "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ update  : [ yyyy/mm/dd ] 📅 shold follow that format\n      ✅ author  : Post author name\n      ✅ color   : Post main color -> should be hex, if you activate useTXT config option\n      ✅ tags    : tag1, tag2, tag3, ... \n",
+                                    "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ author  : Post author name\n      ✅ update  : [ yyyy/mm/dd ]\n                 : [🚨WARNING: SHOULD FOLLOW FORMAT]\n      ✅ color   : Post main color, HEX | RGB | RGBA\n                 : [🚨WARNING: WRAP YOUR COLOR WITH colon or semi-colon]\n      ✅ tags    : tag1, tag2, tag3, ...\n                 : [🚨WARNING: DIVIDE TAG WITH comma ,]\n",
                                 customeErrorMessage: `your post meta info at:\n\n   ${postContentPath}`,
                             })
                         }
