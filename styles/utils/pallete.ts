@@ -2,6 +2,7 @@ export type PalleteType = keyof Pallete
 
 export type Pallete = typeof pallete
 
+import config from "@/blog.config"
 const pallete = {
     white: "#FFFFFF",
 
@@ -79,10 +80,7 @@ const pallete = {
     purple10: "#4c1d95",
 
     //* 유저 주요색
-    primary1: "#776350",
-    primary2: "#A68A68",
-    primary3: "#D9BD9C",
-    primary4: "#F2E2CE",
+    ...config.userPallete,
 }
 
 export default pallete
