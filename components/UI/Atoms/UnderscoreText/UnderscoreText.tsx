@@ -50,7 +50,7 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
         `}
 
     ${media.mediumTablet} {
-        font-size: ${(p) => p.theme.md};
+        font-size: 1.1rem;
         ::after {
             display: none;
         }

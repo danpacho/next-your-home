@@ -1,7 +1,11 @@
 import { LayersAltIcon } from "@/components/UI/Atoms/Icons"
 import media from "@/styles/utils/media"
 import { PostMetaType } from "@/types/post/meta"
+
 import styled, { css } from "styled-components"
+
+import { IsLight } from "@/types/theme"
+import { useThemeIsLight } from "@/hooks"
 
 const PostMetaTagContainer = styled.ul`
     display: flex;
@@ -36,18 +40,25 @@ interface PostMetaTagStyle {
     type: keyof Omit<PostMetaProps, "color" | "tags" | "isCategoryPage">
     color: string
 }
-const PostMetaTag = styled.li<PostMetaTagStyle>`
+const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
+    transition: background-color 0.25s ease-out;
     display: flex;
     align-items: center;
     justify-content: center;
 
     padding: 0.15rem 0.65rem;
 
-    background-color: ${({ color }) => color};
+    background-color: ${({ color, isLight, theme }) =>
+        isLight ? color : `${color}${theme.opacity60}`};
 
     color: ${(p) => p.theme.white};
     font-size: ${(p) => p.theme.sm};
-    font-weight: 100;
+    font-weight: 300;
+
+    &:hover {
+        background-color: ${({ color, isLight, theme }) =>
+            isLight ? `${color}${theme.opacity60}` : color};
+    }
 
     ${({ type }) => postMetaTagStyle[type]}
 
@@ -84,6 +95,7 @@ function PostMeta({
     isCategoryPage,
 }: PostMetaProps) {
     const isTagSizeOver = tags.length > 2
+    const isLight = useThemeIsLight()
     return (
         <PostMetaTagContainer>
             {isCategoryPage &&
@@ -92,6 +104,7 @@ function PostMeta({
                         key={tag}
                         type={order === LAST_TAG_ORDER ? "update" : "category"}
                         color={color}
+                        isLight={isLight}
                     >
                         <p>
                             # {tag}
@@ -107,16 +120,16 @@ function PostMeta({
                 ))}
 
             {!isCategoryPage && (
-                <PostMetaTag type="category" color={color}>
+                <PostMetaTag type="category" color={color} isLight={isLight}>
                     {category}
                 </PostMetaTag>
             )}
             {!isCategoryPage && (
-                <PostMetaTag type="update" color={color}>
+                <PostMetaTag type="update" color={color} isLight={isLight}>
                     {update}
                 </PostMetaTag>
             )}
-            <PostMetaTag type="author" color={color}>
+            <PostMetaTag type="author" color={color} isLight={isLight}>
                 {author}
             </PostMetaTag>
         </PostMetaTagContainer>
