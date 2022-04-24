@@ -7,8 +7,8 @@ import shadow from "@/styles/utils/shadow"
 
 import { IsLight, ThemeMode } from "@/types/theme"
 
-import { useToggle, useWindowTheme } from "@/hooks"
-import { useSetTheme, useTheme } from "@/lib/atoms/theme/theme.state"
+import { useThemeIsLight, useToggle, useWindowTheme } from "@/hooks"
+import { useStateTheme } from "@/lib/atoms/theme/theme.state"
 
 import { LightIcon, StarIcon } from "../../Atoms/Icons"
 
@@ -77,7 +77,7 @@ function ThemeButton() {
         windowTheme
     )
 
-    const setTheme = useSetTheme()
+    const [theme, setTheme] = useStateTheme()
 
     useEffect(() => {
         setTheme(toggleValue)
@@ -92,9 +92,9 @@ function ThemeButton() {
             type="button"
             aria-label="theme button"
             onClick={() => setToggle()}
-            isLight={useTheme() === "light"}
+            isLight={useThemeIsLight()}
         >
-            {toggleValue === "light" && (
+            {theme === "light" && (
                 <>
                     <LightIcon
                         width="16px"
@@ -104,7 +104,7 @@ function ThemeButton() {
                     <p>Light</p>
                 </>
             )}
-            {toggleValue === "dark" && (
+            {theme === "dark" && (
                 <>
                     <StarIcon
                         width="16px"
