@@ -134,9 +134,9 @@ const CategoryTitleContainer = styled.div<{ categoryColor: string }>`
         display: block;
 
         background-color: ${({ categoryColor }) => categoryColor};
-        margin-top: -0.35rem;
-        height: 0.4rem;
-        opacity: 0.5;
+        margin-top: -0.5rem;
+        height: 1rem;
+        opacity: ${(p) => p.theme.themeOpacity};
     }
 
     ${media.mediumTablet} {
