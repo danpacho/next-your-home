@@ -114,13 +114,14 @@ const TableOfContentPositionContainer = styled.div`
     position: sticky;
     top: 6rem;
 
-    flex: 1;
-
+    min-width: 17.5rem;
     margin-right: 2rem;
 
     margin-top: 6rem;
     ${media.smallScreen} {
+        min-width: unset;
         margin-right: 0.5rem;
+        flex: 1;
     }
 
     ${media.mediumTablet} {
@@ -188,14 +189,14 @@ const PostMetaContainer = styled.div<IsLight>`
             p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
         border-radius: ${(p) =>
             `${p.theme.bxsm} ${p.theme.bxxxlg} ${p.theme.bxsm} ${p.theme.bxxxlg}`};
-        margin: 0 0 1.5rem 0;
+        margin: 0.5rem 0 1.5rem 0;
         padding: 1.5rem 0 2.75rem 0;
         gap: 1.25rem;
     }
 `
 const PostTitle = styled.header`
     font-size: 2.5rem;
-    font-weight: 200;
+    font-weight: 300;
     color: ${(p) => p.theme.headerFontColor};
     margin: 2rem 0;
 
@@ -280,7 +281,7 @@ const PostTag = styled.div<TagStyle>`
     border-left-style: solid;
 
     color: ${(p) => p.theme.fontColor};
-    font-weight: 300;
+    font-weight: 400;
 
     gap: 0.25rem;
 
