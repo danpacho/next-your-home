@@ -207,7 +207,7 @@ const extractCategoryDescriptionAndColorAndEmoji = (
  * @note 전체 카테고리의 이름 - 설명 배열
  * @return 모든 카테
  */
-const getCategoryInfoArray = async (): Promise<CategoryInfoType[]> => {
+const getCategoryInfoArrayByTXT = async (): Promise<CategoryInfoType[]> => {
     const categoryArray = await getPureCategoryNameArray()
     const categoryTXTFileArray = await readCategoryTXTFileArray(categoryArray)
     const allCategoryInfo = new Array(categoryArray.length)
@@ -301,14 +301,21 @@ const readCategoryJSONFileArray = async (
 /**
  * @returns **`categoryInfo` 배열을 반환**
  */
-const getCategoryInfoArrayByJson = async () =>
+const getCategoryInfoArrayByJSON = async () =>
     await readCategoryJSONFileArray(await getPureCategoryNameArray())
 
 /**
- * @returns
+ * @param number: 추출할 갯수
+ * @param useTXT: txt파일로 카테고리 추출
+ * @returns 상위 `number`개 카테고리 반환
  */
-const getLatestCategoryInfoArrayByJson = async () =>
-    await (await getCategoryInfoArrayByJson()).sort().slice(0, 3)
+const getLatestCategoryInfoArray = async ({ useTXT }: { useTXT: boolean }) =>
+    await (useTXT
+        ? await getCategoryInfoArrayByTXT()
+        : await getCategoryInfoArrayByJSON()
+    )
+        .sort()
+        .slice(0, 3)
 
 const getDeduplicatedCategoryTagArray = async (category: string) => {
     const categoryPostArray = await getCategoryPostMeta(category)
@@ -319,10 +326,16 @@ const getDeduplicatedCategoryTagArray = async (category: string) => {
     return deduplicatedCategoryTagArray
 }
 
-const getSpecificCategoryInfo = async (
+const getSpecificCategoryInfo = async ({
+    category,
+    useTXT,
+}: {
     category: string
-): Promise<CategoryInfoType> => {
-    const categoryInfoArray = await getCategoryInfoArrayByJson()
+    useTXT: boolean
+}): Promise<CategoryInfoType> => {
+    const categoryInfoArray = useTXT
+        ? await getCategoryInfoArrayByTXT()
+        : await getCategoryInfoArrayByJSON()
 
     const specificCategoryInfo = categoryInfoArray.filter(
         ({ category: categoryName }) => categoryName === category
@@ -337,12 +350,12 @@ export {
     //*path
     getCategoryPath,
     getPureCategoryNameArray,
-    //* categoryInfo
-    getCategoryInfoArray,
+    //* categoryInfo - txt | json
+    getCategoryInfoArrayByTXT,
+    getCategoryInfoArrayByJSON,
     getSpecificCategoryInfo,
-    getCategoryInfoArrayByJson,
-    //* lateset
-    getLatestCategoryInfoArrayByJson,
-    //* specific tag
+    //* categoryInfo - latest
+    getLatestCategoryInfoArray,
+    //* specific category tag
     getDeduplicatedCategoryTagArray,
 }

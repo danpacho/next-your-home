@@ -7,7 +7,7 @@ import { CategoryInfoType } from "@/types/category/info"
 import { PostMetaType } from "@/types/post/meta"
 import { PageType } from "@/types/page/type"
 
-import { getLatestCategoryInfoArrayByJson } from "@/utils/function/blog-contents-loader/contents/getCategory"
+import { getLatestCategoryInfoArray } from "@/utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@/utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { IsLight } from "@/types/theme"
@@ -15,6 +15,8 @@ import { useThemeIsLight } from "@/hooks"
 
 import { PostLink } from "@/components/Blog/Post"
 import { CategoryLink } from "@/components/Blog/Category"
+
+import config from "@/blog.config"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -204,11 +206,14 @@ export default MainPage
 
 export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
     const latestPostArray = await getLatestPostMeta()
-    const categoryInfoArray = await getLatestCategoryInfoArrayByJson()
+    const latestCategoryInfoArray = await getLatestCategoryInfoArray({
+        useTXT: config.useTXT,
+    })
+
     return {
         props: {
             latestPostArray,
-            categoryInfoArray,
+            categoryInfoArray: latestCategoryInfoArray,
         },
     }
 }

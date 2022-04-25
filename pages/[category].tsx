@@ -28,6 +28,8 @@ import { PostLink } from "@/components/Blog/Post"
 import { CategoryInfoType } from "@/types/category/info"
 import { shadeColor } from "@/utils/function/color/shadeColor"
 
+import config from "@/blog.config"
+
 //* Main
 const Container = styled.div`
     width: 70%;
@@ -396,7 +398,9 @@ const CategoryTag = ({
     setFilteredTagArray,
 }: CategoryTagProps) => {
     const resetFilteredTagArray = () => setFilteredTagArray([])
+
     const isLight = useThemeIsLight()
+
     return (
         <TagContainer>
             {categoryTagArray?.map((categoryTag, order) => {
@@ -447,7 +451,10 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async ({
     const { category } = params as ParamQuery
 
     const categoryPostArray = await getCategoryPostMeta(category)
-    const specificCategoryInfo = await getSpecificCategoryInfo(category)
+    const specificCategoryInfo = await getSpecificCategoryInfo({
+        category,
+        useTXT: config.useTXT,
+    })
     const categoryTagArray = await getDeduplicatedCategoryTagArray(category)
 
     return {
