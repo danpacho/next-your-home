@@ -2,9 +2,10 @@ import media from "@/styles/utils/media"
 import styled from "styled-components"
 
 const PStyled = styled.p`
-    line-height: 1.75rem;
-    font-size: ${(props) => props.theme.md};
     margin: 1.25rem 0;
+
+    font-size: ${(props) => props.theme.md};
+    line-height: 2rem;
     color: ${(p) => p.theme.fontColor};
 
     ${media.widePhone} {

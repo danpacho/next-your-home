@@ -34,7 +34,7 @@ const lightTheme: DefaultTheme = {
     ...commonThemeProperty,
     containerBackgroundColor: pallete.white,
     containerBorderColor: pallete.gray2,
-    fontColor: pallete.gray8,
+    fontColor: pallete.gray9,
     headerFontColor: pallete.trueDeepDark,
     descriptionFontColor: pallete.gray6,
     tagFontColor: pallete.gray1,

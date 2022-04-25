@@ -153,7 +153,7 @@ function PostLink({
                     <PostTitle
                         isHover={isHover}
                         fontSize="lg"
-                        fontWeight={200}
+                        fontWeight={300}
                         underscoreColor={color}
                     >
                         {title}

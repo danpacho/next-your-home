@@ -169,7 +169,7 @@ function CategoryLink({
                 <CategoryInfoContainer>
                     <CategoryTitle
                         isHover={isHover}
-                        fontWeight={200}
+                        fontWeight={300}
                         fontSize="lg"
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"

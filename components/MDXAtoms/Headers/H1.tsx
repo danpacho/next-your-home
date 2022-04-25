@@ -14,7 +14,7 @@ import { IsLight } from "@/types/theme"
 import { useThemeIsLight } from "@/hooks"
 
 const H1Container = styled.div`
-    margin: 0 0 2rem 0;
+    margin: 2rem 0;
 `
 
 const H1Styled = styled.h1<IsLight>`
