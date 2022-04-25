@@ -45,4 +45,9 @@ export const GlobalStyle = createGlobalStyle`
 
       -webkit-font-smoothing: antialiased;
 
+      //* disable Katex math slection
+      .math {
+            user-select: none;
+      }
+
 `

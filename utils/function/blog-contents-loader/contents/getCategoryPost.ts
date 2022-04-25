@@ -14,6 +14,8 @@ import {
 } from "@/types/post/content"
 import { MDXCompiledSourceType } from "@/types/mdx"
 
+import { SerializeOptions } from "next-mdx-remote/dist/types"
+
 import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
@@ -26,17 +28,36 @@ import {
     removeFileFormat,
 } from "../util"
 
+import config from "@/blog.config"
+import rehypeKatex from "rehype-katex"
+import remarkMath from "remark-math"
+
 const transformContentToMDXCompileSource = async (
     compileSource: string
 ): Promise<MDXCompiledSourceType> => {
     try {
-        const serializedSource = await serialize(compileSource, {
-            mdxOptions: {
+        const getMdxOptions = async (
+            useKaTeX: boolean
+        ): Promise<SerializeOptions["mdxOptions"]> => {
+            if (useKaTeX) {
+                return {
+                    format: "mdx",
+                    remarkPlugins: [remarkGfm, remarkMath],
+                    rehypePlugins: [rehypeKatex],
+                    development: process.env.NODE_ENV === "development",
+                }
+            }
+            return {
                 format: "mdx",
                 remarkPlugins: [remarkGfm],
                 development: process.env.NODE_ENV === "development",
-            },
+            }
+        }
+
+        const serializedSource = await serialize(compileSource, {
+            mdxOptions: await getMdxOptions(config.useKaTeX),
         })
+
         return serializedSource
     } catch (err) {
         throw new BlogErrorAdditionalInfo({

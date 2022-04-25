@@ -37,6 +37,9 @@ import {
     PostTableOfContent,
 } from "@/components/Blog/Post"
 
+import config from "@/blog.config"
+import KatexStyleLoader from "@/components/Blog/Post/Katex"
+
 const PostContainer = styled.div<IsLight>`
     display: flex;
     flex-direction: row;
@@ -159,6 +162,8 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 nextPost={postController.nextPost}
                 prevPost={postController.prevPost}
             />
+
+            {config.useKaTeX && <KatexStyleLoader />}
         </>
     )
 }
@@ -184,11 +189,14 @@ const PostMetaContainer = styled.div<IsLight>`
             `${theme.containerBackgroundColor}${
                 isLight ? theme.opacity20 : theme.opacity40
             }`};
-        backdrop-filter: blur(25px);
+
         box-shadow: ${(p) =>
             p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
+        backdrop-filter: blur(25px);
+
         border-radius: ${(p) =>
             `${p.theme.bxsm} ${p.theme.bxxxlg} ${p.theme.bxsm} ${p.theme.bxxxlg}`};
+
         margin: 0.5rem 0 1.5rem 0;
         padding: 1.5rem 0 2.75rem 0;
         gap: 1.25rem;
