@@ -117,7 +117,7 @@ const CategoryInfoContainer = styled.div`
     justify-content: space-between;
 
     max-width: 50%;
-    height: 6rem;
+    height: 6.75rem;
 
     ${media.widePhone} {
         width: 60%;
