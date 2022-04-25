@@ -116,24 +116,34 @@ const CategoryInfoContainer = styled.div`
         gap: 1.5rem;
     }
 `
-const CategoryTitle = styled.div<{ categoryColor: string }>`
+const CategoryTitleContainer = styled.div<{ categoryColor: string }>`
+    gap: 0.5rem;
+
     color: ${(p) => p.theme.headerFontColor};
-    font-size: 3rem;
-    font-weight: 1000;
+    font-size: 2.5rem;
+    font-weight: 900;
     text-shadow: 3.75px 3.75px 0
         ${({ categoryColor, theme }) => `${categoryColor}${theme.themeOpacity}`};
     text-transform: capitalize;
 
     margin-left: 0.5rem;
 
+    ::after {
+        content: "";
+
+        display: block;
+
+        background-color: ${({ categoryColor }) => categoryColor};
+        margin-top: -0.35rem;
+        height: 0.4rem;
+        opacity: 0.5;
+    }
+
     ${media.mediumTablet} {
-        font-size: 2.5rem;
+        font-size: 2.25rem;
     }
 
     ${media.widePhone} {
-        border-bottom: 0.3rem solid
-            ${({ categoryColor, theme }) =>
-                `${categoryColor}${theme.opacity30}`};
         padding-bottom: 0rem;
         margin: 1rem 0;
         font-size: ${(p) => p.theme.title};
@@ -141,6 +151,7 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
         text-shadow: none;
     }
 `
+
 interface CategoryProps extends CategoryInfoType {
     categoryPostArray: PostMetaType[]
     categoryTagArray: string[]
@@ -181,11 +192,14 @@ function Category({
     return (
         <Container>
             <CategoryInfoContainer>
-                <CategoryTitle categoryColor={categoryColor}>
-                    {category}
-                    {filteredCategoryPostArray.length !== 0 &&
-                        ` ${filteredCategoryPostArray.length} 개`}
-                </CategoryTitle>
+                <CategoryTitleContainer
+                    categoryColor={isLight ? categoryColor : darkModeColor}
+                >
+                    {category}{" "}
+                    {filteredCategoryPostArray.length === 0
+                        ? categoryEmoji
+                        : `${filteredCategoryPostArray.length} 개`}
+                </CategoryTitleContainer>
 
                 <CategoryTag
                     filteredTagArray={filteredTagArray}
