@@ -39,7 +39,7 @@ export const GlobalStyle = createGlobalStyle`
       }
 
       ::selection {
-            background-color: #1E1E1E;
+            background-color: #4c4c4c;
             color: #F3F4F6;
       }
 
