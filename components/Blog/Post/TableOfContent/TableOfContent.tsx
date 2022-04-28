@@ -9,7 +9,7 @@ import { useFocusTitle } from "@/lib/atoms/tableOfContent/tableOfContent.state"
 
 import { sliceTextByMaxLength } from "@/utils/function/text"
 
-const TOCContainer = styled.ul`
+const TOCContainer = styled.div`
     min-width: max-content;
     height: fit-content;
 
@@ -31,7 +31,6 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
 
     color: ${(p) => p.theme.fontColor};
     font-size: ${({ theme }) => theme.sm};
-    text-decoration: none;
 
     animation: ${animation.pureZoomIn} 1.35s cubic-bezier(0.19, 1, 0.22, 1);
     transform-origin: left;
@@ -40,13 +39,18 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
         color: ${(p) => p.theme.themePrimaryColor};
     }
 
+    div:nth-child(2) {
+        margin-top: 1rem;
+    }
+
     cursor: pointer;
 `
 
 const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
-    transition: border-color 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: background-color 0.2s ease;
 
-    font-weight: 500;
+    font-weight: ${(p) => (p.isFocusing ? 700 : 500)};
+    color: ${({ isFocusing, theme }) => isFocusing && theme.themePrimaryColor};
 
     border-color: ${({ theme, isFocusing }) =>
         isFocusing && theme.themePrimaryColor};
@@ -55,29 +59,37 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     min-height: 1.25rem;
 
     &:hover {
-        border-color: ${(p) => p.theme.primary3};
+        background-color: ${({ theme }) =>
+            `${theme.containerBackgroundColor}${theme.opacity60}`};
+        border-radius: ${(p) => `0 ${p.theme.bmd} ${p.theme.bmd} 0`};
+    }
+
+    p {
+        //* text-center
+        margin-top: 0.125rem;
     }
 
     animation-delay: ${({ index }) => index * 85}ms;
 `
 
 const H2Link = styled(HeaderLinkCommon)`
-    transition: all 0.75s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    &:first-child {
-        margin-top: 1.25rem;
-    }
     margin-left: 1.25rem;
 
-    color: ${(p) => p.theme.gray5};
+    &:first-child {
+        margin-bottom: 1rem;
+    }
+
+    color: ${(p) => p.theme.descriptionFontColor};
 
     &:hover {
-        border-color: ${(p) => p.theme.gray3};
+        border-color: ${(p) => p.theme.themePrimaryColor};
     }
 
     transform-origin: left;
     transform: scale(${(p) => (p.isFocusing ? "1" : "0")})
-        translateX(${(p) => (p.isFocusing ? "0" : "200px")});
+        translateY(${(p) => (p.isFocusing ? "0" : "-10px")});
 
     visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
 
@@ -228,8 +240,13 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                             onClick={onClick}
                             key={title}
                         >
-                            🍞{" "}
-                            {sliceTextByMaxLength(title, TITLE_MAX_LENGTH.h1)}
+                            <p>
+                                🍞{" "}
+                                {sliceTextByMaxLength(
+                                    title,
+                                    TITLE_MAX_LENGTH.h1
+                                )}
+                            </p>
                             {children?.map(({ title: childTitle, onClick }) => (
                                 <H2Link
                                     key={childTitle}
@@ -239,11 +256,13 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
                                         onClick()
                                     }}
                                 >
-                                    🥛{" "}
-                                    {sliceTextByMaxLength(
-                                        childTitle,
-                                        TITLE_MAX_LENGTH.h2
-                                    )}
+                                    <p>
+                                        🥛{" "}
+                                        {sliceTextByMaxLength(
+                                            childTitle,
+                                            TITLE_MAX_LENGTH.h2
+                                        )}
+                                    </p>
                                 </H2Link>
                             ))}
                         </H1Link>
