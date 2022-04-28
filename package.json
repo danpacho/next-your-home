@@ -1,7 +1,12 @@
 {
-    "name": "danpacho-blog",
+    "name": "danpacho-blog-template",
     "version": "0.1.0",
-    "private": true,
+    "private": "false",
+    "author": {
+        "name": "danpacho",
+        "url": "https://github.com/danpa725"
+    },
+    "description": "cutomizable blog templates with Next.js and MDX.",
     "scripts": {
         "dev": "next dev",
         "build": "next build",
@@ -19,7 +24,9 @@
         "react-dom": "17.0.2",
         "react-syntax-highlighter": "^15.5.0",
         "recoil": "^0.6.1",
+        "rehype-katex": "^6.0.2",
         "remark-gfm": "^3.0.1",
+        "remark-math": "^5.1.1",
         "sharp": "^0.30.3",
         "styled-components": "^5.3.3",
         "styled-reset": "^4.3.4"
