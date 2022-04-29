@@ -34,6 +34,8 @@ import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import config from "blog.config"
 
+import memoize from "fast-memoize"
+
 const getMdxOptions = (useKaTeX: boolean): SerializeOptions["mdxOptions"] => {
     if (useKaTeX) {
         return {
@@ -267,12 +269,13 @@ const getCategoryPostContentArray = async (
 /**
  * @returns 모든 포스트의 url 배열 반환 `postUrl[]`
  */
-const getCategoryPostContentPathArray = async () =>
+const getCategoryPostContentPathArray = memoize(async () =>
     (await getCategoryPostContentArray(false)).flatMap(({ postContentArray }) =>
         postContentArray
             .filter(({ postMeta: { postpone } }) => !postpone)
             .map(({ postMeta: { postUrl } }) => postUrl)
     )
+)
 
 /**
  * @note 특정 포스트 정보를 가져오는 함수
@@ -280,53 +283,58 @@ const getCategoryPostContentPathArray = async () =>
  * @param postTitle 추출할 포스트 이름
  * @return `postMeta` `postSource` `postController`반환
  */
-const getSpecificPostContent = async (
-    categoryName: string,
-    postTitle: string
-): Promise<SpecificPostContentType> => {
-    const specificCategoryPostContent = (await getCategoryPostContentArray())
-        .filter(({ category }) => category === categoryName)[0]
-        .postContentArray.filter(({ postMeta: { postpone } }) => !postpone)
-        .reduce<SpecificPostContentType>((acc, currValue, idx, totPost) => {
-            if (
-                currValue.postMeta.postUrl === `/${categoryName}/${postTitle}`
-            ) {
-                const isFirst = idx === 0
-                const prevPost = isFirst
-                    ? {
-                          title: `${categoryName} 글 목록으로 돌아가기`,
-                          postUrl: `/${categoryName}`,
-                      }
-                    : {
-                          title: totPost[idx - 1].postMeta.title,
-                          postUrl: totPost[idx - 1].postMeta.postUrl,
-                      }
+const getSpecificPostContent = memoize(
+    async (
+        categoryName: string,
+        postTitle: string
+    ): Promise<SpecificPostContentType> => {
+        const specificCategoryPostContent = (
+            await getCategoryPostContentArray()
+        )
+            .filter(({ category }) => category === categoryName)[0]
+            .postContentArray.filter(({ postMeta: { postpone } }) => !postpone)
+            .reduce<SpecificPostContentType>((acc, currValue, idx, totPost) => {
+                if (
+                    currValue.postMeta.postUrl ===
+                    `/${categoryName}/${postTitle}`
+                ) {
+                    const isFirst = idx === 0
+                    const prevPost = isFirst
+                        ? {
+                              title: `${categoryName} 글 목록으로 돌아가기`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx - 1].postMeta.title,
+                              postUrl: totPost[idx - 1].postMeta.postUrl,
+                          }
 
-                const isLast = idx === totPost.length - 1
-                const nextPost = isLast
-                    ? {
-                          title: `${categoryName}의 마지막 글이에요!`,
-                          postUrl: `/${categoryName}`,
-                      }
-                    : {
-                          title: totPost[idx + 1].postMeta.title,
-                          postUrl: totPost[idx + 1].postMeta.postUrl,
-                      }
+                    const isLast = idx === totPost.length - 1
+                    const nextPost = isLast
+                        ? {
+                              title: `${categoryName}의 마지막 글이에요!`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx + 1].postMeta.title,
+                              postUrl: totPost[idx + 1].postMeta.postUrl,
+                          }
 
-                const postController: PostControllerType = {
-                    prevPost,
-                    nextPost,
+                    const postController: PostControllerType = {
+                        prevPost,
+                        nextPost,
+                    }
+                    const specificPostContent: SpecificPostContentType = {
+                        ...currValue,
+                        postController,
+                    }
+                    return specificPostContent
                 }
-                const specificPostContent: SpecificPostContentType = {
-                    ...currValue,
-                    postController,
-                }
-                return specificPostContent
-            }
-            return acc
-        }, {} as SpecificPostContentType)
-    return specificCategoryPostContent
-}
+                return acc
+            }, {} as SpecificPostContentType)
+        return specificCategoryPostContent
+    }
+)
 
 /**
  * @note 각 포스트로 이동할 `PostMeta` 데이터 추출 반환, 날짜별로 오름치순 정렬
@@ -343,17 +351,19 @@ const extractPostMeta = async (): Promise<PostMetaType[]> =>
         )
 
 const DEFAULT_POST_NUMBER = 5
-const getLatestPostMeta = async (
-    postSliceNumber: number = DEFAULT_POST_NUMBER
-): Promise<PostMetaType[]> =>
-    (await extractPostMeta()).slice(0, postSliceNumber)
+const getLatestPostMeta = memoize(
+    async (
+        postSliceNumber: number = DEFAULT_POST_NUMBER
+    ): Promise<PostMetaType[]> =>
+        (await extractPostMeta()).slice(0, postSliceNumber)
+)
 
-const getCategoryPostMeta = async (
-    categoryName: string
-): Promise<PostMetaType[]> =>
-    (await extractPostMeta()).filter(
-        ({ category }) => category === categoryName
-    )
+const getCategoryPostMeta = memoize(
+    async (categoryName: string): Promise<PostMetaType[]> =>
+        (await extractPostMeta()).filter(
+            ({ category }) => category === categoryName
+        )
+)
 
 export {
     //* post content

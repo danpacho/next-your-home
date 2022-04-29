@@ -16,6 +16,8 @@ import {
 
 import { getCategoryPostMeta } from "./getCategoryPost"
 
+import memoize from "fast-memoize"
+
 /**
  * @returns 카테고리의 이름(파일 이름) 반환
  */
@@ -311,42 +313,46 @@ const getCategoryInfoArrayByJSON = async () =>
  * @param useTXT: txt파일로 카테고리 추출
  * @returns 상위 `number`개 카테고리 반환
  */
-const getLatestCategoryInfoArray = async ({ useTXT }: { useTXT: boolean }) =>
-    await (useTXT
-        ? await getCategoryInfoArrayByTXT()
-        : await getCategoryInfoArrayByJSON()
-    )
-        .sort()
-        .slice(0, 3)
+const getLatestCategoryInfoArray = memoize(
+    async ({ useTXT }: { useTXT: boolean }) =>
+        await (useTXT
+            ? await getCategoryInfoArrayByTXT()
+            : await getCategoryInfoArrayByJSON()
+        )
+            .sort()
+            .slice(0, 3)
+)
 
-const getDeduplicatedCategoryTagArray = async (category: string) => {
+const getDeduplicatedCategoryTagArray = memoize(async (category: string) => {
     const categoryPostArray = await getCategoryPostMeta(category)
     const deduplicatedCategoryTagArray = [
         ...new Set(categoryPostArray.flatMap(({ tags }) => tags)),
     ].sort()
 
     return deduplicatedCategoryTagArray
-}
+})
 
-const getSpecificCategoryInfo = async ({
-    category,
-    useTXT,
-}: {
-    category: string
-    useTXT: boolean
-}): Promise<CategoryInfoType> => {
-    const categoryInfoArray = useTXT
-        ? await getCategoryInfoArrayByTXT()
-        : await getCategoryInfoArrayByJSON()
+const getSpecificCategoryInfo = memoize(
+    async ({
+        category,
+        useTXT,
+    }: {
+        category: string
+        useTXT: boolean
+    }): Promise<CategoryInfoType> => {
+        const categoryInfoArray = useTXT
+            ? await getCategoryInfoArrayByTXT()
+            : await getCategoryInfoArrayByJSON()
 
-    const specificCategoryInfo = categoryInfoArray.filter(
-        ({ category: categoryName }) => categoryName === category
-    )[0]
+        const specificCategoryInfo = categoryInfoArray.filter(
+            ({ category: categoryName }) => categoryName === category
+        )[0]
 
-    return {
-        ...specificCategoryInfo,
+        return {
+            ...specificCategoryInfo,
+        }
     }
-}
+)
 
 export {
     //*path
