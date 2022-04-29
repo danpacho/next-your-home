@@ -37,8 +37,9 @@ import {
     PostTableOfContent,
 } from "@/components/Blog/Post"
 
+import KateXStyleLoader from "@/components/Blog/Post/KaTeXStyleLoader"
+
 import config from "@/blog.config"
-import KatexStyleLoader from "@/components/Blog/Post/Katex"
 
 const PostContainer = styled.div<IsLight>`
     display: flex;
@@ -163,7 +164,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 prevPost={postController.prevPost}
             />
 
-            {config.useKaTeX && <KatexStyleLoader />}
+            {config.useKaTeX && <KateXStyleLoader />}
         </>
     )
 }

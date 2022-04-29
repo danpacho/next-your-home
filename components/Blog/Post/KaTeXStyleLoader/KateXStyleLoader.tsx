@@ -1,5 +1,5 @@
 //@ts-nocheck
-export default function KatexStyleLoader() {
+export default function KateXStyleLoader() {
     return (
         <>
             <link
