@@ -5,7 +5,7 @@ import { serialize } from "next-mdx-remote/serialize"
 import matter from "gray-matter"
 import remarkGfm from "remark-gfm"
 
-import { PostMetaType } from "@/types/post/meta"
+import { MDXPostMetaType, PostMetaType } from "@/types/post/meta"
 import {
     CategoryPostContentType,
     PostContentType,
@@ -117,6 +117,9 @@ const getCategoryPostName = (postInfo: DirPostInfo[]): string[] =>
         categoryPostArray.map((fileName) => removeFileFormat(fileName, "mdx"))
     )
 
+const splitTextByComma = (text: string) =>
+    text.split(",").map((text) => text.trim())
+
 const getTagArray = (tags: string): string[] => {
     if (!tags)
         throw new BlogPropertyError({
@@ -127,13 +130,13 @@ const getTagArray = (tags: string): string[] => {
                 "tags: tag1, tag2, tag3, ... be sure to divide tag with , ",
             customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
         })
-    else return tags.split(",").map((tag) => tag.trim())
+    else return splitTextByComma(tags)
 }
 
 /**
  * @param dirPostInfo `extractCategoryPostFileArray()`로 추출한 값을 입력 받아 가공하는 함수
  * @param compileToMDX `.mdx` 파일 형식으로 컴파일 할 것인지, 선택형 인자
- * @returns 모든 카테고리의 콘텐츠를 `PostContent`형식으로 변환 한 후, 날짜 오름차순 정렬 후 반환
+ * @returns 모든 카테고리의 콘텐츠를 `PostContent`형식으로 변환 한 후, 날짜 내림차순 정렬 후 반환
  */
 const transformCategoryPostFileArrayToPostContentArray = async (
     dirPostInfo: DirPostInfo[],
@@ -160,7 +163,9 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                                     readingFileName: postFileName,
                                 })
 
-                            const { content, data } = matter(fileContent)
+                            const post = matter(fileContent)
+                            const content = post.content
+                            const meta = post.data as MDXPostMetaType
 
                             const postUrl = `/${category}/${removeFileFormat(
                                 postFileName,
@@ -170,21 +175,30 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                             const postMeta = {
                                 category,
                                 postUrl,
-                                title: data.title,
-                                author: data.author,
-                                preview: data.preview,
-                                update: data.update,
-                                tags: getTagArray(data.tags),
-                                color: getValidateColor(data.color),
+                                title: meta.title,
+                                author: meta.author,
+                                preview: meta.preview,
+                                update: meta.update,
+                                tags: getTagArray(meta.tags),
+                                postpone: meta?.postpone
+                                    ? Boolean(meta.postpone)
+                                    : false,
+                                reference: meta?.reference
+                                    ? splitTextByComma(meta.reference)
+                                    : null,
+                                color: getValidateColor(meta.color),
                             } as PostMetaType
 
-                            //TODO: regex 변수를 함수 스코프 외부에서 선언시 정확히 테스트가 안됨, 접근이 불가능한 경우가 생기는것 같음
                             const validationMeta = Object.entries(postMeta)
                                 .filter(([_, value]) => !value)
-                                .map(([metaKey, metaValue]) => ({
-                                    metaKey,
-                                    metaValue,
-                                }))
+                                .filter(([key, _]) => key === "postpone")
+                                .filter(([key, _]) => key === "reference")
+                                .map(([metaKey, metaValue]) => {
+                                    return {
+                                        metaKey,
+                                        metaValue,
+                                    }
+                                })
 
                             if (validationMeta.length !== 0)
                                 throw new BlogPropertyError({
@@ -255,7 +269,9 @@ const getCategoryPostContentArray = async (
  */
 const getCategoryPostContentPathArray = async () =>
     (await getCategoryPostContentArray(false)).flatMap(({ postContentArray }) =>
-        postContentArray.map(({ postMeta: { postUrl } }) => postUrl)
+        postContentArray
+            .filter(({ postMeta: { postpone } }) => !postpone)
+            .map(({ postMeta: { postUrl } }) => postUrl)
     )
 
 /**
@@ -270,48 +286,45 @@ const getSpecificPostContent = async (
 ): Promise<SpecificPostContentType> => {
     const specificCategoryPostContent = (await getCategoryPostContentArray())
         .filter(({ category }) => category === categoryName)[0]
-        .postContentArray.reduce<SpecificPostContentType>(
-            (acc, currValue, idx, totPost) => {
-                if (
-                    currValue.postMeta.postUrl ===
-                    `/${categoryName}/${postTitle}`
-                ) {
-                    const isFirst = idx === 0
-                    const prevPost = isFirst
-                        ? {
-                              title: `${categoryName} 글 목록으로 돌아가기`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx - 1].postMeta.title,
-                              postUrl: totPost[idx - 1].postMeta.postUrl,
-                          }
+        .postContentArray.filter(({ postMeta: { postpone } }) => !postpone)
+        .reduce<SpecificPostContentType>((acc, currValue, idx, totPost) => {
+            if (
+                currValue.postMeta.postUrl === `/${categoryName}/${postTitle}`
+            ) {
+                const isFirst = idx === 0
+                const prevPost = isFirst
+                    ? {
+                          title: `${categoryName} 글 목록으로 돌아가기`,
+                          postUrl: `/${categoryName}`,
+                      }
+                    : {
+                          title: totPost[idx - 1].postMeta.title,
+                          postUrl: totPost[idx - 1].postMeta.postUrl,
+                      }
 
-                    const isLast = idx === totPost.length - 1
-                    const nextPost = isLast
-                        ? {
-                              title: `${categoryName}의 마지막 글이에요!`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx + 1].postMeta.title,
-                              postUrl: totPost[idx + 1].postMeta.postUrl,
-                          }
+                const isLast = idx === totPost.length - 1
+                const nextPost = isLast
+                    ? {
+                          title: `${categoryName}의 마지막 글이에요!`,
+                          postUrl: `/${categoryName}`,
+                      }
+                    : {
+                          title: totPost[idx + 1].postMeta.title,
+                          postUrl: totPost[idx + 1].postMeta.postUrl,
+                      }
 
-                    const postController: PostControllerType = {
-                        prevPost,
-                        nextPost,
-                    }
-                    const specificPostContent: SpecificPostContentType = {
-                        ...currValue,
-                        postController,
-                    }
-                    return specificPostContent
+                const postController: PostControllerType = {
+                    prevPost,
+                    nextPost,
                 }
-                return acc
-            },
-            {} as SpecificPostContentType
-        )
+                const specificPostContent: SpecificPostContentType = {
+                    ...currValue,
+                    postController,
+                }
+                return specificPostContent
+            }
+            return acc
+        }, {} as SpecificPostContentType)
     return specificCategoryPostContent
 }
 
@@ -319,9 +332,10 @@ const getSpecificPostContent = async (
  * @note 각 포스트로 이동할 `PostMeta` 데이터 추출 반환, 날짜별로 오름치순 정렬
  */
 const extractPostMeta = async (): Promise<PostMetaType[]> =>
-    (await getCategoryPostContentArray(false))
+    (await await getCategoryPostContentArray(false))
         .flatMap(({ postContentArray }) => postContentArray)
         .map(({ postMeta }) => postMeta)
+        .filter(({ postpone }) => !postpone)
         .sort(
             ({ update: currUpdateDate }, { update: nextUpdateDate }) =>
                 Number(nextUpdateDate.replaceAll("/", "")) -
