@@ -370,11 +370,35 @@ const TagDivider = styled.p<{ color: string }>`
     color: ${({ color }) => color};
     font-weight: 300;
 `
+const ReferenceLink = styled.a<{ visitedColor: string }>`
+    color: ${(p) => p.theme.fontColor};
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &:visited {
+        color: ${(p) => p.visitedColor};
+    }
+`
+const ReferenceLinkContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+
+    gap: 0.25rem;
+
+    margin-top: 0.5rem;
+`
+
 const PostInfo = ({
     color,
     author,
     update,
-}: Pick<PostMetaType, "color" | "author" | "update">) => {
+    reference: referenceArray,
+}: Pick<PostMetaType, "color" | "author" | "update" | "reference">) => {
     const replaceUpateDate = `${update
         .replace("/", "년 ")
         .replace("/", "월 ")}일`
@@ -382,24 +406,53 @@ const PostInfo = ({
     //TODO: /about 페이지 만들기
     //* const authorUrl = "/about"
     return (
-        <PostInfoContainer>
-            <Link href="/" passHref>
+        <>
+            <PostInfoContainer>
+                <Link href="/" passHref>
+                    <PostTag color={color} tagType="tag">
+                        <EditIcon fill={color} />
+                        <p>{author}</p>
+                    </PostTag>
+                </Link>
+                <TagDivider color={color}>•</TagDivider>
                 <PostTag color={color} tagType="tag">
-                    <EditIcon fill={color} />
-                    <p>{author}</p>
+                    <ArrowUpIcon fill={color} />
+                    <p>{replaceUpateDate}</p>
                 </PostTag>
-            </Link>
-            <TagDivider color={color}>•</TagDivider>
-            <PostTag color={color} tagType="tag">
-                <ArrowUpIcon fill={color} />
-                <p>{replaceUpateDate}</p>
-            </PostTag>
-            <TagDivider color={color}>•</TagDivider>
-            <PostTag color={color} tagType="tag">
-                <LeafIcon fill={color} />
-                <p>Thanks For Reading !</p>
-            </PostTag>
-        </PostInfoContainer>
+                <TagDivider color={color}>•</TagDivider>
+                <PostTag color={color} tagType="tag">
+                    <LeafIcon fill={color} />
+                    <p>Thanks For Reading !</p>
+                    {/*                    
+                    //TODO: 이메일 연결하기
+                    <a href="mailto:nowhere@mozilla.org">
+                        Send email to nowhere
+                    </a> */}
+                </PostTag>
+                <ReferenceLinkContainer>
+                    {referenceArray?.map((reference, order) => (
+                        <>
+                            <PostTag
+                                color={color}
+                                tagType="info"
+                                key={reference}
+                            >
+                                <EditIcon fill={color} />
+                                <ReferenceLink
+                                    href={reference}
+                                    visitedColor={color}
+                                >
+                                    참고 {order + 1}
+                                </ReferenceLink>
+                            </PostTag>
+                            {order !== referenceArray.length - 1 && (
+                                <TagDivider color={color}>•</TagDivider>
+                            )}
+                        </>
+                    ))}
+                </ReferenceLinkContainer>
+            </PostInfoContainer>
+        </>
     )
 }
 
