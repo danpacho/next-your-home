@@ -2,8 +2,8 @@ import { getPureCategoryNameArray } from "./getCategory"
 
 import { readFile, readdir } from "fs/promises"
 import { serialize } from "next-mdx-remote/serialize"
+
 import matter from "gray-matter"
-import remarkGfm from "remark-gfm"
 
 import { MDXPostMetaType, PostMetaType } from "@/types/post/meta"
 import {
@@ -28,34 +28,34 @@ import {
     removeFileFormat,
 } from "../util"
 
-import config from "@/blog.config"
-import rehypeKatex from "rehype-katex"
+import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
+import rehypeKatex from "rehype-katex"
+
+import config from "@/blog.config"
+
+const getMdxOptions = (useKaTeX: boolean): SerializeOptions["mdxOptions"] => {
+    if (useKaTeX) {
+        return {
+            format: "mdx",
+            remarkPlugins: [remarkGfm, remarkMath],
+            rehypePlugins: [rehypeKatex],
+            development: process.env.NODE_ENV === "development",
+        }
+    }
+    return {
+        format: "mdx",
+        remarkPlugins: [remarkGfm],
+        development: process.env.NODE_ENV === "development",
+    }
+}
 
 const transformContentToMDXCompileSource = async (
     compileSource: string
 ): Promise<MDXCompiledSourceType> => {
     try {
-        const getMdxOptions = async (
-            useKaTeX: boolean
-        ): Promise<SerializeOptions["mdxOptions"]> => {
-            if (useKaTeX) {
-                return {
-                    format: "mdx",
-                    remarkPlugins: [remarkGfm, remarkMath],
-                    rehypePlugins: [rehypeKatex],
-                    development: process.env.NODE_ENV === "development",
-                }
-            }
-            return {
-                format: "mdx",
-                remarkPlugins: [remarkGfm],
-                development: process.env.NODE_ENV === "development",
-            }
-        }
-
         const serializedSource = await serialize(compileSource, {
-            mdxOptions: await getMdxOptions(config.useKaTeX),
+            mdxOptions: getMdxOptions(config.useKaTeX),
         })
 
         return serializedSource
