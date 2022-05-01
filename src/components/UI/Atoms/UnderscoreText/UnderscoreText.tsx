@@ -1,6 +1,8 @@
 import { FontSizeType } from "@styles/utils/font"
-import media from "@styles/utils/media"
 import { PalleteType } from "@styles/utils/pallete"
+
+import media from "@styles/utils/media"
+
 import styled, { css } from "styled-components"
 interface UnderscoreTextStyle {
     isHover: boolean
@@ -49,15 +51,15 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
             }
         `}
 
-    ${media.mediumTablet} {
+    ${media.mediumPhone} {
         font-size: 1.1rem;
-        ::after {
-            display: none;
-        }
     }
 
     ${media.widePhone} {
         font-weight: 300;
+        ::after {
+            display: none;
+        }
     }
 `
 

@@ -2,7 +2,8 @@ export type PalleteType = keyof Pallete
 
 export type Pallete = typeof pallete
 
-import config from "blog.config"
+import { config } from "blog.config"
+
 const pallete = {
     white: "#FFFFFF",
 
