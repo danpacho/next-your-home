@@ -32,12 +32,13 @@ import {
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
-import config from "blog.config"
+
+import { config } from "blog.config"
 
 import memoize from "fast-memoize"
 
-const getMdxOptions = (useKaTeX: boolean): SerializeOptions["mdxOptions"] => {
-    if (useKaTeX) {
+const getMdxOptions = (useKatex: boolean): SerializeOptions["mdxOptions"] => {
+    if (useKatex) {
         return {
             format: "mdx",
             remarkPlugins: [remarkGfm, remarkMath],
@@ -57,7 +58,7 @@ const transformContentToMDXCompileSource = async (
 ): Promise<MDXCompiledSourceType> => {
     try {
         const serializedSource = await serialize(compileSource, {
-            mdxOptions: getMdxOptions(config.useKaTeX),
+            mdxOptions: getMdxOptions(config.useKatex),
         })
 
         return serializedSource
