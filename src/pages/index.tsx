@@ -2,6 +2,7 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { GetStaticProps } from "next"
+import { NextSeo } from "next-seo"
 
 import { CategoryInfoType } from "@typing/category/info"
 import { PostMetaType } from "@typing/post/meta"
@@ -11,12 +12,14 @@ import { IsLight } from "@typing/theme"
 import { getLatestCategoryInfoArray } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
+import { replaceUnderscoreToSpacing } from "@utils/function/text"
+
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
 
-import config from "blog.config"
+import { config } from "blog.config"
 
 //* Main
 const MainPageContainer = styled.div`
@@ -171,12 +174,20 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
     const isLight = useThemeIsLight()
     return (
         <MainPageContainer>
+            <NextSeo
+                title={config.siteName}
+                description={config.subtitle}
+                canonical={config.url}
+            />
             <CategoryContainer>
                 <ContainerTitle isLight={isLight}>Category</ContainerTitle>
                 <CategoryLinkContainer>
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
                             {...categoryInfo}
+                            category={replaceUnderscoreToSpacing(
+                                categoryInfo.category
+                            )}
                             key={categoryInfo.category}
                         />
                     ))}

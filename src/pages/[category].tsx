@@ -10,6 +10,8 @@ import { ParsedUrlQuery } from "querystring"
 
 import { PageType } from "@typing/page/type"
 import { PostMetaType } from "@typing/post/meta"
+import { CategoryInfoType } from "@typing/category/info"
+import { IsLight } from "@typing/theme"
 
 import {
     getCategoryPath,
@@ -17,18 +19,17 @@ import {
     getSpecificCategoryInfo,
 } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getCategoryPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
+import { shadeColor } from "@utils/function/color/shadeColor"
 
 import { useStateFocusingPageColor } from "@lib/atoms/pageColor/pageColor.state"
-
-import { IsLight } from "@typing/theme"
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import { DeleteIcon, FlagFillIcon } from "@components/UI/Atoms/Icons"
 import { PostLink } from "@components/Blog/Post"
-import { CategoryInfoType } from "@typing/category/info"
-import { shadeColor } from "@utils/function/color/shadeColor"
 
-import config from "blog.config"
+import { config } from "blog.config"
+import { CategorySEO } from "@components/Next/SEO"
+import { replaceUnderscoreToSpacing } from "@utils/function/text"
 
 //* Main
 const Container = styled.div`
@@ -165,7 +166,10 @@ function Category({
     description: categoryDescription,
     emoji: categoryEmoji,
     categoryTagArray,
+    categoryUrl,
 }: CategoryProps) {
+    const fixedCategory = replaceUnderscoreToSpacing(category)
+
     const [filteredTagArray, setFilteredTagArray] = useState<string[]>([])
     const [filteredCategoryPostArray, setFilteredCategoryPostArray] = useState<
         PostMetaType[]
@@ -193,11 +197,17 @@ function Category({
     )
     return (
         <Container>
+            <CategorySEO
+                category={fixedCategory}
+                categoryUrl={categoryUrl}
+                description={categoryDescription}
+                emoji={categoryEmoji}
+            />
             <CategoryInfoContainer>
                 <CategoryTitleContainer
                     categoryColor={isLight ? categoryColor : darkModeColor}
                 >
-                    {category}{" "}
+                    {fixedCategory}{" "}
                     {filteredCategoryPostArray.length === 0
                         ? categoryEmoji
                         : `${filteredCategoryPostArray.length} 개`}

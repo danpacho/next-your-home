@@ -1,11 +1,12 @@
 import Document, { Html, Head, Main, NextScript } from "next/document"
-import SEO from "@components/Next/SEO/SEO"
+
+import { BaseSEO } from "@components/Next/SEO"
 class MyDocument extends Document {
     render() {
         return (
             <Html lang="ko">
                 <Head>
-                    <SEO />
+                    <BaseSEO />
                 </Head>
                 <body>
                     <Main />

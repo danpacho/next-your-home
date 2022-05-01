@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 
-import { useEffect } from "react"
+import { useEffect, Fragment } from "react"
 
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
@@ -37,9 +37,10 @@ import {
     PostTableOfContent,
 } from "@components/Blog/Post"
 
-import KateXStyleLoader from "@components/Blog/Post/KaTeXStyleLoader"
+import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 
-import config from "blog.config"
+import { config } from "blog.config"
+import { PostSEO } from "@components/Next/SEO"
 
 const PostContainer = styled.div<IsLight>`
     display: flex;
@@ -147,6 +148,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
     return (
         <>
             <PostContainer isLight={isLight}>
+                <PostSEO {...postMeta} />
                 <PostContentContainer>
                     <PostHeader {...postMeta} />
                     {typeof postSource !== "string" && (
@@ -166,7 +168,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 prevPost={postController.prevPost}
             />
 
-            {config.useKaTeX && <KateXStyleLoader />}
+            {config.useKatex && <KatexStyleLoader />}
         </>
     )
 }
@@ -353,12 +355,12 @@ const TitleQuote = styled(QuoteIcon)<QuoteStyle>`
 `
 const PostInfoContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 
     width: 100%;
+
     padding: 1.25rem 0 5rem 0;
     margin-top: 1.25rem;
     border-top: 1.5px solid ${(p) => p.theme.gray3};
@@ -368,10 +370,6 @@ const PostInfoContainer = styled.div`
     ${media.widePhone} {
         padding-bottom: 2.5rem;
     }
-`
-const TagDivider = styled.p<{ color: string }>`
-    color: ${({ color }) => color};
-    font-weight: 300;
 `
 const ReferenceLink = styled.a<{ visitedColor: string }>`
     color: ${(p) => p.theme.fontColor};
@@ -385,15 +383,20 @@ const ReferenceLink = styled.a<{ visitedColor: string }>`
         color: ${(p) => p.visitedColor};
     }
 `
-const ReferenceLinkContainer = styled.div`
+const TagContainer = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    flex-wrap: wrap;
 
     gap: 0.25rem;
 
     margin-top: 0.5rem;
+`
+const TagDivider = styled.p<{ color: string }>`
+    color: ${({ color }) => color};
+    font-weight: 300;
 `
 
 const PostInfo = ({
@@ -409,8 +412,8 @@ const PostInfo = ({
     //TODO: /about 페이지 만들기
     //* const authorUrl = "/about"
     return (
-        <>
-            <PostInfoContainer>
+        <PostInfoContainer>
+            <TagContainer>
                 <Link href="/" passHref>
                     <PostTag color={color} tagType="tag">
                         <EditIcon fill={color} />
@@ -432,30 +435,26 @@ const PostInfo = ({
                         Send email to nowhere
                     </a> */}
                 </PostTag>
-                <ReferenceLinkContainer>
-                    {referenceArray?.map((reference, order) => (
-                        <>
-                            <PostTag
-                                color={color}
-                                tagType="info"
-                                key={reference}
+            </TagContainer>
+            <TagContainer>
+                {referenceArray?.map((reference, order) => (
+                    <Fragment key={reference}>
+                        <PostTag color={color} tagType="info">
+                            <EditIcon fill={color} />
+                            <ReferenceLink
+                                href={reference}
+                                visitedColor={color}
                             >
-                                <EditIcon fill={color} />
-                                <ReferenceLink
-                                    href={reference}
-                                    visitedColor={color}
-                                >
-                                    참고 {order + 1}
-                                </ReferenceLink>
-                            </PostTag>
-                            {order !== referenceArray.length - 1 && (
-                                <TagDivider color={color}>•</TagDivider>
-                            )}
-                        </>
-                    ))}
-                </ReferenceLinkContainer>
-            </PostInfoContainer>
-        </>
+                                참고 {order + 1}
+                            </ReferenceLink>
+                        </PostTag>
+                        {order !== referenceArray.length - 1 && (
+                            <TagDivider color={color}>•</TagDivider>
+                        )}
+                    </Fragment>
+                ))}
+            </TagContainer>
+        </PostInfoContainer>
     )
 }
 

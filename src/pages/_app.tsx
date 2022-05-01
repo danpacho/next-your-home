@@ -6,6 +6,7 @@ import { RecoilRoot } from "recoil"
 import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { PageType } from "@typing/page/type"
 
+import { DefaultSEO } from "@components/Next/SEO"
 import MainLayout from "@components/Next/Layout/Layout"
 
 function AppParent({ Component, pageProps }: AppProps) {
@@ -17,8 +18,8 @@ function AppParent({ Component, pageProps }: AppProps) {
                     name="viewport"
                     content="width=device-width, initial-scale=1"
                 />
-                <title>boilerplate</title>
             </Head>
+            <DefaultSEO />
 
             <GlobalStyle />
 
