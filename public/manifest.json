@@ -1,0 +1,9 @@
+{
+    "name": "danpacho",
+    "short_name": "danpacho",
+    "theme_color": "#776350",
+    "background_color": "#FFFFFF",
+    "display": "standalone",
+    "start_url": "/",
+    "orientation": "portrait"
+}
