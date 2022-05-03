@@ -53,9 +53,12 @@ const LatestPostContainer = styled.div`
     align-items: flex-end;
     justify-content: center;
 
+    flex: 3;
+
     gap: 1rem;
 
     ${media.widePhone} {
+        width: inherit;
         gap: 1.5rem;
         align-items: flex-start;
     }
@@ -66,6 +69,7 @@ const LatestPostLinkContainer = styled.div`
     align-items: flex-end;
     justify-content: flex-start;
 
+    width: 100%;
     height: 31.25rem;
     overflow-y: scroll;
 
@@ -89,6 +93,7 @@ const LatestPostLinkContainer = styled.div`
     }
 
     ${media.widePhone} {
+        width: inherit;
         height: fit-content;
 
         align-items: center;
@@ -108,6 +113,8 @@ const CategoryContainer = styled.div`
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
+
+    flex: 2;
 
     gap: 1rem;
 

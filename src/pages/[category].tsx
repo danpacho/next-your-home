@@ -324,7 +324,8 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
 
     gap: 0.15rem;
 
-    width: 5rem;
+    width: fit-content;
+    min-width: 5rem;
     height: fit-content;
     padding: 0.85rem 1.5rem;
     margin: 0.5rem;

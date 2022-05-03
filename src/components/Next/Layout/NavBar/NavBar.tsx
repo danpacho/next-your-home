@@ -65,7 +65,7 @@ const LogoContainer = styled.div`
 const LogoTitle = styled.header<IsLight>`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
