@@ -18,7 +18,7 @@ function PostSEO({
     return (
         <>
             <NextSeo
-                title={`${config.siteName}-${category}-${title}`}
+                title={`${config.siteName} ${category}, ${title}`}
                 description={preview}
                 canonical={fullPostUrl}
                 openGraph={{
@@ -35,6 +35,10 @@ function PostSEO({
                     locale: "ko_KR",
                     images: [
                         {
+                            url: config.author.bannerImageUrl,
+                            alt: `${config.author.name} info card`,
+                        },
+                        {
                             url: config.author.avatarImageUrl,
                             alt: config.author.name,
                         },
@@ -45,11 +49,11 @@ function PostSEO({
                 authorName={config.author.name}
                 datePublished={publishedTime}
                 description={preview}
-                images={[config.author.avatarImageUrl]}
+                images={[config.author.bannerImageUrl]}
                 publisherName={author}
                 title={title}
                 url={fullPostUrl}
-                publisherLogo={`${config.author.avatarImageUrl}/favicon/favicon-32x32.png`}
+                publisherLogo={config.author.avatarImageUrl}
             />
         </>
     )

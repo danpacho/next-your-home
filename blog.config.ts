@@ -14,48 +14,58 @@ const userPallete: UserPalleteType = {
     primary3: "#D9BD9C",
     primary4: "#F2E2CE",
 }
-interface BlogInfoType {
-    url: string
-    siteName: string
-    subtitle: string
-    blogKeywords: string
-    copyright: string
-}
-const blogInfo: BlogInfoType = {
-    url: "https://...",
-    siteName: "danpacho blog",
-    blogKeywords: "learn, create, happiness",
-    subtitle: "learn🛠 - create🎹 something",
-    copyright: `danpacho © All rights reserved ${new Date().getFullYear()}.`,
-}
 
 interface AuthorInfoType {
     name: string
+    bannerImageUrl: string
     avatarImageUrl: string
     currentGoal: string
     currentState: string
     contacts: {
-        [key in ContactPlatformType]?: string
+        [key in ContactPlatformType]: string
     }
 }
 const authorInfo: AuthorInfoType = {
     name: "danpacho",
-    avatarImageUrl: "/profile.png",
+    bannerImageUrl: "/profile.png",
+    avatarImageUrl: "/",
     currentState: "frontend-physics student",
-    currentGoal: "",
+    currentGoal: "make people move",
     contacts: {
         email: getAuthorContactHref("email", "danpa725@cau.ac.kr"),
         github: getAuthorContactHref("github", "danpa725"),
+        facebook: "",
+        instagram: "",
+        linkedin: "",
+        youtube: "",
+        twitter: "",
     },
 }
 
+interface BlogInfoType {
+    url: string
+    siteName: string
+    subtitle: string
+    copyright: string
+}
+const blogInfo: BlogInfoType = {
+    url: "https://test-blog-danpacho.vercel.app",
+    siteName: "danpacho blog",
+    subtitle: "learn 🛠 and create 🎹 something",
+    copyright: `${
+        authorInfo.name
+    }© All rights reserved ${new Date().getFullYear()}.`,
+}
+
 interface ConfigType extends BlogInfoType {
+    blogContentsDirectoryName: string
     useTXT: boolean
     useKatex: boolean
     userPallete: UserPalleteType
     author: AuthorInfoType
 }
 const config: ConfigType = {
+    blogContentsDirectoryName: "blog-contents", // blog contents directory name
     useTXT: false, // description file format
     useKatex: false, // katex option
     userPallete, // personal pallete

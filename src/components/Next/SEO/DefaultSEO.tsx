@@ -26,6 +26,14 @@ const DEFAULT_SEO_PROPS: DefaultSeoProps = {
             name: "currentGoal",
             content: config.author.currentGoal,
         },
+        {
+            name: "email",
+            content: config.author.contacts.email,
+        },
+        {
+            name: "github",
+            content: config.author.contacts.github,
+        },
     ],
 }
 
