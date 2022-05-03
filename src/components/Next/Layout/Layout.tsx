@@ -13,7 +13,6 @@ import { PageType } from "@typing/page/type"
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import Background from "@components/Blog/Background/Background"
-import { RecoilRoot } from "recoil"
 
 const Layout = styled.main`
     display: flex;
