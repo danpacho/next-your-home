@@ -10,6 +10,8 @@ import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 import ThemeButton from "@components/UI/Molecules/Button/ThemeButton"
 import MainLogo from "./MainLogo"
 
+import { config } from "blog.config"
+
 const NavContainer = styled.nav`
     display: flex;
     flex-direction: row;
@@ -63,6 +65,7 @@ const LogoContainer = styled.div`
 const LogoTitle = styled.header<IsLight>`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
+    text-transform: uppercase;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
@@ -87,7 +90,9 @@ function NavBar() {
             <Link href="/" passHref>
                 <LogoContainer>
                     <MainLogoStyled />
-                    <LogoTitle isLight={isLight}>Danpacho</LogoTitle>
+                    <LogoTitle isLight={isLight}>
+                        {config.author.name}
+                    </LogoTitle>
                 </LogoContainer>
             </Link>
             <ThemeButton />
