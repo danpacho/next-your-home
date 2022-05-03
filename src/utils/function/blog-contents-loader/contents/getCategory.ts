@@ -22,10 +22,14 @@ import memoize from "fast-memoize"
 
 /**
  * @returns 카테고리의 이름(파일 이름) 반환
+ * @note mac os -> `.DS_Store`는 제거
  */
 const getPureCategoryNameArray = async () => {
     try {
-        return await readdir(blogContentsDirectory, "utf-8")
+        const MAC_OS_FILE_EXCEPTION = ".DS_Store"
+        return (await readdir(blogContentsDirectory, "utf-8")).filter(
+            (category) => category !== MAC_OS_FILE_EXCEPTION
+        )
     } catch (err) {
         throw new BlogErrorAdditionalInfo({
             passedError: err,
@@ -53,14 +57,10 @@ const getPureCategoryNameArray = async () => {
 
 /**
  * @returns 카테고리 이름에 url string 추가 반환
- * @note mac os -> `.DB_Store`는 제거
  */
 const getCategoryPath = async (): Promise<string[]> => {
-    const MAC_OS_EXCEPTION = ".DS_Store"
     const categoryPathArray: string[] = await (
-        await (
-            await getPureCategoryNameArray()
-        ).filter((category) => category !== MAC_OS_EXCEPTION)
+        await await getPureCategoryNameArray()
     ).map((path) => addPathNotation(path))
     return categoryPathArray
 }
