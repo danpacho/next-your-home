@@ -4,7 +4,7 @@ import { BaseSEO } from "@components/Next/SEO"
 class MyDocument extends Document {
     render() {
         return (
-            <Html lang="ko">
+            <Html lang="ko_KR">
                 <Head>
                     <BaseSEO />
                 </Head>
