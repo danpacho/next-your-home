@@ -53,10 +53,14 @@ const getPureCategoryNameArray = async () => {
 
 /**
  * @returns 카테고리 이름에 url string 추가 반환
+ * @note mac os -> `.DB_Store`는 제거
  */
 const getCategoryPath = async (): Promise<string[]> => {
+    const MAC_OS_EXCEPTION = ".DS_Store"
     const categoryPathArray: string[] = await (
-        await getPureCategoryNameArray()
+        await (
+            await getPureCategoryNameArray()
+        ).filter((category) => category !== MAC_OS_EXCEPTION)
     ).map((path) => addPathNotation(path))
     return categoryPathArray
 }
