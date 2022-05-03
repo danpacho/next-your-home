@@ -360,7 +360,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
         width: fit-content;
         height: fit-content;
 
-        padding: 0.7rem 0.9rem;
+        padding: 0.65rem 0.8rem;
         margin: 0.25rem;
         font-weight: 600;
 
