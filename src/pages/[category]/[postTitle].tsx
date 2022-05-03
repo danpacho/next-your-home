@@ -50,9 +50,10 @@ const PostContainer = styled.div<IsLight>`
 
     width: 69.5%;
 
-    background-color: ${(p) =>
-        `${p.theme.containerBackgroundColor}${p.theme.opacity40}`};
-    backdrop-filter: blur(25px);
+    background-color: ${({ theme, isLight }) =>
+        isLight
+            ? `${theme.containerBackgroundColor}${theme.opacity70}`
+            : `${theme.containerBackgroundColor}${theme.opacity90}`};
 
     box-shadow: ${(p) =>
         p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
