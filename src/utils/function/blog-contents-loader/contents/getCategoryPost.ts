@@ -242,8 +242,8 @@ const transformCategoryPostFileArrayToPostContentArray = async (
                     { postMeta: { update: currUpdateDate } },
                     { postMeta: { update: nextUpdateDate } }
                 ) =>
-                    Number(nextUpdateDate.replaceAll("/", "")) -
-                    Number(currUpdateDate.replaceAll("/", ""))
+                    Number(nextUpdateDate.replace(/\//, "")) -
+                    Number(currUpdateDate.replace(/\//, ""))
             )
 
             return {
@@ -347,8 +347,8 @@ const extractPostMeta = async (): Promise<PostMetaType[]> =>
         .filter(({ postpone }) => !postpone)
         .sort(
             ({ update: currUpdateDate }, { update: nextUpdateDate }) =>
-                Number(nextUpdateDate.replaceAll("/", "")) -
-                Number(currUpdateDate.replaceAll("/", ""))
+                Number(nextUpdateDate.replace(/\//, "")) -
+                Number(currUpdateDate.replace(/\//, ""))
         )
 
 const DEFAULT_POST_NUMBER = 5

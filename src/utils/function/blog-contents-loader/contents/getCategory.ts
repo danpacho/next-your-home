@@ -16,6 +16,8 @@ import {
 
 import { getCategoryPostMeta } from "./getCategoryPost"
 
+import { config } from "blog.config"
+
 import memoize from "fast-memoize"
 
 /**
@@ -29,20 +31,19 @@ const getPureCategoryNameArray = async () => {
             passedError: err,
             errorNameDescription:
                 "blog-contents directory name 📝 incorrection",
-            message:
-                'Check "blog-contents" and "blog-contents/contens" file name 🔎',
+            message: `Check ${config.blogContentsDirectoryName} and "${config.blogContentsDirectoryName}/contens" file name 🔎`,
             customeErrorMessage: `directory structure should match with following path ⬇️\n\n      ${blogContentsDirectory}\n\n      🔒 Check Post Directory Structure:\n 
-            📦"blog-contents"
+            📦"${config.blogContentsDirectoryName}"
             ┃
-            ┗ 📂"content"                                     | blog content
+            ┗ 📂"content"                                      blog content
             ┃ ┃
-            ┃ ┗ 📂[catgory-name]                             | your category name
+            ┃ ┗ 📂[catgory-name]                               your category name
             ┃ ┃ ┃
-            ┃ ┃ ┣ 📂"posts"                                 | inside of category's posts
-            ┃ ┃ ┃ ┣ 📜[post-name].mdx                      | mdx format, post
+            ┃ ┃ ┣ 📂"posts"                                   category's posts
+            ┃ ┃ ┃ ┣ 📜[post-name].mdx                         format: "mdx"
             ┃ ┃ ┃ ┗ ... more posts
             ┃ ┃ ┃
-            ┃ ┃ ┗ 📜"description.json"                      | your category's description
+            ┃ ┃ ┗ 📜"description.json"                        your category's description
             ┃ ┃
             ┃ ┗ 📂[catgory-name2]...
             `,
@@ -156,7 +157,7 @@ const extractCategoryDescriptionAndColorAndEmoji = (
             }
             return {
                 ...acc,
-                description: currValue.replaceAll("\n", ""),
+                description: currValue.replace(/\n/g, ""),
             }
         },
         {
