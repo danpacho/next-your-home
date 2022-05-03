@@ -31,7 +31,9 @@ import {
 
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
+
 import rehypeKatex from "rehype-katex"
+import rehypePrism from "rehype-prism-plus"
 
 import { config } from "blog.config"
 
@@ -42,13 +44,14 @@ const getMdxOptions = (useKatex: boolean): SerializeOptions["mdxOptions"] => {
         return {
             format: "mdx",
             remarkPlugins: [remarkGfm, remarkMath],
-            rehypePlugins: [rehypeKatex],
+            rehypePlugins: [rehypeKatex, rehypePrism],
             development: process.env.NODE_ENV === "development",
         }
     }
     return {
         format: "mdx",
         remarkPlugins: [remarkGfm],
+        rehypePlugins: [rehypePrism],
         development: process.env.NODE_ENV === "development",
     }
 }
