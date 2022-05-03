@@ -1,4 +1,4 @@
-import { BLOG_POST_CONTENTS_LOCATION } from "@constants/blog-content"
+import { BLOG_POST_CONTENTS_LOCATION } from "@constants/blog.contents.directory"
 import { join as pathJoin } from "path"
 
 const blogContentsDirectory = pathJoin(
