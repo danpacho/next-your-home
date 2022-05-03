@@ -1,32 +1,33 @@
-import Toast from "@components/UX/Toast/Toast"
-import { useClipboard } from "@hooks/index"
-import media from "@styles/utils/media"
-import { useState } from "react"
 import styled from "styled-components"
+import media from "@styles/utils/media"
+
+import { useState } from "react"
+
+import { useClipboard, useTimeout } from "@hooks/index"
+
+import { IsLight } from "@typing/theme"
+import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 const CodeContentBox = styled.div`
     position: absolute;
 
-    top: 1rem;
-    right: 1rem;
+    top: 0rem;
+    left: 0rem;
+
+    height: 1.85rem;
+    padding-left: 0.5rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: fit-content;
-    min-width: 1.5rem;
-    height: fit-content;
+    border-top: 0.15rem solid ${(props) => props.theme.blue7};
+    border-left: 0.15rem solid ${(props) => props.theme.blue7};
 
-    padding: 0.25rem 0.5rem;
-
-    background-color: ${(p) => p.theme.gray10};
-
-    border: 0.15rem solid ${(props) => props.theme.blue7};
-    border-radius: ${(props) => props.theme.bsm};
+    border-radius: ${({ theme }) => `${theme.bmd} 0 0 0`};
 
     color: ${(props) => props.theme.white};
-    font-weight: 700;
+    font-weight: 800;
     font-size: ${(props) => props.theme.sm};
     letter-spacing: 0.05rem;
 
@@ -37,114 +38,69 @@ const CodeContentBox = styled.div`
     user-select: none;
 
     ${media.widePhone} {
-        top: 0.5rem;
-        right: 0.5rem;
-
-        padding: 0.25rem;
-
-        font-size: ${(p) => p.theme.xsm};
+        font-size: ${(p) => p.theme.sm};
     }
 `
 
-const CopyButton = styled.button`
-    transition: transform 0.075s ease-in;
-
+const CopyButton = styled.button<IsLight>`
     position: absolute;
-    bottom: 1rem;
-    right: 1rem;
+    top: 0rem;
+    right: 0rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: 2rem;
+    width: fit-content;
     height: 2rem;
 
-    padding: 0.25rem;
-
     font-size: ${(props) => props.theme.sm};
-    font-weight: 700;
-    color: ${(props) => props.theme.teal6};
+    font-weight: 800;
+    color: ${(p) => p.theme.gray2};
 
-    background-color: ${(p) => p.theme.gray10};
-
-    border-radius: ${(props) => props.theme.bsm};
-    border: 0.15rem solid ${(props) => props.theme.blue7};
+    border-radius: ${({ theme }) => `0 ${theme.bmd} 0 0`};
+    border-right: 0.15rem solid ${(props) => props.theme.blue7};
+    border-top: 0.15rem solid ${(props) => props.theme.blue7};
 
     &:hover {
         border-color: ${(props) => props.theme.blue5};
-        transform: scale(1.05);
-    }
-
-    &:active {
-        transform: scale(0.9);
     }
 
     ${media.widePhone} {
-        bottom: 0.5rem;
-        right: 0.5rem;
-
-        padding: 0.75rem;
-        width: 1.25rem;
-        height: 1.25rem;
-
-        &:hover {
-            transform: none;
-        }
-
-        &:active {
-            transform: none;
-        }
+        top: 0rem;
+        right: 0rem;
     }
+`
+
+const SuccessP = styled.p`
+    color: ${(p) => p.theme.teal7};
 `
 
 interface CopyContentProp {
     code: string
 }
-
-const CopyInfo = {
-    success: {
-        message: "Copied!✂️",
-        left: 90,
-    },
-    fail: {
-        message: "Copy Failed❗️",
-        left: 124,
-    },
-}
-
 function CodeCopyButton({ code }: CopyContentProp) {
     const { copyTextToUser } = useClipboard()
     const [isCopySuccess, setIsCopySuccess] = useState(false)
+
+    useTimeout({
+        timeoutCondition: isCopySuccess,
+        timeoutFunction: () => setIsCopySuccess(false),
+    })
+
     return (
-        <>
-            <CopyButton
-                onClick={async () => {
-                    if (!isCopySuccess) {
-                        const { isCopySuccess } = await copyTextToUser(code)
-                        setIsCopySuccess(isCopySuccess)
-                    }
-                }}
-            >
-                {!isCopySuccess && "📝"}
-                {isCopySuccess && "✅"}
-            </CopyButton>
-            <Toast
-                tooltipElement={
-                    <CodeContentBox>
-                        {isCopySuccess && <>{CopyInfo.success.message}</>}
-                        {!isCopySuccess && <>{CopyInfo.fail.message}</>}
-                    </CodeContentBox>
+        <CopyButton
+            onClick={async () => {
+                if (!isCopySuccess) {
+                    const { isCopySuccess } = await copyTextToUser(code)
+                    setIsCopySuccess(isCopySuccess)
                 }
-                active={isCopySuccess}
-                setActive={setIsCopySuccess}
-                left={
-                    isCopySuccess ? CopyInfo.success.left : CopyInfo.fail.left
-                }
-                bottom={24}
-                appearSecond={2}
-            />
-        </>
+            }}
+            isLight={useThemeIsLight()}
+        >
+            <p>{!isCopySuccess && "Copy 📝"}</p>
+            <SuccessP>{isCopySuccess && "Copied ✅ "}</SuccessP>
+        </CopyButton>
     )
 }
 
