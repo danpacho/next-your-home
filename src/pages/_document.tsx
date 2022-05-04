@@ -12,7 +12,7 @@ import { ServerStyleSheet } from "styled-components"
 class AppDocument extends Document {
     render() {
         return (
-            <Html lang="ko_KR">
+            <Html lang="ko">
                 <Head>
                     <BaseSEO />
                 </Head>
