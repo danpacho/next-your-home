@@ -29,7 +29,6 @@ import { PostLink } from "@components/Blog/Post"
 
 import { config } from "blog.config"
 import { CategorySEO } from "@components/Next/SEO"
-import { replaceUnderscoreToSpacing } from "@utils/function/text"
 
 //* Main
 const Container = styled.div`
@@ -168,8 +167,6 @@ function Category({
     categoryTagArray,
     categoryUrl,
 }: CategoryProps) {
-    const fixedCategory = replaceUnderscoreToSpacing(category)
-
     const [filteredTagArray, setFilteredTagArray] = useState<string[]>([])
     const [filteredCategoryPostArray, setFilteredCategoryPostArray] = useState<
         PostMetaType[]
@@ -198,7 +195,7 @@ function Category({
     return (
         <Container>
             <CategorySEO
-                category={fixedCategory}
+                category={category}
                 categoryUrl={categoryUrl}
                 description={categoryDescription}
                 emoji={categoryEmoji}
@@ -207,7 +204,7 @@ function Category({
                 <CategoryTitleContainer
                     categoryColor={isLight ? categoryColor : darkModeColor}
                 >
-                    {fixedCategory}{" "}
+                    {category}{" "}
                     {filteredCategoryPostArray.length === 0
                         ? categoryEmoji
                         : `${filteredCategoryPostArray.length} 개`}

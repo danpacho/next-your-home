@@ -12,8 +12,6 @@ import { IsLight } from "@typing/theme"
 import { getLatestCategoryInfoArray } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { replaceUnderscoreToSpacing } from "@utils/function/text"
-
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import { PostLink } from "@components/Blog/Post"
@@ -192,9 +190,6 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
                             {...categoryInfo}
-                            category={replaceUnderscoreToSpacing(
-                                categoryInfo.category
-                            )}
                             key={categoryInfo.category}
                         />
                     ))}
