@@ -58,7 +58,6 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
 
     background: ${(p) =>
         `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
-    backdrop-filter: blur(15px);
 
     box-shadow: ${shadow.shadowSm};
 
@@ -68,6 +67,7 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     &:hover {
         box-shadow: 5px 3.5px 0 0
             ${({ color, theme }) => `${color}${theme.opacity50}`};
+        background: ${(p) => p.theme.containerBackgroundColor};
     }
 
     ${({ color }) => postLinkContainerStyle.middle(color)};
@@ -79,14 +79,12 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     }
 
     ${media.widePhone} {
-        width: min(30rem, 85%);
+        width: min(35rem, 85%);
 
-        min-height: 8rem;
-        height: 8rem;
+        min-height: 8.25rem;
+        height: 8.25rem;
 
         padding: 0.5rem 1rem;
-
-        backdrop-filter: unset;
 
         &:hover {
             box-shadow: none;
@@ -113,7 +111,7 @@ const ContentContainer = styled.div`
 const PostPreview = styled.div`
     font-size: ${(p) => p.theme.sm};
     color: ${(p) => p.theme.descriptionFontColor};
-    font-weight: 200;
+    font-weight: 400;
     line-height: 1.15rem;
 
     ${media.widePhone} {
@@ -155,13 +153,13 @@ function PostLink({
                     <PostTitle
                         isHover={isHover}
                         fontSize="lg"
-                        fontWeight={300}
+                        fontWeight={400}
                         underscoreColor={color}
                     >
-                        {title}
+                        {sliceTextByMaxLength(title, 25)}
                     </PostTitle>
                     <PostPreview>
-                        {sliceTextByMaxLength(preview, 60)}
+                        {sliceTextByMaxLength(preview, 55)}
                     </PostPreview>
                     <PostMeta
                         author={author}

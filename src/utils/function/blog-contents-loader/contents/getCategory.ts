@@ -2,11 +2,13 @@ import { readdir, readFile } from "fs/promises"
 
 import { CategoryInfoType } from "@typing/category/info"
 
+import { MAC_OS_FILE_EXCEPTION } from "@constants/index"
+import { getSpecificCategoryLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 import {
     addPathNotation,
     blogContentsDirectory,
     getValidateColor,
-} from "../util"
+} from "@utils/function/blog-contents-loader/util"
 
 import {
     BlogErrorAdditionalInfo,
@@ -14,19 +16,16 @@ import {
     BlogPropertyError,
 } from "@utils/function/blog-error-handler/blogError"
 
-import { getCategoryPostMeta } from "./getCategoryPost"
-
 import { config } from "blog.config"
 
 import memoize from "fast-memoize"
 
 /**
- * @returns 카테고리의 이름(파일 이름) 반환
- * @note mac os -> `.DS_Store`는 제거
+ * @returns 카테고리의 이름(=`파일 이름`) 반환
+ * @exception `MacOs` remove `.DS_Store`
  */
-const getPureCategoryNameArray = async () => {
+const getAllCategoryName = async () => {
     try {
-        const MAC_OS_FILE_EXCEPTION = ".DS_Store"
         return (await readdir(blogContentsDirectory, "utf-8")).filter(
             (category) => category !== MAC_OS_FILE_EXCEPTION
         )
@@ -56,11 +55,12 @@ const getPureCategoryNameArray = async () => {
 }
 
 /**
- * @returns 카테고리 이름에 url string 추가 반환
+ * @note 카테고리 이름에 url notation 추가
+ * @returns `/{category}` 반환
  */
-const getCategoryPath = async (): Promise<string[]> => {
+const getAllCategoryPath = async (): Promise<string[]> => {
     const categoryPathArray: string[] = await (
-        await await getPureCategoryNameArray()
+        await await getAllCategoryName()
     ).map((path) => addPathNotation(path))
     return categoryPathArray
 }
@@ -71,7 +71,7 @@ const FILE_FORMAT = {
     JSON: ".json",
 }
 /**
- * @returns 카테고리의 정보가 담긴 .txt파일의 내용을 반환
+ * @returns 카테고리 `description.txt` 파일을 읽어 반환
  */
 const readCategoryTXTFileArray = async (pureCategoryArray: string[]) => {
     const descriptionArray = await Promise.all(
@@ -113,9 +113,15 @@ interface ExtractCategoryInfo {
     emoji: string
 }
 const NOT_FOUND = "NOT_FOUND"
+
 /**
- * @note `.txt`파일 -> color: {내가 원하는 색} emoji: {내가 원하는 이모지 1개}
- * @returns `카테고리.txt` 파일에서 `색상 | 이모지 | 설명` 정보 추출
+ * @note **카테고리** `description.txt` 가공
+ * ---
+ * @note `desciprition`: `color: ...`, `emoji: ...` 를 제외한 텍스트
+ * @note `color`: HEX or rgb or rgba
+ * @note `emoji`: One Emoji
+ * @param categoryTXTFile `description.txt`파일 추출 결과 대입
+ * @returns `color`, `description`, `emoji`
  */
 const extractCategoryDescriptionAndColorAndEmoji = (
     categoryTXTFile: string
@@ -135,10 +141,10 @@ const extractCategoryDescriptionAndColorAndEmoji = (
     const extractedStringArray = firstSplit.concat(secondSplit)
 
     const categoryInfo = extractedStringArray.reduce<ExtractCategoryInfo>(
-        (acc, currValue) => {
+        (accCategoryInfo, currValue) => {
             if (isColor(currValue))
                 return {
-                    ...acc,
+                    ...accCategoryInfo,
                     color: currValue,
                 }
             if (isEmoji(currValue)) {
@@ -155,12 +161,12 @@ const extractCategoryDescriptionAndColorAndEmoji = (
                     })
                 else
                     return {
-                        ...acc,
+                        ...accCategoryInfo,
                         emoji: emojiExec[0],
                     }
             }
             return {
-                ...acc,
+                ...accCategoryInfo,
                 description: currValue.replace(/\n/g, ""),
             }
         },
@@ -213,11 +219,16 @@ const extractCategoryDescriptionAndColorAndEmoji = (
 }
 
 /**
- * @note 전체 카테고리의 이름 - 설명 배열
- * @return 모든 카테
+ * @note `.txt`파일, 전체 카테고리 설명 반환
+ * ---
+ * @return `category`: 해당 카테고리 이름
+ * @return `description`: 해당 카테고리 설명
+ * @return `categoryUrl`: 해당 카테고리 링크 URL
+ * @return `color`: 해당 카테고리 색
+ * @return `emoji`: 해당 카테고리 이모지
  */
-const getCategoryInfoArrayByTXT = async (): Promise<CategoryInfoType[]> => {
-    const categoryArray = await getPureCategoryNameArray()
+const getAllCategoryInfoByTXT = async (): Promise<CategoryInfoType[]> => {
+    const categoryArray = await getAllCategoryName()
     const categoryTXTFileArray = await readCategoryTXTFileArray(categoryArray)
     const allCategoryInfo = new Array(categoryArray.length)
         .fill(0)
@@ -240,15 +251,14 @@ const getCategoryInfoArrayByTXT = async (): Promise<CategoryInfoType[]> => {
 }
 
 /**
- * @note `description.json` 파일을 추출
- * @param pureCategoryArray **카테고리 이름이 담긴 `string[]`**
- * @returns **카테고리 정보 배열을 반환**
+ * @note `.json`파일, 전체 카테고리 설명 반환
+ * @param allCategoryName 전체 카테고리 이름
  */
-const readCategoryJSONFileArray = async (
-    pureCategoryArray: string[]
+const readAllCategoryJSONFile = async (
+    allCategoryName: string[]
 ): Promise<CategoryInfoType[]> => {
     const categoryInfoArray = await Promise.all(
-        pureCategoryArray.map(async (category) => {
+        allCategoryName.map(async (category) => {
             const descriptionFilePath = `${blogContentsDirectory}/${category}/${DESCRIPTION_FILE_NAME}${FILE_FORMAT.JSON}`
             try {
                 const { description, color, emoji } = JSON.parse(
@@ -308,35 +318,56 @@ const readCategoryJSONFileArray = async (
 }
 
 /**
- * @returns **`categoryInfo` 배열을 반환**
+ * @note `.json`파일, 전체 카테고리 설명 반환
+ * ---
+ * @return `category`: 해당 카테고리 이름
+ * @return `description`: 해당 카테고리 설명
+ * @return `categoryUrl`: 해당 카테고리 링크 URL
+ * @return `color`: 해당 카테고리 색
+ * @return `emoji`: 해당 카테고리 이모지
  */
-const getCategoryInfoArrayByJSON = async () =>
-    await readCategoryJSONFileArray(await getPureCategoryNameArray())
+const getAllCategoryInfoByJSON = async () =>
+    await readAllCategoryJSONFile(await getAllCategoryName())
 
+const LATEST_CATEGORY_NUMBER = 3
 /**
- * @param number: 추출할 갯수
- * @param useTXT: txt파일로 카테고리 추출
- * @returns 상위 `number`개 카테고리 반환
+ * @note 최신 카테고리 정보 추출
+ * @param useTXT true  `description.txt`
+ * @param useTXT false  `description.json`
+ * @returns `LATEST_CATEGORY_NUMBER` 개 카테고리 반환
  */
-const getLatestCategoryInfoArray = memoize(
+const getLatestCategoryInfo = memoize(
     async ({ useTXT }: { useTXT: boolean }) =>
         await (useTXT
-            ? await getCategoryInfoArrayByTXT()
-            : await getCategoryInfoArrayByJSON()
+            ? await getAllCategoryInfoByTXT()
+            : await getAllCategoryInfoByJSON()
         )
             .sort()
-            .slice(0, 3)
+            .slice(0, LATEST_CATEGORY_NUMBER)
 )
 
-const getDeduplicatedCategoryTagArray = memoize(async (category: string) => {
-    const categoryPostArray = await getCategoryPostMeta(category)
+/**
+ * @returns 최신 카테고리 속 포스트에 포함된 태그 추출
+ */
+const getLatestCategoryTagArray = async (category: string) => {
+    const latestCategoryPostMetaArray = await getSpecificCategoryLatestPostMeta(
+        category
+    )
     const deduplicatedCategoryTagArray = [
-        ...new Set(categoryPostArray.flatMap(({ tags }) => tags)),
+        ...new Set(latestCategoryPostMetaArray.flatMap(({ tags }) => tags)),
     ].sort()
 
     return deduplicatedCategoryTagArray
-})
+}
 
+/**
+ * @note 특정 카테고리의 정보 반환
+ * @return `category`: 해당 카테고리 이름
+ * @return `description`: 해당 카테고리 설명
+ * @return `categoryUrl`: 해당 카테고리 링크 URL
+ * @return `color`: 해당 카테고리 색
+ * @return `emoji`: 해당 카테고리 이모지
+ */
 const getSpecificCategoryInfo = memoize(
     async ({
         category,
@@ -345,11 +376,11 @@ const getSpecificCategoryInfo = memoize(
         category: string
         useTXT: boolean
     }): Promise<CategoryInfoType> => {
-        const categoryInfoArray = useTXT
-            ? await getCategoryInfoArrayByTXT()
-            : await getCategoryInfoArrayByJSON()
+        const allCategoryInfo = useTXT
+            ? await getAllCategoryInfoByTXT()
+            : await getAllCategoryInfoByJSON()
 
-        const specificCategoryInfo = categoryInfoArray.filter(
+        const specificCategoryInfo = allCategoryInfo.filter(
             ({ category: categoryName }) => categoryName === category
         )[0]
 
@@ -360,15 +391,15 @@ const getSpecificCategoryInfo = memoize(
 )
 
 export {
-    //*path
-    getCategoryPath,
-    getPureCategoryNameArray,
-    //* categoryInfo - txt | json
-    getCategoryInfoArrayByTXT,
-    getCategoryInfoArrayByJSON,
+    //* category path & name
+    getAllCategoryPath,
+    getAllCategoryName,
+    //* categoryInfo - "txt" | "json"
+    getAllCategoryInfoByTXT,
+    getAllCategoryInfoByJSON,
+    //* specific category - info & tag
     getSpecificCategoryInfo,
+    getLatestCategoryTagArray,
     //* categoryInfo - latest
-    getLatestCategoryInfoArray,
-    //* specific category tag
-    getDeduplicatedCategoryTagArray,
+    getLatestCategoryInfo,
 }

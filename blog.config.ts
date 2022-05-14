@@ -49,7 +49,7 @@ interface BlogInfoType {
     copyright: string
 }
 const blogInfo: BlogInfoType = {
-    url: "https://test-blog-danpacho.vercel.app",
+    url: "https://danpa.vercel.app",
     siteName: "danpacho blog",
     subtitle: "learn 🛠 and create 🎹 something",
     copyright: `${
@@ -63,12 +63,16 @@ interface ConfigType extends BlogInfoType {
     useKatex: boolean
     userPallete: UserPalleteType
     author: AuthorInfoType
+    postPerCategoryPage: number
+    numberOfLatestPost: number
 }
 const config: ConfigType = {
     blogContentsDirectoryName: "blog-contents", // blog contents directory name
     useTXT: false, // description file format
-    useKatex: false, // katex option
+    useKatex: true, // katex option
     userPallete, // personal pallete
+    postPerCategoryPage: 4,
+    numberOfLatestPost: 5,
     author: {
         ...authorInfo,
     },

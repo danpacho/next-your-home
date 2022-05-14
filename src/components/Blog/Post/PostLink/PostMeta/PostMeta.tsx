@@ -69,9 +69,15 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
-        font-weight: 300;
+        font-weight: 400;
 
-        padding: 0.15rem 0.35rem;
+        padding: 0.15rem 0.25rem;
+
+        width: auto;
+        display: inline-block;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 `
 
@@ -107,7 +113,7 @@ function PostMeta({
                         isLight={isLight}
                     >
                         <p>
-                            # {tag}
+                            #{tag}
                             {order === LAST_TAG_ORDER && isTagSizeOver && (
                                 <LayersAltIcon
                                     fill={"white"}

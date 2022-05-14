@@ -1,0 +1,3 @@
+const MAC_OS_FILE_EXCEPTION = ".DS_Store"
+
+export { MAC_OS_FILE_EXCEPTION }
