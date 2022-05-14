@@ -1,18 +1,20 @@
+import styled from "styled-components"
+import animation from "@styles/utils/animation"
+import media from "@styles/utils/media"
+import shadow from "@styles/utils/shadow"
+
 import { useMemo, useState } from "react"
 import Link from "next/link"
-import styled from "styled-components"
-import media from "@styles/utils/media"
 
-import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 import { CategoryInfoType } from "@typing/category/info"
-import { sliceTextByMaxLength } from "@utils/function/text"
-import shadow from "@styles/utils/shadow"
-import animation from "@styles/utils/animation"
 import { IsLight } from "@typing/theme"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
+import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+
+import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 interface CategoryLinkContainerStyle {
     color: string
 }
@@ -45,7 +47,6 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
 
     background: ${(p) =>
         `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
-    backdrop-filter: blur(15px);
 
     box-shadow: ${shadow.shadowSm};
 
@@ -56,18 +57,17 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     &:hover {
         box-shadow: 5px 3.5px 0 0
             ${({ color, theme }) => `${color}${theme.opacity50}`};
-
-        backdrop-filter: none;
+        background: ${(p) => p.theme.containerBackgroundColor};
     }
 
     ${media.widePhone} {
+        width: min(35rem, 80%);
+
         height: ${ITEM_HEIGHT.widePhone}rem;
 
-        backdrop-filter: none;
+        padding: 1.75rem;
 
-        padding: 1.5rem;
-
-        border-right-width: 0.25rem;
+        border-right-width: 0.125rem;
 
         &:hover {
             box-shadow: none;
@@ -120,15 +120,20 @@ const CategoryInfoContainer = styled.div`
     height: 6.75rem;
 
     ${media.widePhone} {
-        width: 60%;
-        height: 4.5rem;
+        flex: 1;
+        height: fit-content;
+        max-width: unset;
+
+        margin-left: 1.25rem;
+
+        gap: 1rem;
     }
 `
 
 const CategoryDescription = styled.div`
     font-size: ${(p) => p.theme.sm};
     color: ${(p) => p.theme.descriptionFontColor};
-    font-weight: 200;
+    font-weight: 400;
     line-height: 1.15rem;
 
     ${media.widePhone} {
@@ -169,7 +174,7 @@ function CategoryLink({
                 <CategoryInfoContainer>
                     <CategoryTitle
                         isHover={isHover}
-                        fontWeight={300}
+                        fontWeight={400}
                         fontSize="lg"
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
