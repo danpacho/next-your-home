@@ -9,6 +9,7 @@
     "description": "cutomizable blog templates with Next.js and MDX.",
     "scripts": {
         "dev": "next dev",
+        "post": "npx -y @danpacho/post-generator",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
