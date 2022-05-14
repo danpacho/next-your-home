@@ -13,14 +13,19 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 //* custome plugins ---------------------------------
 
 //* next default config ------------------------------
+const removeConsoleOption =
+    process.env.NODE_ENV === "development"
+        ? false
+        : {
+              exclude: ["error"],
+          }
+
 const nextConfig = {
     pageExtensions: ["mdx", "tsx", "ts"],
     reactStrictMode: true,
     swcMinify: true,
     compiler: {
-        removeConsole: {
-            exclude: ["error"],
-        },
+        removeConsole: removeConsoleOption,
     },
 }
 
