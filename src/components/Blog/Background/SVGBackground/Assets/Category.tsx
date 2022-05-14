@@ -12,7 +12,7 @@ import {
 import { IsLight } from "@typing/theme"
 
 const CategorySVGContainer = styled(SVGContainer)<IsLight>`
-    transition: all ease-out 0.5s;
+    transition: background-color ease-out 0.5s;
     background-color: ${(p) => !p.isLight && p.theme.backgroundDark};
 `
 const GRADIENT_ID = {
