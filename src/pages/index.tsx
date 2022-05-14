@@ -9,7 +9,7 @@ import { PostMetaType } from "@typing/post/meta"
 import { PageType } from "@typing/page/type"
 import { IsLight } from "@typing/theme"
 
-import { getLatestCategoryInfoArray } from "@utils/function/blog-contents-loader/contents/getCategory"
+import { getLatestCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
@@ -147,7 +147,7 @@ const CategoryLinkContainer = styled.div`
 
 const ContainerTitle = styled.div<IsLight>`
     font-size: ${(p) => p.theme.sm};
-    font-weight: 200;
+    font-weight: 300;
     color: ${({ theme }) => theme.themePrimaryColor};
 
     background-color: ${({ theme, isLight }) =>
@@ -218,14 +218,14 @@ MainPage.displayName = "Home" as PageType
 export default MainPage
 
 export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
-    const latestPostArray = await getLatestPostMeta()
-    const latestCategoryInfoArray = await getLatestCategoryInfoArray({
+    const latestPostMetaArray = await getLatestPostMeta()
+    const latestCategoryInfoArray = await getLatestCategoryInfo({
         useTXT: config.useTXT,
     })
 
     return {
         props: {
-            latestPostArray,
+            latestPostArray: latestPostMetaArray,
             categoryInfoArray: latestCategoryInfoArray,
         },
     }
