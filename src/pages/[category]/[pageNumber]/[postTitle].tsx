@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 
-import { useEffect, Fragment } from "react"
+import { Fragment } from "react"
 
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
@@ -13,11 +13,11 @@ import { SpecificPostContentType } from "@typing/post/content"
 import { PostMetaType } from "@typing/post/meta"
 import { PageType } from "@typing/page/type"
 
-import { useStateFocusingPageColor } from "@lib/atoms/pageColor/pageColor.state"
+import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
 import {
-    getSpecificPostContent,
-    getCategoryPostContentPathArray,
+    getSpecificCategoryPostContent,
+    getAllCategoryPostContentPath,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { IsLight } from "@typing/theme"
@@ -137,12 +137,7 @@ const TableOfContentPositionContainer = styled.div`
 
 interface PostProps extends SpecificPostContentType {}
 function Post({ postController, postMeta, postSource }: PostProps) {
-    const [_, setFocusingPageColor] = useStateFocusingPageColor()
-
-    useEffect(
-        () => setFocusingPageColor(postMeta.color),
-        [setFocusingPageColor, postMeta.color]
-    )
+    useSetFocusingPageColor(postMeta.color)
 
     const isLight = useThemeIsLight()
 
@@ -493,16 +488,17 @@ const PostHeader = ({
 
 interface ParamQuery extends ParsedUrlQuery {
     category: string
+    pageNumber: string
     postTitle: string
 }
 
 export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
-    const { category, postTitle } = params as ParamQuery
-
-    const specificPostContent = await getSpecificPostContent(
-        category,
-        postTitle
-    )
+    const { category, pageNumber, postTitle } = params as ParamQuery
+    const specificPostContent = await getSpecificCategoryPostContent({
+        categoryName: category,
+        categoryPage: Number(pageNumber),
+        postTitle,
+    })
 
     return {
         props: {
@@ -512,7 +508,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const paths = await getCategoryPostContentPathArray()
+    const paths = await getAllCategoryPostContentPath()
 
     return {
         paths,
