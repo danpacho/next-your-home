@@ -3,6 +3,7 @@ import { PostMetaType } from "./meta"
 export interface CategoryPostContentType {
     category: string
     postContentArray: PostContentType[]
+    postNumber: number
 }
 
 export interface PostContentType {
@@ -22,4 +23,3 @@ export interface PostControllerType {
     prevPost: PostControllerInfoType
     nextPost: PostControllerInfoType
 }
-// export interface PostContent

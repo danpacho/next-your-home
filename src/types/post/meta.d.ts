@@ -20,4 +20,5 @@ export interface PostMetaType {
     postUrl: string
     postpone: boolean
     reference: string[] | null
+    postOrder: number
 }
