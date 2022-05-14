@@ -64,7 +64,7 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
 `
 
 interface UnderscoreTextProps extends UnderscoreTextStyle {
-    children: string
+    children: string | React.ReactNode
 }
 function UnderscoreText(props: UnderscoreTextProps) {
     return (
