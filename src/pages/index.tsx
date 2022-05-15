@@ -20,7 +20,7 @@ import { CategoryLink } from "@components/Blog/Category"
 import { config } from "blog.config"
 
 //* Main
-const MainPageContainer = styled.div`
+const MainPageLayoutContainer = styled.div`
     width: 70%;
     height: 100%;
 
@@ -72,7 +72,8 @@ const LatestPostLinkContainer = styled.div`
     overflow-y: scroll;
 
     gap: 1.75rem;
-    padding: 0.25rem 1rem 1rem 0;
+    padding-bottom: 0.75rem;
+    padding-right: 0.75rem;
 
     ::-webkit-scrollbar {
         width: 0.1rem;
@@ -127,8 +128,7 @@ const CategoryLinkContainer = styled.div`
     justify-content: flex-start;
 
     width: 100%;
-    height: 32.5rem;
-    padding: 0.25rem 1rem 1rem 0;
+    height: 31.25rem;
 
     gap: 1.75rem;
 
@@ -170,6 +170,7 @@ const ContainerTitle = styled.div<IsLight>`
         margin-left: 2.5%;
     }
 `
+
 interface MainPageProps {
     latestPostArray: PostMetaType[]
     categoryInfoArray: CategoryInfoType[]
@@ -178,14 +179,14 @@ interface MainPageProps {
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
     const isLight = useThemeIsLight()
     return (
-        <MainPageContainer>
+        <MainPageLayoutContainer>
             <NextSeo
                 title={config.siteName}
                 description={config.subtitle}
                 canonical={config.url}
             />
             <CategoryContainer>
-                <ContainerTitle isLight={isLight}>Category</ContainerTitle>
+                <ContainerTitle isLight={isLight}>Top Category</ContainerTitle>
                 <CategoryLinkContainer>
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
@@ -210,7 +211,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
                     ))}
                 </LatestPostLinkContainer>
             </LatestPostContainer>
-        </MainPageContainer>
+        </MainPageLayoutContainer>
     )
 }
 MainPage.displayName = "Home" as PageType
