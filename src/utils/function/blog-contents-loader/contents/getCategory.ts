@@ -359,6 +359,10 @@ const getLatestCategoryTagArray = async (category: string) => {
 
     return deduplicatedCategoryTagArray
 }
+/**
+ * @param useTXT true `description.txt` 추출
+ * @returns 전체 카테고리 정보 반환
+ */
 const getAllCategoryInfo = async ({ useTXT }: { useTXT: boolean }) => {
     const allCategoryInfo = useTXT
         ? await getAllCategoryInfoByTXT()
