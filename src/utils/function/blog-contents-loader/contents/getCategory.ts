@@ -359,6 +359,12 @@ const getLatestCategoryTagArray = async (category: string) => {
 
     return deduplicatedCategoryTagArray
 }
+const getAllCategoryInfo = async ({ useTXT }: { useTXT: boolean }) => {
+    const allCategoryInfo = useTXT
+        ? await getAllCategoryInfoByTXT()
+        : await getAllCategoryInfoByJSON()
+    return allCategoryInfo
+}
 
 /**
  * @note 특정 카테고리의 정보 반환
@@ -376,10 +382,9 @@ const getSpecificCategoryInfo = memoize(
         category: string
         useTXT: boolean
     }): Promise<CategoryInfoType> => {
-        const allCategoryInfo = useTXT
-            ? await getAllCategoryInfoByTXT()
-            : await getAllCategoryInfoByJSON()
-
+        const allCategoryInfo = await getAllCategoryInfo({
+            useTXT,
+        })
         const specificCategoryInfo = allCategoryInfo.filter(
             ({ category: categoryName }) => categoryName === category
         )[0]
@@ -394,9 +399,8 @@ export {
     //* category path & name
     getAllCategoryPath,
     getAllCategoryName,
-    //* categoryInfo - "txt" | "json"
-    getAllCategoryInfoByTXT,
-    getAllCategoryInfoByJSON,
+    //* categoryInfo
+    getAllCategoryInfo,
     //* specific category - info & tag
     getSpecificCategoryInfo,
     getLatestCategoryTagArray,
