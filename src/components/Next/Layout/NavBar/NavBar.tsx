@@ -68,8 +68,8 @@ const LogoTitle = styled.header<IsLight>`
     text-transform: capitalize;
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.sm};
-        font-weight: 700;
+        font-size: ${(p) => p.theme.xsm};
+        font-weight: 500;
     }
 `
 
@@ -80,6 +80,62 @@ const MainLogoStyled = styled(MainLogo)`
     ${media.widePhone} {
         padding: 0.25rem;
         margin-left: 0.25rem;
+    }
+`
+
+const ButtonContainer = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.35rem;
+
+    ${media.widePhone} {
+        gap: 0.25rem;
+    }
+`
+const AllCategoryLinkBtn = styled.button`
+    transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s;
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: 0.5rem;
+
+    padding: 0.5rem 0.65rem;
+
+    color: ${(p) => p.theme.fontColor};
+    font-size: ${(p) => p.theme.sm};
+
+    border-radius: ${({ theme }) => theme.bsm};
+
+    background-color: transparent;
+    &:hover {
+        background-color: ${({ theme }) =>
+            `${theme.containerBackgroundColor}${theme.opacity80}`};
+    }
+
+    ${media.widePhone} {
+        font-weight: 500;
+        font-size: ${(p) => p.theme.xsm};
+
+        &:hover {
+            background-color: transparent;
+        }
+    }
+`
+const RowDivider = styled.div`
+    display: block;
+    width: 1px;
+
+    height: 12px;
+    background-color: ${(p) => p.theme.fontColor};
+
+    ${media.widePhone} {
+        width: 1px;
+        height: 10px;
     }
 `
 
@@ -95,7 +151,18 @@ function NavBar() {
                     </LogoTitle>
                 </LogoContainer>
             </Link>
-            <ThemeButton />
+            <ButtonContainer>
+                <Link passHref href="/category">
+                    <AllCategoryLinkBtn
+                        type="button"
+                        aria-label="all category button"
+                    >
+                        Category
+                    </AllCategoryLinkBtn>
+                </Link>
+                <RowDivider />
+                <ThemeButton />
+            </ButtonContainer>
         </NavContainer>
     )
 }
