@@ -202,15 +202,16 @@ function CategoryCommonLayout({
         originalCategoryPostArray: categoryPostArray,
     })
 
-    const isfilterExists = filteredCategoryPostArray?.length !== 0
-
     const darkModeColor = useMemo(
         () => shadeColor(categoryColor, 35),
         [categoryColor]
     )
     const isLight = useThemeIsLight()
+
     const postNumber = categoryPostArray?.length
+
     const filteredPostNumber = filteredCategoryPostArray?.length
+    const isfilterExists = filteredPostNumber !== 0
     return (
         <LayoutContainer>
             <CategorySEO

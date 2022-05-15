@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { GetStaticPaths, GetStaticProps } from "next"
 import { ParsedUrlQuery } from "querystring"
 
@@ -12,14 +13,12 @@ import {
 } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getSpecificCategoryLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { CategoryCommonLayout, CategoryTag } from "@components/Blog/Category"
+import { CategoryCommonLayout } from "@components/Blog/Category"
+import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
+import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { config } from "blog.config"
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
-import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
-import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
-import Link from "next/link"
 
 interface CategoryProps extends CategoryInfoType {
     categoryPostArray: PostMetaType[]
@@ -34,12 +33,12 @@ function Category(categoryProps: CategoryProps) {
             <Link href={"/"} passHref>
                 <PaginationButton type="button" isLight={isLight} isLeft>
                     <PrevIcon width="1.15rem" height="1.15rem" />
-                    🏠 돌아가기
+                    <p>🏠 돌아가기</p>
                 </PaginationButton>
             </Link>
             <Link href={`${categoryProps.categoryUrl}/1`} passHref>
                 <PaginationButton type="button" isLight={isLight}>
-                    모든 글 보기
+                    <p>모든 글 보기</p>
                     <NextIcon width="1.15rem" height="1.15rem" />
                 </PaginationButton>
             </Link>
