@@ -51,12 +51,9 @@ const UnderscoreTextStyled = styled.div<UnderscoreTextStyle>`
             }
         `}
 
-    ${media.mediumPhone} {
-        font-size: 1.1rem;
-    }
-
     ${media.widePhone} {
-        font-weight: 300;
+        font-size: 1.1rem;
+        font-weight: 400;
         ::after {
             display: none;
         }
