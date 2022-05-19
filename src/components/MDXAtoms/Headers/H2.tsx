@@ -3,7 +3,7 @@ import media from "@styles/utils/media"
 
 import { useRef } from "react"
 
-import useScrollToElement from "@hooks/useScrollToElement"
+import { useScrollToElement } from "@hooks/index"
 
 const H2Styled = styled.h2`
     font-size: ${(props) => props.theme.xlg};
