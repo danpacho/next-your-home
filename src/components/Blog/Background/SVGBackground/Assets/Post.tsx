@@ -3,7 +3,6 @@ import { useMemo } from "react"
 import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { IsLight } from "@typing/theme"
 import {
     SVGContainer,
     SVGBackgroundProps,
@@ -12,10 +11,7 @@ import {
     getColorSet,
 } from "../common"
 
-const PostBackgroundContainer = styled(SVGContainer)<IsLight>`
-    transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
-    background-color: ${(p) => !p.isLight && p.theme.backgroundDark};
-
+const PostBackgroundContainer = styled(SVGContainer)`
     ${media.widePhone} {
         transform: rotate(180deg);
     }

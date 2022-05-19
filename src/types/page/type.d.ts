@@ -1,1 +1,1 @@
-export type PageType = "Home" | "Category" | "Post" | "ErrorPage"
+export type PageType = "Home" | "Category" | "Post" | "Profile" | "ErrorPage"

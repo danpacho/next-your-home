@@ -1,6 +1,7 @@
+import { IsLight } from "@typing/theme"
 import styled from "styled-components"
 
-const SVGContainer = styled.svg`
+const SVGContainer = styled.svg<IsLight>`
     position: fixed;
     top: 0;
     bottom: 0;
@@ -13,6 +14,9 @@ const SVGContainer = styled.svg`
     min-height: 100vh;
 
     user-select: none;
+
+    transition: background-color ease-out 0.5s;
+    background-color: ${(p) => !p.isLight && p.theme.backgroundDark};
 
     z-index: ${(p) => p.theme.zBackground};
 `

@@ -1,5 +1,3 @@
-import styled from "styled-components"
-
 import { useMemo } from "react"
 
 import {
@@ -9,12 +7,7 @@ import {
     SvgGradientStyle,
     getColorSet,
 } from "../common"
-import { IsLight } from "@typing/theme"
 
-const CategorySVGContainer = styled(SVGContainer)<IsLight>`
-    transition: background-color ease-out 0.5s;
-    background-color: ${(p) => !p.isLight && p.theme.backgroundDark};
-`
 const GRADIENT_ID = {
     top: {
         small: "CATEGORY_TOP_SMALL_PATH_GRADIENT_ID",
@@ -31,7 +24,7 @@ const CategoryBackground = (props: SVGBackgroundProps) => {
     const { light, dark } = useMemo(() => getColorSet(mainColor), [mainColor])
 
     return (
-        <CategorySVGContainer
+        <SVGContainer
             viewBox="0 0 1440 1024"
             preserveAspectRatio="xMinYMin slice"
             fill="none"
@@ -108,7 +101,7 @@ const CategoryBackground = (props: SVGBackgroundProps) => {
                     }}
                 />
             </defs>
-        </CategorySVGContainer>
+        </SVGContainer>
     )
 }
 

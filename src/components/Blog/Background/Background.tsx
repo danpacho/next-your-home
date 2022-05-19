@@ -9,6 +9,7 @@ import {
     CategoryBackground,
     PostBackground,
     HomeBackground,
+    ProfileBackground,
 } from "./SVGBackground/Assets"
 
 const BACKGROUND_SVG: {
@@ -29,6 +30,9 @@ const BACKGROUND_SVG: {
     ),
     ErrorPage: (color, isLight) => (
         <HomeBackground mainColor={color} isLight={isLight} />
+    ),
+    Profile: (color, isLight) => (
+        <ProfileBackground isLight={isLight} mainColor={color} />
     ),
 }
 

@@ -1,17 +1,9 @@
-import styled from "styled-components"
-
-import { IsLight } from "@typing/theme"
 import { SVGBackgroundProps, SVGContainer } from "../common"
-
-const HomeSVGContaiener = styled(SVGContainer)<IsLight>`
-    transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
-    background-color: ${(p) => !p.isLight && p.theme.backgroundDark};
-`
 
 const HomeBackground = (props: SVGBackgroundProps) => {
     const { isLight } = props
     return (
-        <HomeSVGContaiener
+        <SVGContainer
             viewBox="0 0 1194 834"
             preserveAspectRatio="xMinYMin slice"
             fill="none"
@@ -43,7 +35,7 @@ const HomeBackground = (props: SVGBackgroundProps) => {
                     />
                 </linearGradient>
             </defs>
-        </HomeSVGContaiener>
+        </SVGContainer>
     )
 }
 
