@@ -36,7 +36,7 @@ const getAuthorContactHref = (
             href = `https://www.facebook.com/${contact}`
             break
         case "youtube":
-            href = `https://www.youtube.com/channel/${contact}`
+            href = `https://www.youtube.com/${contact}`
             break
         default:
             href = contact
