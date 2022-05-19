@@ -29,7 +29,7 @@ const CategoryPageLayoutContainer = styled.div`
     align-items: flex-start;
     justify-content: center;
 
-    gap: 0.5rem;
+    padding: 2rem 0;
 
     ${media.mediumTablet} {
         width: 85%;
@@ -38,9 +38,7 @@ const CategoryPageLayoutContainer = styled.div`
     ${media.widePhone} {
         gap: 1rem;
 
-        width: 95%;
-
-        padding: 2rem 0;
+        width: 100%;
     }
 `
 const CategoryPageTitle = styled.div`
@@ -50,6 +48,10 @@ const CategoryPageTitle = styled.div`
 
     margin-left: 0.5rem;
     margin-bottom: 2.5rem;
+
+    ${media.mediumTablet} {
+        font-size: ${(p) => p.theme.title};
+    }
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xlg};
@@ -63,9 +65,21 @@ const CategoryPageTitle = styled.div`
         padding-left: 0.5rem;
 
         border-left: 0.5rem solid ${(p) => p.theme.fontColor};
-        border-radius: ${(p) => p.theme.bsm};
+        border-radius: ${({ theme }) => `${theme.bxxsm} 0 0 ${theme.bxxsm}`};
     }
 `
+const CategoryContainer = styled.div`
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+
+    ${media.widePhone} {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+`
+
 interface CategoryProps {
     allCategory: CategoryInfoType[]
 }
@@ -73,13 +87,18 @@ function Category({ allCategory }: CategoryProps) {
     return (
         <CategoryPageLayoutContainer>
             <CategoryPageTitle>All Category 🔎</CategoryPageTitle>
-            {allCategory.map((categoryInfo) => (
-                <CategoryLink {...categoryInfo} key={categoryInfo.category} />
-            ))}
+            <CategoryContainer>
+                {allCategory.map((categoryInfo) => (
+                    <CategoryLink
+                        {...categoryInfo}
+                        key={categoryInfo.category}
+                    />
+                ))}
+            </CategoryContainer>
         </CategoryPageLayoutContainer>
     )
 }
-Category.displayName = "Home" as PageType
+Category.displayName = "Category" as PageType
 
 export default Category
 
@@ -94,7 +113,7 @@ const CategoryLinkContaier = styled.div<{ color: string }>`
     justify-content: flex-start;
     gap: 1.5rem;
 
-    padding: 1.3rem;
+    padding: 1.25rem;
 
     cursor: pointer;
 
