@@ -31,7 +31,6 @@ const NavContainer = styled.nav`
         position: sticky;
         top: 1rem;
 
-        width: 85%;
         height: fit-content;
 
         background-color: ${(p) =>

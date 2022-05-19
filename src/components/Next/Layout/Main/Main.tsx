@@ -13,7 +13,7 @@ const MainLayout = styled.div`
 
     ${media.widePhone} {
         min-width: auto;
-        width: 90%;
+        width: 85%;
     }
 `
 
