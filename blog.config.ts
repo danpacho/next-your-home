@@ -15,7 +15,7 @@ const userPallete: UserPalleteType = {
     primary4: "#F2E2CE",
 }
 
-interface AuthorInfoType {
+export interface AuthorInfoType {
     name: string
     bannerImageUrl: string
     avatarImageUrl: string
@@ -27,18 +27,18 @@ interface AuthorInfoType {
 }
 const authorInfo: AuthorInfoType = {
     name: "danpacho",
-    bannerImageUrl: "/profile.png",
-    avatarImageUrl: "/",
+    bannerImageUrl: "/banner.png",
+    avatarImageUrl: "/logo.png",
     currentState: "frontend-physics student",
     currentGoal: "make people move",
     contacts: {
         email: getAuthorContactHref("email", "danpa725@cau.ac.kr"),
         github: getAuthorContactHref("github", "danpa725"),
-        facebook: "",
-        instagram: "",
-        linkedin: "",
-        youtube: "",
-        twitter: "",
+        facebook: getAuthorContactHref("facebook", "danpa725"),
+        instagram: getAuthorContactHref("instagram", "danpa725"),
+        linkedin: getAuthorContactHref("linkedin", "danpa725"),
+        youtube: getAuthorContactHref("youtube", "danpa725"),
+        twitter: getAuthorContactHref("twitter", "danpa725"),
     },
 }
 
@@ -49,9 +49,9 @@ interface BlogInfoType {
     copyright: string
 }
 const blogInfo: BlogInfoType = {
-    url: "https://danpa.vercel.app",
+    url: "https://danpacho.vercel.app",
     siteName: "danpacho blog",
-    subtitle: "learn 🛠 and create 🎹 something",
+    subtitle: "learn✏️ and create🛠 beautiful things",
     copyright: `${
         authorInfo.name
     }© All rights reserved ${new Date().getFullYear()}.`,
