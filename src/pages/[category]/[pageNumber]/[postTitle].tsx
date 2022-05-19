@@ -75,7 +75,7 @@ const PostContainer = styled.div<IsLight>`
     }
 
     ${media.widePhone} {
-        width: 95%;
+        width: 100%;
 
         background-color: transparent;
         backdrop-filter: unset;
@@ -405,12 +405,10 @@ const PostInfo = ({
         .replace("/", "년 ")
         .replace("/", "월 ")}일`
 
-    //TODO: /about 페이지 만들기
-    //* const authorUrl = "/about"
     return (
         <PostInfoContainer>
             <TagContainer>
-                <Link href="/" passHref>
+                <Link href="/profile" passHref>
                     <PostTag color={color} tagType="tag">
                         <EditIcon fill={color} />
                         <p>{author}</p>
