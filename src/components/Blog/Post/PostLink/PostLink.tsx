@@ -79,7 +79,7 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     }
 
     ${media.widePhone} {
-        width: min(35rem, 85%);
+        width: min(35rem, 87.5%);
 
         min-height: 8.25rem;
         height: 8.25rem;

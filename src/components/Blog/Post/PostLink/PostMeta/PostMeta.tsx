@@ -1,11 +1,16 @@
-import { LayersAltIcon } from "@components/UI/Atoms/Icons"
-import media from "@styles/utils/media"
-import { PostMetaType } from "@typing/post/meta"
-
 import styled, { css } from "styled-components"
+import media from "@styles/utils/media"
+
+import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
+import { PostMetaType } from "@typing/post/meta"
+
+import { sliceTextByMaxLength } from "@utils/function/text"
+
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+
+import { LayersAltIcon } from "@components/UI/Atoms/Icons"
 
 const PostMetaTagContainer = styled.ul`
     display: flex;
@@ -64,7 +69,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
 
     ${media.mediumTablet} {
         font-size: ${(p) => p.theme.xsm};
-        padding: 0.15rem 0.3rem;
+        padding: 0.15rem 0.45rem;
     }
 
     ${media.widePhone} {
@@ -126,18 +131,26 @@ function PostMeta({
                 ))}
 
             {!isCategoryPage && (
-                <PostMetaTag type="category" color={color} isLight={isLight}>
-                    {category}
-                </PostMetaTag>
+                <Link href={`/${category}`} passHref>
+                    <PostMetaTag
+                        type="category"
+                        color={color}
+                        isLight={isLight}
+                    >
+                        {sliceTextByMaxLength(category, 8)}
+                    </PostMetaTag>
+                </Link>
             )}
             {!isCategoryPage && (
                 <PostMetaTag type="update" color={color} isLight={isLight}>
                     {update}
                 </PostMetaTag>
             )}
-            <PostMetaTag type="author" color={color} isLight={isLight}>
-                {author}
-            </PostMetaTag>
+            <Link href="/profile" passHref>
+                <PostMetaTag type="author" color={color} isLight={isLight}>
+                    {author}
+                </PostMetaTag>
+            </Link>
         </PostMetaTagContainer>
     )
 }
