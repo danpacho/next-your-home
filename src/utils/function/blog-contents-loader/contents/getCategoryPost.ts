@@ -151,6 +151,15 @@ const extractAllCategoryPostFileName = async (
     return dirPostInfo
 }
 
+const sortByDate = (currDate: string, nextDate: string) => {
+    const nextDateNumber = Number(nextDate.replace(/\//g, ""))
+    const currDateNumber = Number(currDate.replace(/\//g, ""))
+
+    if (currDateNumber < nextDateNumber) return 1
+    if (currDateNumber > nextDateNumber) return -1
+    return 0
+}
+
 /**
  * @param categoryPostFileNameArray `extractCategoryPostFileArray()`
  * @param compileToMDX `.mdx` 컴파일 선택 옵션
@@ -266,25 +275,23 @@ const extractAndTransformAllCategoryPostContent = async (
                         )
                     )
                 )
+                    .filter(({ postMeta: { postpone } }) => !postpone)
                     .sort(
                         (
-                            { postMeta: { update: currUpdateDate } },
-                            { postMeta: { update: nextUpdateDate } }
-                        ) =>
-                            Number(nextUpdateDate.replace(/\//g, "")) -
-                            Number(currUpdateDate.replace(/\//g, ""))
+                            { postMeta: { update: currDate } },
+                            { postMeta: { update: nextDate } }
+                        ) => sortByDate(currDate, nextDate)
                     )
                     .map((postContent, order) => {
-                        //* postUrl을 시간순대로 정렬된 순서대로 업데이트
-                        const copyofPostContent = postContent
+                        const updatedPostContent: PostContentType = postContent
                         const postContentPath = postContent.postMeta.postUrl //*전에 임시로 저장한 postContentPath꺼내기
 
-                        copyofPostContent.postMeta.postUrl = `/${category}/${Math.floor(
+                        updatedPostContent.postMeta.postUrl = `/${category}/${Math.floor(
                             order / config.postPerCategoryPage + 1
                         )}/${removeFileFormat(postContentPath, "mdx")}`
-                        copyofPostContent.postMeta.postOrder = order
+                        updatedPostContent.postMeta.postOrder = order
 
-                        return copyofPostContent
+                        return updatedPostContent
                     })
 
                 return {
@@ -314,9 +321,7 @@ const getAllCategoryPostContent = async (
  */
 const getAllCategoryPostContentPath = async () =>
     (await getAllCategoryPostContent(false)).flatMap(({ postContentArray }) =>
-        postContentArray
-            .filter(({ postMeta: { postpone } }) => !postpone)
-            .map(({ postMeta: { postUrl } }) => postUrl)
+        postContentArray.map(({ postMeta: { postUrl } }) => postUrl)
     )
 
 /**
@@ -423,8 +428,7 @@ const getSpecificCategoryPostContent = async ({
 }): Promise<SpecificPostContentType> => {
     const specificCategoryPostContent = (await getAllCategoryPostContent())
         .filter(({ category }) => category === categoryName)[0]
-        .postContentArray.filter(({ postMeta: { postpone } }) => !postpone)
-        .reduce<SpecificPostContentType>(
+        .postContentArray.reduce<SpecificPostContentType>(
             (accPostContent, currValue, idx, totPost) => {
                 if (
                     currValue.postMeta.postUrl ===
@@ -474,10 +478,9 @@ const getSpecificCategoryPostContent = async ({
  * @note `postpone` 포스트 제거
  */
 const extractAllPostMeta = async (): Promise<PostMetaType[]> =>
-    (await await getAllCategoryPostContent(false))
+    (await getAllCategoryPostContent(false))
         .flatMap(({ postContentArray }) => postContentArray)
         .map(({ postMeta }) => postMeta)
-        .filter(({ postpone }) => !postpone)
 
 /**
  * @param categoryName 특정 카테고리
@@ -495,7 +498,13 @@ const getCategoryPostMeta = async (
  * @note `config` **numberOfLatestPost** 참조
  */
 const getLatestPostMeta = async (): Promise<PostMetaType[]> =>
-    (await extractAllPostMeta()).slice(0, config.numberOfLatestPost)
+    (
+        await (await extractAllPostMeta())
+            .flat()
+            .sort(({ update: currDate }, { update: nextDate }) =>
+                sortByDate(currDate, nextDate)
+            )
+    ).slice(0, config.numberOfLatestPost)
 
 /**
  * @param categoryName 특정 카테고리
@@ -525,4 +534,6 @@ export {
     getSpecificCategoryLatestPostMeta,
     //* post link url
     getAllCategoryPostContentPath,
+    //* MDX compiler
+    transformPureContentToMDXCompileSource,
 }
