@@ -26,9 +26,9 @@ function BaseSEO() {
             <meta property="og:locale" content="ko_KR" />
 
             {/* crawling bot meta */}
-            <meta name="googlebot" content="All" />
-            <meta name="NaverBot" content="All" />
-            <meta name="NaverBot" content="index,follow" />
+            <meta name="robots" content="all" />
+            <meta name="googlebot" content="all" />
+            <meta name="NaverBot" content="all" />
         </>
     )
 }
