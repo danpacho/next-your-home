@@ -94,7 +94,7 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
     }
 
     ${media.mediumTablet} {
-        font-size: 2.25rem;
+        font-size: ${(p) => p.theme.title};
     }
 
     ${media.widePhone} {
