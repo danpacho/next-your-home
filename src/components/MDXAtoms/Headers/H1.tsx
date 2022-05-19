@@ -5,7 +5,7 @@ import media from "@styles/utils/media"
 
 import { useFocusTitle } from "@lib/atoms/tableOfContent/tableOfContent.state"
 
-import { useElementObserver } from "@hooks/index"
+import { useElementObserver, useScrollToElement } from "@hooks/index"
 
 import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
@@ -15,27 +15,31 @@ import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 const H1Container = styled.div`
     margin: 2rem 0;
+    cursor: pointer;
 `
 
 const H1Styled = styled.h1<IsLight>`
-    font-size: ${(props) => props.theme.xxlg};
+    font-size: ${(p) => p.theme.xxlg};
     font-weight: 800;
     color: ${(p) => p.theme.headerFontColor};
 
     padding: 0.25rem 0 0.35rem 0;
-
-    border-bottom: 0.25rem solid
-        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.gray7)};
 
     width: fit-content;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.lg};
         font-weight: 700;
-        border-bottom: none;
         padding-left: 0.5rem;
         border-left: 0.25rem solid ${(props) => props.theme.gray4};
     }
+`
+
+const HeaderTag = styled.p`
+    font-size: ${(p) => p.theme.xlg};
+    font-weight: 700;
+    color: ${(p) => p.theme.headerFontColor};
+    margin-right: 0.25rem;
 `
 
 const HEADER_UPDATE_CONSTANTS = {
@@ -82,22 +86,26 @@ const H1 = (props: H1Props) => {
     })
 
     const isLight = useThemeIsLight()
-
+    const { scrollToElement } = useScrollToElement({
+        scrollRef: ref,
+    })
     return (
-        <H1Container>
+        <H1Container onClick={scrollToElement}>
             <Tooltip
                 active={active}
                 setActive={setActive}
                 tooltipElement={
                     <LineScroll
-                        fontWeight={900}
-                        fontSize="title"
+                        fontWeight={600}
+                        fontSize="xxlg"
                         scrollRef={ref}
-                    />
+                    >
+                        #
+                    </LineScroll>
                 }
-                right={-50}
-                bottom={2.5}
-                isUnvisibleElementClickAbled={true}
+                isUnvisibleElementClickAbled
+                left={-30}
+                bottom={1.5}
             >
                 <H1Styled {...props} ref={ref} isLight={isLight} />
             </Tooltip>
