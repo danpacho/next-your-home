@@ -19,6 +19,7 @@ import { PostMDXCompiler } from "@components/Blog/Post"
 import {
     FacebookIcon,
     GithubIcon,
+    HeartIcon,
     InstagramIcon,
     LinkedinIcon,
     SendIcon,
@@ -163,6 +164,17 @@ const ProfileTextContainer = styled.div`
     }
 `
 
+const Copyright = styled.div`
+    padding: 2rem 0;
+    color: ${(p) => p.theme.descriptionFontColor};
+    font-size: ${(p) => p.theme.md};
+    font-weight: 400;
+
+    svg {
+        fill: ${(p) => p.theme.red4};
+    }
+`
+
 function Profile({
     name,
     currentGoal,
@@ -194,6 +206,10 @@ function Profile({
             </ProfileInfoContainer>
             <ProfileContentContainer>
                 <PostMDXCompiler serializedSource={profileSource} />
+                <Copyright>
+                    {config.copyright}{" "}
+                    <HeartIcon width=".75rem" height=".75rem" />
+                </Copyright>
             </ProfileContentContainer>
         </ProfileContainer>
     )

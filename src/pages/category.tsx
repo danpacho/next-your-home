@@ -22,12 +22,13 @@ import { config } from "blog.config"
 
 const CategoryPageLayoutContainer = styled.div`
     width: 70%;
+    min-height: 45rem;
     height: 100%;
 
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
 
     padding: 2rem 0;
 
@@ -39,14 +40,14 @@ const CategoryPageLayoutContainer = styled.div`
         gap: 1rem;
 
         width: 100%;
+        min-height: unset;
     }
 `
 const CategoryPageTitle = styled.div`
     color: ${(p) => p.theme.headerFontColor};
-    font-size: 2.5rem;
+    font-size: ${(p) => p.theme.xtitle};
     font-weight: 900;
 
-    margin-left: 0.5rem;
     margin-bottom: 2.5rem;
 
     ${media.mediumTablet} {
@@ -71,12 +72,14 @@ const CategoryPageTitle = styled.div`
 const CategoryContainer = styled.div`
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 1rem;
+    gap: 1.5rem;
 
     ${media.widePhone} {
         display: flex;
         flex-direction: column;
         align-items: flex-start;
+
+        gap: 1.25rem;
     }
 `
 
@@ -117,7 +120,7 @@ const CategoryLinkContaier = styled.div<{ color: string }>`
 
     cursor: pointer;
 
-    border-radius: ${({ theme }) => theme.bxxsm};
+    border-radius: ${({ theme }) => theme.bxsm};
     border-right: 0.25rem solid ${(p) => p.color};
 
     background-color: ${({ theme }) =>
@@ -161,8 +164,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
 
     border-radius: ${(p) => p.theme.bxxlg};
 
-    font-size: 2.5rem;
-
+    font-size: ${(p) => p.theme.xtitle};
     ${media.widePhone} {
         width: 1.75rem;
         height: 1.75rem;

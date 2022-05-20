@@ -204,17 +204,14 @@ const PostMetaContainer = styled.div<IsLight>`
     }
 `
 const PostTitle = styled.header`
-    font-size: 2.5rem;
-    font-weight: 300;
+    font-size: ${(p) => p.theme.xtitle};
+    font-weight: 400;
     color: ${(p) => p.theme.headerFontColor};
+
     margin: 2rem 0;
 
     ${media.smallScreen} {
-        font-size: 2.2rem;
-    }
-
-    ${media.mediumTablet} {
-        font-size: 2.1rem;
+        font-size: ${(p) => p.theme.title};
     }
 
     ${media.widePhone} {
@@ -285,14 +282,15 @@ const PostTag = styled.div<TagStyle>`
     transition: background-color ease-out 0.2s;
 
     display: flex;
+    gap: 0.25rem;
+
     padding: 0.25rem 0.5rem;
+
     border-left-width: 0.2rem;
     border-left-style: solid;
 
     color: ${(p) => p.theme.fontColor};
     font-weight: 400;
-
-    gap: 0.25rem;
 
     user-select: none;
 
@@ -423,11 +421,6 @@ const PostInfo = ({
                 <PostTag color={color} tagType="tag">
                     <LeafIcon fill={color} />
                     <p>Thanks For Reading !</p>
-                    {/*                    
-                    //TODO: 이메일 연결하기
-                    <a href="mailto:nowhere@mozilla.org">
-                        Send email to nowhere
-                    </a> */}
                 </PostTag>
             </TagContainer>
             <TagContainer>

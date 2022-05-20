@@ -147,15 +147,8 @@ const CategoryLinkContainer = styled.div`
 
 const ContainerTitle = styled.div<IsLight>`
     font-size: ${(p) => p.theme.sm};
-    font-weight: 300;
+    font-weight: 400;
     color: ${({ theme }) => theme.themePrimaryColor};
-
-    background-color: ${({ theme, isLight }) =>
-        `${isLight ? theme.primary1 : "transparent"}${
-            isLight && theme.opacity10
-        }`};
-
-    border-radius: ${(p) => p.theme.bxxsm};
 
     padding: 0.15rem 0.3rem;
 
@@ -165,9 +158,7 @@ const ContainerTitle = styled.div<IsLight>`
         font-size: ${(p) => p.theme.sm};
         font-weight: 500;
 
-        border-radius: ${(p) => `0 ${p.theme.bxsm} ${p.theme.bxsm} 0`};
-        border-left: 0.15rem solid ${(p) => p.theme.primary1};
-        margin-left: 2.5%;
+        padding: 0;
     }
 `
 
