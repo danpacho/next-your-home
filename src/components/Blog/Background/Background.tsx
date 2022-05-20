@@ -1,5 +1,3 @@
-import { ReactElement } from "react"
-
 import { PageType } from "@typing/page/type"
 
 import { useFocusingPageColor } from "@lib/atoms/pageColor/pageColor.state"
@@ -13,7 +11,7 @@ import {
 } from "./SVGBackground/Assets"
 
 const BACKGROUND_SVG: {
-    [key in PageType]: (color: string, isLight: boolean) => ReactElement
+    [key in PageType]: (color: string, isLight: boolean) => React.ReactNode
 } = {
     Category: (color, isLight) =>
         isLight ? (

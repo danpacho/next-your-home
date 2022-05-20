@@ -1,5 +1,4 @@
 import media from "@styles/utils/media"
-import { ReactElement } from "react"
 import styled from "styled-components"
 
 const MainLayout = styled.div`
@@ -18,7 +17,7 @@ const MainLayout = styled.div`
 `
 
 interface MainProp {
-    children: ReactElement
+    children: React.ReactElement
 }
 
 function Main({ children }: MainProp) {

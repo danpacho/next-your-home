@@ -1,7 +1,5 @@
 import styled, { ThemeProvider } from "styled-components"
 
-import { ReactElement } from "react"
-
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
 
@@ -30,7 +28,7 @@ const Layout = styled.main`
     }
 `
 interface LayoutProp {
-    children: ReactElement
+    children: React.ReactElement
     pageType: PageType
 }
 
