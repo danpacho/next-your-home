@@ -46,12 +46,12 @@ function PostSEO({
                 }}
             />
             <ArticleJsonLd
-                authorName={config.author.name}
-                datePublished={publishedTime}
-                description={preview}
-                images={[config.author.bannerImageUrl]}
-                publisherName={author}
                 title={title}
+                description={preview}
+                authorName={config.author.name}
+                publisherName={author}
+                datePublished={publishedTime}
+                images={[config.author.bannerImageUrl]}
                 url={fullPostUrl}
                 publisherLogo={config.author.avatarImageUrl}
             />
