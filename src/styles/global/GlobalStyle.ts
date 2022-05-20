@@ -10,8 +10,7 @@ export const GlobalStyle = createGlobalStyle`
             font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
             Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
             'Noto Sans KR', 'Malgun Gothic', sans-serif;
-            -webkit-text-size-adjust: none;
-
+            
             scrollbar-width: none;
       }
       input, button {
@@ -43,7 +42,11 @@ export const GlobalStyle = createGlobalStyle`
             color: #F3F4F6;
       }
 
+      -webkit-text-size-adjust: antialiased;
+      -moz-osx-font-smoothing: grayscale;
       -webkit-font-smoothing: antialiased;
+      -moz-font-smoothing: antialiased;
+      text-rendering: optimizelegibility;
 
       //* disable Katex math slection
       .math {

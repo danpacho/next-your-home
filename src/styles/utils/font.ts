@@ -9,6 +9,7 @@ const fontSize = {
     xlg: "1.5rem",
     xxlg: "1.75rem",
     title: "2rem",
+    xtitle: "2.25rem",
 }
 
 export default fontSize
