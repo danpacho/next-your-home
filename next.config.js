@@ -26,6 +26,7 @@ const nextConfig = {
     swcMinify: true,
     compiler: {
         removeConsole: removeConsoleOption,
+        styledComponents: true,
     },
 }
 
