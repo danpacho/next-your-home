@@ -87,7 +87,7 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     height: ${ITEM_HEIGHT.wideScreen}rem;
 
     box-shadow: ${({ isHover, color, theme, isLight }) =>
-        `0 0 0 ${isHover ? "1.1rem" : "0.5rem"} ${color}${
+        `0 0 0 ${isHover ? "1.1rem" : "0.45rem"} ${color}${
             isLight ? theme.opacity20 : theme.opacity50
         }`};
 
@@ -137,7 +137,6 @@ const CategoryDescription = styled.div`
     line-height: 1.15rem;
 
     ${media.widePhone} {
-        font-weight: 300;
         line-height: 1rem;
     }
 `

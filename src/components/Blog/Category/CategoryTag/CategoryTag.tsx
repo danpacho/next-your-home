@@ -10,11 +10,21 @@ import { DeleteIcon, FlagFillIcon } from "@components/UI/Atoms/Icons"
 const borderStyle = {
     topLeftBottomRight: css`
         border-radius: ${(p) =>
-            `${p.theme.bxxxlg} ${p.theme.blg} ${p.theme.bxxxlg} ${p.theme.blg}`};
+            `${p.theme.bxxlg} ${p.theme.bmd} ${p.theme.bxxlg} ${p.theme.bmd}`};
+
+        ${media.widePhone} {
+            border-radius: ${(p) =>
+                `${p.theme.blg} ${p.theme.bsm} ${p.theme.blg} ${p.theme.bsm}`};
+        }
     `,
     topRightBottomLeft: css`
         border-radius: ${(p) =>
-            `${p.theme.blg} ${p.theme.bxxxlg} ${p.theme.blg} ${p.theme.bxxxlg}`};
+            `${p.theme.bmd} ${p.theme.bxxlg} ${p.theme.bmd} ${p.theme.bxxlg}`};
+
+        ${media.widePhone} {
+            border-radius: ${(p) =>
+                `${p.theme.bsm} ${p.theme.blg} ${p.theme.bsm} ${p.theme.blg}`};
+        }
     `,
 }
 
@@ -46,6 +56,10 @@ const backgroundStyle = {
         }
         &:hover {
             box-shadow: -4px 4px 0px ${color}${(p) => p.theme.opacity30};
+        }
+
+        ${media.widePhone} {
+            box-shadow: 0 0 0 2px ${color}${(p) => p.theme.opacity40};
         }
     `,
 }
@@ -82,8 +96,8 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
     width: fit-content;
     min-width: 6rem;
     height: fit-content;
-    padding: 0.8rem;
-    margin: 0.5rem;
+
+    padding: 0.75rem;
 
     border: 1.75px solid
         ${({ isFiltered, color, theme }) =>
@@ -103,21 +117,18 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
             : backgroundStyle.noneFiltered(color, isLight)}
 
     ${media.mediumTablet} {
-        width: fit-content;
         min-width: 5rem;
 
-        letter-spacing: 0.02rem;
-        padding: 0.75rem;
         font-weight: 700;
+        letter-spacing: 0.02rem;
     }
 
     ${media.widePhone} {
         min-width: 2.5rem;
-        width: fit-content;
-        height: fit-content;
 
-        padding: 0.65rem 0.8rem;
-        margin: 0.25rem;
+        padding: 0.5rem;
+
+        font-size: ${(p) => p.theme.xsm};
         font-weight: 600;
 
         border-width: 1.5px;
@@ -127,7 +138,7 @@ const TagContainer = styled.ul`
     display: flex;
     flex-wrap: wrap;
 
-    gap: 0.25rem;
+    gap: 0.75rem;
 
     width: inherit;
     height: fit-content;
@@ -135,7 +146,8 @@ const TagContainer = styled.ul`
     ${media.widePhone} {
         align-items: center;
         justify-content: center;
-        margin-bottom: 0.75rem;
+
+        gap: 0.5rem;
     }
 `
 
