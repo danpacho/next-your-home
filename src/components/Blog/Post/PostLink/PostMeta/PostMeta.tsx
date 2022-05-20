@@ -22,21 +22,22 @@ const PostMetaTagContainer = styled.ul`
 `
 const postMetaTagStyle = {
     category: () => css`
-        border-radius: 1px 1.5px 1.5px 10px;
+        border-radius: ${({ theme }) =>
+            `${theme.bxxsm} ${theme.bxxsm} ${theme.bxxsm} ${theme.blg}`};
         ${media.widePhone} {
-            border-radius: 0.5px 1px 1px 4px;
+            border-radius: ${({ theme }) =>
+                `${theme.bxxsm} ${theme.bxxsm} ${theme.bxxsm} ${theme.bsm}`};
         }
     `,
     update: () => css`
-        border-radius: 1px;
-        ${media.widePhone} {
-            border-radius: 0.5px;
-        }
+        border-radius: ${(p) => p.theme.bxxsm};
     `,
     author: () => css`
-        border-radius: 1px 10px 10px 1px;
+        border-radius: ${({ theme }) =>
+            `${theme.bxxsm} ${theme.blg} ${theme.blg} ${theme.bxxsm}`};
         ${media.widePhone} {
-            border-radius: 0.5px 4px 4px 0.5px;
+            border-radius: ${({ theme }) =>
+                `${theme.bxxsm} ${theme.bsm} ${theme.bsm} ${theme.bxxsm}`};
         }
     `,
 }
@@ -47,9 +48,12 @@ interface PostMetaTagStyle {
 }
 const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     transition: background-color 0.25s ease-out;
+
     display: flex;
     align-items: center;
     justify-content: center;
+
+    width: max-content;
 
     padding: 0.15rem 0.65rem;
 

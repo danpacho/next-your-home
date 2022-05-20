@@ -19,6 +19,10 @@ const postLinkContainerStyle = {
         border-top-right-radius: ${(p) => p.theme.bxxxlg};
         border-left: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
         border-bottom: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
+
+        ${media.widePhone} {
+            border-top-right-radius: ${(p) => p.theme.bxlg};
+        }
     `,
     middle: (borderColor: string) => css`
         border-radius: ${({ theme }) =>
@@ -29,6 +33,10 @@ const postLinkContainerStyle = {
         border-bottom-right-radius: ${(p) => p.theme.bxxxlg};
         border-left: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
         border-top: ${POST_LINK_BORDER_WIDTH} solid ${borderColor};
+
+        ${media.widePhone} {
+            border-bottom-right-radius: ${(p) => p.theme.bxlg};
+        }
     `,
 }
 
@@ -47,8 +55,6 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-
-    gap: 1.5rem;
 
     width: min(45rem, 85%);
     min-height: 8.75rem;
@@ -75,11 +81,11 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     ${({ isLast, color }) => isLast && postLinkContainerStyle.last(color)};
 
     ${media.mediumTablet} {
-        gap: 0.5rem;
     }
 
     ${media.widePhone} {
-        width: min(35rem, 87.5%);
+        position: relative;
+        width: min(35rem, 85%);
 
         min-height: 8.25rem;
         height: 8.25rem;
@@ -105,6 +111,7 @@ const ContentContainer = styled.div`
 
     ${media.widePhone} {
         gap: 0.5rem;
+        max-width: unset;
     }
 `
 
@@ -115,8 +122,7 @@ const PostPreview = styled.div`
     line-height: 1.15rem;
 
     ${media.widePhone} {
-        font-weight: 300;
-        line-height: 1rem;
+        line-height: 1.05rem;
     }
 `
 
@@ -159,7 +165,7 @@ function PostLink({
                         {sliceTextByMaxLength(title, 25)}
                     </PostTitle>
                     <PostPreview>
-                        {sliceTextByMaxLength(preview, 55)}
+                        {sliceTextByMaxLength(preview, 50)}
                     </PostPreview>
                     <PostMeta
                         author={author}
