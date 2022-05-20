@@ -49,6 +49,7 @@ const ThemeButtonContainer = styled.button`
         padding: 0;
         padding-left: 0.5rem;
         margin-right: 0.45rem;
+        font-weight: 500;
 
         font-size: ${(p) => p.theme.xsm};
 

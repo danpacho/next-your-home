@@ -38,7 +38,7 @@ const NavContainer = styled.nav`
         backdrop-filter: blur(5px);
 
         border: 1.5px solid ${({ theme }) => theme.themePrimaryColor};
-        border-radius: ${(p) => p.theme.blg};
+        border-radius: ${(p) => p.theme.bmd};
 
         box-shadow: ${shadow.shadowXxsm};
 

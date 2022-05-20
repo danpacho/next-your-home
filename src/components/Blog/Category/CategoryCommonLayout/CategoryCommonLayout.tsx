@@ -69,13 +69,11 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
     gap: 0.5rem;
 
     color: ${(p) => p.theme.headerFontColor};
-    font-size: 2.5rem;
+    font-size: ${(p) => p.theme.xtitle};
     font-weight: 900;
     text-shadow: 3.75px 3.75px 0
         ${({ categoryColor, theme }) => `${categoryColor}${theme.themeOpacity}`};
     text-transform: capitalize;
-
-    margin-left: 0.5rem;
 
     ::after {
         content: "";
@@ -337,6 +335,8 @@ export const PaginationButton = styled.button<{ isLeft?: boolean } & IsLight>`
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 700;
+
+        border-radius: ${(p) => p.theme.bxsm};
         ${(p) =>
             p.isLeft
                 ? css`

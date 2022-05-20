@@ -60,8 +60,7 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     min-height: 1.25rem;
 
     &:hover {
-        background-color: ${({ theme }) =>
-            `${theme.containerBackgroundColor}${theme.opacity60}`};
+        background-color: ${({ theme }) => `${theme.containerBackgroundColor}`};
         border-radius: ${(p) => `0 ${p.theme.bmd} ${p.theme.bmd} 0`};
     }
 
