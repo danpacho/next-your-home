@@ -30,16 +30,12 @@ const H1Styled = styled.h1<IsLight>`
     ${media.widePhone} {
         font-size: ${(p) => p.theme.lg};
         font-weight: 700;
-        padding-left: 0.5rem;
-        border-left: 0.25rem solid ${(props) => props.theme.gray4};
-    }
-`
 
-const HeaderTag = styled.p`
-    font-size: ${(p) => p.theme.xlg};
-    font-weight: 700;
-    color: ${(p) => p.theme.headerFontColor};
-    margin-right: 0.25rem;
+        padding-left: 0.4rem;
+
+        border-left: 0.2rem solid ${(props) => props.theme.gray4};
+        border-radius: 1px;
+    }
 `
 
 const HEADER_UPDATE_CONSTANTS = {
@@ -95,11 +91,7 @@ const H1 = (props: H1Props) => {
                 active={active}
                 setActive={setActive}
                 tooltipElement={
-                    <LineScroll
-                        fontWeight={600}
-                        fontSize="xxlg"
-                        scrollRef={ref}
-                    >
+                    <LineScroll fontWeight={600} fontSize="xlg" scrollRef={ref}>
                         #
                     </LineScroll>
                 }
