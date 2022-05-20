@@ -22,7 +22,7 @@ import { config } from "blog.config"
 
 const CategoryPageLayoutContainer = styled.div`
     width: 70%;
-    min-height: 45rem;
+    min-height: 35rem;
     height: 100%;
 
     display: flex;
@@ -165,6 +165,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     border-radius: ${(p) => p.theme.bxxlg};
 
     font-size: ${(p) => p.theme.xtitle};
+    
     ${media.widePhone} {
         width: 1.75rem;
         height: 1.75rem;
