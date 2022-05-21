@@ -8,6 +8,7 @@ import {
     addPathNotation,
     blogContentsDirectory,
     getValidateColor,
+    memo,
 } from "@utils/function/blog-contents-loader/util"
 
 import {
@@ -17,8 +18,6 @@ import {
 } from "@utils/function/blog-error-handler/blogError"
 
 import { config } from "blog.config"
-
-import memoize from "fast-memoize"
 
 /**
  * @returns 카테고리의 이름(=`파일 이름`) 반환
@@ -58,12 +57,12 @@ const getAllCategoryName = async () => {
  * @note 카테고리 이름에 url notation 추가
  * @returns `/{category}` 반환
  */
-const getAllCategoryPath = async (): Promise<string[]> => {
+const getAllCategoryPath = memo(config.useMemo, async (): Promise<string[]> => {
     const categoryPathArray: string[] = await (
         await await getAllCategoryName()
     ).map((path) => addPathNotation(path))
     return categoryPathArray
-}
+})
 
 const DESCRIPTION_FILE_NAME = "description"
 const FILE_FORMAT = {
@@ -336,7 +335,8 @@ const LATEST_CATEGORY_NUMBER = 3
  * @param useTXT false  `description.json`
  * @returns `LATEST_CATEGORY_NUMBER` 개 카테고리 반환
  */
-const getLatestCategoryInfo = memoize(
+const getLatestCategoryInfo = memo(
+    config.useMemo,
     async ({ useTXT }: { useTXT: boolean }) =>
         await (useTXT
             ? await getAllCategoryInfoByTXT()
@@ -349,16 +349,18 @@ const getLatestCategoryInfo = memoize(
 /**
  * @returns 최신 카테고리 속 포스트에 포함된 태그 추출
  */
-const getLatestCategoryTagArray = async (category: string) => {
-    const latestCategoryPostMetaArray = await getSpecificCategoryLatestPostMeta(
-        category
-    )
-    const deduplicatedCategoryTagArray = [
-        ...new Set(latestCategoryPostMetaArray.flatMap(({ tags }) => tags)),
-    ].sort()
+const getLatestCategoryTagArray = memo(
+    config.useMemo,
+    async (category: string) => {
+        const latestCategoryPostMetaArray =
+            await getSpecificCategoryLatestPostMeta(category)
+        const deduplicatedCategoryTagArray = [
+            ...new Set(latestCategoryPostMetaArray.flatMap(({ tags }) => tags)),
+        ].sort()
 
-    return deduplicatedCategoryTagArray
-}
+        return deduplicatedCategoryTagArray
+    }
+)
 /**
  * @param useTXT true `description.txt` 추출
  * @returns 전체 카테고리 정보 반환
@@ -378,7 +380,8 @@ const getAllCategoryInfo = async ({ useTXT }: { useTXT: boolean }) => {
  * @return `color`: 해당 카테고리 색
  * @return `emoji`: 해당 카테고리 이모지
  */
-const getSpecificCategoryInfo = memoize(
+const getSpecificCategoryInfo = memo(
+    config.useMemo,
     async ({
         category,
         useTXT,
@@ -389,9 +392,9 @@ const getSpecificCategoryInfo = memoize(
         const allCategoryInfo = await getAllCategoryInfo({
             useTXT,
         })
-        const specificCategoryInfo = allCategoryInfo.filter(
+        const specificCategoryInfo = allCategoryInfo.find(
             ({ category: categoryName }) => categoryName === category
-        )[0]
+        )!
 
         return {
             ...specificCategoryInfo,

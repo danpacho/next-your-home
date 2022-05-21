@@ -22,6 +22,7 @@ import {
     blogContentsDirectory,
     getValidateColor,
     removeFileFormat,
+    memo,
 } from "@utils/function/blog-contents-loader/util"
 
 import { getAllCategoryName } from "@utils/function/blog-contents-loader/contents/getCategory"
@@ -40,8 +41,6 @@ import rehypePrism from "rehype-prism-plus"
 
 import { config } from "blog.config"
 
-import memoize from "fast-memoize"
-
 const splitStringByComma = (text: string) =>
     text.split(",").map((text) => text.trim())
 
@@ -59,9 +58,8 @@ const getTagArray = (tags: string): string[] => {
                 "tags: tag1, tag2, tag3, ... be sure to divide tag with , ",
             customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
         })
-    else {
-        return splitStringByComma(tags)
-    }
+
+    return splitStringByComma(tags)
 }
 
 /**
@@ -319,10 +317,11 @@ const getAllCategoryPostContent = async (
 /**
  * @returns 전체 포스트 링크 url 반환
  */
-const getAllCategoryPostContentPath = async () =>
+const getAllCategoryPostContentPath = memo(config.useMemo, async () =>
     (await getAllCategoryPostContent(false)).flatMap(({ postContentArray }) =>
         postContentArray.map(({ postMeta: { postUrl } }) => postUrl)
     )
+)
 
 /**
  * @note **`pagination`** function
@@ -332,19 +331,22 @@ const getAllCategoryPostContentPath = async () =>
  * @return `page` param에 따라 반환하는 포스트
  * @note `config` **postPerCategoryPage** 참조
  */
-const getSpecificCategoryPagePostMeta = async ({
-    category,
-    pageNumber,
-}: {
-    category: string
-    pageNumber: number
-}): Promise<PostMetaType[]> =>
-    await (
-        await getCategoryPostMeta(category)
-    ).slice(
-        (pageNumber - 1) * config.postPerCategoryPage,
-        pageNumber * config.postPerCategoryPage
-    )
+const getSpecificCategoryPagePostMeta = memo(
+    config.useMemo,
+    async ({
+        category,
+        pageNumber,
+    }: {
+        category: string
+        pageNumber: number
+    }): Promise<PostMetaType[]> =>
+        await (
+            await getCategoryPostMeta(category)
+        ).slice(
+            (pageNumber - 1) * config.postPerCategoryPage,
+            pageNumber * config.postPerCategoryPage
+        )
+)
 
 /**
  * @note **`pagination`** function
@@ -352,15 +354,17 @@ const getSpecificCategoryPagePostMeta = async ({
  * @returns 특정 카테고리 포스팅 `page` 갯수
  * @note `config` **postPerCategoryPage** 참조
  */
-const getCategoryTotalPaginationNumber = memoize(async (category: string) =>
-    Math.ceil(
-        (await (
-            await readdir(
-                `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}`,
-                "utf-8"
-            )
-        ).length) / config.postPerCategoryPage
-    )
+const getCategoryTotalPaginationNumber = memo(
+    config.useMemo,
+    async (category: string) =>
+        Math.ceil(
+            (await (
+                await readdir(
+                    `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}`,
+                    "utf-8"
+                )
+            ).length) / config.postPerCategoryPage
+        )
 )
 
 /**
@@ -368,7 +372,7 @@ const getCategoryTotalPaginationNumber = memoize(async (category: string) =>
  * ---
  * @returns 모든 카테고리 pagination 링크 url
  */
-const getAllCategoryPaginationPath = async () =>
+const getAllCategoryPaginationPath = memo(config.useMemo, async () =>
     (
         await Promise.all(
             (
@@ -388,6 +392,7 @@ const getAllCategoryPaginationPath = async () =>
             })
         )
     ).flat()
+)
 
 /**
  * @note **`pagination`** function
@@ -395,15 +400,18 @@ const getAllCategoryPaginationPath = async () =>
  * @param specificPageCategoryPostContent 특정 `page`의 포스트
  * @returns 특정 `page`의 포스트 태그
  */
-const getCategoryPaginationTag = (
-    specificPageCategoryPostContent: PostMetaType[]
-) => {
-    const deduplicatedSpecificCategoryPageTagArray = [
-        ...new Set(specificPageCategoryPostContent.flatMap(({ tags }) => tags)),
-    ].sort()
+const getCategoryPaginationTag = memo(
+    config.useMemo,
+    (specificPageCategoryPostContent: PostMetaType[]) => {
+        const deduplicatedSpecificCategoryPageTagArray = [
+            ...new Set(
+                specificPageCategoryPostContent.flatMap(({ tags }) => tags)
+            ),
+        ].sort()
 
-    return deduplicatedSpecificCategoryPageTagArray
-}
+        return deduplicatedSpecificCategoryPageTagArray
+    }
+)
 
 /**
  * @note 특정 포스트 정보를 가져오는 함수
@@ -417,61 +425,64 @@ const getCategoryPaginationTag = (
  * @return `postController` 이전포스트 - 현재 - 다음 포스트
  */
 
-const getSpecificCategoryPostContent = async ({
-    categoryName,
-    categoryPage,
-    postTitle,
-}: {
-    categoryName: string
-    postTitle: string
-    categoryPage: number
-}): Promise<SpecificPostContentType> => {
-    const specificCategoryPostContent = (await getAllCategoryPostContent())
-        .filter(({ category }) => category === categoryName)[0]
-        .postContentArray.reduce<SpecificPostContentType>(
-            (accPostContent, currValue, idx, totPost) => {
-                if (
-                    currValue.postMeta.postUrl ===
-                    `/${categoryName}/${categoryPage}/${postTitle}`
-                ) {
-                    const isFirst = idx === 0
-                    const prevPost = isFirst
-                        ? {
-                              title: `${categoryName} 글 목록으로 돌아가기`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx - 1].postMeta.title,
-                              postUrl: totPost[idx - 1].postMeta.postUrl,
-                          }
+const getSpecificCategoryPostContent = memo(
+    config.useMemo,
+    async ({
+        categoryName,
+        categoryPage,
+        postTitle,
+    }: {
+        categoryName: string
+        postTitle: string
+        categoryPage: number
+    }): Promise<SpecificPostContentType> => {
+        const specificCategoryPostContent = (await getAllCategoryPostContent())
+            .find(({ category }) => category === categoryName)!
+            .postContentArray.reduce<SpecificPostContentType>(
+                (accPostContent, currValue, idx, totPost) => {
+                    if (
+                        currValue.postMeta.postUrl ===
+                        `/${categoryName}/${categoryPage}/${postTitle}`
+                    ) {
+                        const isFirst = idx === 0
+                        const prevPost = isFirst
+                            ? {
+                                  title: `${categoryName} 글 목록으로 돌아가기`,
+                                  postUrl: `/${categoryName}`,
+                              }
+                            : {
+                                  title: totPost[idx - 1].postMeta.title,
+                                  postUrl: totPost[idx - 1].postMeta.postUrl,
+                              }
 
-                    const isLast = idx === totPost.length - 1
-                    const nextPost = isLast
-                        ? {
-                              title: `${categoryName}의 마지막 글이에요!`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx + 1].postMeta.title,
-                              postUrl: totPost[idx + 1].postMeta.postUrl,
-                          }
+                        const isLast = idx === totPost.length - 1
+                        const nextPost = isLast
+                            ? {
+                                  title: `${categoryName}의 마지막 글이에요!`,
+                                  postUrl: `/${categoryName}`,
+                              }
+                            : {
+                                  title: totPost[idx + 1].postMeta.title,
+                                  postUrl: totPost[idx + 1].postMeta.postUrl,
+                              }
 
-                    const postController: PostControllerType = {
-                        prevPost,
-                        nextPost,
+                        const postController: PostControllerType = {
+                            prevPost,
+                            nextPost,
+                        }
+                        const specificPostContent: SpecificPostContentType = {
+                            ...currValue,
+                            postController,
+                        }
+                        return specificPostContent
                     }
-                    const specificPostContent: SpecificPostContentType = {
-                        ...currValue,
-                        postController,
-                    }
-                    return specificPostContent
-                }
-                return accPostContent
-            },
-            {} as SpecificPostContentType
-        )
-    return specificCategoryPostContent
-}
+                    return accPostContent
+                },
+                {} as SpecificPostContentType
+            )
+        return specificCategoryPostContent
+    }
+)
 
 /**
  * @returns 모든 포스트 `meta` 데이터
@@ -497,27 +508,31 @@ const getCategoryPostMeta = async (
  * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
  */
-const getLatestPostMeta = async (): Promise<PostMetaType[]> =>
-    (
-        await (await extractAllPostMeta())
-            .flat()
-            .sort(({ update: currDate }, { update: nextDate }) =>
-                sortByDate(currDate, nextDate)
-            )
-    ).slice(0, config.numberOfLatestPost)
+const getLatestPostMeta = memo(
+    config.useMemo,
+    async (): Promise<PostMetaType[]> =>
+        (
+            await (await extractAllPostMeta())
+                .flat()
+                .sort(({ update: currDate }, { update: nextDate }) =>
+                    sortByDate(currDate, nextDate)
+                )
+        ).slice(0, config.numberOfLatestPost)
+)
 
 /**
  * @param categoryName 특정 카테고리
  * @returns 특정 카테고리 최신 포스트 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
  */
-const getSpecificCategoryLatestPostMeta = async (
-    categoryName: string
-): Promise<PostMetaType[]> =>
-    (await getCategoryPostMeta(categoryName)).slice(
-        0,
-        config.numberOfLatestPost
-    )
+const getSpecificCategoryLatestPostMeta = memo(
+    config.useMemo,
+    async (categoryName: string): Promise<PostMetaType[]> =>
+        (await getCategoryPostMeta(categoryName)).slice(
+            0,
+            config.numberOfLatestPost
+        )
+)
 
 export {
     //* /category

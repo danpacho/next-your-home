@@ -34,11 +34,11 @@ const authorInfo: AuthorInfoType = {
     contacts: {
         email: getAuthorContactHref("email", "danpa725@cau.ac.kr"),
         github: getAuthorContactHref("github", "danpa725"),
-        facebook: getAuthorContactHref("facebook", "danpa725"),
-        instagram: getAuthorContactHref("instagram", "danpa725"),
-        linkedin: getAuthorContactHref("linkedin", "danpa725"),
         youtube: getAuthorContactHref("youtube", "danpa725"),
-        twitter: getAuthorContactHref("twitter", "danpa725"),
+        facebook: "",
+        instagram: "",
+        linkedin: "",
+        twitter: "",
     },
 }
 
@@ -57,10 +57,12 @@ const blogInfo: BlogInfoType = {
     }© All rights reserved ${new Date().getFullYear()}.`,
 }
 
+const blogContentsDirectoryName = "blog-contents"
 interface ConfigType extends BlogInfoType {
-    blogContentsDirectoryName: string
+    blogContentsDirectoryName: `${typeof blogContentsDirectoryName}`
     useTXT: boolean
     useKatex: boolean
+    useMemo: boolean
     userPallete: UserPalleteType
     author: AuthorInfoType
     postPerCategoryPage: number
@@ -70,6 +72,7 @@ const config: ConfigType = {
     blogContentsDirectoryName: "blog-contents", // blog contents directory name
     useTXT: false, // description file format
     useKatex: true, // katex option
+    useMemo: true, // memo imporoves dev speed
     userPallete, // personal pallete
     postPerCategoryPage: 4,
     numberOfLatestPost: 5,
