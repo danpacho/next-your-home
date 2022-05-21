@@ -44,6 +44,7 @@ type PropertyType =
     | "number[]"
     | "boolean[]"
     | "symbol[]"
+    | "Object"
 
 type PropertyName<CustomeProperty> =
     | Exclude<keyof CustomeProperty, keyof Array<any>>
