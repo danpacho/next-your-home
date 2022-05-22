@@ -42,11 +42,10 @@ export const GlobalStyle = createGlobalStyle`
             color: #F3F4F6;
       }
 
-      -webkit-text-size-adjust: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      -webkit-font-smoothing: antialiased;
-      -moz-font-smoothing: antialiased;
-      text-rendering: optimizelegibility;
+      text-rendering: optimizeLegibility;
+      text-size-adjust: none;
+      -webkit-text-size-adjust: none;
+   
 
       //* disable Katex math slection
       .math {
