@@ -3,9 +3,10 @@ import media from "@styles/utils/media"
 
 import { useState } from "react"
 
+import { IsLight } from "@typing/theme"
+
 import { useClipboard, useTimeout } from "@hooks/index"
 
-import { IsLight } from "@typing/theme"
 import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 const CodeContentBox = styled.div`
@@ -14,61 +15,57 @@ const CodeContentBox = styled.div`
     top: 0rem;
     left: 0rem;
 
-    height: 1.85rem;
-    padding-left: 0.5rem;
-
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-top: 0.15rem solid ${(props) => props.theme.blue7};
-    border-left: 0.15rem solid ${(props) => props.theme.blue7};
+    padding: 0.35rem 0.5rem;
+    height: 1rem;
 
-    border-radius: ${({ theme }) => `${theme.bmd} 0 0 0`};
+    background-color: ${({ theme }) => `${theme.blue5}${theme.opacity20}`};
+
+    border-radius: ${({ theme }) => `${theme.bsm} 0 ${theme.bsm} 0`};
 
     color: ${(props) => props.theme.white};
     font-weight: 800;
     font-size: ${(props) => props.theme.sm};
     letter-spacing: 0.05rem;
 
-    &:hover {
-        border-color: ${(props) => props.theme.blue5};
-    }
-
     user-select: none;
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.sm};
+        font-size: ${(p) => p.theme.xsm};
     }
 `
 
 const CopyButton = styled.button<IsLight>`
     position: absolute;
-    top: 0rem;
-    right: 0rem;
+    top: 0.5rem;
+    right: 0.5rem;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    width: fit-content;
+    min-width: 2rem;
     height: 2rem;
+    padding: 0 0.25rem;
+
+    background-color: ${(p) => p.theme.gray10};
 
     font-size: ${(props) => props.theme.sm};
     font-weight: 800;
-    color: ${(p) => p.theme.gray2};
 
-    border-radius: ${({ theme }) => `0 ${theme.bmd} 0 0`};
-    border-right: 0.15rem solid ${(props) => props.theme.blue7};
-    border-top: 0.15rem solid ${(props) => props.theme.blue7};
+    border-radius: ${({ theme }) => theme.bsm};
+    border: 0.15rem solid ${(props) => props.theme.blue6};
 
     &:hover {
         border-color: ${(props) => props.theme.blue5};
     }
 
     ${media.widePhone} {
-        top: 0rem;
-        right: 0rem;
+        font-size: ${(p) => p.theme.xsm};
+        padding-top: 0;
     }
 `
 
@@ -98,8 +95,8 @@ function CodeCopyButton({ code }: CopyContentProp) {
             }}
             isLight={useThemeIsLight()}
         >
-            <p>{!isCopySuccess && "Copy 📝"}</p>
-            <SuccessP>{isCopySuccess && "Copied ✅ "}</SuccessP>
+            <p>{!isCopySuccess && "📝"}</p>
+            <SuccessP>{isCopySuccess && "Copied ✅"}</SuccessP>
         </CopyButton>
     )
 }

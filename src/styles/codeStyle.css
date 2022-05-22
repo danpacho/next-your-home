@@ -4,7 +4,7 @@
 * Sarah Drasner's[@sdras] [Night Owl]
 * Ported by Sara vieria [@SaraVieira]
 * Added by Souvik Mandal [@SimpleIndian]
-* more theme @ https://github.com/PrismJS/prism-themes
+* 🔎 more theme here 🔍 [ https://github.com/PrismJS/prism-themes ]
 */
 
 code[class*="language-"],
@@ -27,22 +27,6 @@ pre[class*="language-"] {
     -moz-hyphens: none;
     -ms-hyphens: none;
     hyphens: none;
-}
-
-pre[class*="language-"]::-moz-selection,
-pre[class*="language-"] ::-moz-selection,
-code[class*="language-"]::-moz-selection,
-code[class*="language-"] ::-moz-selection {
-    text-shadow: none;
-    background: rgba(29, 59, 83, 0.99);
-}
-
-pre[class*="language-"]::selection,
-pre[class*="language-"] ::selection,
-code[class*="language-"]::selection,
-code[class*="language-"] ::selection {
-    text-shadow: none;
-    background: rgba(29, 59, 83, 0.99);
 }
 
 @media print {
@@ -73,7 +57,7 @@ pre[class*="language-"] {
 .token.comment,
 .token.prolog,
 .token.cdata {
-    color: rgb(99, 119, 119);
+    color: rgb(99, 118, 119);
     font-style: italic;
 }
 
@@ -155,4 +139,49 @@ pre[class*="language-"] {
 
 .token.italic {
     font-style: italic;
+}
+
+.code-line.inserted {
+    background-color: rgba(16, 185, 129, 0.2); /* Set inserted line (+) color */
+}
+
+.code-line.deleted {
+    background-color: rgba(239, 68, 68, 0.2); /* Set deleted line (-) color */
+}
+
+.line-number::before {
+    display: inline-block;
+    width: 1.25rem;
+
+    content: attr(line);
+
+    /* Line number color */
+    color: rgb(69, 78, 94);
+    text-align: left;
+
+    margin-right: 0.5rem;
+    margin-left: -0.5rem;
+}
+
+/* 
+Don't Delete Style Below
+It is part of highlight-code-line-layout
+ */
+.code-highlight {
+    min-width: 100%;
+}
+
+.code-line {
+    display: block;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    border-left: 3px solid transparent;
+}
+
+.highlight-line {
+    /* Set highlight bg color */
+    background-color: #60a5fa33;
+    /* Set highlight accent border color */
+    border-left-color: #3b82f6;
 }

@@ -1,36 +1,49 @@
 import styled from "styled-components"
-import shadow from "@styles/utils/shadow"
 
-import { CodeContentBox as CodeLanguage } from "./Code/CodeCopyButton"
+import { useRef, useState } from "react"
+
+import useTimeout from "@hooks/useTimeout"
+
+import { CodeCopyButton } from "./Code/CodeCopyButton"
 
 const CodeWrapper = styled.div`
     position: relative;
-    width: 100%;
+    max-width: 100%;
 
     margin: 1rem 0;
-
-    box-shadow: ${shadow.shadowMd};
 `
 
 const CodeParentContainer = styled.pre`
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-
-    width: 100%;
-
-    margin: 1rem 0;
+    overflow-x: auto;
+    padding: 2rem 0 1rem 0;
 
     border-radius: ${(p) => p.theme.bmd};
 `
 
 function Pre(props: any) {
-    const language = props.className.split(" ")[0].replace("language-", "")
+    const codeRef = useRef<HTMLDivElement>(null)
+    const [isHover, setIsHover] = useState(false)
+    const [isCodeCopyVisible, setIsCodeCopyVisible] = useState(false)
+
+    useTimeout({
+        timeoutCondition: !isHover,
+        timeoutFunction: () => setIsCodeCopyVisible(false),
+        time: 1000,
+    })
 
     return (
-        <CodeWrapper>
+        <CodeWrapper
+            ref={codeRef}
+            onMouseEnter={() => {
+                setIsHover(true)
+                setIsCodeCopyVisible(true)
+            }}
+            onMouseLeave={() => setIsHover(false)}
+        >
             <CodeParentContainer {...props} />
-            <CodeLanguage>{language}</CodeLanguage>
+            {isCodeCopyVisible && codeRef.current?.textContent && (
+                <CodeCopyButton code={codeRef.current.textContent} />
+            )}
         </CodeWrapper>
     )
 }
