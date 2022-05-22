@@ -3,15 +3,20 @@ import { useEffect } from "react"
 interface UseTimeoutProps {
     timeoutFunction: () => void
     timeoutCondition: boolean
+    time?: number
 }
-function useTimeout({ timeoutFunction, timeoutCondition }: UseTimeoutProps) {
+function useTimeout({
+    timeoutFunction,
+    timeoutCondition,
+    time,
+}: UseTimeoutProps) {
     useEffect(() => {
         let timeoutToken: NodeJS.Timeout
         if (timeoutCondition === true)
-            timeoutToken = setTimeout(timeoutFunction, 2000)
+            timeoutToken = setTimeout(timeoutFunction, time ?? 2000)
 
         return () => clearTimeout(timeoutToken)
-    }, [timeoutFunction, timeoutCondition])
+    }, [timeoutFunction, timeoutCondition, time])
 }
 
 export default useTimeout
