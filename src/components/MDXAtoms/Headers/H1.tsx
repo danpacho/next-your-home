@@ -39,7 +39,7 @@ const H1Styled = styled.h1<IsLight>`
 const HEADER_UPDATE_CONSTANTS = {
     top: 225,
     bottom: -225,
-    rootMarginTop: "-35px",
+    rootMarginTop: "-100px",
     rootMarginBottom: "0px",
 }
 interface H1Props {
@@ -74,7 +74,7 @@ const H1 = (props: H1Props) => {
             rootMarginBottom: HEADER_UPDATE_CONSTANTS.rootMarginBottom,
             rootMarginLeft: "0px",
             rootMarginRight: "0px",
-            threshold: [0, 1],
+            threshold: 0,
         },
         customeCallback: updateFocusTitle,
     })
