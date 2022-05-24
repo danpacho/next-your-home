@@ -41,8 +41,11 @@ function Pre(props: any) {
             onMouseLeave={() => setIsHover(false)}
         >
             <CodeParentContainer {...props} />
-            {isCodeCopyVisible && codeRef.current?.textContent && (
-                <CodeCopyButton code={codeRef.current.textContent} />
+            {codeRef.current?.textContent && (
+                <CodeCopyButton
+                    code={codeRef.current.textContent}
+                    isActivated={isCodeCopyVisible}
+                />
             )}
         </CodeWrapper>
     )

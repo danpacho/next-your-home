@@ -7,6 +7,7 @@ import { IsLight } from "@typing/theme"
 
 import { useClipboard, useTimeout } from "@hooks/index"
 import { useSlector, _slector } from "@lib/recoil"
+import animation from "@styles/utils/animation"
 
 const CodeContentBox = styled.div`
     position: absolute;
@@ -37,7 +38,11 @@ const CodeContentBox = styled.div`
     }
 `
 
-const CopyButton = styled.button<IsLight>`
+const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
+    transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.275s;
+    visibility: ${(p) => (p.isActivated ? "visible" : "hidden")};
+    opacity: ${(p) => (p.isActivated ? 1 : 0)};
+
     position: absolute;
     top: 0.5rem;
     right: 0.5rem;
@@ -62,6 +67,10 @@ const CopyButton = styled.button<IsLight>`
         border-color: ${(props) => props.theme.blue5};
     }
 
+    &:active {
+        transform: scale(0.9);
+    }
+
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
         padding-top: 0;
@@ -74,8 +83,9 @@ const SuccessP = styled.p`
 
 interface CopyContentProp {
     code: string
+    isActivated: boolean
 }
-function CodeCopyButton({ code }: CopyContentProp) {
+function CodeCopyButton({ code, isActivated }: CopyContentProp) {
     const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     const { copyTextToUser } = useClipboard()
@@ -95,6 +105,7 @@ function CodeCopyButton({ code }: CopyContentProp) {
                 }
             }}
             isLight={isLight}
+            isActivated={isActivated}
         >
             <p>{!isCopySuccess && "📝"}</p>
             <SuccessP>{isCopySuccess && "Copied ✅"}</SuccessP>
