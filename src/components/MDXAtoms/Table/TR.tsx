@@ -1,14 +1,15 @@
 import styled from "styled-components"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 const TrStyled = styled.tr<IsLight>`
     border-bottom: 1.5px solid
         ${({ isLight, theme }) => (isLight ? theme.gray2 : theme.gray6)};
 `
 const TR = (props: any) => {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return <TrStyled {...props} isLight={isLight} />
 }
 

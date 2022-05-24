@@ -4,11 +4,8 @@ import styled from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
-import { PostMetaType } from "@typing/post/meta"
-
-import { useFocusTitle } from "@lib/atoms/tableOfContent/tableOfContent.state"
-
 import { sliceTextByMaxLength } from "@utils/function/text"
+import { useAtom, _atom } from "@lib/recoil"
 
 const TOCContainer = styled.div`
     min-width: max-content;
@@ -121,10 +118,12 @@ interface H2Children {
 
 type HeaderType = "H1" | "H2"
 
-const getTableOfcontentsDOM = (): DOMHeaderInfo[] => {
+function getTableOfcontentsDOM<RefT extends HTMLElement>({
+    documentRef,
+}: DocumentRef<RefT>): DOMHeaderInfo[] {
     const headerInfoArray: HeaderInfo[] = []
 
-    document.querySelectorAll("h1, h2").forEach((item) => {
+    documentRef.current?.querySelectorAll("h1, h2").forEach((item) => {
         const header = item.textContent?.trim()
         const type = item.nodeName as HeaderType
         if (header) {
@@ -211,19 +210,27 @@ const getTableOfcontentsDOM = (): DOMHeaderInfo[] => {
 
     return DOMHeaderInfoArray
 }
+interface DocumentRef<RefElmentType extends HTMLElement> {
+    documentRef: React.RefObject<RefElmentType>
+}
+interface TableOfContentProp<RefT extends HTMLElement>
+    extends DocumentRef<RefT> {
+    updateTrigger: any
+}
 
-interface TableOfContentProp extends Pick<PostMetaType, "title"> {}
-
-function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
-    const [focusTitle, _] = useFocusTitle()
+function TableOfContent<RefT extends HTMLElement>({
+    updateTrigger,
+    documentRef,
+}: TableOfContentProp<RefT>) {
+    const { focusTitleState } = useAtom(_atom("focusTitle"))
     const [headerInfoArray, setHeaderInfoArray] = useState<DOMHeaderInfo[]>([])
 
     const [isFocusing, setIsFocusing] = useState(false)
 
     useEffect(() => {
-        const DOMHeaderInfoArray = getTableOfcontentsDOM()
+        const DOMHeaderInfoArray = getTableOfcontentsDOM({ documentRef })
         setHeaderInfoArray(DOMHeaderInfoArray)
-    }, [setHeaderInfoArray, updateTrigger])
+    }, [documentRef, setHeaderInfoArray, updateTrigger])
 
     return (
         <TOCContainer
@@ -231,7 +238,7 @@ function TableOfContent({ title: updateTrigger }: TableOfContentProp) {
             onMouseLeave={() => setIsFocusing(false)}
         >
             {headerInfoArray.map(({ title, onClick, children }, index) => {
-                const isTitleFocusing = focusTitle === title
+                const isTitleFocusing = focusTitleState === title
                 return (
                     <>
                         <H1Link

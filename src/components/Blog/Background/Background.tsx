@@ -1,14 +1,13 @@
 import { PageType } from "@typing/page/type"
 
-import { useFocusingPageColor } from "@lib/atoms/pageColor/pageColor.state"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import {
     CategoryBackground,
     PostBackground,
     HomeBackground,
     ProfileBackground,
 } from "./SVGBackground/Assets"
+
+import { useAtom, useSlector, _atom, _slector } from "@lib/recoil"
 
 const BACKGROUND_SVG: {
     [key in PageType]: (color: string, isLight: boolean) => React.ReactNode
@@ -38,9 +37,9 @@ interface MainTransformBackgroundProps {
     pageType: PageType
 }
 function Background({ pageType }: MainTransformBackgroundProps) {
-    const focusingPageColor = useFocusingPageColor()
-    const isLight = useThemeIsLight()
-    return <>{BACKGROUND_SVG[pageType](focusingPageColor, isLight)}</>
+    const { focusingPageColorState } = useAtom(_atom("focusingPageColor"))
+    const { isLightState } = useSlector(_slector("isLight"))
+    return <>{BACKGROUND_SVG[pageType](focusingPageColorState, isLightState)}</>
 }
 
 export default Background

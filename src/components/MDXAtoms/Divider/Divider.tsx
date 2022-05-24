@@ -1,4 +1,4 @@
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 import { IsLight } from "@typing/theme"
 import styled from "styled-components"
 
@@ -14,7 +14,9 @@ const DividerStyled = styled.hr<IsLight>`
 `
 
 function Divider() {
-    return <DividerStyled isLight={useThemeIsLight()} />
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
+    return <DividerStyled isLight={isLight} />
 }
 
 export default Divider

@@ -1,10 +1,13 @@
-import { useStateFocusingPageColor } from "@lib/atoms/pageColor/pageColor.state"
 import { useEffect } from "react"
 
-function useSetFocusingPageColor(color: string) {
-    const [_, setFocusingPageColor] = useStateFocusingPageColor()
+import { useAtom, _atom } from "@lib/recoil"
 
-    useEffect(() => setFocusingPageColor(color), [setFocusingPageColor, color])
+function useSetFocusingPageColor(color: string) {
+    const { focusingPageColorSetState } = useAtom(_atom("focusingPageColor"))
+    useEffect(
+        () => focusingPageColorSetState(color),
+        [focusingPageColorSetState, color]
+    )
 }
 
 export default useSetFocusingPageColor

@@ -8,9 +8,8 @@ import { darkTheme, lightTheme } from "@styles/utils/CustomeTheme"
 
 import { PageType } from "@typing/page/type"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import Background from "@components/Blog/Background/Background"
+import { useSlector, _slector } from "@lib/recoil"
 
 const Layout = styled.main`
     display: flex;
@@ -33,7 +32,8 @@ interface LayoutProp {
 }
 
 function MainLayout({ children, pageType }: LayoutProp) {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
             <Layout>

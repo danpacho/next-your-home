@@ -7,9 +7,9 @@ import media from "@styles/utils/media"
 import { ThemeMode } from "@typing/theme"
 
 import { useToggle, useWindowTheme } from "@hooks/index"
-import { useStateTheme } from "@lib/atoms/theme/theme.state"
 
 import { LightIcon, StarIcon } from "@components/UI/Atoms/Icons"
+import { useAtom, _atom } from "@lib/recoil"
 
 const ThemeButtonContainer = styled.button`
     transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s;
@@ -70,15 +70,15 @@ function ThemeButton() {
         windowTheme
     )
 
-    const [theme, setTheme] = useStateTheme()
+    const { themeState, themeSetState } = useAtom(_atom("theme"))
 
     useEffect(() => {
-        setTheme(toggleValue)
-    }, [toggleValue, setTheme])
+        themeSetState(toggleValue)
+    }, [toggleValue, themeSetState])
 
     useEffect(() => {
-        setTheme(windowTheme)
-    }, [windowTheme, setTheme])
+        themeSetState(windowTheme)
+    }, [windowTheme, themeSetState])
 
     return (
         <ThemeButtonContainer
@@ -86,13 +86,13 @@ function ThemeButton() {
             aria-label="theme button"
             onClick={() => setToggle()}
         >
-            {theme === "light" && (
+            {themeState === "light" && (
                 <>
                     <p>Light</p>
                     <LightIcon width="16px" height="16px" />
                 </>
             )}
-            {theme === "dark" && (
+            {themeState === "dark" && (
                 <>
                     <p>Dark</p>
                     <StarIcon width="16px" height="16px" />

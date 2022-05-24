@@ -18,7 +18,7 @@ import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { config } from "blog.config"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 interface CategoryProps extends CategoryInfoType {
     categoryPostArray: PostMetaType[]
@@ -26,8 +26,9 @@ interface CategoryProps extends CategoryInfoType {
 }
 
 function Category(categoryProps: CategoryProps) {
-    const isLight = useThemeIsLight()
     //!TODO: pinned 된 포스트를 우선으로 가져오기, 시간 순으로 정렬
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <CategoryCommonLayout {...categoryProps}>
             <Link href={"/"} passHref>

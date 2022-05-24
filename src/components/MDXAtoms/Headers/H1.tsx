@@ -3,15 +3,13 @@ import { useCallback, useRef, useState } from "react"
 import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { useFocusTitle } from "@lib/atoms/tableOfContent/tableOfContent.state"
-
 import { useElementObserver, useScrollToElement } from "@hooks/index"
 
 import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useAtom, useSlector, _atom, _slector } from "@lib/recoil"
 
 const H1Container = styled.div`
     margin: 2rem 0;
@@ -49,7 +47,7 @@ interface H1Props {
 }
 
 const H1 = (props: H1Props) => {
-    const [_, setFocustitle] = useFocusTitle()
+    const { focusTitleSetState } = useAtom(_atom("focusTitle"))
     const [active, setActive] = useState(false)
 
     const ref = useRef<HTMLHeadingElement>(null)
@@ -62,10 +60,10 @@ const H1 = (props: H1Props) => {
                     top <= HEADER_UPDATE_CONSTANTS.top &&
                     top >= HEADER_UPDATE_CONSTANTS.bottom
                 )
-                    setFocustitle(props.children)
+                    focusTitleSetState(props.children)
             })
         },
-        [props.children, setFocustitle]
+        [props.children, focusTitleSetState]
     )
 
     const {} = useElementObserver<HTMLHeadingElement>({
@@ -81,7 +79,7 @@ const H1 = (props: H1Props) => {
         customeCallback: updateFocusTitle,
     })
 
-    const isLight = useThemeIsLight()
+    const { isLightState } = useSlector(_slector("isLight"))
     const { scrollToElement } = useScrollToElement({
         scrollRef: ref,
     })
@@ -99,7 +97,7 @@ const H1 = (props: H1Props) => {
                 left={-30}
                 bottom={1.5}
             >
-                <H1Styled {...props} ref={ref} isLight={isLight} />
+                <H1Styled {...props} ref={ref} isLight={isLightState} />
             </Tooltip>
         </H1Container>
     )

@@ -3,8 +3,7 @@ import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 const SHADOW_PROPERTY = {
     default: {
@@ -94,7 +93,8 @@ interface OrderTextProp {
 
 const ORDER_TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 function PostOrderText({ order, color, isHover }: OrderTextProp) {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <OrderTextStyled
             isLight={isLight}

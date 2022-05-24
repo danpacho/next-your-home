@@ -9,7 +9,7 @@ import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 interface QuoteStyles {
     note: StyleProperty
@@ -213,7 +213,7 @@ function Quote(props: QuoteProps) {
     const quoteType = getQuoteType(lastChildren)
     const fixedProps = getQuoteProp(quoteType, props)
 
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     return (
         <QuoteStyled type={quoteType} isLight={isLight}>

@@ -3,9 +3,8 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { CodeContentBox } from "./CodeCopyButton"
+import { useSlector, _slector } from "@lib/recoil"
 
 const InlineCode = styled.code<IsLight>`
     padding: 0.1rem 0.15rem;
@@ -46,7 +45,7 @@ interface CodeProps {
     className?: string
 }
 function Code(props: CodeProps) {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     if (!props.className) return <InlineCode isLight={isLight} {...props} />
 

@@ -5,12 +5,12 @@ import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import ThemeButton from "@components/UI/Molecules/Button/ThemeButton"
 import MainLogo from "./MainLogo"
 
 import { config } from "blog.config"
+import { useSlector, _slector } from "@lib/recoil"
 
 const NavContainer = styled.nav`
     display: flex;
@@ -139,7 +139,8 @@ const RowDivider = styled.div`
 `
 
 function NavBar() {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <NavContainer>
             <Link href="/" passHref>

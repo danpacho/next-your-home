@@ -8,9 +8,8 @@ import { PostMetaType } from "@typing/post/meta"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { LayersAltIcon } from "@components/UI/Atoms/Icons"
+import { useSlector, _slector } from "@lib/recoil"
 
 const PostMetaTagContainer = styled.ul`
     display: flex;
@@ -110,7 +109,7 @@ function PostMeta({
     isCategoryPage,
 }: PostMetaProps) {
     const isTagSizeOver = tags.length > 2
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
     return (
         <PostMetaTagContainer>
             {isCategoryPage &&

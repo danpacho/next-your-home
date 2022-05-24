@@ -3,7 +3,7 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 const TableStyled = styled.table<IsLight>`
     thead {
@@ -27,7 +27,8 @@ const TableStyled = styled.table<IsLight>`
 `
 
 const Table = (props: any) => {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return <TableStyled {...props} isLight={isLight} />
 }
 

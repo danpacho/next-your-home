@@ -12,12 +12,11 @@ import { IsLight } from "@typing/theme"
 import { getLatestCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
 
 import { config } from "blog.config"
+import { useSlector, _slector } from "@lib/recoil"
 
 //* Main
 const MainPageLayoutContainer = styled.div`
@@ -168,7 +167,8 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <MainPageLayoutContainer>
             <NextSeo

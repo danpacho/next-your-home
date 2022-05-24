@@ -12,9 +12,8 @@ import { IsLight } from "@typing/theme"
 import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { useSlector, _slector } from "@lib/recoil"
 interface CategoryLinkContainerStyle {
     color: string
 }
@@ -151,7 +150,8 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     return (
         <Link href={categoryUrl} passHref>

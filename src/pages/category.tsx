@@ -10,8 +10,6 @@ import { GetStaticProps } from "next"
 import { CategoryInfoType } from "@typing/category/info"
 import { IsLight } from "@typing/theme"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
@@ -19,6 +17,7 @@ import { LeafIcon } from "@components/UI/Atoms/Icons"
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 
 import { config } from "blog.config"
+import { useSlector, _slector } from "@lib/recoil"
 
 const CategoryPageLayoutContainer = styled.div`
     width: 70%;
@@ -165,7 +164,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     border-radius: ${(p) => p.theme.bxxlg};
 
     font-size: ${(p) => p.theme.xtitle};
-    
+
     ${media.widePhone} {
         width: 1.75rem;
         height: 1.75rem;
@@ -218,7 +217,9 @@ const CategoryLink = ({
     emoji,
 }: CategoryInfoType) => {
     const [isHover, setIsHover] = useState<boolean>(false)
-    const isLight = useThemeIsLight()
+
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     const categoryColor = isLight ? color : darkModeColor
     return (

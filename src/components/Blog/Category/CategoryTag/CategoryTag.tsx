@@ -3,9 +3,8 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { DeleteIcon, FlagFillIcon } from "@components/UI/Atoms/Icons"
+import { useSlector, _slector } from "@lib/recoil"
 
 const borderStyle = {
     topLeftBottomRight: css`
@@ -175,7 +174,7 @@ const CategoryTag = ({
 }: CategoryTagProps) => {
     const resetFilteredTagArray = () => setFilteredTagArray([])
 
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     return (
         <TagContainer>

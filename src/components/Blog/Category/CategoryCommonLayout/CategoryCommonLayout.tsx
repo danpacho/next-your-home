@@ -11,13 +11,12 @@ import useFilteredPost from "./useFilteredPost"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { PostLink } from "@components/Blog/Post"
 import { CategorySEO } from "@components/Next/SEO"
 
 import CategoryTag from "../CategoryTag/CategoryTag"
 import { IsLight } from "@typing/theme"
+import { useSlector, _slector } from "@lib/recoil"
 
 //* Layout
 const LayoutContainer = styled.div`
@@ -204,7 +203,7 @@ function CategoryCommonLayout({
         () => shadeColor(categoryColor, 35),
         [categoryColor]
     )
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     const postNumber = categoryPostArray?.length
 

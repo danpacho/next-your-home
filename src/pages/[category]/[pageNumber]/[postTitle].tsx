@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 
-import { Fragment } from "react"
+import { Fragment, useRef } from "react"
 
 import { GetStaticPaths, GetStaticProps } from "next"
 import Link from "next/link"
@@ -21,7 +21,6 @@ import {
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { IsLight } from "@typing/theme"
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
 
 import {
     ArrowUpIcon,
@@ -41,6 +40,7 @@ import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 
 import { config } from "blog.config"
 import { PostSEO } from "@components/Next/SEO"
+import { useSlector, _slector } from "@lib/recoil"
 
 const PostContainer = styled.div<IsLight>`
     display: flex;
@@ -139,13 +139,15 @@ interface PostProps extends SpecificPostContentType {}
 function Post({ postController, postMeta, postSource }: PostProps) {
     useSetFocusingPageColor(postMeta.color)
 
-    const isLight = useThemeIsLight()
+    const documentRef = useRef<HTMLDivElement>(null)
+
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
 
     return (
         <>
             <PostContainer isLight={isLight}>
                 <PostSEO {...postMeta} />
-                <PostContentContainer>
+                <PostContentContainer ref={documentRef}>
                     <PostHeader {...postMeta} />
                     {typeof postSource !== "string" && (
                         <PostMDXCompiler serializedSource={postSource} />
@@ -154,7 +156,10 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 </PostContentContainer>
 
                 <TableOfContentPositionContainer>
-                    <PostTableOfContent title={postMeta.title} />
+                    <PostTableOfContent
+                        updateTrigger={postMeta.title}
+                        documentRef={documentRef}
+                    />
                 </TableOfContentPositionContainer>
             </PostContainer>
 
@@ -451,8 +456,10 @@ const PostHeader = ({
     title,
     category,
 }: Pick<PostMetaType, "color" | "tags" | "title" | "category">) => {
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
-        <PostMetaContainer isLight={useThemeIsLight()}>
+        <PostMetaContainer isLight={isLight}>
             <PostTitle>
                 <TitleQuote type="start" fill={color} />
                 {title}

@@ -13,8 +13,6 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/contents/
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
-
 import { PostMDXCompiler } from "@components/Blog/Post"
 import {
     FacebookIcon,
@@ -28,6 +26,7 @@ import {
 } from "@components/UI/Atoms/Icons"
 
 import { AuthorInfoType, config } from "blog.config"
+import { useSlector, _slector } from "@lib/recoil"
 
 interface ProfileProps extends Omit<AuthorInfoType, "bannerImageUrl"> {
     profileSource: MDXCompiledSourceType
@@ -302,7 +301,8 @@ const ProfileContactLink = styled.a`
     all: unset;
 `
 const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
-    const isLight = useThemeIsLight()
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     return (
         <ProfileContactContainer>
             {Object.entries(contacts).map((contact) => {

@@ -6,8 +6,7 @@ import { useState } from "react"
 import { IsLight } from "@typing/theme"
 
 import { useClipboard, useTimeout } from "@hooks/index"
-
-import { useThemeIsLight } from "@lib/atoms/theme/theme.state"
+import { useSlector, _slector } from "@lib/recoil"
 
 const CodeContentBox = styled.div`
     position: absolute;
@@ -77,6 +76,8 @@ interface CopyContentProp {
     code: string
 }
 function CodeCopyButton({ code }: CopyContentProp) {
+    const { isLightState: isLight } = useSlector(_slector("isLight"))
+
     const { copyTextToUser } = useClipboard()
     const [isCopySuccess, setIsCopySuccess] = useState(false)
 
@@ -93,7 +94,7 @@ function CodeCopyButton({ code }: CopyContentProp) {
                     setIsCopySuccess(isCopySuccess)
                 }
             }}
-            isLight={useThemeIsLight()}
+            isLight={isLight}
         >
             <p>{!isCopySuccess && "📝"}</p>
             <SuccessP>{isCopySuccess && "Copied ✅"}</SuccessP>
