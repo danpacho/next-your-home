@@ -153,6 +153,24 @@ const bundlePostMDX = async <MetaType>({
               remarkPlugins: [remarkGfm],
           })
 
+    //# ES Build env config: https://www.alaycock.co.uk/2021/03/mdx-bundler#esbuild-executable
+    if (process.platform === "win32") {
+        process.env.ESBUILD_BINARY_PATH = path.join(
+            process.cwd(),
+            "node_modules",
+            "esbuild",
+            "esbuild.exe"
+        )
+    } else {
+        process.env.ESBUILD_BINARY_PATH = path.join(
+            process.cwd(),
+            "node_modules",
+            "esbuild",
+            "bin",
+            "esbuild"
+        )
+    }
+
     const bundledResult = await bundleMDX<MetaType>({
         source: postSource,
         cwd: path.join(cwd(), "src/components"),
