@@ -74,11 +74,12 @@ class BlogPropertyError<CustomeProperty> extends BlogError {
             propertyType: PropertyType,
             errorPropertyValue?: string
         ) => {
+            const propertyNameString = String(propertyName)
             const description =
                 propertyDescription ??
                 `required❗️, not empty ${propertyType}❗️`
 
-            return `[${propertyName}] problem at: \n\n      ${propertyName}: ${String(
+            return `[${propertyNameString}] problem at: \n\n      ${propertyNameString}: ${String(
                 errorPropertyValue ?? propertyType
             )} -> ${description}\n`
         }
@@ -135,6 +136,7 @@ interface BlogFileExtractionErrorConstructorProps
     readingFileFormat: ReadingFileFormat
     readingFileName: string
     readingFileLocation: string
+    customeErrorMessage?: string
 }
 
 class BlogFileExtractionError extends BlogError {
@@ -146,12 +148,15 @@ class BlogFileExtractionError extends BlogError {
         readingFileFormat,
         encodingFormat = "utf-8",
         readingFileName,
+        customeErrorMessage,
     }: BlogFileExtractionErrorConstructorProps) {
         const fileExtractionErrorMessage = encodingFormat
             ? `while extracting ${readingFileName}${readingFileFormat}`
             : `while extracting ${readingFileName}${readingFileFormat}, [ ✅ ENCODING FORMAT: ${encodingFormat} ]`
 
-        const fileLocationMessage = `file location🔎: \n\n  ${readingFileLocation}`
+        const fileLocationMessage = !customeErrorMessage
+            ? `file location🔎: \n\n  ${readingFileLocation}`
+            : `Read error: ${customeErrorMessage}\n\n  file location🔎: \n\n  ${readingFileLocation}`
 
         super({
             errorType: "fileExtractionError",
@@ -164,4 +169,9 @@ class BlogFileExtractionError extends BlogError {
     }
 }
 
-export { BlogErrorAdditionalInfo, BlogPropertyError, BlogFileExtractionError }
+export {
+    BlogError,
+    BlogErrorAdditionalInfo,
+    BlogPropertyError,
+    BlogFileExtractionError,
+}

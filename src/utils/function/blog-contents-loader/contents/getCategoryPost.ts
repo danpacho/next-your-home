@@ -1,10 +1,8 @@
+import { cwd } from "process"
+import path from "path"
 import { readFile, readdir } from "fs/promises"
-import { serialize } from "next-mdx-remote/serialize"
-
-import matter from "gray-matter"
 
 import { MDXPostMetaType, PostMetaType } from "@typing/post/meta"
-import { MDXCompiledSourceType } from "@typing/mdx"
 
 import {
     CategoryPostContentType,
@@ -12,8 +10,6 @@ import {
     PostControllerType,
     SpecificPostContentType,
 } from "@typing/post/content"
-
-import { SerializeOptions } from "next-mdx-remote/dist/types"
 
 import { POST_DIRECTORY_NAME, MAC_OS_FILE_EXCEPTION } from "@constants/index"
 
@@ -39,7 +35,19 @@ import remarkMath from "remark-math"
 import rehypeKatex from "rehype-katex"
 import rehypePrism from "rehype-prism-plus"
 
+import { bundleMDX } from "mdx-bundler"
+
 import { config } from "blog.config"
+import matter from "gray-matter"
+
+const sortByDate = (currDate: string, nextDate: string) => {
+    const nextDateNumber = Number(nextDate.replace(/\//g, ""))
+    const currDateNumber = Number(currDate.replace(/\//g, ""))
+
+    if (currDateNumber < nextDateNumber) return 1
+    if (currDateNumber > nextDateNumber) return -1
+    return 0
+}
 
 const splitStringByComma = (text: string) =>
     text.split(",").map((text) => text.trim())
@@ -62,53 +70,17 @@ const getTagArray = (tags: string): string[] => {
     return splitStringByComma(tags)
 }
 
-/**
- * @param useKatex `config` **useKatex** 옵션 참조,
- * @note `useKatex` 활성화시 수학 수식 katex 플러그인 작동
- */
-const getMDXParserOptions = (
-    useKatex: boolean
-): SerializeOptions["mdxOptions"] => {
-    const development = process.env.NODE_ENV === "development"
-    if (useKatex) {
-        return {
-            format: "mdx",
-            remarkPlugins: [remarkGfm, remarkMath],
-            rehypePlugins: [rehypePrism, rehypeKatex],
-            development,
-        }
-    }
-    return {
-        format: "mdx",
-        remarkPlugins: [remarkGfm],
-        rehypePlugins: [rehypePrism],
-        development,
-    }
-}
+const addPostUrlToMeta = (postMeta: PostMetaType, order: number) => ({
+    ...postMeta,
+    postUrl: `/${postMeta.category}/${Math.floor(
+        order / config.postPerCategoryPage + 1
+    )}/${removeFileFormat(postMeta.postFileName, "mdx")}`,
+})
 
-/**
- * @param compileSource 순수 `.mdx` 파일 내용
- * @note `config` **useKatex** 참조
- */
-const transformPureContentToMDXCompileSource = async (
-    compileSource: string
-): Promise<MDXCompiledSourceType> => {
-    try {
-        const serializedSource = await serialize(compileSource, {
-            mdxOptions: getMDXParserOptions(config.useKatex),
-        })
-
-        return serializedSource
-    } catch (err) {
-        throw new BlogErrorAdditionalInfo({
-            passedError: err,
-            errorNameDescription: ".mdx post file compile problem occured",
-            message: "while compile .mdx file\n",
-            customeErrorMessage:
-                "[ Troubleshooting MDX, at mdx document ]\n\n https://mdxjs.com/docs/troubleshooting-mdx/",
-        })
-    }
-}
+const addPostOrderToMeta = (
+    postMeta: PostMetaType,
+    order: number
+): PostMetaType => ({ ...postMeta, postOrder: order })
 
 interface CategoryPostFileNameType {
     category: string
@@ -149,178 +121,245 @@ const extractAllCategoryPostFileName = async (
     return dirPostInfo
 }
 
-const sortByDate = (currDate: string, nextDate: string) => {
-    const nextDateNumber = Number(nextDate.replace(/\//g, ""))
-    const currDateNumber = Number(currDate.replace(/\//g, ""))
+/**
+ * remark & rehype plugins
+ */
+const getPlugins = ({
+    rehypePlugins,
+    remarkPlugins,
+}: {
+    rehypePlugins: import("unified").PluggableList
+    remarkPlugins: import("unified").PluggableList
+}) => ({
+    rehypePlugins,
+    remarkPlugins,
+})
 
-    if (currDateNumber < nextDateNumber) return 1
-    if (currDateNumber > nextDateNumber) return -1
-    return 0
+/**
+ * bundling MDX source
+ */
+const bundlePostMDX = async <MetaType>({
+    postSource,
+}: {
+    postSource: string
+}) => {
+    const customePlugin = config.useKatex
+        ? getPlugins({
+              rehypePlugins: [rehypePrism, rehypeKatex],
+              remarkPlugins: [remarkGfm, remarkMath],
+          })
+        : getPlugins({
+              rehypePlugins: [rehypePrism],
+              remarkPlugins: [remarkGfm],
+          })
+
+    const bundledResult = await bundleMDX<MetaType>({
+        source: postSource,
+        cwd: path.join(cwd(), "src/components"),
+        mdxOptions(options, frontmatter) {
+            options.remarkPlugins = [
+                ...(options.remarkPlugins ?? []),
+                ...customePlugin.remarkPlugins,
+            ]
+            options.rehypePlugins = [
+                ...(options.rehypePlugins ?? []),
+                ...customePlugin.rehypePlugins,
+            ]
+            return options
+        },
+    })
+
+    if (!bundledResult)
+        throw new BlogFileExtractionError({
+            errorNameDescription: "MDX Bundle Error",
+            readingFileFormat: ".mdx",
+            readingFileLocation: "❓",
+            readingFileName: "❓",
+        })
+
+    return bundledResult
+}
+
+const generatePostMeta = ({
+    extractedMeta,
+    category,
+    postFileName,
+}: {
+    extractedMeta: MDXPostMetaType
+    category: string
+    postFileName: string
+}) => {
+    if (Boolean(extractedMeta.postpone) === true) return
+
+    const postMeta = {
+        ...extractedMeta,
+        category,
+        postFileName,
+        postUrl: "",
+        postOrder: 0,
+        tags: getTagArray(extractedMeta.tags),
+        postpone: false,
+        reference: extractedMeta?.reference
+            ? splitStringByComma(extractedMeta.reference)
+            : null,
+        color: getValidateColor(extractedMeta.color),
+    } as PostMetaType
+
+    const validationMeta = Object.entries(postMeta)
+        .filter(([_, value]) => !value)
+        .filter(([key, _]) => key === "postpone")
+        .filter(([key, _]) => key === "reference")
+        .filter(([key, _]) => key === "postOrder")
+        .map(([metaKey, metaValue]) => ({
+            metaKey,
+            metaValue,
+        }))
+
+    if (validationMeta.length !== 0)
+        throw new BlogPropertyError({
+            errorNameDescription: "extracting post meta",
+            propertyName: validationMeta[0].metaKey,
+            propertyType: "string",
+            errorPropertyValue: validationMeta[0].metaValue,
+            customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
+        })
+
+    return postMeta
+}
+
+const extractPostMeta = async ({
+    category,
+    postFileName,
+}: {
+    category: string
+    postFileName: string
+}) => {
+    const postUrl = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
+    const postSource = await readFile(postUrl, "utf-8")
+    if (!postSource)
+        throw new BlogFileExtractionError({
+            errorNameDescription: "post file",
+            readingFileFormat: ".mdx",
+            readingFileLocation: postUrl,
+            readingFileName: postFileName,
+        })
+
+    const extractedMeta = matter(postSource).data as MDXPostMetaType
+    const postMeta = generatePostMeta({
+        extractedMeta: extractedMeta,
+        category,
+        postFileName,
+    })
+
+    return postMeta
 }
 
 /**
  * @param categoryPostFileNameArray `extractCategoryPostFileArray()`
- * @param compileToMDX `.mdx` 컴파일 선택 옵션
  * @returns 각 카테고리 포스트, `PostContent`형식으로 변환
  * @returns 전체 포스트, 최신 날짜 순 정렬 후 반환
  * @note `config` **postPerCategoryPage** 참조
  */
 const extractAndTransformAllCategoryPostContent = async (
-    categoryPostFileNameArray: CategoryPostFileNameType[],
-    compileToMDX: true | false = true
+    categoryPostFileNameArray: CategoryPostFileNameType[]
 ): Promise<CategoryPostContentType[]> => {
-    const CategoryPostContentArray = await Promise.all(
-        categoryPostFileNameArray.map(
-            async ({ category, categoryPostFileNameArray }) => {
-                const postContentArray: PostContentType[] = (
-                    await Promise.all(
-                        categoryPostFileNameArray.map(
-                            async (categoryPostFileName) => {
-                                const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${categoryPostFileName}`
+    const CategoryPostContentArray: CategoryPostContentType[] =
+        await Promise.all(
+            categoryPostFileNameArray.map(
+                async ({ category, categoryPostFileNameArray }) => {
+                    const postContentArray = (
+                        await categoryPostFileNameArray.reduce<
+                            Promise<PostContentType[]>
+                        >(async (acc, categoryPostFileName) => {
+                            const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${categoryPostFileName}`
 
-                                try {
-                                    const fileContent = await readFile(
-                                        postContentPath,
-                                        "utf-8"
-                                    )
-                                    if (!fileContent)
-                                        throw new BlogFileExtractionError({
-                                            errorNameDescription:
-                                                "post file extraction error occured",
-                                            readingFileFormat: ".mdx",
-                                            readingFileLocation:
-                                                postContentPath,
-                                            readingFileName:
-                                                categoryPostFileName,
-                                        })
-
-                                    const post = matter(fileContent)
-                                    const content = post.content
-                                    const meta = post.data as MDXPostMetaType
-
-                                    const postMeta = {
-                                        category,
-                                        postUrl: categoryPostFileName,
-                                        title: meta.title,
-                                        author: meta.author,
-                                        preview: meta.preview,
-                                        update: meta.update,
-                                        tags: getTagArray(meta.tags),
-                                        postpone: meta?.postpone
-                                            ? Boolean(meta.postpone)
-                                            : false,
-                                        reference: meta?.reference
-                                            ? splitStringByComma(meta.reference)
-                                            : null,
-                                        color: getValidateColor(meta.color),
-                                        postOrder: 1,
-                                    } as PostMetaType
-
-                                    const validationMeta = Object.entries(
-                                        postMeta
-                                    )
-                                        .filter(([_, value]) => !value)
-                                        .filter(
-                                            ([key, _]) => key === "postpone"
-                                        )
-                                        .filter(
-                                            ([key, _]) => key === "reference"
-                                        )
-                                        .filter(
-                                            ([key, _]) => key === "postOrder"
-                                        )
-                                        .map(([metaKey, metaValue]) => {
-                                            return {
-                                                metaKey,
-                                                metaValue,
-                                            }
-                                        })
-
-                                    if (validationMeta.length !== 0)
-                                        throw new BlogPropertyError({
-                                            errorNameDescription:
-                                                "extracting post meta",
-                                            propertyName:
-                                                validationMeta[0].metaKey,
-                                            propertyType: "string",
-                                            errorPropertyValue:
-                                                validationMeta[0].metaValue,
-                                            customeErrorMessage:
-                                                "[  ⬇️ post meta info ⬇️  ]",
-                                        })
-
-                                    const postSource = compileToMDX
-                                        ? await transformPureContentToMDXCompileSource(
-                                              content
-                                          )
-                                        : content
-
-                                    return {
-                                        postMeta,
-                                        postSource,
-                                    }
-                                } catch (err) {
-                                    throw new BlogErrorAdditionalInfo({
-                                        passedError: err,
+                            try {
+                                const postSource = await readFile(
+                                    postContentPath,
+                                    "utf-8"
+                                )
+                                if (!postSource)
+                                    throw new BlogFileExtractionError({
                                         errorNameDescription:
-                                            "post meta info 🔎 incorrections",
-                                        message:
-                                            "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ author  : Post author name\n      ✅ update  : [ yyyy/mm/dd ]\n                 : [🚨WARNING: SHOULD FOLLOW FORMAT]\n      ✅ color   : Post main color, HEX | RGB | RGBA\n                 : [🚨WARNING: WRAP YOUR COLOR WITH colon or semi-colon]\n      ✅ tags    : tag1, tag2, tag3, ...\n                 : [🚨WARNING: DIVIDE TAG WITH comma ,]\n",
-                                        customeErrorMessage: `your post meta info at:\n\n   ${postContentPath}`,
+                                            "post file extraction error occured",
+                                        readingFileFormat: ".mdx",
+                                        readingFileLocation: postContentPath,
+                                        readingFileName: categoryPostFileName,
                                     })
-                                }
+
+                                const {
+                                    code: bundledPostSource,
+                                    frontmatter: meta,
+                                } = await bundlePostMDX<MDXPostMetaType>({
+                                    postSource,
+                                })
+
+                                const postMeta = generatePostMeta({
+                                    extractedMeta: meta,
+                                    category,
+                                    postFileName: categoryPostFileName,
+                                })
+
+                                if (postMeta)
+                                    return [
+                                        ...(await acc),
+                                        {
+                                            postMeta,
+                                            postSource: bundledPostSource,
+                                        },
+                                    ]
+
+                                return await acc
+                            } catch (err) {
+                                throw new BlogErrorAdditionalInfo({
+                                    passedError: err,
+                                    errorNameDescription:
+                                        "Might be post meta info 🔎 incorrections",
+                                    message:
+                                        "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ author  : Post author name\n      ✅ update  : [ yyyy/mm/dd ]\n                 : [🚨WARNING: SHOULD FOLLOW FORMAT]\n      ✅ color   : Post main color, HEX | RGB | RGBA\n                 : [🚨WARNING: WRAP YOUR COLOR WITH colon or semi-colon]\n      ✅ tags    : tag1, tag2, tag3, ...\n                 : [🚨WARNING: DIVIDE TAG WITH comma ,]\n",
+                                    customeErrorMessage: `your post meta info at:\n\n   ${postContentPath}`,
+                                })
                             }
+                        }, Promise.resolve([] as PostContentType[]))
+                    )
+                        .sort(
+                            (
+                                { postMeta: { update: currDate } },
+                                { postMeta: { update: nextDate } }
+                            ) => sortByDate(currDate, nextDate)
                         )
-                    )
-                )
-                    .filter(({ postMeta: { postpone } }) => !postpone)
-                    .sort(
-                        (
-                            { postMeta: { update: currDate } },
-                            { postMeta: { update: nextDate } }
-                        ) => sortByDate(currDate, nextDate)
-                    )
-                    .map((postContent, order) => {
-                        const updatedPostContent: PostContentType = postContent
-                        const postContentPath = postContent.postMeta.postUrl //*전에 임시로 저장한 postContentPath꺼내기
+                        .map(({ postMeta, postSource }, order) => ({
+                            postSource,
+                            postMeta: addPostUrlToMeta(postMeta, order),
+                        }))
 
-                        updatedPostContent.postMeta.postUrl = `/${category}/${Math.floor(
-                            order / config.postPerCategoryPage + 1
-                        )}/${removeFileFormat(postContentPath, "mdx")}`
-                        updatedPostContent.postMeta.postOrder = order
-
-                        return updatedPostContent
-                    })
-
-                return {
-                    category,
-                    postContentArray,
-                    postNumber: postContentArray.length,
+                    return {
+                        category,
+                        postContentArray,
+                        postNumber: postContentArray.length,
+                    }
                 }
-            }
+            )
         )
-    )
+
     return CategoryPostContentArray
 }
 
 /**
  * @returns 각 카테고리의 모든 포스팅 정보를 가공 한 후, 반환
  */
-const getAllCategoryPostContent = async (
-    compileToMDX: true | false = true
-): Promise<CategoryPostContentType[]> =>
+const getAllCategoryPostContent = async (): Promise<
+    CategoryPostContentType[]
+> =>
     await extractAndTransformAllCategoryPostContent(
-        await extractAllCategoryPostFileName(await getAllCategoryName()),
-        compileToMDX
+        await extractAllCategoryPostFileName(await getAllCategoryName())
     )
 
 /**
  * @returns 전체 포스트 링크 url 반환
  */
 const getAllCategoryPostContentPath = memo(config.useMemo, async () =>
-    (await getAllCategoryPostContent(false)).flatMap(({ postContentArray }) =>
-        postContentArray.map(({ postMeta: { postUrl } }) => postUrl)
-    )
+    (await getAllPostMeta()).map(({ postUrl }) => postUrl)
 )
 
 /**
@@ -424,7 +463,6 @@ const getCategoryPaginationTag = memo(
  * @return `postSource` 포스트 컴파일 소스
  * @return `postController` 이전포스트 - 현재 - 다음 포스트
  */
-
 const getSpecificCategoryPostContent = memo(
     config.useMemo,
     async ({
@@ -488,10 +526,42 @@ const getSpecificCategoryPostContent = memo(
  * @returns 모든 포스트 `meta` 데이터
  * @note `postpone` 포스트 제거
  */
-const extractAllPostMeta = async (): Promise<PostMetaType[]> =>
-    (await getAllCategoryPostContent(false))
-        .flatMap(({ postContentArray }) => postContentArray)
-        .map(({ postMeta }) => postMeta)
+const extractAllPostMeta = async (
+    categoryPostFileNameArray: CategoryPostFileNameType[]
+) => {
+    const allPostMeta = (
+        await Promise.all(
+            categoryPostFileNameArray.map(
+                ({ category, categoryPostFileNameArray }) =>
+                    categoryPostFileNameArray.reduce<Promise<PostMetaType[]>>(
+                        async (acc, postFileName) => {
+                            const postMeta = await extractPostMeta({
+                                category,
+                                postFileName,
+                            })
+
+                            if (postMeta) return [...(await acc), postMeta]
+                            return await acc
+                        },
+                        Promise.resolve([] as PostMetaType[])
+                    )
+            )
+        )
+    )
+        .map((objects) =>
+            objects
+                .sort((prev, curr) => sortByDate(prev.update, curr.update))
+                .map(addPostUrlToMeta)
+        )
+        .flat()
+
+    return allPostMeta
+}
+
+const getAllPostMeta = async () =>
+    await extractAllPostMeta(
+        await extractAllCategoryPostFileName(await getAllCategoryName())
+    )
 
 /**
  * @param categoryName 특정 카테고리
@@ -500,9 +570,9 @@ const extractAllPostMeta = async (): Promise<PostMetaType[]> =>
 const getCategoryPostMeta = async (
     categoryName: string
 ): Promise<PostMetaType[]> =>
-    (await extractAllPostMeta()).filter(
-        ({ category }) => category === categoryName
-    )
+    (await getAllPostMeta())
+        .filter(({ category }) => category === categoryName)
+        .map(addPostOrderToMeta)
 
 /**
  * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
@@ -511,13 +581,10 @@ const getCategoryPostMeta = async (
 const getLatestPostMeta = memo(
     config.useMemo,
     async (): Promise<PostMetaType[]> =>
-        (
-            await (await extractAllPostMeta())
-                .flat()
-                .sort(({ update: currDate }, { update: nextDate }) =>
-                    sortByDate(currDate, nextDate)
-                )
-        ).slice(0, config.numberOfLatestPost)
+        (await getAllPostMeta())
+            .sort((prev, current) => sortByDate(prev.update, current.update))
+            .slice(0, config.numberOfLatestPost)
+            .map(addPostOrderToMeta)
 )
 
 /**
@@ -549,6 +616,4 @@ export {
     getSpecificCategoryLatestPostMeta,
     //* post link url
     getAllCategoryPostContentPath,
-    //* MDX compiler
-    transformPureContentToMDXCompileSource,
 }
