@@ -1,27 +1,57 @@
-export { default as Code } from "./CodeAtoms/Code/Code"
-export { default as Pre } from "./CodeAtoms/Pre"
+import {
+    P,
+    Bold,
+    Italic,
+    H1,
+    H2,
+    H3,
+    OL,
+    UL,
+    LI,
+    Link,
+    Quote,
+    Pre,
+    Code,
+    Image,
+    Divider,
+    Table,
+    TD,
+    TH,
+    TR,
+} from "./MDXAtoms"
+import { MDXComponents } from "mdx/types"
 
-export { default as Divider } from "./Divider/Divider"
+const MDXAtoms = {
+    p: P,
+    strong: Bold,
+    em: Italic,
 
-export { default as H1 } from "./Headers/H1"
-export { default as H2 } from "./Headers/H2"
-export { default as H3 } from "./Headers/H3"
+    h1: H1 as MDXComponents["h1"],
+    h2: H2,
+    h3: H3,
 
-export { default as Image } from "./Image/Image"
+    ol: OL,
+    ul: UL,
+    li: LI,
 
-export { default as Link } from "./Link/Link"
+    a: Link as MDXComponents["a"],
 
-export { default as UL } from "./List/UL"
-export { default as OL } from "./List/OL"
-export { default as LI } from "./List/LI"
+    blockquote: Quote as MDXComponents["blockquote"],
 
-export { default as Quote } from "./Quote/Quote"
+    pre: Pre,
+    code: Code as MDXComponents["code"],
 
-export { default as Table } from "./Table/Table"
-export { default as TD } from "./Table/TD"
-export { default as TR } from "./Table/TR"
-export { default as TH } from "./Table/TH"
+    img: Image as MDXComponents["img"],
 
-export { default as P } from "./Text/P"
-export { default as Bold } from "./Text/TextHightlight/Bold"
-export { default as Italic } from "./Text/TextHightlight/Italic"
+    hr: Divider,
+
+    table: Table,
+    th: TH,
+    td: TD,
+    tr: TR,
+
+    // thematicBreak,
+    // wrapper,
+}
+
+export default MDXAtoms
