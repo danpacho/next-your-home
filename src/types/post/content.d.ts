@@ -1,4 +1,3 @@
-import { MDXCompiledSourceType } from "../mdx"
 import { PostMetaType } from "./meta"
 export interface CategoryPostContentType {
     category: string
@@ -8,7 +7,7 @@ export interface CategoryPostContentType {
 
 export interface PostContentType {
     postMeta: PostMetaType
-    postSource: MDXCompiledSourceType | string
+    postSource: string
 }
 
 export interface SpecificPostContentType extends PostContentType {

@@ -18,6 +18,7 @@ export interface PostMetaType {
     tags: string[]
     category: string
     postUrl: string
+    postFileName: string
     postpone: boolean
     reference: string[] | null
     postOrder: number
