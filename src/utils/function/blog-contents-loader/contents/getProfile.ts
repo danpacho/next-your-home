@@ -6,8 +6,7 @@ import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
 } from "@utils/function/blog-error-handler/blogError"
-
-import { transformPureContentToMDXCompileSource } from "./getCategoryPost"
+import { bundleMDX } from "mdx-bundler"
 
 const getProfileSource = async () => {
     try {
@@ -23,7 +22,11 @@ const getProfileSource = async () => {
                 readingFileName: "profile.mdx",
             })
 
-        return transformPureContentToMDXCompileSource(profileContent)
+        return (
+            await bundleMDX({
+                source: profileContent,
+            })
+        ).code
     } catch (err) {
         throw new BlogErrorAdditionalInfo({
             passedError: err,

@@ -3,9 +3,9 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { GetStaticProps } from "next"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 
-import { MDXCompiledSourceType } from "@typing/mdx"
 import { PageType } from "@typing/page/type"
 import { IsLight } from "@typing/theme"
 
@@ -13,7 +13,6 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/contents/
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
-import { PostMDXCompiler } from "@components/Blog/Post"
 import {
     FacebookIcon,
     GithubIcon,
@@ -25,11 +24,14 @@ import {
     YoutubeIcon,
 } from "@components/UI/Atoms/Icons"
 
-import { AuthorInfoType, config } from "blog.config"
+const MDXBundler = dynamic(() => import("@components/MDXBundler"))
+
 import { useSlector, _slector } from "@lib/recoil"
 
+import { AuthorInfoType, config } from "blog.config"
+
 interface ProfileProps extends Omit<AuthorInfoType, "bannerImageUrl"> {
-    profileSource: MDXCompiledSourceType
+    profileSource: string
 }
 
 const ProfileContainer = styled.div`
@@ -204,7 +206,7 @@ function Profile({
                 </ProfileTextContainer>
             </ProfileInfoContainer>
             <ProfileContentContainer>
-                <PostMDXCompiler serializedSource={profileSource} />
+                <MDXBundler mdxSource={profileSource} />
                 <Copyright>
                     {config.copyright}{" "}
                     <HeartIcon width=".75rem" height=".75rem" />
