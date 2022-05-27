@@ -5,6 +5,7 @@ import media from "@styles/utils/media"
 import { Fragment, useRef } from "react"
 
 import { GetStaticPaths, GetStaticProps } from "next"
+import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { ParsedUrlQuery } from "querystring"
@@ -30,17 +31,41 @@ import {
     QuoteIcon,
 } from "@components/UI/Atoms/Icons"
 
-import {
-    PostController,
-    PostMDXCompiler,
-    PostTableOfContent,
-} from "@components/Blog/Post"
+import { PostController, PostTableOfContent } from "@components/Blog/Post"
+import MDXBundler from "@components/MDXBundler"
 
-import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
+import { PostSEO } from "@components/Next/SEO"
+
+const KatexStyleLoader = dynamic(
+    () => import("@components/Blog/Post/KatexStyleLoader")
+)
+
+import { useSlector, _slector } from "@lib/recoil"
 
 import { config } from "blog.config"
-import { PostSEO } from "@components/Next/SEO"
-import { useSlector, _slector } from "@lib/recoil"
+
+export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
+    const { category, pageNumber, postTitle } = params as ParamQuery
+    const specificPostContent = await getSpecificCategoryPostContent({
+        categoryName: category,
+        categoryPage: Number(pageNumber),
+        postTitle,
+    })
+
+    return {
+        props: {
+            ...specificPostContent,
+        },
+    }
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+    const paths = await getAllCategoryPostContentPath()
+    return {
+        paths,
+        fallback: false,
+    }
+}
 
 const PostContainer = styled.div<IsLight>`
     display: flex;
@@ -149,9 +174,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
                 <PostSEO {...postMeta} />
                 <PostContentContainer ref={documentRef}>
                     <PostHeader {...postMeta} />
-                    {typeof postSource !== "string" && (
-                        <PostMDXCompiler serializedSource={postSource} />
-                    )}
+                    <MDXBundler mdxSource={postSource} />
                     <PostInfo {...postMeta} />
                 </PostContentContainer>
 
@@ -488,28 +511,4 @@ interface ParamQuery extends ParsedUrlQuery {
     category: string
     pageNumber: string
     postTitle: string
-}
-
-export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
-    const { category, pageNumber, postTitle } = params as ParamQuery
-    const specificPostContent = await getSpecificCategoryPostContent({
-        categoryName: category,
-        categoryPage: Number(pageNumber),
-        postTitle,
-    })
-
-    return {
-        props: {
-            ...specificPostContent,
-        },
-    }
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-    const paths = await getAllCategoryPostContentPath()
-
-    return {
-        paths,
-        fallback: false,
-    }
 }
