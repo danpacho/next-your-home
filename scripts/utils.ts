@@ -29,9 +29,14 @@ const getAllCategoryPath = async () =>
         .map((category) => `/${category}`)
 
 const getPostPaginationUrl = (category: string, order: number) =>
-    `${category}/${Math.floor(order / config.postPerCategoryPage + 1)}`
+    `${category.replace(/ /g, "%")}/${Math.floor(
+        order / config.postPerCategoryPage + 1
+    )}`
 const getPostUrl = (postPaginationUrl: string, postFileName: string) =>
-    `${postPaginationUrl}/${removeFileFormat(postFileName, "mdx")}`
+    `${postPaginationUrl}/${removeFileFormat(
+        postFileName.replace(/ /g, "%"),
+        "mdx"
+    )}`
 
 const extractAllCategoryPostFileName = async (categoryNameArray: string[]) => {
     const dirPostInfo = await Promise.all(

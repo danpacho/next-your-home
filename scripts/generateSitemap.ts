@@ -41,7 +41,9 @@ async function generateSitemap(
                 : ""
         }</url>`
 
-    const categoryPathArray = categoryNameArray.map(addSiteUrlNotation)
+    const categoryPathArray = categoryNameArray
+        .map(addSiteUrlNotation)
+        .map((category) => category.replace(/ /g, "%"))
     const categoryUrlSetArray = categoryPathArray.map((categoryPath) =>
         generateUrlSet(categoryPath, {
             changefreq: "monthly",
