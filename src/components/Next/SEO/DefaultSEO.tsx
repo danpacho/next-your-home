@@ -8,7 +8,7 @@ const DEFAULT_SEO_PROPS: DefaultSeoProps = {
     canonical: config.url,
     openGraph: {
         type: "website",
-        locale: "ko-KR",
+        locale: config.language,
         title: config.siteName,
         description: config.subtitle,
         url: config.url,

@@ -23,12 +23,15 @@ function BaseSEO() {
             <meta property="og:description" content={config.subtitle} />
             <meta property="og:site_name" content={config.siteName} />
             <meta property="og:url" content={config.url} />
-            <meta property="og:locale" content="ko_KR" />
+            <meta property="og:locale" content={config.language} />
 
             {/* crawling bot meta */}
             <meta name="robots" content="all" />
             <meta name="googlebot" content="all" />
             <meta name="NaverBot" content="all" />
+
+            {/* rss */}
+            <link rel="alternate" type="application/rss+xml" href="/rss.xml" />
         </>
     )
 }

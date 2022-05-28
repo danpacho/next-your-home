@@ -32,7 +32,7 @@ function PostSEO({
                     url: fullPostUrl,
                     description: preview,
                     site_name: config.siteName,
-                    locale: "ko_KR",
+                    locale: config.language,
                     images: [
                         {
                             url: config.author.bannerImageUrl,

@@ -6,13 +6,16 @@ import Document, {
     DocumentContext,
 } from "next/document"
 
+import { ServerStyleSheet } from "styled-components"
+
 import { BaseSEO } from "@components/Next/SEO"
 
-import { ServerStyleSheet } from "styled-components"
+import { config } from "blog.config"
+
 class AppDocument extends Document {
     render() {
         return (
-            <Html lang="ko">
+            <Html lang={config.language}>
                 <Head>
                     <BaseSEO />
                 </Head>
