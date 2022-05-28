@@ -47,6 +47,7 @@ interface BlogInfoType {
     siteName: string
     subtitle: string
     copyright: string
+    language: string
 }
 const blogInfo: BlogInfoType = {
     url: "https://danpacho.vercel.app",
@@ -55,6 +56,7 @@ const blogInfo: BlogInfoType = {
     copyright: `${
         authorInfo.name
     }© All rights reserved ${new Date().getFullYear()}.`,
+    language: "ko",
 }
 
 const blogContentsDirectoryName = "blog-contents"
