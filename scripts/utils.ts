@@ -1,4 +1,4 @@
-import { readdir, readFile, writeFile } from "fs/promises"
+import { readdir, readFile } from "fs/promises"
 
 import { POST_DIRECTORY_NAME } from "@constants/blog.contents.directory"
 import { MAC_OS_FILE_EXCEPTION } from "@constants/blog.file.exception"
@@ -54,13 +54,24 @@ interface CategoryPostFileNameType {
     categoryPostFileNameArray: string[]
 }
 
+export interface TempMetaType {
+    category: string
+    postFileName: string
+    update: string
+    title: string
+    author: string
+    tags: string[]
+    preview: string
+    paginationUrl: string
+    postUrl: string
+}
 const extractPostMeta = async ({
     category,
     postFileName,
 }: {
     category: string
     postFileName: string
-}) => {
+}): Promise<TempMetaType | undefined> => {
     const postUrl = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
     const postSource = await readFile(postUrl, "utf-8")
 
@@ -70,16 +81,18 @@ const extractPostMeta = async ({
         update: extractedMeta.update,
         category,
         postFileName,
+        author: extractedMeta.author,
+        preview: extractedMeta.preview,
+        tags: extractedMeta.tags.split(","),
+        title: extractedMeta.title,
+        paginationUrl: "",
+        postUrl: "",
     }
 }
-interface TempMetaType {
-    category: string
-    postFileName: string
-    update: string
-}
-const getAllPostMeta = async (
+
+const extractAllPostMeta = async (
     categoryPostFileNameArray: CategoryPostFileNameType[]
-) =>
+): Promise<TempMetaType[]> =>
     (
         await Promise.all(
             categoryPostFileNameArray.map(
@@ -102,9 +115,11 @@ const getAllPostMeta = async (
         .map((categoryMetaArray) =>
             categoryMetaArray
                 .sort((prev, curr) => sortByDate(prev.update, curr.update))
-                .map(({ category, postFileName, update }, order) => {
+                .map((tempMeta, order) => {
+                    const { category, postFileName, update } = tempMeta
                     const paginationUrl = getPostPaginationUrl(category, order)
                     return {
+                        ...tempMeta,
                         paginationUrl,
                         postUrl: getPostUrl(paginationUrl, postFileName),
                         update: update.replace(/\//g, "-"),
@@ -113,92 +128,7 @@ const getAllPostMeta = async (
         )
         .flat()
 
-const getAllPaginationPath = async (category: string[]) =>
-    await getAllPostMeta(await extractAllCategoryPostFileName(category))
+const getAllPostMeta = async (category: string[]) =>
+    await extractAllPostMeta(await extractAllCategoryPostFileName(category))
 
-const URL_PRIORITY = {
-    post: 0.8,
-    category: 0.4,
-    categoryPagination: 0.2,
-}
-
-async function generateSitemap() {
-    const addSiteUrlNotation = (relativePath: string) =>
-        `${config.url}${relativePath}`
-
-    const generateUrlSet = (
-        url: string,
-        option: {
-            changefreq?:
-                | "always"
-                | "hourly"
-                | "daily"
-                | "weekly"
-                | "monthly"
-                | "yearly"
-                | "never"
-            priority?: number
-            lastmod?: string
-        }
-    ) =>
-        `<url><loc>${url}</loc>${
-            option?.priority && `<priority>${option.priority}</priority>`
-        }${
-            option?.changefreq &&
-            `<changefreq>${option.changefreq}</changefreq>`
-        }${
-            typeof option?.lastmod === "string"
-                ? `<lastmod>${option.lastmod}</lastmod>`
-                : ""
-        }</url>`
-
-    const categoryNameArray = await getAllCategoryPath()
-    const categoryPathArray = categoryNameArray.map(addSiteUrlNotation)
-    const categoryUrlSetArray = categoryPathArray.map((categoryPath) =>
-        generateUrlSet(categoryPath, {
-            changefreq: "monthly",
-            priority: URL_PRIORITY.category,
-        })
-    )
-    const totalPaginationPath = await getAllPaginationPath(categoryNameArray)
-    const categoryPaginationPathArray = totalPaginationPath
-        .map(({ paginationUrl }) => paginationUrl)
-        .map(addSiteUrlNotation)
-    const categoryPaginationUrlSetArray = categoryPaginationPathArray.map(
-        (postPath) =>
-            generateUrlSet(postPath, {
-                changefreq: "daily",
-                priority: URL_PRIORITY.categoryPagination,
-            })
-    )
-    const postUrlSetArray = totalPaginationPath.map(({ postUrl, update }) =>
-        generateUrlSet(addSiteUrlNotation(postUrl), {
-            changefreq: "daily",
-            priority: URL_PRIORITY.post,
-            lastmod: update,
-        })
-    )
-
-    const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-xmlns:news="http://www.google.com/schemas/sitemap-news/0.9"
-xmlns:xhtml="http://www.w3.org/1999/xhtml"
-xmlns:mobile="http://www.google.com/schemas/sitemap-mobile/1.0"
-xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
-
-<url><loc>${config.url}</loc></url>
-<url><loc>${config.url}/category</loc></url>
-<url><loc>${config.url}/profile</loc></url>
-
-${categoryUrlSetArray.join("\n")}
-${categoryPaginationUrlSetArray.join("\n")}
-${postUrlSetArray.join("\n")}
-</urlset>`
-
-    await writeFile("public/sitemap.xml", sitemap, {
-        encoding: "utf-8",
-    })
-}
-
-generateSitemap()
+export { getAllPostMeta, getAllCategoryPath }
