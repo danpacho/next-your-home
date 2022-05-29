@@ -1,6 +1,6 @@
 import { config } from "blog.config"
 import { writeFile } from "fs/promises"
-import { TempMetaType } from "./utils"
+import { replaceSpaceToEncode, TempMetaType } from "./utils"
 
 const URL_PRIORITY = {
     post: 0.8,
@@ -43,7 +43,7 @@ async function generateSitemap(
 
     const categoryPathArray = categoryNameArray
         .map(addSiteUrlNotation)
-        .map((category) => category.replace(/ /g, "%"))
+        .map(replaceSpaceToEncode)
     const categoryUrlSetArray = categoryPathArray.map((categoryPath) =>
         generateUrlSet(categoryPath, {
             changefreq: "monthly",

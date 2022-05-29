@@ -23,18 +23,20 @@ const sortByDate = (currDate: string, nextDate: string) => {
     return 0
 }
 
+const replaceSpaceToEncode = (text: string) => text.replace(/ /g, "%20")
+
 const getAllCategoryPath = async () =>
     (await readdir(blogContentsDirectory, "utf-8"))
         .filter((category) => category !== MAC_OS_FILE_EXCEPTION)
         .map((category) => `/${category}`)
 
 const getPostPaginationUrl = (category: string, order: number) =>
-    `${category.replace(/ /g, "%")}/${Math.floor(
+    `${replaceSpaceToEncode(category)}/${Math.floor(
         order / config.postPerCategoryPage + 1
     )}`
 const getPostUrl = (postPaginationUrl: string, postFileName: string) =>
     `${postPaginationUrl}/${removeFileFormat(
-        postFileName.replace(/ /g, "%"),
+        replaceSpaceToEncode(postFileName),
         "mdx"
     )}`
 
@@ -136,4 +138,4 @@ const extractAllPostMeta = async (
 const getAllPostMeta = async (category: string[]) =>
     await extractAllPostMeta(await extractAllCategoryPostFileName(category))
 
-export { getAllPostMeta, getAllCategoryPath }
+export { getAllPostMeta, getAllCategoryPath, replaceSpaceToEncode }

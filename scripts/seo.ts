@@ -4,10 +4,10 @@ import { getAllCategoryPath, getAllPostMeta } from "./utils"
 
 async function seo() {
     const categoryNameArray = await getAllCategoryPath()
-    const totalPostMeta = await getAllPostMeta(categoryNameArray)
+    const allPostMeta = await getAllPostMeta(categoryNameArray)
 
-    await generateSitemap(categoryNameArray, totalPostMeta)
-    await generateRSS(totalPostMeta)
+    await generateSitemap(categoryNameArray, allPostMeta)
+    await generateRSS(allPostMeta)
 }
 
 seo()
