@@ -11,19 +11,16 @@ import Tooltip from "@components/UX/Tooltip/Tooltip"
 import { IsLight } from "@typing/theme"
 import { useAtom, useSlector, _atom, _slector } from "@lib/recoil"
 
-const H1Container = styled.div`
-    margin: 2rem 0;
-    cursor: pointer;
-`
-
 const H1Styled = styled.h1<IsLight>`
     font-size: ${(p) => p.theme.xxlg};
     font-weight: 800;
     color: ${(p) => p.theme.headerFontColor};
 
-    padding: 0.25rem 0 0.35rem 0;
-
     width: fit-content;
+
+    padding: 2rem 0;
+
+    cursor: pointer;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.lg};
@@ -37,9 +34,9 @@ const H1Styled = styled.h1<IsLight>`
 `
 
 const HEADER_UPDATE_CONSTANTS = {
-    top: 225,
-    bottom: -225,
-    rootMarginTop: "-100px",
+    top: 100,
+    bottom: -100,
+    rootMarginTop: "-20px",
     rootMarginBottom: "0px",
 }
 interface H1Props {
@@ -50,7 +47,7 @@ const H1 = (props: H1Props) => {
     const { focusTitleSetState } = useAtom(_atom("focusTitle"))
     const [active, setActive] = useState(false)
 
-    const ref = useRef<HTMLHeadingElement>(null)
+    const headerRef = useRef<HTMLHeadingElement>(null)
 
     const updateFocusTitle: IntersectionObserverCallback = useCallback(
         (entries) => {
@@ -59,47 +56,56 @@ const H1 = (props: H1Props) => {
                 if (
                     top <= HEADER_UPDATE_CONSTANTS.top &&
                     top >= HEADER_UPDATE_CONSTANTS.bottom
-                )
-                    focusTitleSetState(props.children)
+                ) {
+                    focusTitleSetState(headerRef.current?.textContent!)
+                }
             })
         },
-        [props.children, focusTitleSetState]
+        [focusTitleSetState]
     )
 
     const {} = useElementObserver<HTMLHeadingElement>({
-        ref,
+        ref: headerRef,
         options: {
             root: null,
             rootMarginTop: HEADER_UPDATE_CONSTANTS.rootMarginTop,
             rootMarginBottom: HEADER_UPDATE_CONSTANTS.rootMarginBottom,
             rootMarginLeft: "0px",
             rootMarginRight: "0px",
-            threshold: 0,
+            threshold: [0, 1],
         },
         customeCallback: updateFocusTitle,
     })
 
     const { isLightState } = useSlector(_slector("isLight"))
     const { scrollToElement } = useScrollToElement({
-        scrollRef: ref,
+        scrollRef: headerRef,
     })
+
     return (
-        <H1Container onClick={scrollToElement}>
-            <Tooltip
-                active={active}
-                setActive={setActive}
-                tooltipElement={
-                    <LineScroll fontWeight={600} fontSize="xlg" scrollRef={ref}>
-                        #
-                    </LineScroll>
-                }
-                isUnvisibleElementClickAbled
-                left={-30}
-                bottom={1.5}
-            >
-                <H1Styled {...props} ref={ref} isLight={isLightState} />
-            </Tooltip>
-        </H1Container>
+        <Tooltip
+            active={active}
+            setActive={setActive}
+            tooltipElement={
+                <LineScroll
+                    fontWeight={600}
+                    fontSize="xlg"
+                    scrollRef={headerRef}
+                >
+                    #
+                </LineScroll>
+            }
+            isUnvisibleElementClickAbled
+            left={-30}
+            bottom={30}
+        >
+            <H1Styled
+                {...props}
+                ref={headerRef}
+                isLight={isLightState}
+                onClick={scrollToElement}
+            />
+        </Tooltip>
     )
 }
 

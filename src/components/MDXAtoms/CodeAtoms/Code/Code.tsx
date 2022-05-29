@@ -12,7 +12,6 @@ const InlineCode = styled.code<IsLight>`
 
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
     font-weight: 600;
-    font-size: ${(p) => p.theme.sm};
     color: ${({ theme, isLight }) => (isLight ? theme.red5 : theme.gray2)};
 
     border-radius: ${(props) => props.theme.bxsm};

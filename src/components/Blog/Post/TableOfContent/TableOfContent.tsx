@@ -240,40 +240,35 @@ function TableOfContent<RefT extends HTMLElement>({
             {headerInfoArray.map(({ title, onClick, children }, index) => {
                 const isTitleFocusing = focusTitleState === title
                 return (
-                    <>
-                        <H1Link
-                            index={index}
-                            isFocusing={isTitleFocusing || isFocusing}
-                            onClick={onClick}
-                            key={title}
-                        >
-                            <p>
-                                🍞{" "}
-                                {sliceTextByMaxLength(
-                                    title,
-                                    TITLE_MAX_LENGTH.h1
-                                )}
-                            </p>
-                            {children?.map(({ title: childTitle, onClick }) => (
-                                <H2Link
-                                    key={childTitle}
-                                    isFocusing={isTitleFocusing || isFocusing}
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        onClick()
-                                    }}
-                                >
-                                    <p>
-                                        🥛{" "}
-                                        {sliceTextByMaxLength(
-                                            childTitle,
-                                            TITLE_MAX_LENGTH.h2
-                                        )}
-                                    </p>
-                                </H2Link>
-                            ))}
-                        </H1Link>
-                    </>
+                    <H1Link
+                        index={index}
+                        isFocusing={isTitleFocusing || isFocusing}
+                        onClick={onClick}
+                        key={title}
+                    >
+                        <p>
+                            🍞{" "}
+                            {sliceTextByMaxLength(title, TITLE_MAX_LENGTH.h1)}
+                        </p>
+                        {children?.map(({ title: childTitle, onClick }) => (
+                            <H2Link
+                                isFocusing={isTitleFocusing || isFocusing}
+                                onClick={(e) => {
+                                    e.stopPropagation()
+                                    onClick()
+                                }}
+                                key={childTitle}
+                            >
+                                <p>
+                                    🥛{" "}
+                                    {sliceTextByMaxLength(
+                                        childTitle,
+                                        TITLE_MAX_LENGTH.h2
+                                    )}
+                                </p>
+                            </H2Link>
+                        ))}
+                    </H1Link>
                 )
             })}
         </TOCContainer>
