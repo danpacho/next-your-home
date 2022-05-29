@@ -27,7 +27,7 @@ async function generateRSS(posts: TempMetaType[], rssFileName = "rss.xml") {
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>${config.siteName}</title>
-    <link>${config.url}/blog</link>
+    <link>${config.url}</link>
     <description>${config.subtitle}</description>
     <language>${config.language}</language>
     <lastBuildDate>${new Date(posts[0].update).toUTCString()}</lastBuildDate>
