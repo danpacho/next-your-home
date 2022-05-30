@@ -9,7 +9,7 @@ function useScrollToElement({
 }: UseScrollToElementProps) {
     const scrollToElement = () =>
         scrollRef.current?.scrollIntoView({
-            behavior: behavior ?? "smooth",
+            behavior: behavior ?? "auto",
             block: block ?? "start",
             inline: inline ?? "center",
         })
