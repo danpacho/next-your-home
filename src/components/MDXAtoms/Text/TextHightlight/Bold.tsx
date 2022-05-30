@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 const BoldStyled = styled.strong`
-    font-weight: 800;
+    font-weight: 700;
 `
 
 function Bold(props: any) {

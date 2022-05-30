@@ -1,15 +1,21 @@
-import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
-
 import styled, { css } from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
 import Link from "next/link"
-import { sliceTextByMaxLength } from "@utils/function/text"
-import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
+
 import { IsLight } from "@typing/theme"
+import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
+
+import { sliceTextByMaxLength } from "@utils/function/text"
+
+import useTimeout from "@hooks/useTimeout"
+
+import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
+
 import { useSlector, _slector } from "@lib/recoil"
 
 const ControllerContainer = styled.div<IsHover>`
@@ -25,11 +31,9 @@ const ControllerContainer = styled.div<IsHover>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 
-    background-color: ${(p) =>
-        `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
-    backdrop-filter: blur(10px);
+    background-color: ${(p) => p.theme.containerBackgroundColor};
 
     padding: 0.65rem;
 
@@ -45,7 +49,6 @@ const ControllerContainer = styled.div<IsHover>`
 
         justify-content: space-between;
         background-color: ${(p) => p.theme.containerBackgroundColor};
-        backdrop-filter: unset;
 
         bottom: 0.75rem;
         left: 50%;
@@ -173,7 +176,6 @@ interface PostControllerProps extends PostControllerPreviewProps {
 }
 
 const TITLE_MAX_LENGTH = 15
-const POST_CONTROLLER_CLOSE_TIME = 5000
 
 function PostController({
     prevPost,
@@ -185,13 +187,12 @@ function PostController({
     const prevPostTitle = sliceTextByMaxLength(prevPost.title, TITLE_MAX_LENGTH)
     const nextPostTitle = sliceTextByMaxLength(nextPost.title, TITLE_MAX_LENGTH)
 
-    useEffect(() => {
-        const setHoverFalseAfterSecond = setTimeout(
-            () => setIsHover(false),
-            POST_CONTROLLER_CLOSE_TIME
-        )
-        return () => clearTimeout(setHoverFalseAfterSecond)
-    }, [])
+    useTimeout({
+        timeoutCondition: true,
+        timeoutFunction: () => setIsHover(false),
+        time: 3000,
+        once: true,
+    })
 
     const { isLightState: isLight } = useSlector(_slector("isLight"))
 
@@ -201,7 +202,7 @@ function PostController({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
         >
-            <Link href={prevPost.postUrl} passHref>
+            <Link href={prevPost.postUrl} passHref scroll={false}>
                 <InfoContainer isHover={isHover}>
                     <ControllerButton
                         buttonType="prev"

@@ -84,6 +84,7 @@ const H2Link = styled(HeaderLinkCommon)`
         border-color: ${(p) => p.theme.themePrimaryColor};
     }
 
+    will-change: transform;
     transform-origin: left;
     transform: scale(${(p) => (p.isFocusing ? "1" : "0")})
         translateY(${(p) => (p.isFocusing ? "0" : "-10px")});
@@ -132,7 +133,7 @@ function getTableOfcontentsDOM<RefT extends HTMLElement>({
                 type,
                 onClick: () =>
                     item.scrollIntoView({
-                        behavior: "smooth",
+                        behavior: "auto",
                     }),
             })
         }

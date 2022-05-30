@@ -26,6 +26,7 @@ const H1Styled = styled.h1<IsLight>`
         font-size: ${(p) => p.theme.lg};
         font-weight: 700;
 
+        padding: 0;
         padding-left: 0.4rem;
 
         border-left: 0.2rem solid ${(props) => props.theme.gray4};
@@ -34,8 +35,8 @@ const H1Styled = styled.h1<IsLight>`
 `
 
 const HEADER_UPDATE_CONSTANTS = {
-    top: 100,
-    bottom: -100,
+    top: 150,
+    bottom: -150,
     rootMarginTop: "-20px",
     rootMarginBottom: "0px",
 }
@@ -44,6 +45,7 @@ interface H1Props {
 }
 
 const H1 = (props: H1Props) => {
+    const { isLightState } = useSlector(_slector("isLight"))
     const { focusTitleSetState } = useAtom(_atom("focusTitle"))
     const [active, setActive] = useState(false)
 
@@ -77,7 +79,6 @@ const H1 = (props: H1Props) => {
         customeCallback: updateFocusTitle,
     })
 
-    const { isLightState } = useSlector(_slector("isLight"))
     const { scrollToElement } = useScrollToElement({
         scrollRef: headerRef,
     })
@@ -96,8 +97,8 @@ const H1 = (props: H1Props) => {
                 </LineScroll>
             }
             isUnvisibleElementClickAbled
-            left={-30}
-            bottom={30}
+            left={-28}
+            bottom={28}
         >
             <H1Styled
                 {...props}

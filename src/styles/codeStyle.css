@@ -176,7 +176,7 @@ It is part of highlight-code-line-layout
     padding-left: 1rem;
     padding-right: 1rem;
 
-    border-left: 3px solid transparent;
+    border-left: 4px solid transparent;
 }
 
 .highlight-line {
