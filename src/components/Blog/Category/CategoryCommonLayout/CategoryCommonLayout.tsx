@@ -16,7 +16,7 @@ import { CategorySEO } from "@components/Next/SEO"
 
 import CategoryTag from "../CategoryTag/CategoryTag"
 import { IsLight } from "@typing/theme"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 //* Layout
 const LayoutContainer = styled.div`
@@ -203,7 +203,7 @@ function CategoryCommonLayout({
         () => shadeColor(categoryColor, 35),
         [categoryColor]
     )
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const postNumber = categoryPostArray?.length
 

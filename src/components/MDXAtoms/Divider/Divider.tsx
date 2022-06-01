@@ -1,4 +1,4 @@
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 import { IsLight } from "@typing/theme"
 import styled from "styled-components"
 
@@ -14,7 +14,7 @@ const DividerStyled = styled.hr<IsLight>`
 `
 
 function Divider() {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return <DividerStyled isLight={isLight} />
 }

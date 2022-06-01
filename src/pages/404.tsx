@@ -1,7 +1,7 @@
 import { PageType } from "@typing/page/type"
 
 function ErrorPage() {
-    return <div>404</div>
+    return <>404</>
 }
 
 ErrorPage.displayName = "ErrorPage" as PageType

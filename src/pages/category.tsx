@@ -17,7 +17,7 @@ import { LeafIcon } from "@components/UI/Atoms/Icons"
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 
 import { config } from "blog.config"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 const CategoryPageLayoutContainer = styled.div`
     width: 70%;
@@ -218,7 +218,7 @@ const CategoryLink = ({
 }: CategoryInfoType) => {
     const [isHover, setIsHover] = useState<boolean>(false)
 
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     const categoryColor = isLight ? color : darkModeColor

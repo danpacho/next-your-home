@@ -3,7 +3,7 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 const ThStyled = styled.th<IsLight>`
     padding: 0.75rem 1rem;
@@ -20,7 +20,7 @@ const ThStyled = styled.th<IsLight>`
     }
 `
 const TH = (props: any) => {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return <ThStyled {...props} isLight={isLight} />
 }

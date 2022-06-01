@@ -5,7 +5,7 @@ import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
-import { useAtom, _atom } from "@lib/recoil"
+import { useAtoms, _atom } from "@lib/jotai"
 
 const TOCContainer = styled.div`
     min-width: max-content;
@@ -223,7 +223,7 @@ function TableOfContent<RefT extends HTMLElement>({
     updateTrigger,
     documentRef,
 }: TableOfContentProp<RefT>) {
-    const { focusTitleState } = useAtom(_atom("focusTitle"))
+    const { focusTitleState } = useAtoms(_atom("focusTitle"))
     const [headerInfoArray, setHeaderInfoArray] = useState<DOMHeaderInfo[]>([])
 
     const [isFocusing, setIsFocusing] = useState(false)

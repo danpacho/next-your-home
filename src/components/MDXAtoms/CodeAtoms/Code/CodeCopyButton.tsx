@@ -6,8 +6,8 @@ import { useState } from "react"
 import { IsLight } from "@typing/theme"
 
 import { useClipboard, useTimeout } from "@hooks/index"
-import { useSlector, _slector } from "@lib/recoil"
-import animation from "@styles/utils/animation"
+
+import { useAtoms, _slector } from "@lib/jotai"
 
 const CodeContentBox = styled.div`
     position: absolute;
@@ -86,7 +86,7 @@ interface CopyContentProp {
     isActivated: boolean
 }
 function CodeCopyButton({ code, isActivated }: CopyContentProp) {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const { copyTextToUser } = useClipboard()
     const [isCopySuccess, setIsCopySuccess] = useState(false)

@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from "@styles/utils/CustomeTheme"
 import { PageType } from "@typing/page/type"
 
 import Background from "@components/Blog/Background/Background"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 const Layout = styled.main`
     display: flex;
@@ -32,7 +32,7 @@ interface LayoutProp {
 }
 
 function MainLayout({ children, pageType }: LayoutProp) {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <ThemeProvider theme={isLight ? lightTheme : darkTheme}>

@@ -3,7 +3,6 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { GetStaticProps } from "next"
-import dynamic from "next/dynamic"
 import Image from "next/image"
 
 import { PageType } from "@typing/page/type"
@@ -24,11 +23,10 @@ import {
     YoutubeIcon,
 } from "@components/UI/Atoms/Icons"
 
-const MDXBundler = dynamic(() => import("@components/MDXBundler"))
-
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 import { AuthorInfoType, config } from "blog.config"
+import MDXBundler from "@components/MDXBundler"
 
 interface ProfileProps extends Omit<AuthorInfoType, "bannerImageUrl"> {
     profileSource: string
@@ -303,7 +301,7 @@ const ProfileContactLink = styled.a`
     all: unset;
 `
 const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <ProfileContactContainer>

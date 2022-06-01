@@ -16,7 +16,7 @@ import useTimeout from "@hooks/useTimeout"
 
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
@@ -194,7 +194,7 @@ function PostController({
         once: true,
     })
 
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <ControllerContainer

@@ -5,7 +5,6 @@ import media from "@styles/utils/media"
 import { Fragment, useRef } from "react"
 
 import { GetStaticPaths, GetStaticProps } from "next"
-import dynamic from "next/dynamic"
 import Link from "next/link"
 
 import { ParsedUrlQuery } from "querystring"
@@ -36,13 +35,10 @@ import MDXBundler from "@components/MDXBundler"
 
 import { PostSEO } from "@components/Next/SEO"
 
-const KatexStyleLoader = dynamic(
-    () => import("@components/Blog/Post/KatexStyleLoader")
-)
-
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
+import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 
 export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const { category, pageNumber, postTitle } = params as ParamQuery
@@ -103,7 +99,6 @@ const PostContainer = styled.div<IsLight>`
         width: 100%;
 
         background-color: transparent;
-        backdrop-filter: unset;
 
         padding: 0 0.25rem;
         box-shadow: none;
@@ -166,7 +161,7 @@ function Post({ postController, postMeta, postSource }: PostProps) {
 
     const documentRef = useRef<HTMLDivElement>(null)
 
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <>
@@ -479,7 +474,7 @@ const PostHeader = ({
     title,
     category,
 }: Pick<PostMetaType, "color" | "tags" | "title" | "category">) => {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <PostMetaContainer isLight={isLight}>

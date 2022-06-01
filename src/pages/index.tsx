@@ -16,7 +16,7 @@ import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
 
 import { config } from "blog.config"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 
 //* Main
 const MainPageLayoutContainer = styled.div`
@@ -167,7 +167,7 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
         <MainPageLayoutContainer>
