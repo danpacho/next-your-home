@@ -3,13 +3,12 @@ import "../styles/codeStyle.css"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 
-import { RecoilRoot } from "recoil"
-
 import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { PageType } from "@typing/page/type"
 
 import { DefaultSEO } from "@components/Next/SEO"
 import MainLayout from "@components/Next/Layout/Layout"
+import { Provider } from "jotai"
 
 function App({ Component, pageProps }: AppProps) {
     const pageType = Component?.displayName as PageType
@@ -25,11 +24,11 @@ function App({ Component, pageProps }: AppProps) {
 
             <GlobalStyle />
 
-            <RecoilRoot>
+            <Provider>
                 <MainLayout pageType={pageType}>
                     <Component {...pageProps} />
                 </MainLayout>
-            </RecoilRoot>
+            </Provider>
         </>
     )
 }

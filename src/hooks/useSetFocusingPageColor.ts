@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 
-import { useAtom, _atom } from "@lib/recoil"
+import { useAtoms, _atom } from "@lib/jotai"
 
 function useSetFocusingPageColor(color: string) {
-    const { focusingPageColorSetState } = useAtom(_atom("focusingPageColor"))
+    const { focusingPageColorSetState } = useAtoms(_atom("focusingPageColor"))
     useEffect(
         () => focusingPageColorSetState(color),
         [focusingPageColorSetState, color]

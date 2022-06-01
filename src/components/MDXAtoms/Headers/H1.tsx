@@ -9,7 +9,8 @@ import LineScroll from "@components/UX/LineScroll/LineScroll"
 import Tooltip from "@components/UX/Tooltip/Tooltip"
 
 import { IsLight } from "@typing/theme"
-import { useAtom, useSlector, _atom, _slector } from "@lib/recoil"
+
+import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 const H1Styled = styled.h1<IsLight>`
     font-size: ${(p) => p.theme.xxlg};
@@ -28,6 +29,7 @@ const H1Styled = styled.h1<IsLight>`
 
         padding: 0;
         padding-left: 0.4rem;
+        margin: 2rem 0;
 
         border-left: 0.2rem solid ${(props) => props.theme.gray4};
         border-radius: 1px;
@@ -45,8 +47,8 @@ interface H1Props {
 }
 
 const H1 = (props: H1Props) => {
-    const { isLightState } = useSlector(_slector("isLight"))
-    const { focusTitleSetState } = useAtom(_atom("focusTitle"))
+    const { isLightState } = useAtoms(_slector("isLight"))
+    const { focusTitleSetState } = useAtoms(_atom("focusTitle"))
     const [active, setActive] = useState(false)
 
     const headerRef = useRef<HTMLHeadingElement>(null)

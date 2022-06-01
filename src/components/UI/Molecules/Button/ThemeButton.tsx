@@ -9,7 +9,7 @@ import { ThemeMode } from "@typing/theme"
 import { useToggle, useWindowTheme } from "@hooks/index"
 
 import { LightIcon, StarIcon } from "@components/UI/Atoms/Icons"
-import { useAtom, _atom } from "@lib/recoil"
+import { useAtoms, _atom } from "@lib/jotai"
 
 const ThemeButtonContainer = styled.button`
     transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s;
@@ -70,7 +70,7 @@ function ThemeButton() {
         windowTheme
     )
 
-    const { themeState, themeSetState } = useAtom(_atom("theme"))
+    const { themeState, themeSetState } = useAtoms(_atom("theme"))
 
     useEffect(() => {
         themeSetState(toggleValue)

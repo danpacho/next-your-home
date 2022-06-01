@@ -13,7 +13,7 @@ import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
-import { useSlector, _slector } from "@lib/recoil"
+import { useAtoms, _slector } from "@lib/jotai"
 interface CategoryLinkContainerStyle {
     color: string
 }
@@ -150,7 +150,7 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
-    const { isLightState: isLight } = useSlector(_slector("isLight"))
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     return (
