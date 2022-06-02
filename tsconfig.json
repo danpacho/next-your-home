@@ -16,7 +16,8 @@
         "isolatedModules": true,
         "jsx": "preserve",
         "incremental": true,
-        "importHelpers": true
+        "importHelpers": true,
+        "typeRoots": ["./types", "./node_modules/@types"]
     },
     "include": [
         "next-env.d.ts",
