@@ -19,6 +19,17 @@ import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
 import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
 
+export const getStaticProps: GetStaticProps<CategoryProps> = async () => {
+    const allCategoryInfo = await getAllCategoryInfo({
+        useTXT: config.useTXT,
+    })
+    return {
+        props: {
+            allCategory: allCategoryInfo,
+        },
+    }
+}
+
 const CategoryPageLayoutContainer = styled.div`
     width: 70%;
     min-height: 35rem;
@@ -251,15 +262,4 @@ const CategoryLink = ({
             </CategoryLinkContaier>
         </Link>
     )
-}
-
-export const getStaticProps: GetStaticProps<CategoryProps> = async () => {
-    const allCategoryInfo = await getAllCategoryInfo({
-        useTXT: config.useTXT,
-    })
-    return {
-        props: {
-            allCategory: allCategoryInfo,
-        },
-    }
 }

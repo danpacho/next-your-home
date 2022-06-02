@@ -12,6 +12,7 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/contents/
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
+import MDXBundler from "@components/MDXBundler"
 import {
     FacebookIcon,
     GithubIcon,
@@ -26,7 +27,16 @@ import {
 import { useAtoms, _slector } from "@lib/jotai"
 
 import { AuthorInfoType, config } from "blog.config"
-import MDXBundler from "@components/MDXBundler"
+
+export const getStaticProps: GetStaticProps<ProfileProps> = async () => {
+    const profileSource = await getProfileSource()
+    return {
+        props: {
+            profileSource,
+            ...config.author,
+        },
+    }
+}
 
 interface ProfileProps extends Omit<AuthorInfoType, "bannerImageUrl"> {
     profileSource: string
@@ -324,14 +334,4 @@ const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
             })}
         </ProfileContactContainer>
     )
-}
-
-export const getStaticProps: GetStaticProps<ProfileProps> = async () => {
-    const profileSource = await getProfileSource()
-    return {
-        props: {
-            profileSource,
-            ...config.author,
-        },
-    }
 }

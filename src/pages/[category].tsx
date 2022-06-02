@@ -17,37 +17,9 @@ import { CategoryCommonLayout } from "@components/Blog/Category"
 import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
-import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
 
-interface CategoryProps extends CategoryInfoType {
-    categoryPostArray: PostMetaType[]
-    categoryTagArray: string[]
-}
-
-function Category(categoryProps: CategoryProps) {
-    //!TODO: pinned 된 포스트를 우선으로 가져오기, 시간 순으로 정렬
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
-    return (
-        <CategoryCommonLayout {...categoryProps}>
-            <Link href={"/"} passHref>
-                <PaginationButton type="button" isLight={isLight} isLeft>
-                    <PrevIcon width="1.15rem" height="1.15rem" />
-                    <p>🏠 돌아가기</p>
-                </PaginationButton>
-            </Link>
-            <Link href={`${categoryProps.categoryUrl}/1`} passHref>
-                <PaginationButton type="button" isLight={isLight}>
-                    <p>모든 글 보기</p>
-                    <NextIcon width="1.15rem" height="1.15rem" />
-                </PaginationButton>
-            </Link>
-        </CategoryCommonLayout>
-    )
-}
-Category.displayName = "Category" as PageType
-export default Category
+import { config } from "blog.config"
 
 interface ParamQuery extends ParsedUrlQuery {
     category: string
@@ -83,3 +55,31 @@ export const getStaticPaths: GetStaticPaths = async () => {
         fallback: false,
     }
 }
+
+interface CategoryProps extends CategoryInfoType {
+    categoryPostArray: PostMetaType[]
+    categoryTagArray: string[]
+}
+
+function Category(categoryProps: CategoryProps) {
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+
+    return (
+        <CategoryCommonLayout {...categoryProps}>
+            <Link href={"/"} passHref>
+                <PaginationButton type="button" isLight={isLight} isLeft>
+                    <PrevIcon width="1.15rem" height="1.15rem" />
+                    <p>🏠 돌아가기</p>
+                </PaginationButton>
+            </Link>
+            <Link href={`${categoryProps.categoryUrl}/1`} passHref>
+                <PaginationButton type="button" isLight={isLight}>
+                    <p>모든 글 보기</p>
+                    <NextIcon width="1.15rem" height="1.15rem" />
+                </PaginationButton>
+            </Link>
+        </CategoryCommonLayout>
+    )
+}
+Category.displayName = "Category" as PageType
+export default Category

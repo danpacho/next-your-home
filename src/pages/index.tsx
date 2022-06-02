@@ -15,8 +15,23 @@ import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents
 import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
 
-import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
+
+import { config } from "blog.config"
+
+export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
+    const latestPostMetaArray = await getLatestPostMeta()
+    const latestCategoryInfoArray = await getLatestCategoryInfo({
+        useTXT: config.useTXT,
+    })
+
+    return {
+        props: {
+            latestPostArray: latestPostMetaArray,
+            categoryInfoArray: latestCategoryInfoArray,
+        },
+    }
+}
 
 //* Main
 const MainPageLayoutContainer = styled.div`
@@ -208,17 +223,3 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
 MainPage.displayName = "Home" as PageType
 
 export default MainPage
-
-export const getStaticProps: GetStaticProps<MainPageProps> = async () => {
-    const latestPostMetaArray = await getLatestPostMeta()
-    const latestCategoryInfoArray = await getLatestCategoryInfo({
-        useTXT: config.useTXT,
-    })
-
-    return {
-        props: {
-            latestPostArray: latestPostMetaArray,
-            categoryInfoArray: latestCategoryInfoArray,
-        },
-    }
-}
