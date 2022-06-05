@@ -2,7 +2,11 @@ import { cwd } from "process"
 import path from "path"
 import { readFile, readdir } from "fs/promises"
 
-import { MDXPostMetaType, PostMetaType } from "@typing/post/meta"
+import {
+    MDXPostMetaType,
+    PostMetaType,
+    PostSeriesMetaType,
+} from "@typing/post/meta"
 
 import {
     CategoryPostContentType,
@@ -39,6 +43,7 @@ import { bundleMDX } from "mdx-bundler"
 
 import { config } from "blog.config"
 import matter from "gray-matter"
+import { SeriesInfoType, SeriesInfoObjectType } from "@typing/post/series"
 
 const sortByDate = (currDate: string, nextDate: string) => {
     const nextDateNumber = Number(nextDate.replace(/\//g, ""))
@@ -198,6 +203,32 @@ const bundlePostMDX = async <MetaType>({
     return bundledResult
 }
 
+const extractSeriesInfo = (pureSeriesString: string): PostSeriesMetaType => {
+    const splitByHypen = pureSeriesString.split("-")
+
+    if (splitByHypen.length !== 2)
+        throw new BlogPropertyError({
+            propertyName: "series",
+            propertyType: "string",
+            errorNameDescription:
+                "series meta Should follow format: series: [series-title]-[series-number]",
+        })
+
+    return splitByHypen.reduce<PostSeriesMetaType>((acc, curr) => {
+        const numberedCurr = Number(curr)
+        if (!isNaN(numberedCurr)) {
+            return {
+                ...acc,
+                order: numberedCurr,
+            }
+        }
+        return {
+            ...acc,
+            title: curr,
+        }
+    }, {} as PostSeriesMetaType)
+}
+
 const generatePostMeta = ({
     extractedMeta,
     category,
@@ -221,6 +252,9 @@ const generatePostMeta = ({
             ? splitStringByComma(extractedMeta.reference)
             : null,
         color: getValidateColor(extractedMeta.color),
+        series: extractedMeta?.series
+            ? extractSeriesInfo(extractedMeta.series)
+            : null,
     } as PostMetaType
 
     const validationMeta = Object.entries(postMeta)
@@ -264,7 +298,7 @@ const extractPostMeta = async ({
 
     const extractedMeta = matter(postSource).data as MDXPostMetaType
     const postMeta = generatePostMeta({
-        extractedMeta: extractedMeta,
+        extractedMeta,
         category,
         postFileName,
     })
@@ -580,10 +614,86 @@ const getAllPostMeta = async () =>
     await extractAllPostMeta(
         await extractAllCategoryPostFileName(await getAllCategoryName())
     )
+interface ExtractedSeriesData
+    extends Pick<PostMetaType, "color" | "postUrl" | "title"> {
+    series: PostSeriesMetaType
+}
+const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
+    const filteredBySeriesExsistance = categoryPostMeta.reduce<
+        ExtractedSeriesData[]
+    >((acc, { series, color, title, postUrl }) => {
+        if (series === null) return acc
+        return [
+            ...acc,
+            {
+                series,
+                color,
+                title,
+                postUrl,
+            },
+        ]
+    }, [])
+    const seriesTitle = [
+        ...new Set(
+            filteredBySeriesExsistance.map((series) => series.series.title)
+        ),
+    ]
+    const seriesMeta = seriesTitle.map((title) =>
+        filteredBySeriesExsistance
+            .filter((data) => data.series.title === title)
+            .sort((a, b) => a.series.order - b.series.order)
+    )
+
+    return seriesMeta
+}
+
+const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
+    const seriesMetaArray = getCategorySeriesMetaArray(categoryPostMeta)
+    const seriesInfo = seriesMetaArray
+        .map((seriesMeta) =>
+            seriesMeta.reduce<SeriesInfoObjectType[]>(
+                (acc, curr, order, tot) => {
+                    if (curr.series === null) return [...acc]
+                    const updatedCurr = {
+                        ...curr.series,
+                        prevUrl: tot[order - 1]?.postUrl ?? "First Series",
+                        nextUrl: tot[order + 1]?.postUrl ?? "Last Series",
+                        postTitle: curr.title,
+                    }
+                    return [...acc, updatedCurr]
+                },
+                []
+            )
+        )
+        .map((elem) =>
+            elem.reduce<SeriesInfoType>(
+                (ignore, curr, _, tot) => ({
+                    seriesTitle: curr.title,
+                    seriesInfo: tot,
+                }),
+                {} as SeriesInfoType
+            )
+        )
+
+    return seriesInfo
+}
+
+const getCategorySeriesInfoArray = async (categoryName: string) =>
+    transformCategorySeriesInfo(await getCategoryPostMeta(categoryName))
+
+const getSpecificSeriesInfo = async (
+    postSeriesTitle: string,
+    categoryName: string
+) => {
+    const seriesInfo = (await getCategorySeriesInfoArray(categoryName)).find(
+        ({ seriesTitle }) => seriesTitle === postSeriesTitle
+    )
+    return seriesInfo ?? null
+}
 
 /**
  * @param categoryName 특정 카테고리
- * @returns 특정 카테고리의 포스트 `meta`
+ * @returns 특정 카테고리의 포스트 `meta`p
  */
 const getCategoryPostMeta = async (
     categoryName: string
@@ -634,4 +744,7 @@ export {
     getSpecificCategoryLatestPostMeta,
     //* post link url
     getAllCategoryPostContentPath,
+    //* series
+    getCategorySeriesInfoArray,
+    getSpecificSeriesInfo,
 }
