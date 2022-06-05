@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgHome = (props: SVGProps<SVGSVGElement>) => (
+const SvgHome = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

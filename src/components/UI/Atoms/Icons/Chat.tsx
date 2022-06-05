@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgChat = (props: SVGProps<SVGSVGElement>) => (
+const SvgChat = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

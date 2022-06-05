@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgSend = (props: SVGProps<SVGSVGElement>) => (
+const SvgSend = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgNext = (props: SVGProps<SVGSVGElement>) => (
+const SvgNext = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

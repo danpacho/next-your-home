@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgDelete = (props: SVGProps<SVGSVGElement>) => (
+const SvgDelete = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

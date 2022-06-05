@@ -1,7 +1,4 @@
-import * as React from "react"
-import { SVGProps } from "react"
-
-const SvgLight = (props: SVGProps<SVGSVGElement>) => (
+const SvgLight = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"
