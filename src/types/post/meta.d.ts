@@ -11,7 +11,7 @@ export interface MDXPostMetaType {
 }
 
 export interface PostSeriesMetaType {
-    title: string
+    seriesTitle: string
     order: number
 }
 export interface PostMetaType {

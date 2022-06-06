@@ -635,12 +635,14 @@ const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
     }, [])
     const seriesTitle = [
         ...new Set(
-            filteredBySeriesExsistance.map((series) => series.series.title)
+            filteredBySeriesExsistance.map(
+                ({ series: { seriesTitle } }) => seriesTitle
+            )
         ),
     ]
     const seriesMeta = seriesTitle.map((title) =>
         filteredBySeriesExsistance
-            .filter((data) => data.series.title === title)
+            .filter(({ series: { seriesTitle } }) => seriesTitle === title)
             .sort((a, b) => a.series.order - b.series.order)
     )
 
@@ -656,9 +658,11 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
                     if (curr.series === null) return [...acc]
                     const updatedCurr = {
                         ...curr.series,
-                        prevUrl: tot[order - 1]?.postUrl ?? "First Series",
-                        nextUrl: tot[order + 1]?.postUrl ?? "Last Series",
                         postTitle: curr.title,
+                        color: curr.color,
+                        url: curr.postUrl,
+                        prevUrl: tot[order - 1]?.postUrl ?? null,
+                        nextUrl: tot[order + 1]?.postUrl ?? null,
                     }
                     return [...acc, updatedCurr]
                 },
@@ -668,7 +672,7 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
         .map((elem) =>
             elem.reduce<SeriesInfoType>(
                 (ignore, curr, _, tot) => ({
-                    seriesTitle: curr.title,
+                    seriesTitle: curr.seriesTitle,
                     seriesInfo: tot,
                 }),
                 {} as SeriesInfoType
