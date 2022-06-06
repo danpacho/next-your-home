@@ -224,7 +224,7 @@ const extractSeriesInfo = (pureSeriesString: string): PostSeriesMetaType => {
         }
         return {
             ...acc,
-            title: curr,
+            seriesTitle: curr,
         }
     }, {} as PostSeriesMetaType)
 }
@@ -622,7 +622,7 @@ const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
     const filteredBySeriesExsistance = categoryPostMeta.reduce<
         ExtractedSeriesData[]
     >((acc, { series, color, title, postUrl }) => {
-        if (series === null) return acc
+        if (series === null) return [...acc]
         return [
             ...acc,
             {
