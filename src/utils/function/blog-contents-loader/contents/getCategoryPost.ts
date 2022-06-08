@@ -655,7 +655,7 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
         .map((seriesMeta) =>
             seriesMeta.reduce<SeriesInfoObjectType[]>(
                 (acc, curr, order, tot) => {
-                    if (curr.series === null) return [...acc]
+                    if (curr.series === null) return acc
                     const updatedCurr = {
                         ...curr.series,
                         postTitle: curr.title,
@@ -682,14 +682,14 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
     return seriesInfo
 }
 
-const getCategorySeriesInfoArray = async (categoryName: string) =>
-    transformCategorySeriesInfo(await getCategoryPostMeta(categoryName))
+const getCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) =>
+    transformCategorySeriesInfo(categoryPostMeta)
 
-const getSpecificSeriesInfo = async (
+const getSpecificCategorySeriesInfo = async (
     postSeriesTitle: string,
-    categoryName: string
+    categoryPostMeta: PostMetaType[]
 ) => {
-    const seriesInfo = (await getCategorySeriesInfoArray(categoryName)).find(
+    const seriesInfo = (await getCategorySeriesInfo(categoryPostMeta)).find(
         ({ seriesTitle }) => seriesTitle === postSeriesTitle
     )
     return seriesInfo ?? null
@@ -699,13 +699,13 @@ const getSpecificSeriesInfo = async (
  * @param categoryName 특정 카테고리
  * @returns 특정 카테고리의 포스트 `meta`p
  */
-const getCategoryPostMeta = async (
-    categoryName: string
-): Promise<PostMetaType[]> =>
-    (await getAllPostMeta())
-        .filter(({ category }) => category === categoryName)
-        .map(addPostOrderToMeta)
-
+const getCategoryPostMeta = memo(
+    config.useMemo,
+    async (categoryName: string): Promise<PostMetaType[]> =>
+        (await getAllPostMeta())
+            .filter(({ category }) => category === categoryName)
+            .map(addPostOrderToMeta)
+)
 /**
  * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
@@ -724,14 +724,9 @@ const getLatestPostMeta = memo(
  * @returns 특정 카테고리 최신 포스트 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
  */
-const getSpecificCategoryLatestPostMeta = memo(
-    config.useMemo,
-    async (categoryName: string): Promise<PostMetaType[]> =>
-        (await getCategoryPostMeta(categoryName)).slice(
-            0,
-            config.numberOfLatestPost
-        )
-)
+const getCategoryLatestPostMeta = (
+    categoryPostMeta: PostMetaType[]
+): PostMetaType[] => categoryPostMeta.slice(0, config.numberOfLatestPost)
 
 export {
     //* /category
@@ -745,10 +740,10 @@ export {
     //* meta - total | category | category of latest
     getLatestPostMeta,
     getCategoryPostMeta,
-    getSpecificCategoryLatestPostMeta,
+    getCategoryLatestPostMeta,
     //* post link url
     getAllCategoryPostContentPath,
     //* series
-    getCategorySeriesInfoArray,
-    getSpecificSeriesInfo,
+    getCategorySeriesInfo,
+    getSpecificCategorySeriesInfo,
 }

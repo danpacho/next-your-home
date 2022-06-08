@@ -1,9 +1,9 @@
 import { readdir, readFile } from "fs/promises"
 
 import { CategoryInfoType } from "@typing/category/info"
+import { PostMetaType } from "@typing/post/meta"
 
 import { MAC_OS_FILE_EXCEPTION } from "@constants/index"
-import { getSpecificCategoryLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 import {
     addPathNotation,
     blogContentsDirectory,
@@ -351,9 +351,7 @@ const getLatestCategoryInfo = memo(
  */
 const getLatestCategoryTagArray = memo(
     config.useMemo,
-    async (category: string) => {
-        const latestCategoryPostMetaArray =
-            await getSpecificCategoryLatestPostMeta(category)
+    (latestCategoryPostMetaArray: PostMetaType[]) => {
         const deduplicatedCategoryTagArray = [
             ...new Set(latestCategoryPostMetaArray.flatMap(({ tags }) => tags)),
         ].sort()
