@@ -13,15 +13,8 @@ import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
 import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
-import { useAtoms, _slector } from "@lib/jotai"
-interface CategoryLinkContainerStyle {
-    color: string
-}
 
-const ITEM_HEIGHT = {
-    wideScreen: 5,
-    widePhone: 4,
-}
+import { useAtoms, _slector } from "@lib/jotai"
 
 interface CategoryLinkContainerStyle {
     isHover: boolean
@@ -34,10 +27,10 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     align-items: center;
     justify-content: space-between;
 
-    width: min(30rem, 80%);
-    height: ${ITEM_HEIGHT.wideScreen}rem;
+    width: 100%;
+    height: 9rem;
 
-    padding: 2.15rem;
+    padding: 2.25rem;
 
     border-right: 0.1rem solid
         ${({ color, theme, isLight }) =>
@@ -60,11 +53,10 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     }
 
     ${media.widePhone} {
-        width: min(35rem, 80%);
+        gap: 1.25rem;
 
-        height: ${ITEM_HEIGHT.widePhone}rem;
-
-        padding: 1.75rem;
+        padding: 2rem;
+        height: 8rem;
 
         border-right-width: 0.125rem;
 
@@ -82,26 +74,25 @@ const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
 
     background-color: ${({ color }) => color};
 
-    width: ${ITEM_HEIGHT.wideScreen}rem;
-    height: ${ITEM_HEIGHT.wideScreen}rem;
+    width: 5rem;
+    height: 5rem;
 
     box-shadow: ${({ isHover, color, theme, isLight }) =>
         `0 0 0 ${isHover ? "1.1rem" : "0.45rem"} ${color}${
             isLight ? theme.opacity20 : theme.opacity50
         }`};
 
-    border-radius: ${ITEM_HEIGHT.wideScreen / 2}rem;
-
+    border-radius: 2.5rem;
     font-size: 2.65rem;
 
     animation: ${animation.fadeIn} 0.5s ease-in;
 
     ${media.widePhone} {
         font-size: 2.35rem;
-        width: ${ITEM_HEIGHT.widePhone}rem;
-        height: ${ITEM_HEIGHT.widePhone}rem;
+        width: 4rem;
+        height: 4rem;
 
-        border-radius: ${ITEM_HEIGHT.widePhone / 2}rem;
+        border-radius: 2rem;
         box-shadow: ${({ color, theme, isLight }) =>
             `0 0 0 0.35rem ${color}${
                 isLight ? theme.opacity20 : theme.opacity50
@@ -122,8 +113,6 @@ const CategoryInfoContainer = styled.div`
         flex: 1;
         height: fit-content;
         max-width: unset;
-
-        margin-left: 1.25rem;
 
         gap: 1rem;
     }
