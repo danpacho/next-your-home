@@ -1,12 +1,15 @@
-import styled, { css } from "styled-components"
+import styled from "styled-components"
 import media from "@styles/utils/media"
+import { scrollBar } from "@styles/utils/scrollBar"
 
 import { useMemo, useState } from "react"
 
+import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
+import { SeriesInfoType } from "@typing/post/series"
 
-import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
+import { useSetFocusingPageColor } from "@hooks/index"
 import useFilteredPost from "./useFilteredPost"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
@@ -14,8 +17,9 @@ import { shadeColor } from "@utils/function/color/shadeColor"
 import { PostLink } from "@components/Blog/Post"
 import { CategorySEO } from "@components/Next/SEO"
 
-import CategoryTag from "../CategoryTag/CategoryTag"
-import { IsLight } from "@typing/theme"
+import { CategoryTag } from "../CategoryTag"
+import { CategorySeriesViewer } from "../CategorySeries"
+
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 //* Layout
@@ -25,10 +29,10 @@ const LayoutContainer = styled.div`
 
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
 
-    gap: 1rem;
+    gap: 2rem;
 
     ${media.mediumTablet} {
         width: 85%;
@@ -40,7 +44,7 @@ const LayoutContainer = styled.div`
         align-items: center;
         justify-content: center;
 
-        padding: 2rem 0;
+        padding: 2.5rem 0;
 
         gap: 2rem;
     }
@@ -50,18 +54,20 @@ const CategoryLeftInfoContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    justify-content: space-between;
+    justify-content: flex-start;
 
     flex: 2;
 
-    height: fit-content;
+    height: 35rem;
 
     gap: 4rem;
 
     ${media.widePhone} {
         align-items: center;
         justify-content: center;
-        gap: 1.5rem;
+        gap: 2rem;
+
+        width: 100%;
     }
 `
 const CategoryTitle = styled.div<{ categoryColor: string }>`
@@ -85,7 +91,7 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
         opacity: ${(p) => p.theme.themeOpacity};
 
         ${media.widePhone} {
-            height: 0.75rem;
+            height: 0.5rem;
             margin-top: -0.25rem;
         }
     }
@@ -96,7 +102,7 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
 
     ${media.widePhone} {
         padding-bottom: 0rem;
-        margin: 1rem 0 0.5rem 0;
+        margin: 1rem 0;
         font-size: ${(p) => p.theme.xxlg};
         font-weight: 800;
         text-shadow: none;
@@ -116,8 +122,9 @@ const CategoryPostSideContainer = styled.div`
     ${media.widePhone} {
         width: 100%;
 
-        flex-direction: column-reverse;
         align-items: center;
+
+        padding-bottom: 2rem;
     }
 `
 //* Right -> Post
@@ -131,25 +138,12 @@ const PostContainer = styled.div`
     height: 31.5rem;
 
     gap: 1.75rem;
-    padding-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    padding-right: 0.75rem;
 
     overflow-y: scroll;
 
-    ::-webkit-scrollbar {
-        width: 0.1rem;
-        padding: 0.25rem;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: ${(p) => p.theme.themePrimaryColor};
-        border-radius: 0.2rem;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: ${({ theme }) =>
-            `${theme.themePrimaryColor}${theme.opacity50}`};
-        border-radius: 0.2rem;
-    }
+    ${(p) => scrollBar.basic(p.theme.themePrimaryColor)};
 
     ${media.widePhone} {
         width: 100%;
@@ -167,28 +161,28 @@ const PaginationContainer = styled.div`
     justify-content: space-between;
 
     width: 100%;
-
-    ${media.widePhone} {
-        width: min(35rem, 85%);
-    }
 `
 
 interface CategoryProps extends CategoryInfoType {
+    categorySeriesInfoArray?: SeriesInfoType[]
     categoryPostArray: PostMetaType[]
     categoryTagArray: string[]
-    children: React.ReactNode
     pageNumber?: number
+    nextPageComponent: React.ReactNode
+    prevPageComponent: React.ReactNode
 }
 function CategoryCommonLayout({
     categoryPostArray,
+    categorySeriesInfoArray,
     category,
     color: categoryColor,
     description: categoryDescription,
     emoji: categoryEmoji,
     categoryTagArray,
     categoryUrl,
-    children: PaginationLinkComponent,
     pageNumber,
+    nextPageComponent,
+    prevPageComponent,
 }: CategoryProps) {
     useSetFocusingPageColor(categoryColor)
 
@@ -209,6 +203,10 @@ function CategoryCommonLayout({
 
     const filteredPostNumber = filteredCategoryPostArray?.length
     const isfilterExists = filteredPostNumber !== 0
+
+    const isSeriesExists =
+        categorySeriesInfoArray && categorySeriesInfoArray.length !== 0
+
     return (
         <LayoutContainer>
             <CategorySEO
@@ -231,12 +229,19 @@ function CategoryCommonLayout({
                             : `${category} ${filteredPostNumber} 개`)}
                 </CategoryTitle>
 
-                <CategoryTag
-                    categoryTagArray={categoryTagArray}
-                    filteredTagArray={filteredTagArray}
-                    setFilteredTagArray={setFilteredTagArray}
-                    categoryColor={isLight ? categoryColor : darkModeColor}
-                />
+                {isSeriesExists && (
+                    <CategorySeriesViewer
+                        categorySeriesInfoArray={categorySeriesInfoArray}
+                    />
+                )}
+                {!isSeriesExists && (
+                    <CategoryTag
+                        categoryTagArray={categoryTagArray}
+                        filteredTagArray={filteredTagArray}
+                        setFilteredTagArray={setFilteredTagArray}
+                        categoryColor={isLight ? categoryColor : darkModeColor}
+                    />
+                )}
             </CategoryLeftInfoContainer>
 
             <CategoryPostSideContainer>
@@ -278,7 +283,8 @@ function CategoryCommonLayout({
                 </PostContainer>
 
                 <PaginationContainer>
-                    {PaginationLinkComponent}
+                    {prevPageComponent}
+                    {nextPageComponent}
                 </PaginationContainer>
             </CategoryPostSideContainer>
         </LayoutContainer>
@@ -304,7 +310,7 @@ export const PaginationButton = styled.button<{ isLeft?: boolean } & IsLight>`
     font-weight: 400;
     font-size: ${(p) => p.theme.sm};
 
-    border-radius: ${(p) => p.theme.bsm};
+    border-radius: ${(p) => p.theme.bxsm};
     border-color: transparent;
     border-style: solid;
     border-width: 0.075rem;
@@ -328,24 +334,14 @@ export const PaginationButton = styled.button<{ isLeft?: boolean } & IsLight>`
     }
 
     ${media.widePhone} {
-        padding: 0.3rem 0.2rem;
+        padding: 0.3rem;
 
-        gap: 0.25rem;
+        gap: 0.2rem;
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 700;
 
         border-radius: ${(p) => p.theme.bxsm};
-        ${(p) =>
-            p.isLeft
-                ? css`
-                      padding-right: 0.5rem;
-                      margin-left: -1rem;
-                  `
-                : css`
-                      padding-left: 0.5rem;
-                      margin-right: -1rem;
-                  `};
     }
 
     user-select: none;
