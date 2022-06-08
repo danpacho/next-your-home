@@ -20,11 +20,11 @@ import { useAtoms, _slector } from "@lib/jotai"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
-    width: ${({ isHover }) => (isHover ? "29rem" : "2.75rem")};
-    min-width: 2.75rem;
+    width: ${({ isHover }) => (isHover ? "30rem" : "4rem")};
+    min-width: 4rem;
 
     position: fixed;
-    bottom: 1.75rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translate(-50%, -1.5rem);
 
@@ -40,10 +40,10 @@ const ControllerContainer = styled.div<IsHover>`
     box-shadow: ${shadow.shadowXxlg};
 
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
-    border-radius: 50rem;
+    border-radius: 10rem;
 
     ${media.widePhone} {
-        width: 83.5%;
+        width: 85%;
         padding: 0.5rem;
         gap: 0.25rem;
 

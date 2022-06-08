@@ -31,7 +31,7 @@ const backgroundStyle = {
     noneFiltered: (color: string, isLight: boolean) => css`
         background-color: ${(p) =>
             `${p.theme.containerBackgroundColor}${p.theme.opacity50}`};
-        backdrop-filter: blur(15px);
+        backdrop-filter: blur(10px);
         color: ${(p) => (isLight ? color : p.theme.gray2)};
 
         svg {
@@ -93,10 +93,10 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
     gap: 0.15rem;
 
     width: fit-content;
-    min-width: 6rem;
+    min-width: 7.75rem;
     height: fit-content;
 
-    padding: 0.75rem;
+    padding: 0.8rem 0.25rem;
 
     border: 1.75px solid
         ${({ isFiltered, color, theme }) =>
@@ -116,16 +116,16 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
             : backgroundStyle.noneFiltered(color, isLight)}
 
     ${media.mediumTablet} {
-        min-width: 5rem;
+        min-width: 6.25rem;
 
         font-weight: 700;
         letter-spacing: 0.02rem;
     }
 
     ${media.widePhone} {
-        min-width: 2.5rem;
+        min-width: 3rem;
 
-        padding: 0.5rem;
+        padding: 0.55rem;
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 600;

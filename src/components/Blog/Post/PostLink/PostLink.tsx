@@ -56,9 +56,9 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     align-items: center;
     justify-content: space-between;
 
-    width: min(45rem, 85%);
-    min-height: 8.75rem;
-    height: 8.75rem;
+    width: 100%;
+    min-height: 9rem;
+    height: 9rem;
 
     padding: 0.25rem 1.5rem;
 
@@ -80,15 +80,11 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     ${({ isFirst, color }) => isFirst && postLinkContainerStyle.first(color)};
     ${({ isLast, color }) => isLast && postLinkContainerStyle.last(color)};
 
-    ${media.mediumTablet} {
-    }
-
     ${media.widePhone} {
         position: relative;
-        width: min(35rem, 85%);
 
-        min-height: 8.25rem;
-        height: 8.25rem;
+        min-height: 8.5rem;
+        height: 8.5rem;
 
         padding: 0.5rem 1rem;
 
