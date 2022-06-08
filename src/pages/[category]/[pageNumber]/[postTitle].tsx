@@ -9,18 +9,20 @@ import Link from "next/link"
 
 import { ParsedUrlQuery } from "querystring"
 
-import { SpecificPostContentType } from "@typing/post/content"
-import { PostMetaType } from "@typing/post/meta"
+import { IsLight } from "@typing/theme"
 import { PageType } from "@typing/page/type"
+import { PostMetaType } from "@typing/post/meta"
+import { SeriesInfoType } from "@typing/post/series"
+import { SpecificPostContentType } from "@typing/post/content"
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
 import {
     getSpecificCategoryPostContent,
     getAllCategoryPostContentPath,
+    getSpecificCategorySeriesInfo,
+    getCategoryPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
-
-import { IsLight } from "@typing/theme"
 
 import {
     ArrowUpIcon,
@@ -29,28 +31,38 @@ import {
     LeafIcon,
     QuoteIcon,
 } from "@components/UI/Atoms/Icons"
-
-import { PostController, PostTableOfContent } from "@components/Blog/Post"
-import MDXBundler from "@components/MDXBundler"
-
 import { PostSEO } from "@components/Next/SEO"
+import { PostController, PostTableOfContent } from "@components/Blog/Post"
+import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
+import MDXBundler from "@components/MDXBundler"
 
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
-import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 
 export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const { category, pageNumber, postTitle } = params as ParamQuery
-    const specificPostContent = await getSpecificCategoryPostContent({
-        categoryName: category,
-        categoryPage: Number(pageNumber),
-        postTitle,
-    })
+
+    const { postController, postMeta, postSource } =
+        await getSpecificCategoryPostContent({
+            categoryName: category,
+            categoryPage: Number(pageNumber),
+            postTitle,
+        })
+
+    const postSeriesInfo = postMeta.series
+        ? await getSpecificCategorySeriesInfo(
+              postMeta.series.seriesTitle,
+              await getCategoryPostMeta(category)
+          )
+        : null
 
     return {
         props: {
-            ...specificPostContent,
+            postController,
+            postMeta,
+            postSource,
+            postSeriesInfo,
         },
     }
 }
@@ -100,7 +112,7 @@ const PostContainer = styled.div<IsLight>`
 
         background-color: transparent;
 
-        padding: 0 0.25rem;
+        padding: 0;
         box-shadow: none;
     }
 `
@@ -155,8 +167,15 @@ const TableOfContentPositionContainer = styled.div`
     }
 `
 
-interface PostProps extends SpecificPostContentType {}
-function Post({ postController, postMeta, postSource }: PostProps) {
+interface PostProps extends SpecificPostContentType {
+    postSeriesInfo: SeriesInfoType | null
+}
+function Post({
+    postController,
+    postMeta,
+    postSource,
+    postSeriesInfo,
+}: PostProps) {
     useSetFocusingPageColor(postMeta.color)
 
     const documentRef = useRef<HTMLDivElement>(null)

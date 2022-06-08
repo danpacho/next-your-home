@@ -85,31 +85,43 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
-        <CategoryCommonLayout {...props} pageNumber={pageNumber}>
-            <Link
-                passHref
-                href={
-                    isFirst ? categoryUrl : `${categoryUrl}/${pageNumber - 1}`
-                }
-            >
-                <PaginationButton type="button" isLight={isLight} isLeft>
-                    <PrevIcon width="1.15rem" height="1.15rem" />
-                    {isFirst && `${category}`}
-                    {!isFirst && `${pageNumber - 1} 페이지로`}
-                </PaginationButton>
-            </Link>
-            <Link
-                href={isLast ? categoryUrl : `${categoryUrl}/${pageNumber + 1}`}
-                passHref
-            >
-                <PaginationButton type="button" isLight={isLight}>
-                    {isLast && isFirst && `텅💨 비었군요`}
-                    {isLast && !isFirst && "마지막이에요! 축하드립니다🎉"}
-                    {!isLast && `${pageNumber + 1} 페이지로`}
-                    <NextIcon width="1.15rem" height="1.15rem" />
-                </PaginationButton>
-            </Link>
-        </CategoryCommonLayout>
+        <CategoryCommonLayout
+            {...props}
+            pageNumber={pageNumber}
+            prevPageComponent={
+                <Link
+                    passHref
+                    href={
+                        isFirst
+                            ? categoryUrl
+                            : `${categoryUrl}/${pageNumber - 1}`
+                    }
+                >
+                    <PaginationButton type="button" isLight={isLight} isLeft>
+                        <PrevIcon width="1.15rem" height="1.15rem" />
+                        {isFirst && `${category}`}
+                        {!isFirst && `${pageNumber - 1} 페이지로`}
+                    </PaginationButton>
+                </Link>
+            }
+            nextPageComponent={
+                <Link
+                    href={
+                        isLast
+                            ? categoryUrl
+                            : `${categoryUrl}/${pageNumber + 1}`
+                    }
+                    passHref
+                >
+                    <PaginationButton type="button" isLight={isLight}>
+                        {isLast && isFirst && `텅💨 비었군요`}
+                        {isLast && !isFirst && "마지막이에요! 축하드립니다🎉"}
+                        {!isLast && `${pageNumber + 1} 페이지로`}
+                        <NextIcon width="1.15rem" height="1.15rem" />
+                    </PaginationButton>
+                </Link>
+            }
+        />
     )
 }
 CategoryPostPerPage.displayName = "Category" as PageType

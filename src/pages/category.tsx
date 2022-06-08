@@ -49,6 +49,8 @@ const CategoryPageLayoutContainer = styled.div`
     ${media.widePhone} {
         gap: 1rem;
 
+        align-items: center;
+
         width: 100%;
         min-height: unset;
     }
@@ -65,7 +67,7 @@ const CategoryPageTitle = styled.div`
     }
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.xlg};
+        font-size: ${(p) => p.theme.xxlg};
         font-weight: 800;
 
         margin-left: 0;
@@ -73,10 +75,6 @@ const CategoryPageTitle = styled.div`
         margin-bottom: 1.25rem;
 
         padding: 0.35rem 0;
-        padding-left: 0.5rem;
-
-        border-left: 0.5rem solid ${(p) => p.theme.fontColor};
-        border-radius: ${({ theme }) => `${theme.bxxsm} 0 0 ${theme.bxxsm}`};
     }
 `
 const CategoryContainer = styled.div`
@@ -164,7 +162,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     min-height: 2.5rem;
     max-width: 2.5rem;
     max-height: 2.5rem;
-    padding: 0.75rem;
+    padding: 1.75rem;
 
     background-color: ${({ color }) => color};
     box-shadow: ${({ isHover, color, theme, isLight }) =>
@@ -177,9 +175,9 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     font-size: ${(p) => p.theme.xtitle};
 
     ${media.widePhone} {
-        width: 1.75rem;
-        height: 1.75rem;
-        padding: 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 1.5rem;
 
         box-shadow: ${({ color, theme, isLight }) =>
             `0 0 0 0.3rem ${color}${
@@ -187,7 +185,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
             }`};
         border-radius: ${(p) => p.theme.bxlg};
 
-        font-size: 2.25rem;
+        font-size: 2rem;
     }
 `
 const CategoryInfoContainer = styled.div<{ color: string }>`
