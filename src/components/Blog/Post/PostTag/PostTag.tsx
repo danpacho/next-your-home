@@ -4,8 +4,6 @@ import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
 
-import { useAtoms, _slector } from "@lib/jotai"
-
 const TAG_STYLE = {
     info: (color: string, isLight: boolean) => css`
         background-color: ${color}${(p) => (isLight ? p.theme.opacity10 : p.theme.opacity30)};
@@ -32,7 +30,7 @@ const TAG_STYLE = {
             padding-right: 0.65rem;
         }
     `,
-    category: (color: string) => css`
+    category: (color: string, _: boolean) => css`
         color: white;
 
         border-radius: ${(p) => p.theme.bxsm};
@@ -49,7 +47,7 @@ interface TagStyle {
     tagType: keyof typeof TAG_STYLE
 }
 
-const PostTagStyled = styled.div<TagStyle & IsLight>`
+const PostTag = styled.div<TagStyle & IsLight>`
     transition: background-color ease-out 0.2s;
 
     display: flex;
@@ -80,17 +78,5 @@ const PostTagStyled = styled.div<TagStyle & IsLight>`
     ${(p) => iconStyle.md({ color: p.color })}
     ${({ tagType, color, isLight }) => TAG_STYLE[tagType](color, isLight)};
 `
-
-interface PostTagProps extends TagStyle {
-    children: React.ReactNode
-}
-function PostTag({ children, color, tagType }: PostTagProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-    return (
-        <PostTagStyled isLight={isLight} color={color} tagType={tagType}>
-            {children}
-        </PostTagStyled>
-    )
-}
 
 export default PostTag

@@ -10,6 +10,8 @@ import { PostMetaType } from "@typing/post/meta"
 import { ArrowUpIcon, EditIcon, LeafIcon } from "@components/UI/Atoms/Icons"
 import PostTag from "../PostTag/PostTag"
 
+import { useAtoms, _slector } from "@lib/jotai"
+
 const FooterContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -62,6 +64,8 @@ function PostFooter({
     update,
     reference: referenceArray,
 }: Pick<PostMetaType, "color" | "author" | "update" | "reference">) {
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+
     const replaceUpateDate = `${update
         .replace("/", "년 ")
         .replace("/", "월 ")}일`
@@ -70,18 +74,18 @@ function PostFooter({
         <FooterContainer>
             <TagContainer>
                 <Link href="/profile" passHref>
-                    <PostTag color={color} tagType="tag">
+                    <PostTag color={color} tagType="tag" isLight={isLight}>
                         <EditIcon />
                         <p>{author}</p>
                     </PostTag>
                 </Link>
                 <TagDivider color={color}>•</TagDivider>
-                <PostTag color={color} tagType="tag">
+                <PostTag color={color} tagType="tag" isLight={isLight}>
                     <ArrowUpIcon />
                     <p>{replaceUpateDate}</p>
                 </PostTag>
                 <TagDivider color={color}>•</TagDivider>
-                <PostTag color={color} tagType="tag">
+                <PostTag color={color} tagType="tag" isLight={isLight}>
                     <LeafIcon />
                     <p>Thanks For Reading !</p>
                 </PostTag>
@@ -90,7 +94,7 @@ function PostFooter({
             <TagContainer>
                 {referenceArray?.map((reference, order) => (
                     <React.Fragment key={reference}>
-                        <PostTag color={color} tagType="info">
+                        <PostTag color={color} tagType="info" isLight={isLight}>
                             <EditIcon />
                             <ReferenceLink
                                 href={reference}

@@ -144,14 +144,19 @@ function PostHeader({
             </Title>
 
             <Link href={`/${category}`} passHref>
-                <PostTag color={color} tagType="category">
+                <PostTag color={color} tagType="category" isLight={isLight}>
                     <p>{category}</p>
                 </PostTag>
             </Link>
 
             <TagContainer>
                 {tags.map((tag) => (
-                    <PostTag key={tag} color={color} tagType="tag">
+                    <PostTag
+                        key={tag}
+                        color={color}
+                        tagType="tag"
+                        isLight={isLight}
+                    >
                         <FlagFillIcon />
                         <p>{tag}</p>
                     </PostTag>
