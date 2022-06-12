@@ -1,16 +1,17 @@
-import Link from "next/link"
-
 import styled from "styled-components"
 import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
 
+import Link from "next/link"
+
 import { IsLight } from "@typing/theme"
 
-import ThemeButton from "@components/UI/Molecules/Button/ThemeButton"
+import { ThemeButton } from "@components/UX/ThemeButton"
 import MainLogo from "./MainLogo"
 
-import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
+
+import { config } from "blog.config"
 
 const NavContainer = styled.nav`
     display: flex;
