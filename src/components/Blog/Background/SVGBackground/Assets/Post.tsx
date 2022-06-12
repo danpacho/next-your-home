@@ -1,14 +1,13 @@
-import { useMemo } from "react"
-
 import styled from "styled-components"
 import media from "@styles/utils/media"
+
+import { useColorSet } from "@hooks/index"
 
 import {
     SVGContainer,
     SVGBackgroundProps,
     SVGPath,
     SvgGradientStyle,
-    getColorSet,
 } from "../common"
 
 const PostBackgroundContainer = styled(SVGContainer)`
@@ -29,7 +28,7 @@ const GRADIENT_ID = {
 
 const PostBackground = (props: SVGBackgroundProps) => {
     const { isLight, mainColor } = props
-    const { light, dark } = useMemo(() => getColorSet(mainColor), [mainColor])
+    const { light, dark } = useColorSet(mainColor)
     return (
         <PostBackgroundContainer
             viewBox="0 0 1440 1024"

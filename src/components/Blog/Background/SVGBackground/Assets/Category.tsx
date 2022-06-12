@@ -1,12 +1,11 @@
-import { useMemo } from "react"
-
 import {
     SVGContainer,
     SVGBackgroundProps,
     SVGPath,
     SvgGradientStyle,
-    getColorSet,
 } from "../common"
+
+import { useColorSet } from "@hooks/index"
 
 const GRADIENT_ID = {
     top: {
@@ -21,7 +20,7 @@ const GRADIENT_ID = {
 
 const CategoryBackground = (props: SVGBackgroundProps) => {
     const { isLight, mainColor } = props
-    const { light, dark } = useMemo(() => getColorSet(mainColor), [mainColor])
+    const { light } = useColorSet(mainColor)
 
     return (
         <SVGContainer
