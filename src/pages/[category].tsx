@@ -18,8 +18,10 @@ import {
     getCategoryPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { CategoryCommonLayout } from "@components/Blog/Category"
-import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
+import {
+    CategoryCommonLayout,
+    CategoryPaginationButton,
+} from "@components/Blog/Category"
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -79,18 +81,22 @@ function Category(categoryProps: CategoryProps) {
             {...categoryProps}
             prevPageComponent={
                 <Link href={"/"} passHref>
-                    <PaginationButton type="button" isLight={isLight} isLeft>
+                    <CategoryPaginationButton
+                        type="button"
+                        isLight={isLight}
+                        isLeft
+                    >
                         <PrevIcon width="1.15rem" height="1.15rem" />
                         <p>🏠 돌아가기</p>
-                    </PaginationButton>
+                    </CategoryPaginationButton>
                 </Link>
             }
             nextPageComponent={
                 <Link href={`${categoryProps.categoryUrl}/1`} passHref>
-                    <PaginationButton type="button" isLight={isLight}>
+                    <CategoryPaginationButton type="button" isLight={isLight}>
                         <p>모든 글 보기</p>
                         <NextIcon width="1.15rem" height="1.15rem" />
-                    </PaginationButton>
+                    </CategoryPaginationButton>
                 </Link>
             }
         />

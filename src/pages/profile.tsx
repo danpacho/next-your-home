@@ -1,6 +1,7 @@
 import shadow from "@styles/utils/shadow"
 import styled from "styled-components"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { GetStaticProps } from "next"
 import Image from "next/image"
@@ -33,13 +34,8 @@ export const getStaticProps: GetStaticProps<ProfileProps> = async () => {
     return {
         props: {
             profileSource,
-            ...config.author,
         },
     }
-}
-
-interface ProfileProps extends Omit<AuthorInfoType, "bannerImageUrl"> {
-    profileSource: string
 }
 
 const ProfileContainer = styled.div`
@@ -179,38 +175,33 @@ const Copyright = styled.div`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
 
-    svg {
-        fill: ${(p) => p.theme.red4};
-    }
+    ${(p) => iconStyle.md({ color: p.theme.red4 })};
 `
 
-function Profile({
-    name,
-    currentGoal,
-    currentState,
-    avatarImageUrl,
-    contacts,
-    profileSource,
-}: ProfileProps) {
+interface ProfileProps {
+    profileSource: string
+}
+
+function Profile({ profileSource }: ProfileProps) {
     useSetFocusingPageColor(config.userPallete.primary2)
     return (
         <ProfileContainer>
             <ProfileInfoContainer>
                 <ProfileImageContainer>
                     <Image
-                        src={avatarImageUrl}
+                        src={config.author.avatarImageUrl}
                         alt="profile image"
                         layout="fill"
                         priority
                     />
                 </ProfileImageContainer>
                 <ProfileTextContainer>
-                    <ProfileName>{name}</ProfileName>
+                    <ProfileName>{config.author.name}</ProfileName>
                     <ProfileDivider />
-                    <ProfileState>{currentState}</ProfileState>
-                    <ProfileState>{currentGoal}</ProfileState>
+                    <ProfileState>{config.author.currentState}</ProfileState>
+                    <ProfileState>{config.author.currentGoal}</ProfileState>
                     <ProfileDivider />
-                    <ProfileContact contacts={contacts} />
+                    <ProfileContact contacts={config.author.contacts} />
                 </ProfileTextContainer>
             </ProfileInfoContainer>
             <ProfileContentContainer>
@@ -241,9 +232,6 @@ const ProfileButtonContainer = styled.button<IsLight>`
     background-color: ${(p) => p.theme.containerBackgroundColor};
     border: 1.25px solid ${(p) => p.theme.containerBorderColor};
 
-    svg {
-        fill: ${(p) => p.theme.headerFontColor};
-    }
     box-shadow: ${(p) =>
         p.isLight
             ? `
@@ -253,13 +241,15 @@ const ProfileButtonContainer = styled.button<IsLight>`
         rgba(0, 0, 0, 0.7) 0px 7px 7px -3px,
         rgba(0, 0, 0, 0.6) 0px -1.5px 0px inset`};
 
+    ${(p) =>
+        iconStyle.md({
+            color: p.theme.headerFontColor,
+            hoverColor: p.theme.containerBackgroundColor,
+        })};
+
     &:hover {
         background-color: ${(p) => p.theme.headerFontColor};
         box-shadow: ${shadow.shadowSm};
-
-        svg {
-            fill: ${(p) => p.theme.containerBackgroundColor};
-        }
     }
 
     &:active {

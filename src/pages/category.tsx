@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useMemo, useState } from "react"
 
@@ -13,8 +14,10 @@ import { IsLight } from "@typing/theme"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
+import { useMouseInteraction } from "@hooks/index"
+
 import { LeafIcon } from "@components/UI/Atoms/Icons"
-import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
@@ -196,15 +199,7 @@ const CategoryInfoContainer = styled.div<{ color: string }>`
 
     gap: 0.5rem;
 
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-    }
-
-    &:hover {
-        svg {
-            fill: ${(p) => p.color};
-        }
-    }
+    ${(p) => iconStyle.md({ hoverColor: p.color })};
 `
 
 const CategoryDescription = styled.div`
@@ -234,8 +229,9 @@ const CategoryLink = ({
     return (
         <Link passHref href={categoryUrl}>
             <CategoryLinkContaier
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
+                {...useMouseInteraction({
+                    mouseStateSetter: setIsHover,
+                })}
                 color={categoryColor}
             >
                 <CategoryEmojiContainer
@@ -246,14 +242,14 @@ const CategoryLink = ({
                     {emoji}
                 </CategoryEmojiContainer>
                 <CategoryInfoContainer color={categoryColor}>
-                    <CategoryTitle
+                    <UnderscoreText
                         isHover={isHover}
                         fontSize="lg"
                         underscoreColor={categoryColor}
                         fontWeight={400}
                     >
                         {category} <LeafIcon width="1rem" height="1rem" />
-                    </CategoryTitle>
+                    </UnderscoreText>
 
                     <CategoryDescription>{description}</CategoryDescription>
                 </CategoryInfoContainer>

@@ -16,8 +16,10 @@ import {
 import { getSpecificCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
-import { CategoryCommonLayout } from "@components/Blog/Category"
-import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
+import {
+    CategoryCommonLayout,
+    CategoryPaginationButton,
+} from "@components/Blog/Category"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
@@ -68,6 +70,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         fallback: false,
     }
 }
+
 interface CategoryPostPerPageProps extends CategoryInfoType {
     categoryPostArray: PostMetaType[]
     categoryTagArray: string[]
@@ -97,11 +100,15 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                             : `${categoryUrl}/${pageNumber - 1}`
                     }
                 >
-                    <PaginationButton type="button" isLight={isLight} isLeft>
+                    <CategoryPaginationButton
+                        type="button"
+                        isLight={isLight}
+                        isLeft
+                    >
                         <PrevIcon width="1.15rem" height="1.15rem" />
                         {isFirst && `${category}`}
                         {!isFirst && `${pageNumber - 1} 페이지로`}
-                    </PaginationButton>
+                    </CategoryPaginationButton>
                 </Link>
             }
             nextPageComponent={
@@ -113,12 +120,12 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                     }
                     passHref
                 >
-                    <PaginationButton type="button" isLight={isLight}>
+                    <CategoryPaginationButton type="button" isLight={isLight}>
                         {isLast && isFirst && `텅💨 비었군요`}
                         {isLast && !isFirst && "마지막이에요! 축하드립니다🎉"}
                         {!isLast && `${pageNumber + 1} 페이지로`}
                         <NextIcon width="1.15rem" height="1.15rem" />
-                    </PaginationButton>
+                    </CategoryPaginationButton>
                 </Link>
             }
         />
