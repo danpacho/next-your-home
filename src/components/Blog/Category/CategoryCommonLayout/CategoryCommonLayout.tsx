@@ -4,7 +4,6 @@ import { scrollBar } from "@styles/utils/scrollBar"
 
 import { useMemo, useState } from "react"
 
-import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
 import { SeriesInfoType } from "@typing/post/series"
@@ -14,11 +13,9 @@ import useFilteredPost from "./useFilteredPost"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { PostLink } from "@components/Blog/Post"
 import { CategorySEO } from "@components/Next/SEO"
-
-import { CategoryTag } from "../CategoryTag"
-import { CategorySeriesViewer } from "../CategorySeries"
+import { PostLink } from "@components/Blog/Post"
+import { CategorySeriesViewer, CategoryTag } from "@components/Blog/Category"
 
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
@@ -292,58 +289,3 @@ function CategoryCommonLayout({
 }
 
 export default CategoryCommonLayout
-
-export const PaginationButton = styled.button<{ isLeft?: boolean } & IsLight>`
-    transition: all ease-out 0.1s;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0.25rem;
-    width: max-content;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    color: ${(p) => p.theme.fontColor};
-    font-weight: 400;
-    font-size: ${(p) => p.theme.sm};
-
-    border-radius: ${(p) => p.theme.bxsm};
-    border-color: transparent;
-    border-style: solid;
-    border-width: 0.075rem;
-
-    background-color: ${({ theme, isLight }) =>
-        isLight
-            ? `${theme.gray1}${theme.opacity50}`
-            : `${theme.trueDeepDark}${theme.opacity40}`};
-
-    border-color: transparent;
-
-    gap: 0.5rem;
-
-    &:hover {
-        border-color: ${({ theme, isLight }) =>
-            isLight ? theme.gray6 : theme.gray4};
-    }
-
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-    }
-
-    ${media.widePhone} {
-        padding: 0.3rem;
-
-        gap: 0.2rem;
-
-        font-size: ${(p) => p.theme.xsm};
-        font-weight: 700;
-
-        border-radius: ${(p) => p.theme.bxsm};
-    }
-
-    user-select: none;
-    cursor: pointer;
-`

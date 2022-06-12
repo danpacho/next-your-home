@@ -1,6 +1,7 @@
 import styled from "styled-components"
 import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useState } from "react"
 
@@ -54,16 +55,7 @@ const ViewerControllButton = styled.button<{ disabled: boolean }>`
 
     box-shadow: ${shadow.shadowXxsm};
 
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-        width: 1.15rem;
-        height: 1.15rem;
-
-        ${media.widePhone} {
-            width: 1rem;
-            height: 1rem;
-        }
-    }
+    ${iconStyle.md()};
 
     :disabled {
         opacity: 0.2;

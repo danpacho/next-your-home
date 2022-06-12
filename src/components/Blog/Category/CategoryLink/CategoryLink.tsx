@@ -12,7 +12,9 @@ import { IsLight } from "@typing/theme"
 import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { useMouseInteraction } from "@hooks/index"
+
+import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
@@ -145,8 +147,9 @@ function CategoryLink({
     return (
         <Link href={categoryUrl} passHref>
             <CategoryLinkContainer
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
+                {...useMouseInteraction({
+                    mouseStateSetter: setIsHover,
+                })}
                 isHover={isHover}
                 color={isLight ? color : darkModeColor}
                 isLight={isLight}
@@ -160,7 +163,7 @@ function CategoryLink({
                 </CategoryEmojiContainer>
 
                 <CategoryInfoContainer>
-                    <CategoryTitle
+                    <UnderscoreText
                         isHover={isHover}
                         fontWeight={400}
                         fontSize="lg"
@@ -168,7 +171,7 @@ function CategoryLink({
                         transformOrigin="left"
                     >
                         {category}
-                    </CategoryTitle>
+                    </UnderscoreText>
                     <CategoryDescription>
                         {sliceTextByMaxLength(description, 35)}
                     </CategoryDescription>

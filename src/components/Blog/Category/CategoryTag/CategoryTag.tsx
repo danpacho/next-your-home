@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
 
@@ -34,10 +35,7 @@ const backgroundStyle = {
         backdrop-filter: blur(10px);
         color: ${(p) => (isLight ? color : p.theme.gray2)};
 
-        svg {
-            fill: ${color};
-            width: 0.725rem;
-        }
+        ${iconStyle.custom({ color, size: "0.75rem" })}
 
         &:hover {
             box-shadow: 4px 4px 0px ${color}${(p) => p.theme.opacity70};
@@ -49,10 +47,8 @@ const backgroundStyle = {
 
         box-shadow: 0 0 0 2.5px ${color}${(p) => p.theme.opacity40};
 
-        svg {
-            fill: ${(p) => p.theme.white};
-            width: 0.725rem;
-        }
+        ${iconStyle.custom({ color: "white", size: "0.75rem" })}
+
         &:hover {
             box-shadow: -4px 4px 0px ${color}${(p) => p.theme.opacity30};
         }

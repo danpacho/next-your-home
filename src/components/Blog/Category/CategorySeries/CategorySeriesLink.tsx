@@ -1,6 +1,8 @@
 import styled from "styled-components"
 import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
+import { scrollBar } from "@styles/utils/scrollBar"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useState } from "react"
 
@@ -8,10 +10,9 @@ import Link from "next/link"
 
 import { SeriesInfoType } from "@typing/post/series"
 
-import useTimeout from "@hooks/useTimeout"
+import { useMouseInteraction, useTimeout } from "@hooks/index"
 
 import { BookmarkIcon } from "@components/UI/Atoms/Icons"
-import { scrollBar } from "@styles/utils/scrollBar"
 
 interface SeriesLinkContainerStyle {
     color: string
@@ -35,7 +36,7 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
         `${theme.containerBackgroundColor}${theme.opacity80}`};
     backdrop-filter: blur(10px);
 
-    border-width: 0.125rem;
+    border-width: 0.1rem;
     border-style: solid;
     border-color: ${(p) => (p.isOpen ? p.color : "transparent")};
     border-radius: ${(p) => p.theme.bsm};
@@ -67,7 +68,7 @@ const SeriesLinkInfoContainer = styled.div<{ color: string }>`
 
     padding-left: 0.2rem;
 
-    border-right: 0.125rem solid ${(p) => p.color};
+    border-right: 0.1rem solid ${(p) => p.color};
 
     user-select: none;
 `
@@ -92,23 +93,14 @@ const SeriesBookmarkBox = styled.div<{ color: string }>`
     padding: 0.35rem;
 
     border-radius: ${(p) => p.theme.bsm};
-    border: 0.125rem solid ${(p) => p.color};
+    border: 0.1rem solid ${(p) => p.color};
     background-color: ${({ theme, color }) => `${color}${theme.opacity20}`};
 
     color: ${(p) => p.theme.fontColor};
     font-weight: 700;
     font-size: ${(p) => p.theme.sm};
 
-    svg {
-        width: 1.15rem;
-        height: 1.15rem;
-        fill: ${(p) => p.theme.fontColor};
-
-        ${media.widePhone} {
-            width: 1rem;
-            height: 1rem;
-        }
-    }
+    ${iconStyle.md()};
 
     ${media.widePhone} {
         gap: 0.15rem;
@@ -215,8 +207,9 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                 setIsOpen(true)
                 setSeriesViewOver(false)
             }}
-            onMouseLeave={() => setSeriesViewOver(true)}
-            onMouseEnter={() => setSeriesViewOver(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setSeriesViewOver,
+            })}
         >
             <SeriesLinkInfoContainer
                 color={seriesColor}
@@ -227,7 +220,7 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                 }}
             >
                 <SeriesBookmarkBox color={seriesColor}>
-                    <BookmarkIcon width="1.15rem" height="1.15rem" />
+                    <BookmarkIcon />
                     <p>{seriesInfo.length}</p>
                 </SeriesBookmarkBox>
                 <SeriesTitle>{seriesTitle}</SeriesTitle>
