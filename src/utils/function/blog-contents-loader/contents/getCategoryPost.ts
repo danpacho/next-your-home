@@ -622,7 +622,7 @@ const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
     const filteredBySeriesExsistance = categoryPostMeta.reduce<
         ExtractedSeriesData[]
     >((acc, { series, color, title, postUrl }) => {
-        if (series === null) return [...acc]
+        if (series === null) return acc
         return [
             ...acc,
             {
@@ -669,15 +669,16 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
                 []
             )
         )
-        .map((elem) =>
-            elem.reduce<SeriesInfoType>(
-                (ignore, curr, _, tot) => ({
-                    seriesTitle: curr.seriesTitle,
-                    seriesInfo: tot,
+        .map((seriesInfo) =>
+            seriesInfo.reduce<SeriesInfoType>(
+                (__, { seriesTitle }, _, seriesInfo) => ({
+                    seriesTitle,
+                    seriesInfo,
                 }),
                 {} as SeriesInfoType
             )
         )
+        .filter(({ seriesInfo }) => seriesInfo.length !== 1) // only one series is not regarded as series post
 
     return seriesInfo
 }
