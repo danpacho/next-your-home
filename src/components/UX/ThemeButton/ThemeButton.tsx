@@ -1,8 +1,9 @@
-import { useEffect } from "react"
-
 import styled from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
+
+import { useEffect } from "react"
 
 import { ThemeMode } from "@typing/theme"
 
@@ -34,9 +35,13 @@ const ThemeButtonContainer = styled.button`
             `${theme.containerBackgroundColor}${theme.opacity80}`};
     }
 
+    ${(p) =>
+        iconStyle.custom({
+            strokeColor: p.theme.fontColor,
+            size: "1rem",
+            mediaSize: "0.85rem",
+        })}
     svg {
-        fill: ${(p) => p.theme.fontColor};
-        stroke: ${(p) => p.theme.fontColor};
         animation: ${animation.boxZoom} 0.6s
             cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
@@ -55,10 +60,6 @@ const ThemeButtonContainer = styled.button`
 
         &:hover {
             background-color: transparent;
-        }
-
-        svg {
-            fill: ${(p) => p.theme.fontColor};
         }
     }
 `
