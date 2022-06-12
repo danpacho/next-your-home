@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
+import { scrollBar } from "@styles/utils/scrollBar"
 
 import { GetStaticProps } from "next"
 import { NextSeo } from "next-seo"
@@ -43,10 +44,11 @@ const MainPageLayoutContainer = styled.div`
     align-items: flex-start;
     justify-content: space-between;
 
-    gap: 1rem;
+    gap: 2rem;
 
     ${media.mediumTablet} {
         width: 85%;
+        gap: 1rem;
     }
 
     ${media.widePhone} {
@@ -89,21 +91,7 @@ const LatestPostLinkContainer = styled.div`
     padding-bottom: 0.75rem;
     padding-right: 0.75rem;
 
-    ::-webkit-scrollbar {
-        width: 0.1rem;
-        padding: 0.25rem;
-    }
-
-    ::-webkit-scrollbar-thumb {
-        background-color: ${({ theme }) => theme.themePrimaryColor};
-        border-radius: 0.2rem;
-    }
-
-    ::-webkit-scrollbar-track {
-        background: ${({ theme }) =>
-            `${theme.themePrimaryColor}${theme.opacity50}`};
-        border-radius: 0.2rem;
-    }
+    ${(p) => scrollBar.basic(p.theme.themePrimaryColor)};
 
     ${media.widePhone} {
         width: inherit;

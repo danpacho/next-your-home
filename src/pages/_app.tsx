@@ -3,12 +3,13 @@ import "../styles/codeStyle.css"
 import type { AppProps } from "next/app"
 import Head from "next/head"
 
+import { Provider } from "jotai"
+
 import { GlobalStyle } from "@styles/global/GlobalStyle"
 import { PageType } from "@typing/page/type"
 
 import { DefaultSEO } from "@components/Next/SEO"
-import MainLayout from "@components/Next/Layout/Layout"
-import { Provider } from "jotai"
+import { Layout } from "@components/Next/Layout"
 
 function App({ Component, pageProps }: AppProps) {
     const pageType = Component?.displayName as PageType
@@ -25,9 +26,9 @@ function App({ Component, pageProps }: AppProps) {
             <GlobalStyle />
 
             <Provider>
-                <MainLayout pageType={pageType}>
+                <Layout pageType={pageType}>
                     <Component {...pageProps} />
-                </MainLayout>
+                </Layout>
             </Provider>
         </>
     )

@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgPrev = (props: SVGProps<SVGSVGElement>) => (
+const SvgPrev = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

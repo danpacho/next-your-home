@@ -56,32 +56,16 @@ const OrderTextStyled = styled.p<OrderTextStyle>`
     }
 
     ${media.widePhone} {
-        position: absolute;
-        bottom: 1.25rem;
-        right: 1.25rem;
+        font-size: 75px;
+        margin-right: 0.5rem;
+        text-shadow: ${({ theme, color, isLight }) =>
+            isLight
+                ? `${HOVER_SHADOW} ${color}${theme.opacity60}`
+                : `${HOVER_SHADOW} ${color}`};
+    }
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: ${(p) => p.theme.sm};
-        text-shadow: none;
-        font-weight: 900;
-
-        width: 1rem;
-        height: 1rem;
-        padding: 0.1rem;
-
-        border-radius: ${(p) => p.theme.bmd};
-
-        color: ${({ isLight, theme }) =>
-            isLight ? theme.white : theme.headerFontColor};
-
-        background-color: ${({ theme, color, isLight }) =>
-            isLight ? color : `${color}${theme.opacity40}`};
-        box-shadow: 0 0 0 0.1rem
-            ${({ color, isLight, theme }) =>
-                isLight ? `${color}${theme.opacity40}` : color};
+    ${media.custom(500)} {
+        display: none;
     }
 `
 

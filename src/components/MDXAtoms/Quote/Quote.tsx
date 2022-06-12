@@ -92,6 +92,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
     padding-right: 1rem;
 
     margin: 1rem 0;
+
     background-color: ${({ theme, isLight }) =>
         isLight ? theme.white : theme.deepDark};
 
@@ -117,9 +118,9 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
 
     width: 2rem;
     height: 2rem;
-    padding: 0.25rem;
+    padding: 1.25rem;
 
-    font-size: 1.85rem;
+    font-size: ${(p) => p.theme.xxlg};
     user-select: none;
 
     border-radius: ${(props) => props.theme.blg};
@@ -131,10 +132,11 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
     ${media.widePhone} {
         width: 1.5rem;
         height: 1.5rem;
+        padding: 1rem;
         border-width: 0.15rem;
-        border-radius: ${(props) => props.theme.bmd};
+        border-radius: ${(props) => props.theme.blg};
 
-        font-size: ${(p) => p.theme.xlg};
+        font-size: ${(p) => p.theme.lg};
     }
 `
 

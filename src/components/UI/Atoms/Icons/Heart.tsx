@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgHeart = (props: SVGProps<SVGSVGElement>) => (
+const SvgHeart = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

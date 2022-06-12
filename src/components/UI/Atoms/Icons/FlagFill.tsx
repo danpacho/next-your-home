@@ -1,6 +1,4 @@
-import { SVGProps } from "react"
-
-const SvgFlagFill = (props: SVGProps<SVGSVGElement>) => (
+const SvgFlagFill = (props: React.SVGProps<SVGSVGElement>) => (
     <svg
         width="1em"
         height="1em"

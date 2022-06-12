@@ -1,6 +1,9 @@
-import media from "@styles/utils/media"
-import React, { Dispatch, ReactElement, SetStateAction } from "react"
 import styled from "styled-components"
+import media from "@styles/utils/media"
+
+import React, { Dispatch, ReactElement, SetStateAction } from "react"
+
+import { useMouseInteraction } from "@hooks/index"
 
 const TooltipButtonArea = styled.div`
     position: relative;
@@ -63,10 +66,9 @@ function Tooltip({
 }: TooltipProps) {
     return (
         <TooltipButtonArea
-            onMouseEnter={() => setActive(true)}
-            onMouseLeave={() => setActive(false)}
-            onTouchStart={() => setActive(true)}
-            onTouchEnd={() => setActive(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setActive,
+            })}
         >
             {parentContent}
             <TooltipElement

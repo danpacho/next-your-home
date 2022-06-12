@@ -3,18 +3,25 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import { ParsedUrlQuery } from "querystring"
 
 import { PageType } from "@typing/page/type"
-import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
+import { PostMetaType } from "@typing/post/meta"
+import { SeriesInfoType } from "@typing/post/series"
 
 import {
     getAllCategoryPath,
     getLatestCategoryTagArray,
     getSpecificCategoryInfo,
 } from "@utils/function/blog-contents-loader/contents/getCategory"
-import { getSpecificCategoryLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
+import {
+    getCategorySeriesInfo,
+    getCategoryLatestPostMeta,
+    getCategoryPostMeta,
+} from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { CategoryCommonLayout } from "@components/Blog/Category"
-import { PaginationButton } from "@components/Blog/Category/CategoryCommonLayout/CategoryCommonLayout"
+import {
+    CategoryCommonLayout,
+    CategoryPaginationButton,
+} from "@components/Blog/Category"
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -30,19 +37,23 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async ({
 }) => {
     const { category } = params as ParamQuery
 
-    const latestCategoryPostArray = await getSpecificCategoryLatestPostMeta(
-        category
-    )
+    const categoryPostMeta = await getCategoryPostMeta(category)
+
     const specificCategoryInfo = await getSpecificCategoryInfo({
         category,
         useTXT: config.useTXT,
     })
-    const latestCategoryTagArray = await getLatestCategoryTagArray(category)
+    const latestCategoryPostArray = getCategoryLatestPostMeta(categoryPostMeta)
+    const latestCategoryTagArray = getLatestCategoryTagArray(
+        latestCategoryPostArray
+    )
+    const categorySeriesInfoArray = getCategorySeriesInfo(categoryPostMeta)
 
     return {
         props: {
             categoryPostArray: latestCategoryPostArray,
             categoryTagArray: latestCategoryTagArray,
+            categorySeriesInfoArray,
             ...specificCategoryInfo,
         },
     }
@@ -59,26 +70,36 @@ export const getStaticPaths: GetStaticPaths = async () => {
 interface CategoryProps extends CategoryInfoType {
     categoryPostArray: PostMetaType[]
     categoryTagArray: string[]
+    categorySeriesInfoArray: SeriesInfoType[]
 }
 
 function Category(categoryProps: CategoryProps) {
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
-        <CategoryCommonLayout {...categoryProps}>
-            <Link href={"/"} passHref>
-                <PaginationButton type="button" isLight={isLight} isLeft>
-                    <PrevIcon width="1.15rem" height="1.15rem" />
-                    <p>🏠 돌아가기</p>
-                </PaginationButton>
-            </Link>
-            <Link href={`${categoryProps.categoryUrl}/1`} passHref>
-                <PaginationButton type="button" isLight={isLight}>
-                    <p>모든 글 보기</p>
-                    <NextIcon width="1.15rem" height="1.15rem" />
-                </PaginationButton>
-            </Link>
-        </CategoryCommonLayout>
+        <CategoryCommonLayout
+            {...categoryProps}
+            prevPageComponent={
+                <Link href={"/"} passHref>
+                    <CategoryPaginationButton
+                        type="button"
+                        isLight={isLight}
+                        isLeft
+                    >
+                        <PrevIcon width="1.15rem" height="1.15rem" />
+                        <p>🏠 돌아가기</p>
+                    </CategoryPaginationButton>
+                </Link>
+            }
+            nextPageComponent={
+                <Link href={`${categoryProps.categoryUrl}/1`} passHref>
+                    <CategoryPaginationButton type="button" isLight={isLight}>
+                        <p>모든 글 보기</p>
+                        <NextIcon width="1.15rem" height="1.15rem" />
+                    </CategoryPaginationButton>
+                </Link>
+            }
+        />
     )
 }
 Category.displayName = "Category" as PageType

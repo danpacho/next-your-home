@@ -1,5 +1,6 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useMemo, useState } from "react"
 
@@ -13,8 +14,10 @@ import { IsLight } from "@typing/theme"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
+import { useMouseInteraction } from "@hooks/index"
+
 import { LeafIcon } from "@components/UI/Atoms/Icons"
-import CategoryTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { config } from "blog.config"
 import { useAtoms, _slector } from "@lib/jotai"
@@ -49,6 +52,8 @@ const CategoryPageLayoutContainer = styled.div`
     ${media.widePhone} {
         gap: 1rem;
 
+        align-items: center;
+
         width: 100%;
         min-height: unset;
     }
@@ -65,7 +70,7 @@ const CategoryPageTitle = styled.div`
     }
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.xlg};
+        font-size: ${(p) => p.theme.xxlg};
         font-weight: 800;
 
         margin-left: 0;
@@ -73,10 +78,6 @@ const CategoryPageTitle = styled.div`
         margin-bottom: 1.25rem;
 
         padding: 0.35rem 0;
-        padding-left: 0.5rem;
-
-        border-left: 0.5rem solid ${(p) => p.theme.fontColor};
-        border-radius: ${({ theme }) => `${theme.bxxsm} 0 0 ${theme.bxxsm}`};
     }
 `
 const CategoryContainer = styled.div`
@@ -164,7 +165,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     min-height: 2.5rem;
     max-width: 2.5rem;
     max-height: 2.5rem;
-    padding: 0.75rem;
+    padding: 1.75rem;
 
     background-color: ${({ color }) => color};
     box-shadow: ${({ isHover, color, theme, isLight }) =>
@@ -177,9 +178,9 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
     font-size: ${(p) => p.theme.xtitle};
 
     ${media.widePhone} {
-        width: 1.75rem;
-        height: 1.75rem;
-        padding: 0.5rem;
+        width: 1.5rem;
+        height: 1.5rem;
+        padding: 1.5rem;
 
         box-shadow: ${({ color, theme, isLight }) =>
             `0 0 0 0.3rem ${color}${
@@ -187,7 +188,7 @@ const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
             }`};
         border-radius: ${(p) => p.theme.bxlg};
 
-        font-size: 2.25rem;
+        font-size: 2rem;
     }
 `
 const CategoryInfoContainer = styled.div<{ color: string }>`
@@ -198,15 +199,7 @@ const CategoryInfoContainer = styled.div<{ color: string }>`
 
     gap: 0.5rem;
 
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-    }
-
-    &:hover {
-        svg {
-            fill: ${(p) => p.color};
-        }
-    }
+    ${(p) => iconStyle.md({ hoverColor: p.color })};
 `
 
 const CategoryDescription = styled.div`
@@ -236,8 +229,9 @@ const CategoryLink = ({
     return (
         <Link passHref href={categoryUrl}>
             <CategoryLinkContaier
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
+                {...useMouseInteraction({
+                    mouseStateSetter: setIsHover,
+                })}
                 color={categoryColor}
             >
                 <CategoryEmojiContainer
@@ -248,14 +242,14 @@ const CategoryLink = ({
                     {emoji}
                 </CategoryEmojiContainer>
                 <CategoryInfoContainer color={categoryColor}>
-                    <CategoryTitle
+                    <UnderscoreText
                         isHover={isHover}
                         fontSize="lg"
                         underscoreColor={categoryColor}
                         fontWeight={400}
                     >
                         {category} <LeafIcon width="1rem" height="1rem" />
-                    </CategoryTitle>
+                    </UnderscoreText>
 
                     <CategoryDescription>{description}</CategoryDescription>
                 </CategoryInfoContainer>

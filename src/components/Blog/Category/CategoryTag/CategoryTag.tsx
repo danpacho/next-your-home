@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
 
@@ -31,13 +32,10 @@ const backgroundStyle = {
     noneFiltered: (color: string, isLight: boolean) => css`
         background-color: ${(p) =>
             `${p.theme.containerBackgroundColor}${p.theme.opacity50}`};
-        backdrop-filter: blur(15px);
+        backdrop-filter: blur(10px);
         color: ${(p) => (isLight ? color : p.theme.gray2)};
 
-        svg {
-            fill: ${color};
-            width: 0.725rem;
-        }
+        ${iconStyle.custom({ color, size: "0.75rem" })}
 
         &:hover {
             box-shadow: 4px 4px 0px ${color}${(p) => p.theme.opacity70};
@@ -49,10 +47,8 @@ const backgroundStyle = {
 
         box-shadow: 0 0 0 2.5px ${color}${(p) => p.theme.opacity40};
 
-        svg {
-            fill: ${(p) => p.theme.white};
-            width: 0.725rem;
-        }
+        ${iconStyle.custom({ color: "white", size: "0.75rem" })}
+
         &:hover {
             box-shadow: -4px 4px 0px ${color}${(p) => p.theme.opacity30};
         }
@@ -93,10 +89,10 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
     gap: 0.15rem;
 
     width: fit-content;
-    min-width: 6rem;
+    min-width: 7.75rem;
     height: fit-content;
 
-    padding: 0.75rem;
+    padding: 0.8rem 0.25rem;
 
     border: 1.75px solid
         ${({ isFiltered, color, theme }) =>
@@ -116,16 +112,16 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
             : backgroundStyle.noneFiltered(color, isLight)}
 
     ${media.mediumTablet} {
-        min-width: 5rem;
+        min-width: 6.25rem;
 
         font-weight: 700;
         letter-spacing: 0.02rem;
     }
 
     ${media.widePhone} {
-        min-width: 2.5rem;
+        min-width: 3rem;
 
-        padding: 0.5rem;
+        padding: 0.55rem;
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 600;

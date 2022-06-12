@@ -1,3 +1,5 @@
+import { useMemo } from "react"
+
 import { shadeColor } from "@utils/function/color/shadeColor"
 import palleteOpacity from "@styles/utils/palleteOpacity"
 
@@ -18,5 +20,9 @@ const getColorSet = (color: string) => {
         },
     }
 }
+function useColorSet(color: string) {
+    const { light, dark } = useMemo(() => getColorSet(color), [color])
+    return { light, dark }
+}
 
-export default getColorSet
+export default useColorSet

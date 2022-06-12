@@ -2,7 +2,11 @@ import { cwd } from "process"
 import path from "path"
 import { readFile, readdir } from "fs/promises"
 
-import { MDXPostMetaType, PostMetaType } from "@typing/post/meta"
+import {
+    MDXPostMetaType,
+    PostMetaType,
+    PostSeriesMetaType,
+} from "@typing/post/meta"
 
 import {
     CategoryPostContentType,
@@ -39,6 +43,7 @@ import { bundleMDX } from "mdx-bundler"
 
 import { config } from "blog.config"
 import matter from "gray-matter"
+import { SeriesInfoType, SeriesInfoObjectType } from "@typing/post/series"
 
 const sortByDate = (currDate: string, nextDate: string) => {
     const nextDateNumber = Number(nextDate.replace(/\//g, ""))
@@ -198,6 +203,32 @@ const bundlePostMDX = async <MetaType>({
     return bundledResult
 }
 
+const extractSeriesInfo = (pureSeriesString: string): PostSeriesMetaType => {
+    const splitByHypen = pureSeriesString.split("-")
+
+    if (splitByHypen.length !== 2)
+        throw new BlogPropertyError({
+            propertyName: "series",
+            propertyType: "string",
+            errorNameDescription:
+                "series meta Should follow format: series: [series-title]-[series-number]",
+        })
+
+    return splitByHypen.reduce<PostSeriesMetaType>((acc, curr) => {
+        const numberedCurr = Number(curr)
+        if (!isNaN(numberedCurr)) {
+            return {
+                ...acc,
+                order: numberedCurr,
+            }
+        }
+        return {
+            ...acc,
+            seriesTitle: curr,
+        }
+    }, {} as PostSeriesMetaType)
+}
+
 const generatePostMeta = ({
     extractedMeta,
     category,
@@ -221,6 +252,9 @@ const generatePostMeta = ({
             ? splitStringByComma(extractedMeta.reference)
             : null,
         color: getValidateColor(extractedMeta.color),
+        series: extractedMeta?.series
+            ? extractSeriesInfo(extractedMeta.series)
+            : null,
     } as PostMetaType
 
     const validationMeta = Object.entries(postMeta)
@@ -264,7 +298,7 @@ const extractPostMeta = async ({
 
     const extractedMeta = matter(postSource).data as MDXPostMetaType
     const postMeta = generatePostMeta({
-        extractedMeta: extractedMeta,
+        extractedMeta,
         category,
         postFileName,
     })
@@ -580,18 +614,99 @@ const getAllPostMeta = async () =>
     await extractAllPostMeta(
         await extractAllCategoryPostFileName(await getAllCategoryName())
     )
+interface ExtractedSeriesData
+    extends Pick<PostMetaType, "color" | "postUrl" | "title"> {
+    series: PostSeriesMetaType
+}
+const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
+    const filteredBySeriesExsistance = categoryPostMeta.reduce<
+        ExtractedSeriesData[]
+    >((acc, { series, color, title, postUrl }) => {
+        if (series === null) return acc
+        return [
+            ...acc,
+            {
+                series,
+                color,
+                title,
+                postUrl,
+            },
+        ]
+    }, [])
+    const seriesTitle = [
+        ...new Set(
+            filteredBySeriesExsistance.map(
+                ({ series: { seriesTitle } }) => seriesTitle
+            )
+        ),
+    ]
+    const seriesMeta = seriesTitle.map((title) =>
+        filteredBySeriesExsistance
+            .filter(({ series: { seriesTitle } }) => seriesTitle === title)
+            .sort((a, b) => a.series.order - b.series.order)
+    )
+
+    return seriesMeta
+}
+
+const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
+    const seriesMetaArray = getCategorySeriesMetaArray(categoryPostMeta)
+    const seriesInfo = seriesMetaArray
+        .map((seriesMeta) =>
+            seriesMeta.reduce<SeriesInfoObjectType[]>(
+                (acc, curr, order, tot) => {
+                    if (curr.series === null) return acc
+                    const updatedCurr = {
+                        ...curr.series,
+                        postTitle: curr.title,
+                        color: curr.color,
+                        url: curr.postUrl,
+                        prevUrl: tot[order - 1]?.postUrl ?? null,
+                        nextUrl: tot[order + 1]?.postUrl ?? null,
+                    }
+                    return [...acc, updatedCurr]
+                },
+                []
+            )
+        )
+        .map((seriesInfo) =>
+            seriesInfo.reduce<SeriesInfoType>(
+                (__, { seriesTitle }, _, seriesInfo) => ({
+                    seriesTitle,
+                    seriesInfo,
+                }),
+                {} as SeriesInfoType
+            )
+        )
+        .filter(({ seriesInfo }) => seriesInfo.length !== 1) // only one series is not regarded as series post
+
+    return seriesInfo
+}
+
+const getCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) =>
+    transformCategorySeriesInfo(categoryPostMeta)
+
+const getSpecificCategorySeriesInfo = async (
+    postSeriesTitle: string,
+    categoryPostMeta: PostMetaType[]
+) => {
+    const seriesInfo = (await getCategorySeriesInfo(categoryPostMeta)).find(
+        ({ seriesTitle }) => seriesTitle === postSeriesTitle
+    )
+    return seriesInfo ?? null
+}
 
 /**
  * @param categoryName 특정 카테고리
- * @returns 특정 카테고리의 포스트 `meta`
+ * @returns 특정 카테고리의 포스트 `meta`p
  */
-const getCategoryPostMeta = async (
-    categoryName: string
-): Promise<PostMetaType[]> =>
-    (await getAllPostMeta())
-        .filter(({ category }) => category === categoryName)
-        .map(addPostOrderToMeta)
-
+const getCategoryPostMeta = memo(
+    config.useMemo,
+    async (categoryName: string): Promise<PostMetaType[]> =>
+        (await getAllPostMeta())
+            .filter(({ category }) => category === categoryName)
+            .map(addPostOrderToMeta)
+)
 /**
  * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
@@ -610,14 +725,9 @@ const getLatestPostMeta = memo(
  * @returns 특정 카테고리 최신 포스트 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조
  */
-const getSpecificCategoryLatestPostMeta = memo(
-    config.useMemo,
-    async (categoryName: string): Promise<PostMetaType[]> =>
-        (await getCategoryPostMeta(categoryName)).slice(
-            0,
-            config.numberOfLatestPost
-        )
-)
+const getCategoryLatestPostMeta = (
+    categoryPostMeta: PostMetaType[]
+): PostMetaType[] => categoryPostMeta.slice(0, config.numberOfLatestPost)
 
 export {
     //* /category
@@ -631,7 +741,10 @@ export {
     //* meta - total | category | category of latest
     getLatestPostMeta,
     getCategoryPostMeta,
-    getSpecificCategoryLatestPostMeta,
+    getCategoryLatestPostMeta,
     //* post link url
     getAllCategoryPostContentPath,
+    //* series
+    getCategorySeriesInfo,
+    getSpecificCategorySeriesInfo,
 }

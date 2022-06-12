@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useState } from "react"
 
@@ -12,7 +13,7 @@ import { PostControllerType as PostControllerPreviewProps } from "@typing/post/c
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 
-import useTimeout from "@hooks/useTimeout"
+import { useTimeout, useMouseInteraction } from "@hooks/index"
 
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
@@ -20,11 +21,11 @@ import { useAtoms, _slector } from "@lib/jotai"
 
 const ControllerContainer = styled.div<IsHover>`
     transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
-    width: ${({ isHover }) => (isHover ? "29rem" : "2.75rem")};
-    min-width: 2.75rem;
+    width: ${({ isHover }) => (isHover ? "30rem" : "4rem")};
+    min-width: 4rem;
 
     position: fixed;
-    bottom: 1.75rem;
+    bottom: 1.5rem;
     left: 50%;
     transform: translate(-50%, -1.5rem);
 
@@ -40,10 +41,10 @@ const ControllerContainer = styled.div<IsHover>`
     box-shadow: ${shadow.shadowXxlg};
 
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
-    border-radius: 50rem;
+    border-radius: 10rem;
 
     ${media.widePhone} {
-        width: 83.5%;
+        width: 85%;
         padding: 0.5rem;
         gap: 0.25rem;
 
@@ -92,9 +93,7 @@ const ControllerButton = styled.button<ControllerButtonType & IsLight>`
         isLight ? theme.gray1 : theme.trueDeepDark};
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
 
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-    }
+    ${iconStyle.md()}
 
     &:hover {
         background-color: ${({ theme, isLight }) =>
@@ -199,8 +198,9 @@ function PostController({
     return (
         <ControllerContainer
             isHover={isHover}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setIsHover,
+            })}
         >
             <Link href={prevPost.postUrl} passHref scroll={false}>
                 <InfoContainer isHover={isHover}>

@@ -7,8 +7,13 @@ export interface MDXPostMetaType {
     tags: string
     postpone?: string
     reference?: string
+    series?: string
 }
 
+export interface PostSeriesMetaType {
+    seriesTitle: string
+    order: number
+}
 export interface PostMetaType {
     title: string
     preview: string
@@ -22,4 +27,5 @@ export interface PostMetaType {
     postpone: boolean
     reference: string[] | null
     postOrder: number
+    series: PostSeriesMetaType | null
 }

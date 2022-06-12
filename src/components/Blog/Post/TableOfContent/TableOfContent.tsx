@@ -5,6 +5,9 @@ import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
+
+import { useMouseInteraction } from "@hooks/index"
+
 import { useAtoms, _atom } from "@lib/jotai"
 
 const TOCContainer = styled.div`
@@ -53,17 +56,12 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     border-color: ${({ theme, isFocusing }) =>
         isFocusing && theme.themePrimaryColor};
 
-    height: ${(p) => (p.isFocusing ? "fit-content" : "1.25rem")};
-    min-height: 1.25rem;
+    height: ${(p) => (p.isFocusing ? "fit-content" : "2.5rem")};
+    min-height: 2.5rem;
 
     &:hover {
         background-color: ${({ theme }) => `${theme.containerBackgroundColor}`};
         border-radius: ${(p) => `0 ${p.theme.bmd} ${p.theme.bmd} 0`};
-    }
-
-    p {
-        //* text-center
-        margin-top: 0.125rem;
     }
 
     animation-delay: ${({ index }) => index * 85}ms;
@@ -235,8 +233,9 @@ function TableOfContent<RefT extends HTMLElement>({
 
     return (
         <TOCContainer
-            onMouseEnter={() => setIsFocusing(true)}
-            onMouseLeave={() => setIsFocusing(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setIsFocusing,
+            })}
         >
             {headerInfoArray.map(({ title, onClick, children }, index) => {
                 const isTitleFocusing = focusTitleState === title

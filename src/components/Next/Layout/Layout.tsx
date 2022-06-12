@@ -1,14 +1,13 @@
 import styled, { ThemeProvider } from "styled-components"
-
-import Main from "./Main/Main"
-import NavBar from "./NavBar/NavBar"
-
 import media from "@styles/utils/media"
 import { darkTheme, lightTheme } from "@styles/utils/CustomeTheme"
 
 import { PageType } from "@typing/page/type"
 
-import Background from "@components/Blog/Background/Background"
+import { Background } from "@components/Blog/Background"
+import Main from "./Main/Main"
+import NavBar from "./NavBar/NavBar"
+
 import { useAtoms, _slector } from "@lib/jotai"
 
 const Layout = styled.main`
