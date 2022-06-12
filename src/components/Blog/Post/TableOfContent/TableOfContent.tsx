@@ -6,6 +6,8 @@ import media from "@styles/utils/media"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 
+import { useMouseInteraction } from "@hooks/index"
+
 import { useAtoms, _atom } from "@lib/jotai"
 
 const TOCContainer = styled.div`
@@ -231,8 +233,9 @@ function TableOfContent<RefT extends HTMLElement>({
 
     return (
         <TOCContainer
-            onMouseEnter={() => setIsFocusing(true)}
-            onMouseLeave={() => setIsFocusing(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setIsFocusing,
+            })}
         >
             {headerInfoArray.map(({ title, onClick, children }, index) => {
                 const isTitleFocusing = focusTitleState === title

@@ -1,17 +1,21 @@
-import Link from "next/link"
-import { useState } from "react"
-
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
 
+import { useState } from "react"
+
+import Link from "next/link"
+
 import { PostMetaType } from "@typing/post/meta"
 
-import PostTitle from "@components/UI/Atoms/UnderscoreText/UnderscoreText"
+import { sliceTextByMaxLength } from "@utils/function/text"
+
+import { useMouseInteraction } from "@hooks/index"
+
 import PostMeta from "./PostMeta/PostMeta"
 import PostOrderText from "./PostOrderText/PostOrderText"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
+import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 const POST_LINK_BORDER_WIDTH = "0.1rem"
 const postLinkContainerStyle = {
@@ -148,18 +152,19 @@ function PostLink({
                 order={order}
                 isFirst={isFirst}
                 isLast={isLast}
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
+                {...useMouseInteraction({
+                    mouseStateSetter: setIsHover,
+                })}
             >
                 <ContentContainer>
-                    <PostTitle
+                    <UnderscoreText
                         isHover={isHover}
                         fontSize="lg"
                         fontWeight={400}
                         underscoreColor={color}
                     >
                         {sliceTextByMaxLength(title, 25)}
-                    </PostTitle>
+                    </UnderscoreText>
                     <PostPreview>
                         {sliceTextByMaxLength(preview, 50)}
                     </PostPreview>

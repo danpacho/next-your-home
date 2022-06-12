@@ -2,6 +2,7 @@ import styled, { css } from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 import shadow from "@styles/utils/shadow"
+import { iconStyle } from "@styles/utils/icon.style"
 
 import { useState } from "react"
 
@@ -12,7 +13,7 @@ import { PostControllerType as PostControllerPreviewProps } from "@typing/post/c
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 
-import useTimeout from "@hooks/useTimeout"
+import { useTimeout, useMouseInteraction } from "@hooks/index"
 
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
@@ -92,9 +93,7 @@ const ControllerButton = styled.button<ControllerButtonType & IsLight>`
         isLight ? theme.gray1 : theme.trueDeepDark};
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
 
-    svg {
-        fill: ${(p) => p.theme.fontColor};
-    }
+    ${iconStyle.md()}
 
     &:hover {
         background-color: ${({ theme, isLight }) =>
@@ -199,8 +198,9 @@ function PostController({
     return (
         <ControllerContainer
             isHover={isHover}
-            onMouseEnter={() => setIsHover(true)}
-            onMouseLeave={() => setIsHover(false)}
+            {...useMouseInteraction({
+                mouseStateSetter: setIsHover,
+            })}
         >
             <Link href={prevPost.postUrl} passHref scroll={false}>
                 <InfoContainer isHover={isHover}>
