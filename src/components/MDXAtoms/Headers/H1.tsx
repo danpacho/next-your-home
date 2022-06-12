@@ -1,14 +1,14 @@
-import { useCallback, useRef, useState } from "react"
-
 import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { useElementObserver, useScrollToElement } from "@hooks/index"
-
-import LineScroll from "@components/UX/LineScroll/LineScroll"
-import Tooltip from "@components/UX/Tooltip/Tooltip"
+import { useCallback, useRef, useState } from "react"
 
 import { IsLight } from "@typing/theme"
+
+import { useElementObserver, useScrollToElement } from "@hooks/index"
+
+import { LineScroll } from "@components/UX/LineScroll"
+import { Tooltip } from "@components/UX/Tooltip"
 
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { useRef, useState } from "react"
 
-import useTimeout from "@hooks/useTimeout"
+import { useTimeout } from "@hooks/index"
 
 import { CodeCopyButton } from "./Code/CodeCopyButton"
 
