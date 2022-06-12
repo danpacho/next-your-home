@@ -49,7 +49,7 @@ const HeaderContainer = styled.div<IsLight>`
 `
 const Title = styled.header`
     font-size: ${(p) => p.theme.xtitle};
-    font-weight: 500;
+    font-weight: 400;
     color: ${(p) => p.theme.headerFontColor};
 
     margin: 2rem 0;
