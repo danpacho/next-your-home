@@ -1,7 +1,6 @@
 import { DefaultTheme } from "styled-components"
 
 import pallete, { Pallete } from "./pallete"
-import width, { Width } from "./width"
 import fontSize, { FontSize } from "./font"
 import borderRadius, { BorderRadius } from "./borderRadius"
 import shadow, { Shadow } from "./shadow"
@@ -11,14 +10,12 @@ import palleteOpacity, { PalleteOpacity } from "./palleteOpacity"
 export interface CommonThemeProperty
     extends Pallete,
         PalleteOpacity,
-        Width,
         FontSize,
         BorderRadius,
         Shadow,
         ZIndexes {}
 
 const commonThemeProperty: CommonThemeProperty = {
-    ...width,
     ...pallete,
     ...fontSize,
     ...borderRadius,
@@ -39,6 +36,7 @@ const lightTheme: DefaultTheme = {
     descriptionFontColor: pallete.gray6,
     tagFontColor: pallete.gray1,
     themeOpacity: 0.2,
+    themeHexOpacity: palleteOpacity.opacity20,
     themePrimaryColor: pallete.primary1,
 }
 
@@ -51,7 +49,8 @@ const darkTheme: DefaultTheme = {
     headerFontColor: pallete.gray1,
     descriptionFontColor: pallete.gray4,
     tagFontColor: pallete.trueDeepDark,
-    themeOpacity: 0.6,
+    themeOpacity: 0.5,
+    themeHexOpacity: palleteOpacity.opacity50,
     themePrimaryColor: pallete.primary3,
 }
 
