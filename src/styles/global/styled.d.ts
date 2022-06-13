@@ -10,6 +10,7 @@ declare module "styled-components" {
         descriptionFontColor: string
         tagFontColor: string
         themeOpacity: number
+        themeHexOpacity: string
         themePrimaryColor: string
     }
 }
