@@ -131,11 +131,11 @@ function CategoryLink({
                         fontSize: 2.5,
                     }}
                     mobile={{
-                        padding: 1.5,
-                        size: 1.5,
-                        borderRadius: 0.75,
-                        borderWidth: 0.35,
-                        fontSize: 2.3,
+                        padding: 0,
+                        size: 4,
+                        borderRadius: 2,
+                        borderWidth: 0.3,
+                        fontSize: 2,
                     }}
                 >
                     {emoji}
