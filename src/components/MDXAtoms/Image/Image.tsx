@@ -1,7 +1,6 @@
 import React from "react"
 import NextImage from "next/image"
 import styled from "styled-components"
-import shadow from "@styles/utils/shadow"
 
 interface ImageProps {
     src: string
@@ -16,11 +15,11 @@ const ImageWrap = styled.span`
 
     & > span {
         transition: box-shadow ease-out 0.5s;
-        box-shadow: ${shadow.shadowMd};
+        box-shadow: ${(p) => p.theme.shadowMd};
         border-radius: ${(p) => p.theme.bmd};
 
         &:hover {
-            box-shadow: ${shadow.shadowLg};
+            box-shadow: ${(p) => p.theme.shadowLg};
         }
     }
 `

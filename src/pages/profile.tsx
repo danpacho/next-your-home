@@ -1,4 +1,3 @@
-import shadow from "@styles/utils/shadow"
 import styled from "styled-components"
 import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
@@ -249,7 +248,7 @@ const ProfileButtonContainer = styled.button<IsLight>`
 
     &:hover {
         background-color: ${(p) => p.theme.headerFontColor};
-        box-shadow: ${shadow.shadowSm};
+        box-shadow: ${(p) => p.theme.shadowSm};
     }
 
     &:active {

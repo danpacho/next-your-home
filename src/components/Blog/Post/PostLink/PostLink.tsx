@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 
 import { useState } from "react"
 
@@ -69,14 +68,14 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     background: ${(p) =>
         `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
 
-    box-shadow: ${shadow.shadowSm};
+    box-shadow: ${(p) => p.theme.shadowSm};
 
     cursor: pointer;
     user-select: none;
 
     &:hover {
         box-shadow: 5px 3.5px 0 0
-            ${({ color, theme }) => `${color}${theme.opacity50}`};
+            ${({ color, theme }) => `${color}${theme.themeHexOpacity}`};
         background: ${(p) => p.theme.containerBackgroundColor};
     }
 

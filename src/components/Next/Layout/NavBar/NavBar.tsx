@@ -1,6 +1,5 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 
 import Link from "next/link"
 
@@ -41,7 +40,7 @@ const NavContainer = styled.nav`
         border: 1.5px solid ${({ theme }) => theme.themePrimaryColor};
         border-radius: ${(p) => p.theme.bmd};
 
-        box-shadow: ${shadow.shadowXxsm};
+        box-shadow: ${(p) => p.theme.shadowXxsm};
 
         z-index: ${(p) => p.theme.zContnet};
     }

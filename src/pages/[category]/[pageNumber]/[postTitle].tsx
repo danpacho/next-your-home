@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 
 import { useRef } from "react"
@@ -90,7 +89,7 @@ const PostContainer = styled.div<IsLight>`
             : `${theme.containerBackgroundColor}${theme.opacity90}`};
 
     box-shadow: ${(p) =>
-        p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
+        p.isLight ? p.theme.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
 
     border-radius: ${(p) => p.theme.blg};
 

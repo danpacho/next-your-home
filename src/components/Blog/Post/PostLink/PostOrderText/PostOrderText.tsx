@@ -1,5 +1,4 @@
 import styled, { css } from "styled-components"
-import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
@@ -37,7 +36,7 @@ const OrderTextStyled = styled.p<OrderTextStyle>`
             color: ${isHover ? color : theme.trueDeepDark};
             text-shadow: ${isHover
                 ? `${HOVER_SHADOW} ${color}${theme.opacity20}`
-                : `${DEFAULT_SHADOW} ${color}${theme.opacity60}`};
+                : `${DEFAULT_SHADOW} ${color}${theme.opacity40}`};
         `}
 
     ${({ isLight, theme, isHover, color }) =>
@@ -45,11 +44,10 @@ const OrderTextStyled = styled.p<OrderTextStyle>`
         css`
             color: ${isHover ? theme.white : theme.gray2};
             text-shadow: ${isHover
-                ? `${HOVER_SHADOW} ${color}${theme.opacity60}`
+                ? `${HOVER_SHADOW} ${color}${theme.opacity40}`
                 : `${DEFAULT_SHADOW} ${color}`};
         `}
 
-    animation: ${animation.fadeIn} 0.5s ease-in;
 
     ${media.mediumTablet} {
         font-size: 90px;
@@ -60,7 +58,7 @@ const OrderTextStyled = styled.p<OrderTextStyle>`
         margin-right: 0.5rem;
         text-shadow: ${({ theme, color, isLight }) =>
             isLight
-                ? `${HOVER_SHADOW} ${color}${theme.opacity60}`
+                ? `${HOVER_SHADOW} ${color}${theme.opacity40}`
                 : `${HOVER_SHADOW} ${color}`};
     }
 

@@ -6,7 +6,6 @@ import styled, {
 } from "styled-components"
 
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 
 import { IsLight } from "@typing/theme"
 
@@ -102,7 +101,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
     border-bottom-width: 0.15rem;
     border-style: solid;
 
-    box-shadow: ${shadow.shadowXxsm};
+    box-shadow: ${(p) => p.theme.shadowXxsm};
 
     p {
         font-weight: 500;

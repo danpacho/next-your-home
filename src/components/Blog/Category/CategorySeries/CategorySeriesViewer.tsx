@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
@@ -48,12 +47,12 @@ const ViewerControllButton = styled.button<{ disabled: boolean }>`
     padding: 0.45rem;
 
     background-color: ${({ theme }) =>
-        `${theme.containerBackgroundColor}${theme.opacity50}`};
+        `${theme.containerBackgroundColor}${theme.themeHexOpacity}`};
 
     border: 0.1rem solid transparent;
     border-radius: ${(p) => p.theme.bsm};
 
-    box-shadow: ${shadow.shadowXxsm};
+    box-shadow: ${(p) => p.theme.shadowXxsm};
 
     ${iconStyle.md()};
 

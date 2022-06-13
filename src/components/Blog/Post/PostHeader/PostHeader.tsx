@@ -1,6 +1,5 @@
 import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 
 import Link from "next/link"
 import React from "react"
@@ -36,7 +35,7 @@ const HeaderContainer = styled.div<IsLight>`
             }`};
 
         box-shadow: ${(p) =>
-            p.isLight ? shadow.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
+            p.isLight ? p.theme.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
         backdrop-filter: blur(25px);
 
         border-radius: ${(p) =>

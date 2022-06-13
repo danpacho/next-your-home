@@ -1,5 +1,4 @@
 import styled from "styled-components"
-import shadow from "@styles/utils/shadow"
 import media from "@styles/utils/media"
 import { scrollBar } from "@styles/utils/scrollBar"
 import { iconStyle } from "@styles/utils/icon.style"
@@ -41,7 +40,7 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
     border-color: ${(p) => (p.isOpen ? p.color : "transparent")};
     border-radius: ${(p) => p.theme.bsm};
 
-    box-shadow: ${shadow.shadowXxsm};
+    box-shadow: ${(p) => p.theme.shadowXxsm};
 
     cursor: pointer;
 

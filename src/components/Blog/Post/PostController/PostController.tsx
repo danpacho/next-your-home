@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 import { iconStyle } from "@styles/utils/icon.style"
 
 import { useState } from "react"
@@ -38,7 +37,7 @@ const ControllerContainer = styled.div<IsHover>`
 
     padding: 0.65rem;
 
-    box-shadow: ${shadow.shadowXxlg};
+    box-shadow: ${(p) => p.theme.shadowXxlg};
 
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
     border-radius: 10rem;
