@@ -1,6 +1,6 @@
 import styled from "styled-components"
 
-import { useRef, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 
 import { useTimeout } from "@hooks/index"
 
@@ -31,14 +31,18 @@ function Pre(props: any) {
         time: 1000,
     })
 
+    const showButton = useCallback(() => {
+        setIsHover(true)
+        setIsCodeCopyVisible(true)
+    }, [])
+
     return (
         <CodeWrapper
             ref={codeRef}
-            onMouseEnter={() => {
-                setIsHover(true)
-                setIsCodeCopyVisible(true)
-            }}
+            onMouseEnter={showButton}
+            onTouchStart={showButton}
             onMouseLeave={() => setIsHover(false)}
+            onTouchEnd={() => setIsHover(false)}
         >
             <CodeParentContainer {...props} />
             {codeRef.current?.textContent && (
