@@ -9,6 +9,7 @@ function useMouseInteraction({
         onMouseEnter: () => mouseStateSetter(true),
         onMouseLeave: () => mouseStateSetter(false),
         onTouchStart: () => mouseStateSetter(true),
+        onTouchEnd: () => mouseStateSetter(false),
     }
 }
 
