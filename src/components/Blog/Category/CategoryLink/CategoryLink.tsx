@@ -1,7 +1,5 @@
 import styled from "styled-components"
-import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
-import shadow from "@styles/utils/shadow"
 
 import { useMemo, useState } from "react"
 import Link from "next/link"
@@ -14,6 +12,7 @@ import { shadeColor } from "@utils/function/color/shadeColor"
 
 import { useMouseInteraction } from "@hooks/index"
 
+import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -42,7 +41,7 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     background: ${(p) =>
         `${p.theme.containerBackgroundColor}${p.theme.opacity80}`};
 
-    box-shadow: ${shadow.shadowSm};
+    box-shadow: ${(p) => p.theme.shadowSm};
 
     user-select: none;
 
@@ -50,7 +49,7 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
 
     &:hover {
         box-shadow: 5px 3.5px 0 0
-            ${({ color, theme }) => `${color}${theme.opacity50}`};
+            ${({ color, theme }) => `${color}${theme.themeHexOpacity}`};
         background: ${(p) => p.theme.containerBackgroundColor};
     }
 
@@ -65,40 +64,6 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
         &:hover {
             box-shadow: none;
         }
-    }
-`
-const CategoryEmojiContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
-    transition: box-shadow cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: ${({ color }) => color};
-
-    width: 5rem;
-    height: 5rem;
-
-    box-shadow: ${({ isHover, color, theme, isLight }) =>
-        `0 0 0 ${isHover ? "1.1rem" : "0.45rem"} ${color}${
-            isLight ? theme.opacity20 : theme.opacity50
-        }`};
-
-    border-radius: 2.5rem;
-    font-size: 2.65rem;
-
-    animation: ${animation.fadeIn} 0.5s ease-in;
-
-    ${media.widePhone} {
-        font-size: 2.35rem;
-        width: 4rem;
-        height: 4rem;
-
-        border-radius: 2rem;
-        box-shadow: ${({ color, theme, isLight }) =>
-            `0 0 0 0.35rem ${color}${
-                isLight ? theme.opacity20 : theme.opacity50
-            }`};
     }
 `
 
@@ -154,13 +119,27 @@ function CategoryLink({
                 color={isLight ? color : darkModeColor}
                 isLight={isLight}
             >
-                <CategoryEmojiContainer
-                    isLight={isLight}
+                <EmojiContainer
                     color={isLight ? color : darkModeColor}
                     isHover={isHover}
+                    desk={{
+                        padding: 0,
+                        size: 5,
+                        borderRadius: 2.5,
+                        borderWidth: 0.45,
+                        borderWidthOnHover: 1.1,
+                        fontSize: 2.5,
+                    }}
+                    mobile={{
+                        padding: 1.5,
+                        size: 1.5,
+                        borderRadius: 0.75,
+                        borderWidth: 0.35,
+                        fontSize: 2.3,
+                    }}
                 >
                     {emoji}
-                </CategoryEmojiContainer>
+                </EmojiContainer>
 
                 <CategoryInfoContainer>
                     <UnderscoreText

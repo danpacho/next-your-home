@@ -9,18 +9,19 @@ import { PageType } from "@typing/page/type"
 import { GetStaticProps } from "next"
 
 import { CategoryInfoType } from "@typing/category/info"
-import { IsLight } from "@typing/theme"
 
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
 import { useMouseInteraction } from "@hooks/index"
 
-import { LeafIcon } from "@components/UI/Atoms/Icons"
+import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
+import { LeafIcon } from "@components/UI/Atoms/Icons"
+
+import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
-import { useAtoms, _slector } from "@lib/jotai"
 
 export const getStaticProps: GetStaticProps<CategoryProps> = async () => {
     const allCategoryInfo = await getAllCategoryInfo({
@@ -150,47 +151,6 @@ const CategoryLinkContaier = styled.div<{ color: string }>`
     }
 `
 
-interface EmojiStyle {
-    color: string
-    isHover: boolean
-}
-const CategoryEmojiContainer = styled.div<EmojiStyle & IsLight>`
-    transition: box-shadow cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.4s;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    min-width: 2.5rem;
-    min-height: 2.5rem;
-    max-width: 2.5rem;
-    max-height: 2.5rem;
-    padding: 1.75rem;
-
-    background-color: ${({ color }) => color};
-    box-shadow: ${({ isHover, color, theme, isLight }) =>
-        `0 0 0 ${isHover ? ".65rem" : "0.35rem"} ${color}${
-            isLight ? theme.opacity20 : theme.opacity50
-        }`};
-
-    border-radius: ${(p) => p.theme.bxxlg};
-
-    font-size: ${(p) => p.theme.xtitle};
-
-    ${media.widePhone} {
-        width: 1.5rem;
-        height: 1.5rem;
-        padding: 1.5rem;
-
-        box-shadow: ${({ color, theme, isLight }) =>
-            `0 0 0 0.3rem ${color}${
-                isLight ? theme.opacity20 : theme.opacity50
-            }`};
-        border-radius: ${(p) => p.theme.bxlg};
-
-        font-size: 2rem;
-    }
-`
 const CategoryInfoContainer = styled.div<{ color: string }>`
     display: flex;
     flex-direction: column;
@@ -234,13 +194,25 @@ const CategoryLink = ({
                 })}
                 color={categoryColor}
             >
-                <CategoryEmojiContainer
+                <EmojiContainer
                     color={categoryColor}
                     isHover={isHover}
-                    isLight={isLight}
+                    desk={{
+                        padding: 1.75,
+                        size: 2.5,
+                        borderRadius: 1,
+                        borderWidth: 0.25,
+                        borderWidthOnHover: 0.65,
+                    }}
+                    mobile={{
+                        padding: 1.5,
+                        size: 1.5,
+                        borderRadius: 0.75,
+                        borderWidth: 0.2,
+                    }}
                 >
                     {emoji}
-                </CategoryEmojiContainer>
+                </EmojiContainer>
                 <CategoryInfoContainer color={categoryColor}>
                     <UnderscoreText
                         isHover={isHover}
