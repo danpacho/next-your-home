@@ -209,6 +209,7 @@ const CategoryLink = ({
                         size: 1.5,
                         borderRadius: 0.75,
                         borderWidth: 0.2,
+                        fontSize: 1.8,
                     }}
                 >
                     {emoji}
