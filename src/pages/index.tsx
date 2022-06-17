@@ -174,11 +174,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
 
     return (
         <MainPageLayoutContainer>
-            <NextSeo
-                title={config.siteName}
-                description={config.subtitle}
-                canonical={config.url}
-            />
+            <NextSeo title={config.siteName} description={config.subtitle} />
             <CategoryContainer>
                 <ContainerTitle isLight={isLight}>Top Category</ContainerTitle>
                 <CategoryLinkContainer>

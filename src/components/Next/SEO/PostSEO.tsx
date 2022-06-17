@@ -20,7 +20,6 @@ function PostSEO({
             <NextSeo
                 title={`${config.siteName} ${category}, ${title}`}
                 description={preview}
-                canonical={fullPostUrl}
                 openGraph={{
                     type: "article",
                     title,
