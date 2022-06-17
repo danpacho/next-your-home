@@ -27,12 +27,10 @@ const H1Styled = styled.h1<IsLight>`
         font-size: ${(p) => p.theme.lg};
         font-weight: 700;
 
-        padding: 0;
-        padding-left: 0.4rem;
-        margin: 2rem 0;
-
-        border-left: 0.2rem solid ${(props) => props.theme.gray4};
-        border-radius: 1px;
+        ::before {
+            content: "#";
+            margin-right: 0.25rem;
+        }
     }
 `
 

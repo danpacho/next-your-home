@@ -28,10 +28,9 @@ const NavContainer = styled.nav`
     }
 
     ${media.widePhone} {
-        position: sticky;
-        top: 1rem;
-
+        position: static;
         height: fit-content;
+        margin-top: 1.5rem;
 
         background-color: ${(p) =>
             `${p.theme.containerBackgroundColor}${p.theme.opacity70}`};

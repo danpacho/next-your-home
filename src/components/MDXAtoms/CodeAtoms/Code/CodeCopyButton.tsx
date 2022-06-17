@@ -74,6 +74,10 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
         padding-top: 0;
+
+        &:active {
+            transform: none;
+        }
     }
 `
 
