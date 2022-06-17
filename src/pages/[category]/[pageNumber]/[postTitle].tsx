@@ -12,7 +12,7 @@ import { PageType } from "@typing/page/type"
 import { SeriesInfoType } from "@typing/post/series"
 import { SpecificPostContentType } from "@typing/post/content"
 
-import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
+import { useSetFocusingPageColor, useTableOfContent } from "@hooks/index"
 
 import {
     getSpecificCategoryPostContent,
@@ -24,9 +24,10 @@ import {
 import { PostSEO } from "@components/Next/SEO"
 import {
     PostController,
-    PostTableOfContent,
     PostFooter,
     PostHeader,
+    PostTableOfContentDesktop,
+    PostTableOfContentMobile,
 } from "@components/Blog/Post"
 import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 import MDXBundler from "@components/MDXBundler"
@@ -148,24 +149,6 @@ const PostContentContainer = styled.div`
     }
 `
 
-const TableOfContentPositionContainer = styled.div`
-    position: sticky;
-    top: 6rem;
-
-    min-width: 17.5rem;
-    margin-right: 2rem;
-
-    margin-top: 6rem;
-    ${media.smallScreen} {
-        min-width: unset;
-        margin-right: 0.5rem;
-        flex: 1;
-    }
-
-    ${media.mediumTablet} {
-        display: none;
-    }
-`
 interface PostSeriesInfo {
     postSeriesInfo: SeriesInfoType | null
 }
@@ -180,6 +163,10 @@ function Post({
 
     const documentRef = useRef<HTMLDivElement>(null)
 
+    const { tableOfContents: headerInfoArray } = useTableOfContent({
+        documentRef,
+        updateTrigger: postMeta.title,
+    })
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
@@ -189,23 +176,21 @@ function Post({
 
                 <PostContentContainer ref={documentRef}>
                     <PostHeader {...postMeta} postSeriesInfo={postSeriesInfo} />
+                    <PostTableOfContentMobile
+                        headerInfoArray={headerInfoArray}
+                    />
                     <MDXBundler mdxSource={postSource} />
                     <PostFooter {...postMeta} />
                 </PostContentContainer>
 
-                <TableOfContentPositionContainer>
-                    <PostTableOfContent
-                        updateTrigger={postMeta.title}
-                        documentRef={documentRef}
-                    />
-                </TableOfContentPositionContainer>
-            </PostContainer>
+                <PostTableOfContentDesktop headerInfoArray={headerInfoArray} />
 
-            <PostController
-                categoryURL={`/${postMeta.category}`}
-                nextPost={postController.nextPost}
-                prevPost={postController.prevPost}
-            />
+                <PostController
+                    categoryURL={`/${postMeta.category}`}
+                    nextPost={postController.nextPost}
+                    prevPost={postController.prevPost}
+                />
+            </PostContainer>
 
             {config.useKatex && <KatexStyleLoader />}
         </>
