@@ -102,6 +102,7 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                 >
                     <CategoryPaginationButton
                         type="button"
+                        aria-label={`to the previous page: ${pageNumber - 1}`}
                         isLight={isLight}
                         isLeft
                     >
@@ -120,7 +121,11 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                     }
                     passHref
                 >
-                    <CategoryPaginationButton type="button" isLight={isLight}>
+                    <CategoryPaginationButton
+                        type="button"
+                        aria-label={`to the next page: ${pageNumber + 1}`}
+                        isLight={isLight}
+                    >
                         {isLast && isFirst && `텅💨 비었군요`}
                         {isLast && !isFirst && "마지막이에요! 축하드립니다🎉"}
                         {!isLast && `${pageNumber + 1} 페이지로`}

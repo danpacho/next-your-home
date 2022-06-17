@@ -83,6 +83,7 @@ function Category(categoryProps: CategoryProps) {
                 <Link href={"/"} passHref>
                     <CategoryPaginationButton
                         type="button"
+                        aria-label="back to home"
                         isLight={isLight}
                         isLeft
                     >
@@ -93,7 +94,11 @@ function Category(categoryProps: CategoryProps) {
             }
             nextPageComponent={
                 <Link href={`${categoryProps.categoryUrl}/1`} passHref>
-                    <CategoryPaginationButton type="button" isLight={isLight}>
+                    <CategoryPaginationButton
+                        type="button"
+                        aria-label={`read all post about ${categoryProps.category}`}
+                        isLight={isLight}
+                    >
                         <p>모든 글 보기</p>
                         <NextIcon width="1.15rem" height="1.15rem" />
                     </CategoryPaginationButton>
