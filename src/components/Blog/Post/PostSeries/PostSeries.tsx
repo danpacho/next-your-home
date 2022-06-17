@@ -215,7 +215,7 @@ interface CircleStyle {
 }
 
 const BackgroundCircle = styled.div<CircleStyle>`
-    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     position: absolute;
     top: ${(p) => p.pos?.top ?? "unset"};
