@@ -77,11 +77,11 @@ const ViewerControllButton = styled.button<{ disabled: boolean }>`
 const SeriesPageNumber = styled.div`
     color: ${(p) => p.theme.headerFontColor};
     font-size: ${(p) => p.theme.xlg};
-    font-weight: 800;
+    font-weight: 700;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.lg};
-        font-weight: 700;
+        font-weight: 600;
     }
 `
 
@@ -113,36 +113,41 @@ function CategorySeriesViewer({
     const lastPageNumber = Math.ceil(
         categorySeriesInfoArray.length / SERIES_NUMBER_PER_VIEW
     )
+    const isViewControllerNeeded = lastPageNumber !== 1
 
     return (
         <SeriesLinkContainer>
             <SeriesHeaderContainer>
                 <SeriesPageNumber>
-                    <p>Series {pageNumber}</p>
+                    <p>Series {isViewControllerNeeded && pageNumber}</p>
                 </SeriesPageNumber>
 
-                <ViwerControllerContainer>
-                    <ViewerControllButton
-                        type="button"
-                        onClick={() =>
-                            setPageNumber((num) => pageUpdate.prev(num))
-                        }
-                        disabled={pageNumber === 1}
-                    >
-                        <PrevIcon />
-                    </ViewerControllButton>
-                    <ViewerControllButton
-                        onClick={() =>
-                            setPageNumber((num) =>
-                                pageUpdate.next(num, lastPageNumber)
-                            )
-                        }
-                        disabled={pageNumber === lastPageNumber}
-                        type="button"
-                    >
-                        <NextIcon />
-                    </ViewerControllButton>
-                </ViwerControllerContainer>
+                {isViewControllerNeeded && (
+                    <ViwerControllerContainer>
+                        <ViewerControllButton
+                            type="button"
+                            aria-label="previous series page"
+                            onClick={() =>
+                                setPageNumber((num) => pageUpdate.prev(num))
+                            }
+                            disabled={pageNumber === 1}
+                        >
+                            <PrevIcon />
+                        </ViewerControllButton>
+                        <ViewerControllButton
+                            type="button"
+                            aria-label="previous series page"
+                            onClick={() =>
+                                setPageNumber((num) =>
+                                    pageUpdate.next(num, lastPageNumber)
+                                )
+                            }
+                            disabled={pageNumber === lastPageNumber}
+                        >
+                            <NextIcon />
+                        </ViewerControllButton>
+                    </ViwerControllerContainer>
+                )}
             </SeriesHeaderContainer>
 
             <SeriesViewer>

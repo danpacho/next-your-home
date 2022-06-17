@@ -50,6 +50,8 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
     }
 
     ${media.widePhone} {
+        gap: 0.65rem;
+
         padding: 0.5rem;
         backdrop-filter: unset;
     }
@@ -169,6 +171,8 @@ const AccordianContainer = styled.div<SeriesLinkContainerStyle>`
     ${media.widePhone} {
         max-height: unset;
         overflow-y: auto;
+
+        gap: 0.35rem;
     }
 `
 
@@ -186,6 +190,8 @@ const SERIES_ORDER_TEXT = [
     "Ⅺ",
     "Ⅻ",
 ]
+const SERIES_AUTO_CLOSE_TIME = 4000
+
 function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
     const [isOpen, setIsOpen] = useState(false)
     const [seriesViewOver, setSeriesViewOver] = useState(false)
@@ -195,7 +201,7 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
     useTimeout({
         timeoutCondition: seriesViewOver,
         timeoutFunction: () => setIsOpen(false),
-        time: 4000,
+        time: SERIES_AUTO_CLOSE_TIME,
     })
 
     return (
