@@ -3,8 +3,6 @@ import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
-import { useState } from "react"
-
 import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
@@ -12,21 +10,21 @@ import { PostControllerType as PostControllerPreviewProps } from "@typing/post/c
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 
-import { useTimeout, useMouseInteraction } from "@hooks/index"
+import { useScrollDirection } from "@hooks/index"
 
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
-const ControllerContainer = styled.div<IsHover>`
-    transition: width cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.35s;
-    width: ${({ isHover }) => (isHover ? "30rem" : "4rem")};
+const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
+    transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 0.6s;
+    width: 30rem;
     min-width: 4rem;
 
     position: fixed;
     bottom: 1.5rem;
     left: 50%;
-    transform: translate(-50%, -1.5rem);
+    transform: translate(-50%, ${(p) => (p.isScrollDown ? "8rem" : "-1.5rem")});
 
     display: flex;
     flex-direction: row;
@@ -50,9 +48,9 @@ const ControllerContainer = styled.div<IsHover>`
         justify-content: space-between;
         background-color: ${(p) => p.theme.containerBackgroundColor};
 
-        bottom: 0.75rem;
+        bottom: 0.5rem;
         left: 50%;
-        transform: translate(-50%, -0.75rem);
+        transform: translate(-50%, ${(p) => (p.isScrollDown ? "5rem" : 0)});
     }
 `
 
@@ -72,13 +70,7 @@ interface ControllerButtonType {
     buttonType: keyof typeof ControllerButtonStyle
 }
 
-interface IsHover {
-    isHover: boolean
-}
-
 const ControllerButton = styled.button<ControllerButtonType & IsLight>`
-    transition: all ease-out 0.25s;
-
     display: flex;
     align-items: center;
     justify-content: center;
@@ -109,8 +101,8 @@ const ControllerButton = styled.button<ControllerButtonType & IsLight>`
         min-height: 2rem;
     }
 `
-const InfoContainer = styled.div<IsHover>`
-    display: ${({ isHover }) => (isHover ? "flex" : "none")};
+const InfoContainer = styled.div`
+    display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -180,29 +172,20 @@ function PostController({
     nextPost,
     categoryURL,
 }: PostControllerProps) {
-    const [isHover, setIsHover] = useState(true)
-
     const prevPostTitle = sliceTextByMaxLength(prevPost.title, TITLE_MAX_LENGTH)
     const nextPostTitle = sliceTextByMaxLength(nextPost.title, TITLE_MAX_LENGTH)
 
-    useTimeout({
-        timeoutCondition: true,
-        timeoutFunction: () => setIsHover(false),
-        time: 3000,
-        once: true,
+    const { isScrollDown } = useScrollDirection({
+        throttleTime: 500,
+        responsivenessPixel: 2.5,
     })
 
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
-        <ControllerContainer
-            isHover={isHover}
-            {...useMouseInteraction({
-                mouseStateSetter: setIsHover,
-            })}
-        >
+        <ControllerContainer isScrollDown={isScrollDown}>
             <Link href={prevPost.postUrl} passHref scroll={false}>
-                <InfoContainer isHover={isHover}>
+                <InfoContainer>
                     <ControllerButton
                         buttonType="prev"
                         type="button"
@@ -229,7 +212,7 @@ function PostController({
             </Link>
 
             <Link href={nextPost.postUrl} passHref>
-                <InfoContainer isHover={isHover}>
+                <InfoContainer>
                     <PostTitleText isLight={isLight}>
                         {nextPostTitle}
                     </PostTitleText>
