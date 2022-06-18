@@ -9,7 +9,7 @@ import Link from "next/link"
 
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useMouseInteraction, useTimeout } from "@hooks/index"
+import { useTimeout } from "@hooks/index"
 
 import { BookmarkIcon } from "@components/UI/Atoms/Icons"
 
@@ -212,9 +212,8 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                 setIsOpen(true)
                 setSeriesViewOver(false)
             }}
-            {...useMouseInteraction({
-                mouseStateSetter: setSeriesViewOver,
-            })}
+            onMouseLeave={() => setSeriesViewOver(true)}
+            onMouseEnter={() => setSeriesViewOver(false)}
         >
             <SeriesLinkInfoContainer
                 color={seriesColor}
