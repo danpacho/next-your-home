@@ -163,7 +163,7 @@ function Post({
 
     const documentRef = useRef<HTMLDivElement>(null)
 
-    const { tableOfContents: headerInfoArray } = useTableOfContent({
+    const { tableOfContents } = useTableOfContent({
         documentRef,
         updateTrigger: postMeta.title,
     })
@@ -177,13 +177,13 @@ function Post({
                 <PostContentContainer ref={documentRef}>
                     <PostHeader {...postMeta} postSeriesInfo={postSeriesInfo} />
                     <PostTableOfContentMobile
-                        headerInfoArray={headerInfoArray}
+                        tableOfContents={tableOfContents}
                     />
                     <MDXBundler mdxSource={postSource} />
                     <PostFooter {...postMeta} />
                 </PostContentContainer>
 
-                <PostTableOfContentDesktop headerInfoArray={headerInfoArray} />
+                <PostTableOfContentDesktop tableOfContents={tableOfContents} />
 
                 <PostController
                     categoryURL={`/${postMeta.category}`}

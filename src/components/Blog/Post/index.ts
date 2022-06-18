@@ -1,6 +1,7 @@
 export { default as PostLink } from "./PostLink/PostLink"
 export { default as PostController } from "./PostController/PostController"
-export { default as PostTableOfContent } from "./TableOfContent/TableOfContent"
+export { default as PostTableOfContentDesktop } from "./TableOfContent/TableOfContentDesktop"
+export { default as PostTableOfContentMobile } from "./TableOfContent/TableOfContentMobile"
 export { default as PostSeries } from "./PostSeries/PostSeries"
 export { default as PostHeader } from "./PostHeader/PostHeader"
 export { default as PostFooter } from "./PostFooter/PostFooter"
