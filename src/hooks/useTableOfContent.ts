@@ -4,7 +4,10 @@ type HeaderType = "H1" | "H2"
 
 interface HeaderInfo {
     title: string
-    onClick: () => void
+    onClick: (
+        e?: React.MouseEvent<HTMLDivElement, MouseEvent>,
+        behavior?: ScrollOptions["behavior"]
+    ) => void
     type: HeaderType
 }
 interface H2Children extends Omit<HeaderInfo, "type"> {}
@@ -27,9 +30,12 @@ function getTableOfContents<RefT extends HTMLElement>({
                   const headerInfo: HeaderInfo = {
                       title,
                       type: item.nodeName as HeaderType,
-                      onClick: () =>
+                      onClick: (
+                          _?: React.MouseEvent<HTMLDivElement, MouseEvent>,
+                          behavior?: ScrollOptions["behavior"]
+                      ) =>
                           item.scrollIntoView({
-                              behavior: "auto",
+                              behavior: behavior ?? "auto",
                           }),
                   }
                   return [...acc, headerInfo]
