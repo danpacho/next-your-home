@@ -35,8 +35,8 @@ const H1Styled = styled.h1<IsLight>`
 `
 
 const HEADER_UPDATE_CONSTANTS = {
-    top: 150,
-    bottom: -150,
+    top: 120,
+    bottom: -120,
     rootMarginTop: "-20px",
     rootMarginBottom: "0px",
 }
