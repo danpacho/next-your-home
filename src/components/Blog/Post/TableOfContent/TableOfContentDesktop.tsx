@@ -122,14 +122,15 @@ const TITLE_MAX_LENGTH = {
     h2: 15,
 }
 
-function TableOfContent({
-    headerInfoArray,
+function TableOfContentDesktop({
+    tableOfContents,
 }: {
-    headerInfoArray: TableOfContents[]
+    tableOfContents: TableOfContents[]
 }) {
     const { focusTitleState } = useAtoms(_atom("focusTitle"))
 
     const [isFocusing, setIsFocusing] = useState(false)
+
     return (
         <TableOfContentPositionContainer>
             <TOCContainer
@@ -137,46 +138,56 @@ function TableOfContent({
                     mouseStateSetter: setIsFocusing,
                 })}
             >
-                {headerInfoArray.map(({ title, onClick, children }, index) => {
-                    const isTitleFocusing = focusTitleState === title
-                    return (
-                        <H1Link
-                            index={index}
-                            isFocusing={isTitleFocusing || isFocusing}
-                            onClick={onClick}
-                            key={title}
-                        >
-                            <p>
-                                🍞{" "}
-                                {sliceTextByMaxLength(
-                                    title,
-                                    TITLE_MAX_LENGTH.h1
+                {tableOfContents.map(
+                    ({ title, onClick: moveToH1, children }, index) => {
+                        const isTitleFocusing = focusTitleState === title
+                        return (
+                            <H1Link
+                                index={index}
+                                isFocusing={isTitleFocusing || isFocusing}
+                                onClick={moveToH1}
+                                key={title}
+                            >
+                                <p>
+                                    🍞{" "}
+                                    {sliceTextByMaxLength(
+                                        title,
+                                        TITLE_MAX_LENGTH.h1
+                                    )}
+                                </p>
+                                {children?.map(
+                                    ({
+                                        title: childTitle,
+                                        onClick: moveToH2,
+                                    }) => (
+                                        <H2Link
+                                            isFocusing={
+                                                isTitleFocusing || isFocusing
+                                            }
+                                            onClick={(e) => {
+                                                e.stopPropagation()
+                                                moveToH1(e)
+                                                moveToH2(e, "smooth")
+                                            }}
+                                            key={childTitle}
+                                        >
+                                            <p>
+                                                🥛{" "}
+                                                {sliceTextByMaxLength(
+                                                    childTitle,
+                                                    TITLE_MAX_LENGTH.h2
+                                                )}
+                                            </p>
+                                        </H2Link>
+                                    )
                                 )}
-                            </p>
-                            {children?.map(({ title: childTitle, onClick }) => (
-                                <H2Link
-                                    isFocusing={isTitleFocusing || isFocusing}
-                                    onClick={(e) => {
-                                        e.stopPropagation()
-                                        onClick()
-                                    }}
-                                    key={childTitle}
-                                >
-                                    <p>
-                                        🥛{" "}
-                                        {sliceTextByMaxLength(
-                                            childTitle,
-                                            TITLE_MAX_LENGTH.h2
-                                        )}
-                                    </p>
-                                </H2Link>
-                            ))}
-                        </H1Link>
-                    )
-                })}
+                            </H1Link>
+                        )
+                    }
+                )}
             </TOCContainer>
         </TableOfContentPositionContainer>
     )
 }
 
-export default TableOfContent
+export default TableOfContentDesktop
