@@ -66,8 +66,9 @@ const H1 = (props: H1Props) => {
         [focusTitleSetState]
     )
 
-    const {} = useElementObserver<HTMLHeadingElement>({
+    useElementObserver<HTMLHeadingElement>({
         ref: headerRef,
+        customeCallback: updateFocusTitle,
         options: {
             root: null,
             rootMarginTop: HEADER_UPDATE_CONSTANTS.rootMarginTop,
@@ -76,7 +77,6 @@ const H1 = (props: H1Props) => {
             rootMarginRight: "0px",
             threshold: [0, 1],
         },
-        customeCallback: updateFocusTitle,
     })
 
     const { scrollToElement } = useScrollToElement({

@@ -51,7 +51,7 @@ function useElementObserver<ElementType extends HTMLElement>({
         if (ref.current) {
             observeRef = ref.current
             observer = new IntersectionObserver(
-                customeCallback ? customeCallback : intersectionCallback,
+                customeCallback ?? intersectionCallback,
                 {
                     root,
                     rootMargin,
