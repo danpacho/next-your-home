@@ -37,7 +37,7 @@ const lightTheme: DefaultTheme = {
     tagFontColor: pallete.gray1,
     themeOpacity: 0.2,
     themeHexOpacity: palleteOpacity.opacity20,
-    themePrimaryColor: pallete.primary1,
+    themePrimaryColor: pallete.primary4,
 }
 
 const darkTheme: DefaultTheme = {
@@ -51,7 +51,7 @@ const darkTheme: DefaultTheme = {
     tagFontColor: pallete.trueDeepDark,
     themeOpacity: 0.5,
     themeHexOpacity: palleteOpacity.opacity50,
-    themePrimaryColor: pallete.primary3,
+    themePrimaryColor: pallete.primary2,
 }
 
 export { lightTheme, darkTheme, commonThemeProperty }

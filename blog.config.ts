@@ -9,10 +9,10 @@ export interface UserPalleteType {
     primary4: string
 }
 const userPallete: UserPalleteType = {
-    primary1: "#776350",
-    primary2: "#A68A68",
-    primary3: "#D9BD9C",
-    primary4: "#F2E2CE",
+    primary1: "#F2E2CE",
+    primary2: "#D9BD9C",
+    primary3: "#A68A68",
+    primary4: "#776350",
 }
 
 export interface AuthorInfoType {
