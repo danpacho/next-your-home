@@ -13,7 +13,7 @@ const H2Styled = styled.h2`
     padding: 0.35rem 0;
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.md};
+        font-size: 1.125rem;
     }
 
     cursor: pointer;
