@@ -13,7 +13,7 @@ import { CategoryInfoType } from "@typing/category/info"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useMouseInteraction } from "@hooks/index"
+import { useMouseInteraction, useSetFocusingPageColor } from "@hooks/index"
 
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
@@ -99,6 +99,8 @@ interface CategoryProps {
     allCategory: CategoryInfoType[]
 }
 function Category({ allCategory }: CategoryProps) {
+    useSetFocusingPageColor(config.userPallete.primary4)
+
     return (
         <CategoryPageLayoutContainer>
             <CategoryPageTitle>All Category 🔎</CategoryPageTitle>

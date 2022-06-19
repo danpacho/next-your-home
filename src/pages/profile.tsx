@@ -182,7 +182,8 @@ interface ProfileProps {
 }
 
 function Profile({ profileSource }: ProfileProps) {
-    useSetFocusingPageColor(config.userPallete.primary2)
+    useSetFocusingPageColor(config.userPallete.primary4)
+
     return (
         <ProfileContainer>
             <ProfileInfoContainer>
