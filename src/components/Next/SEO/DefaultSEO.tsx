@@ -5,7 +5,6 @@ import { config } from "blog.config"
 const DEFAULT_SEO_PROPS: DefaultSeoProps = {
     title: config.siteName,
     description: config.subtitle,
-    canonical: config.url,
     openGraph: {
         type: "website",
         locale: config.language,

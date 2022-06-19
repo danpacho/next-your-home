@@ -15,6 +15,7 @@ function CategorySEO({
     return (
         <NextSeo
             title={`${config.siteName} ${category}${emoji}`}
+            canonical={fullCategoryUrl}
             description={description}
             openGraph={{
                 url: fullCategoryUrl,
