@@ -18,7 +18,6 @@ const CodeParentContainer = styled.pre`
     padding: 2rem 0 1rem 0;
 
     border-radius: ${(p) => p.theme.bmd};
-    border: 1px solid ${({ theme }) => `${theme.blue5}${theme.opacity20}`};
 `
 
 function Pre(props: any) {

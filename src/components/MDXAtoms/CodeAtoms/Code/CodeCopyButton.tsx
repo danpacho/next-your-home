@@ -58,10 +58,10 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     background-color: ${(p) => p.theme.gray10};
 
     font-size: ${(props) => props.theme.sm};
-    font-weight: 800;
+    font-weight: 600;
 
     border-radius: ${({ theme }) => theme.bsm};
-    border: 1.75px solid ${(props) => props.theme.blue6};
+    border: 0.1rem solid ${(props) => props.theme.blue6};
 
     &:hover {
         border-color: ${(props) => props.theme.blue5};
