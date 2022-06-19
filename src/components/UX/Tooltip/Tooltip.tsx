@@ -26,10 +26,10 @@ interface TooltipElementPostion {
 
 const TooltipElement = styled.div<TooltipElementPostion>`
     position: absolute;
-    top: ${({ top }) => top}px;
-    bottom: ${({ bottom }) => bottom}px;
-    left: ${({ left }) => left}px;
-    right: ${({ right }) => right}px;
+    top: ${({ top }) => (top ? `${top}px` : "unset")};
+    bottom: ${({ bottom }) => (bottom ? `${bottom}px` : "unset")};
+    left: ${({ left }) => (left ? `${left}px` : "unset")};
+    right: ${({ right }) => (right ? `${right}px` : "unset")};
 
     width: fit-content;
     height: fit-content;
