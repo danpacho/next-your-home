@@ -66,6 +66,7 @@ interface ConfigType extends BlogInfoType {
     useKatex: boolean
     useMemo: boolean
     userPallete: UserPalleteType
+    useMobileTOC: boolean
     author: AuthorInfoType
     postPerCategoryPage: number
     numberOfLatestPost: number
@@ -75,6 +76,7 @@ const config: ConfigType = {
     useTXT: false, // description file format
     useKatex: true, // katex option
     useMemo: true, // memo imporoves dev speed
+    useMobileTOC: true, // TOC on mobile
     userPallete, // personal pallete
     postPerCategoryPage: 4,
     numberOfLatestPost: 5,

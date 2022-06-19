@@ -176,9 +176,11 @@ function Post({
 
                 <PostContentContainer ref={documentRef}>
                     <PostHeader {...postMeta} postSeriesInfo={postSeriesInfo} />
-                    <PostTableOfContentMobile
-                        tableOfContents={tableOfContents}
-                    />
+                    {config.useMobileTOC && (
+                        <PostTableOfContentMobile
+                            tableOfContents={tableOfContents}
+                        />
+                    )}
                     <MDXBundler mdxSource={postSource} />
                     <PostFooter {...postMeta} />
                 </PostContentContainer>
