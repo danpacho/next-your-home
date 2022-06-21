@@ -15,6 +15,8 @@ import {
     SpecificPostContentType,
 } from "@typing/post/content"
 
+import { SeriesInfoType, SeriesInfoObjectType } from "@typing/post/series"
+
 import { POST_DIRECTORY_NAME, MAC_OS_FILE_EXCEPTION } from "@constants/index"
 
 import {
@@ -33,6 +35,8 @@ import {
     BlogPropertyError,
 } from "@utils/function/blog-error-handler/blogError"
 
+import matter from "gray-matter"
+
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
 
@@ -42,8 +46,6 @@ import rehypePrism from "rehype-prism-plus"
 import { bundleMDX } from "mdx-bundler"
 
 import { config } from "blog.config"
-import matter from "gray-matter"
-import { SeriesInfoType, SeriesInfoObjectType } from "@typing/post/series"
 
 const sortByDate = (currDate: string, nextDate: string) => {
     const nextDateNumber = Number(nextDate.replace(/\//g, ""))
@@ -61,15 +63,15 @@ const splitStringByComma = (text: string) =>
  * @param tags `[post-file-name].mdx`에서 추출된 `tags` meta
  * @returns transform `tags` to `string[]`
  */
-const getTagArray = (tags: string): string[] => {
+const getTagArray = (tags: string, postFileName: string): string[] => {
     if (!tags)
         throw new BlogPropertyError({
             errorNameDescription: "Error Occured while extracting post meta",
             propertyName: "tags",
             propertyType: "string",
+            errorDirectory: postFileName,
             propertyDescription:
                 "tags: tag1, tag2, tag3, ... be sure to divide tag with , ",
-            customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
         })
 
     return splitStringByComma(tags)
@@ -203,30 +205,40 @@ const bundlePostMDX = async <MetaType>({
     return bundledResult
 }
 
-const extractSeriesInfo = (pureSeriesString: string): PostSeriesMetaType => {
+const getSeriesInfo = (
+    pureSeriesString: string,
+    postFileName: string
+): PostSeriesMetaType => {
     const splitByHypen = pureSeriesString.split("-")
 
     if (splitByHypen.length !== 2)
         throw new BlogPropertyError({
             propertyName: "series",
-            propertyType: "string",
-            errorNameDescription:
-                "series meta Should follow format: series: [series-title]-[series-number]",
+            propertyType: "Object",
+            errorDirectory: postFileName,
+            errorNameDescription: "series meta type error",
+            propertyDescription: `your input -> series: ${pureSeriesString}`,
+            customeErrorMessage:
+                "Should follow format: < series: [series_title: string]-[series_order: number] >",
+        })
+    const [seriesTitle, order] = splitByHypen
+
+    if (isNaN(Number(order)))
+        throw new BlogPropertyError({
+            propertyName: "series",
+            propertyType: "Object",
+            errorDirectory: postFileName,
+            errorNameDescription: "series meta type error",
+            customeErrorMessage:
+                "Should follow format: < series: [series_title: string]-[series_order: number] >",
+            propertyDescription: `series: ${seriesTitle}-${order}`,
         })
 
-    return splitByHypen.reduce<PostSeriesMetaType>((acc, curr) => {
-        const numberedCurr = Number(curr)
-        if (!isNaN(numberedCurr)) {
-            return {
-                ...acc,
-                order: numberedCurr,
-            }
-        }
-        return {
-            ...acc,
-            seriesTitle: curr,
-        }
-    }, {} as PostSeriesMetaType)
+    const postSeriesMeta: PostSeriesMetaType = {
+        seriesTitle,
+        order: Number(order),
+    }
+    return postSeriesMeta
 }
 
 const generatePostMeta = ({
@@ -246,14 +258,14 @@ const generatePostMeta = ({
         postFileName,
         postUrl: "",
         postOrder: 0,
-        tags: getTagArray(extractedMeta.tags),
+        tags: getTagArray(extractedMeta.tags, postFileName),
         postpone: false,
         reference: extractedMeta?.reference
             ? splitStringByComma(extractedMeta.reference)
             : null,
         color: getValidateColor(extractedMeta.color),
         series: extractedMeta?.series
-            ? extractSeriesInfo(extractedMeta.series)
+            ? getSeriesInfo(extractedMeta.series, postFileName)
             : null,
     } as PostMetaType
 
@@ -269,9 +281,10 @@ const generatePostMeta = ({
 
     if (validationMeta.length !== 0)
         throw new BlogPropertyError({
-            errorNameDescription: "extracting post meta",
             propertyName: validationMeta[0].metaKey,
             propertyType: "string",
+            errorDirectory: postFileName,
+            errorNameDescription: "extracting post meta",
             errorPropertyValue: validationMeta[0].metaValue,
             customeErrorMessage: "[  ⬇️ post meta info ⬇️  ]",
         })
