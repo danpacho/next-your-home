@@ -7,7 +7,7 @@ function BaseSEO() {
             <meta charSet="utf-8" />
 
             {/* favicon ICON meta */}
-            <link href="/favicon.svg" type="image/svg" />
+            <link rel="icon" href={config.author.faviconUrl} />
 
             {/* site basic info meta */}
             <meta
