@@ -72,7 +72,7 @@ const getValidateColor = (color: string) => {
                 "input color is Not proper rgba or rgb or HEX format",
             errorPropertyValue: color,
             customeErrorMessage:
-                "rgba or rgb or HEX format And Use HEX, if you want fast💨 building process.",
+                "rgba or rgb or HEX format And Use HEX, if you want faster💨 building process.",
         })
     else return transformRGBAToHEX(validationResult.rgbaArray)
 }
