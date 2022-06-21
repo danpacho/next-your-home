@@ -17,13 +17,14 @@ const userPallete: UserPalleteType = {
 
 export interface AuthorInfoType {
     name: string
-    bannerImageUrl: string
-    avatarImageUrl: string
     currentGoal: string
     currentState: string
     contacts: {
         [key in ContactPlatformType]: string
     }
+    avatarImageUrl: string
+    bannerImageUrl: string
+    faviconUrl: string
 }
 const authorInfo: AuthorInfoType = {
     name: "your name",
@@ -33,13 +34,14 @@ const authorInfo: AuthorInfoType = {
         email: getAuthorContactHref("email", "your@email.com"),
         github: getAuthorContactHref("github", "your@github"),
         youtube: getAuthorContactHref("youtube", "your@youtube"),
-        facebook: "",
-        instagram: "",
-        linkedin: "",
-        twitter: "",
+        facebook: getAuthorContactHref("facebook", "your@facebook"),
+        instagram: getAuthorContactHref("instagram", "your@instagram"),
+        linkedin: getAuthorContactHref("linkedin", "your@linedin"),
+        twitter: getAuthorContactHref("twitter", "your@twitter")
     },
     avatarImageUrl: "/logo.png",
     bannerImageUrl: "/banner.png",
+    faviconUrl: "/favicon.svg",
 }
 
 interface BlogInfoType {
