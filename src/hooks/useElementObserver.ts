@@ -44,7 +44,7 @@ function useElementObserver<ElementType extends HTMLElement>({
     )
 
     useEffect(() => {
-        let observeRef: Element | null = null
+        let observeRef: ElementType | null = null
         let observer: IntersectionObserver | null = null
         if (!ref.current) return
 
