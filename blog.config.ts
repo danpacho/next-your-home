@@ -26,20 +26,20 @@ export interface AuthorInfoType {
     }
 }
 const authorInfo: AuthorInfoType = {
-    name: "danpacho",
-    bannerImageUrl: "/banner.png",
-    avatarImageUrl: "/logo.png",
-    currentState: "frontend-physics student",
-    currentGoal: "make people move",
+    name: "your name",
+    currentState: "your current state",
+    currentGoal: "your current goal",
     contacts: {
-        email: getAuthorContactHref("email", "danpa725@cau.ac.kr"),
-        github: getAuthorContactHref("github", "danpa725"),
-        youtube: getAuthorContactHref("youtube", "danpa725"),
+        email: getAuthorContactHref("email", "your@email.com"),
+        github: getAuthorContactHref("github", "your@github"),
+        youtube: getAuthorContactHref("youtube", "your@youtube"),
         facebook: "",
         instagram: "",
         linkedin: "",
         twitter: "",
     },
+    avatarImageUrl: "/logo.png",
+    bannerImageUrl: "/banner.png",
 }
 
 interface BlogInfoType {
@@ -50,16 +50,16 @@ interface BlogInfoType {
     language: string
 }
 const blogInfo: BlogInfoType = {
-    url: "https://danpacho.vercel.app",
-    siteName: "danpacho blog",
-    subtitle: "learn✏️ and create🛠 beautiful things",
+    url: "your DEPLOY URL",
+    siteName: "your site name",
+    subtitle: "your site subtitle",
     copyright: `${
         authorInfo.name
     }© All rights reserved ${new Date().getFullYear()}.`,
     language: "ko",
 }
 
-const blogContentsDirectoryName = "blog-contents"
+const blogContentsDirectoryName = "blog-contents" as const
 interface ConfigType extends BlogInfoType {
     blogContentsDirectoryName: `${typeof blogContentsDirectoryName}`
     useTXT: boolean
@@ -72,12 +72,12 @@ interface ConfigType extends BlogInfoType {
     numberOfLatestPost: number
 }
 const config: ConfigType = {
-    blogContentsDirectoryName: "blog-contents", // blog contents directory name
-    useTXT: false, // description file format
-    useKatex: true, // katex option
-    useMemo: true, // memo imporoves dev speed
-    useMobileTOC: true, // TOC on mobile
-    userPallete, // personal pallete
+    useTXT: false,                  // description file format
+    useKatex: true,                 // katex option
+    useMemo: true,                  // memo improves dev speed
+    useMobileTOC: true,             // TOC on mobile
+    blogContentsDirectoryName,      // blog contents directory name
+    userPallete,                    // personal pallete
     postPerCategoryPage: 4,
     numberOfLatestPost: 5,
     author: {
