@@ -692,7 +692,12 @@ const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
             )
         )
         .filter(({ seriesInfo }) => seriesInfo.length !== 1) // only one series is not regarded as series post
-
+        .sort(
+            (
+                { seriesTitle: firstSeriesTitle },
+                { seriesTitle: secondSeriesTitle }
+            ) => firstSeriesTitle.localeCompare(secondSeriesTitle, ["ko", "en"])
+        )
     return seriesInfo
 }
 
