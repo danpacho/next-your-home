@@ -127,7 +127,9 @@ function TableOfContentDesktop({
 }: {
     tableOfContents: TableOfContents[]
 }) {
-    const { focusTitleState } = useAtoms(_atom("focusTitle"))
+    const { focusTitleState, focusTitleSetState } = useAtoms(
+        _atom("focusTitle")
+    )
 
     const [isFocusing, setIsFocusing] = useState(false)
 
@@ -166,8 +168,8 @@ function TableOfContentDesktop({
                                             }
                                             onClick={(e) => {
                                                 e.stopPropagation()
-                                                moveToH1(e)
-                                                moveToH2(e, "smooth")
+                                                focusTitleSetState(title)
+                                                moveToH2()
                                             }}
                                             key={childTitle}
                                         >
