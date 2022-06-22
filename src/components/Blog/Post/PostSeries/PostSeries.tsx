@@ -215,7 +215,7 @@ interface CircleStyle {
 }
 
 const BackgroundCircle = styled.div<CircleStyle>`
-    transition: transform 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     position: absolute;
     top: ${(p) => p.pos?.top ?? "unset"};
@@ -333,7 +333,7 @@ function PostSeries({
                 startColor={isLight ? light.middle : dark.middle}
                 endColor={isLight ? light.low : dark.low}
                 gradientDegree={30}
-                transformationOnHover="scaleX(2) scaleY(1.5)"
+                transformationOnHover="scaleX(1.75) scaleY(1.5)"
             />
             <BackgroundCircle
                 isHover={isHover}
@@ -345,7 +345,7 @@ function PostSeries({
                 gradientDegree={135}
                 startColor={isLight ? light.low : dark.low}
                 endColor={isLight ? light.high : dark.high}
-                transformationOnHover="scale(3)"
+                transformationOnHover="scale(2.5)"
             />
         </PostSeriesContainer>
     )
