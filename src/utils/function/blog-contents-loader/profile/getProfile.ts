@@ -5,7 +5,8 @@ import { readFile } from "fs/promises"
 import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
-} from "@utils/function/blog-error-handler/blogError"
+} from "@utils/function/blog-error-handler"
+
 import { bundleMDX } from "mdx-bundler"
 
 const getProfileSource = async () => {

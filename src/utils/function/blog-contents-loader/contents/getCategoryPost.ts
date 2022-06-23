@@ -33,7 +33,7 @@ import {
     BlogErrorAdditionalInfo,
     BlogFileExtractionError,
     BlogPropertyError,
-} from "@utils/function/blog-error-handler/blogError"
+} from "@utils/function/blog-error-handler"
 
 import matter from "gray-matter"
 
