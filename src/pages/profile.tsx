@@ -13,6 +13,7 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/contents/
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
 import MDXBundler from "@components/MDXBundler"
+
 import {
     FacebookIcon,
     GithubIcon,
@@ -169,7 +170,13 @@ const ProfileTextContainer = styled.div`
 `
 
 const Copyright = styled.div`
-    padding: 2rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 3.5rem;
+    margin-bottom: 2rem;
+
     color: ${(p) => p.theme.descriptionFontColor};
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
@@ -244,17 +251,17 @@ const ProfileButtonContainer = styled.button<IsLight>`
     ${(p) =>
         iconStyle.md({
             color: p.theme.headerFontColor,
-            hoverColor: p.theme.containerBackgroundColor,
         })};
 
     &:hover {
-        background-color: ${(p) => p.theme.headerFontColor};
-        box-shadow: ${(p) => p.theme.shadowSm};
+        transform: scale(1.1);
+        box-shadow: none;
     }
 
     &:active {
         transform: translateY(2px);
     }
+
     ${media.widePhone} {
         padding: 0.35rem;
         border-radius: ${(p) => p.theme.bmd};
@@ -308,12 +315,14 @@ const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
             {Object.entries(contacts).map((contact) => {
                 const key = contact[0] as keyof typeof contacts
                 const contactInfo = contact[1]
+
+                const isContactInfoExsist = contactInfo !== ""
                 return (
-                    contactInfo !== "" && (
+                    isContactInfoExsist && (
                         <ProfileContactLink key={key} href={contactInfo}>
                             <ProfileButtonContainer
                                 type="button"
-                                aria-label={`${key} link`}
+                                aria-label={`${config.author.name} ${key} link`}
                                 isLight={isLight}
                             >
                                 {PROFILE_BUTTON("1.1rem", "1.1rem")[key]}
