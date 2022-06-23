@@ -17,7 +17,7 @@
         -   mdx bundling component
         -   The _`mdx bundler`_ allows you to **import** and use `pure react components` from an mdx file!
             <p style={{color: "tomato", fontWeight: 800}}>(🚫 Don't import external style lib like styled-components...)</p>
-3.  **`Next`** js core component
+3.  **`NextJs`** core component
     -   **layout**
         -   common layout component for pages
     -   **seo**
