@@ -8,13 +8,12 @@ const pallete = {
     white: "#FFFFFF",
 
     backgroundDark: "#25242B",
-    //* 검정색
+
     dark: "#3A3A3A",
     middleDark: "#2A2A2A",
     deepDark: "#212121",
     trueDeepDark: "#1E1E1E",
 
-    //* 회색
     gray1: "#F9FAFB",
     gray2: "#F3F4F6",
     gray3: "#E5E7EB",
@@ -26,7 +25,6 @@ const pallete = {
     gray9: "#1F2937",
     gray10: "#111827",
 
-    //* 빨간색
     red1: "#FEE2E2",
     red2: "#FEE2E2",
     red3: "#FCA5A5",
@@ -34,7 +32,6 @@ const pallete = {
     red5: "#EF4444",
     red6: "#DC2626",
 
-    //* 파란색
     blue1: "#EFF6FF",
     blue2: "#DBEAFE",
     blue3: "#BFDBFE",
@@ -46,7 +43,6 @@ const pallete = {
     blue9: "#1E40AF",
     blue10: "#1E3A8A",
 
-    //* 초록색
     teal1: "#CCFBF1",
     teal2: "#C3FAE8",
     teal3: "#96F2D7",
@@ -58,7 +54,6 @@ const pallete = {
     teal9: "#099268",
     teal10: "#087F5B",
 
-    //* 노란색
     yellow1: "#FFFDD0",
     yellow2: "#FCF4A3",
     yellow3: "#F8E473",
@@ -68,7 +63,6 @@ const pallete = {
     yellow7: "#FFC30B",
     yellow8: "#F9A602",
 
-    //* 보라색
     purple1: "#f5f3ff",
     purple2: "#ede9fe",
     purple3: "#ddd6fe",
@@ -80,7 +74,6 @@ const pallete = {
     purple9: "#5b21b6",
     purple10: "#4c1d95",
 
-    //* 유저 주요색
     ...config.userPallete,
 }
 
