@@ -14,22 +14,22 @@ const BACKGROUND_SVG: {
 } = {
     Category: (color, isLight) =>
         isLight ? (
-            <CategoryBackground mainColor={color} isLight={isLight} />
+            <CategoryBackground _color={color} isLight={isLight} />
         ) : (
-            <HomeBackground mainColor={color} isLight={isLight} />
+            <HomeBackground _color={color} isLight={isLight} />
         ),
 
     Post: (color, isLight) => (
-        <PostBackground mainColor={color} isLight={isLight} />
+        <PostBackground _color={color} isLight={isLight} />
     ),
     Home: (color, isLight) => (
-        <HomeBackground mainColor={color} isLight={isLight} />
+        <HomeBackground _color={color} isLight={isLight} />
     ),
     ErrorPage: (color, isLight) => (
-        <HomeBackground mainColor={color} isLight={isLight} />
+        <HomeBackground _color={color} isLight={isLight} />
     ),
     Profile: (color, isLight) => (
-        <ProfileBackground isLight={isLight} mainColor={color} />
+        <ProfileBackground isLight={isLight} _color={color} />
     ),
 }
 

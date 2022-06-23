@@ -19,8 +19,8 @@ const GRADIENT_ID = {
 }
 
 const CategoryBackground = (props: SVGBackgroundProps) => {
-    const { isLight, mainColor } = props
-    const { light } = useColorSet(mainColor)
+    const { isLight, _color } = props
+    const { light } = useColorSet(_color)
 
     return (
         <SVGContainer

@@ -2,7 +2,7 @@ import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
-import { IsLight } from "@typing/theme"
+import { ColorProps, IsLight } from "@typing/theme"
 
 const TAG_STYLE = {
     info: (color: string, isLight: boolean) => css`
@@ -42,8 +42,7 @@ const TAG_STYLE = {
     `,
 }
 
-interface TagStyle {
-    color: string
+interface TagStyle extends ColorProps {
     tagType: keyof typeof TAG_STYLE
 }
 
@@ -68,15 +67,16 @@ const PostTag = styled.div<TagStyle & IsLight>`
     user-select: none;
 
     &:hover {
-        background-color: ${({ theme, color }) => `${color}${theme.opacity40}`};
+        background-color: ${({ theme, _color }) =>
+            `${_color}${theme.opacity40}`};
     }
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
     }
 
-    ${(p) => iconStyle.md({ color: p.color })}
-    ${({ tagType, color, isLight }) => TAG_STYLE[tagType](color, isLight)};
+    ${(p) => iconStyle.md({ color: p._color })}
+    ${({ tagType, _color, isLight }) => TAG_STYLE[tagType](_color, isLight)};
 `
 
 export default PostTag

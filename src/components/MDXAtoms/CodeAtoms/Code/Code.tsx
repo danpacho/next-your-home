@@ -24,11 +24,14 @@ const InlineCode = styled.code<IsLight>`
 `
 
 const CodeFontSizeManager = styled.code`
+    //! DON'T DELETE FOR CODE HIGHLIGHTING
     display: inline-block;
 
-    font-size: 0.9rem;
     text-size-adjust: none;
     -webkit-text-size-adjust: none;
+    //! DON'T DELETE FOR CODE HIGHLIGHTING
+
+    font-size: 0.9rem;
 
     ${media.mediumTablet} {
         font-size: ${(p) => p.theme.sm};

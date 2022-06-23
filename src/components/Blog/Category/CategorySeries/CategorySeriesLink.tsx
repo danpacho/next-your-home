@@ -7,14 +7,14 @@ import { useState } from "react"
 
 import Link from "next/link"
 
+import { ColorProps } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
 import { useTimeout } from "@hooks/index"
 
 import { BookmarkIcon } from "@components/UI/Atoms/Icons"
 
-interface SeriesLinkContainerStyle {
-    color: string
+interface SeriesLinkContainerStyle extends ColorProps {
     isOpen: boolean
 }
 const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
@@ -37,7 +37,7 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
 
     border-width: 0.1rem;
     border-style: solid;
-    border-color: ${(p) => (p.isOpen ? p.color : "transparent")};
+    border-color: ${(p) => (p.isOpen ? p._color : "transparent")};
     border-radius: ${(p) => p.theme.bsm};
 
     box-shadow: ${(p) => p.theme.shadowXxsm};
@@ -45,7 +45,7 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
     cursor: pointer;
 
     &:hover {
-        border-color: ${(p) => p.color};
+        border-color: ${(p) => p._color};
         background-color: ${(p) => p.theme.containerBackgroundColor};
     }
 
@@ -57,7 +57,7 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
     }
 `
 
-const SeriesLinkInfoContainer = styled.div<{ color: string }>`
+const SeriesLinkInfoContainer = styled.div<ColorProps>`
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -69,7 +69,7 @@ const SeriesLinkInfoContainer = styled.div<{ color: string }>`
 
     padding-left: 0.2rem;
 
-    border-right: 0.1rem solid ${(p) => p.color};
+    border-right: 0.1rem solid ${(p) => p._color};
 
     user-select: none;
 `
@@ -84,7 +84,7 @@ const SeriesTitle = styled.h1`
     }
 `
 
-const SeriesBookmarkBox = styled.div<{ color: string }>`
+const SeriesBookmarkBox = styled.div<ColorProps>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,8 +94,8 @@ const SeriesBookmarkBox = styled.div<{ color: string }>`
     padding: 0.35rem;
 
     border-radius: ${(p) => p.theme.bsm};
-    border: 0.1rem solid ${(p) => p.color};
-    background-color: ${({ theme, color }) => `${color}${theme.opacity20}`};
+    border: 0.1rem solid ${(p) => p._color};
+    background-color: ${({ theme, _color }) => `${_color}${theme.opacity20}`};
 
     color: ${(p) => p.theme.fontColor};
     font-weight: 700;
@@ -166,7 +166,7 @@ const AccordianContainer = styled.div<SeriesLinkContainerStyle>`
 
     max-height: 5.5rem;
     overflow-y: scroll;
-    ${(p) => scrollBar.basic(p.color)};
+    ${(p) => scrollBar.basic(p._color)};
 
     ${media.widePhone} {
         max-height: unset;
@@ -207,7 +207,7 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
     return (
         <SeriesLinkContainer
             isOpen={isOpen}
-            color={seriesColor}
+            _color={seriesColor}
             onClick={() => {
                 setIsOpen(true)
                 setSeriesViewOver(false)
@@ -216,21 +216,21 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
             onMouseEnter={() => setSeriesViewOver(false)}
         >
             <SeriesLinkInfoContainer
-                color={seriesColor}
+                _color={seriesColor}
                 onClick={(e) => {
                     e.stopPropagation()
                     setSeriesViewOver(false)
                     setIsOpen((isOpen) => !isOpen)
                 }}
             >
-                <SeriesBookmarkBox color={seriesColor}>
+                <SeriesBookmarkBox _color={seriesColor}>
                     <BookmarkIcon />
                     <p>{seriesInfo.length}</p>
                 </SeriesBookmarkBox>
                 <SeriesTitle>{seriesTitle}</SeriesTitle>
             </SeriesLinkInfoContainer>
 
-            <AccordianContainer isOpen={isOpen} color={seriesColor}>
+            <AccordianContainer isOpen={isOpen} _color={seriesColor}>
                 {seriesInfo.map(({ postTitle, url, order, color }) => (
                     <Link passHref href={url} key={postTitle}>
                         <SeriesPostContainer color={color}>

@@ -5,9 +5,10 @@ import { iconStyle } from "@styles/utils/icon.style"
 import { useMemo, useState } from "react"
 
 import Link from "next/link"
-import { PageType } from "@typing/page/type"
 import { GetStaticProps } from "next"
 
+import { ColorProps } from "@typing/theme"
+import { PageType } from "@typing/page/type"
 import { CategoryInfoType } from "@typing/category/info"
 
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
@@ -119,7 +120,7 @@ Category.displayName = "Category" as PageType
 
 export default Category
 
-const CategoryLinkContaier = styled.div<{ color: string }>`
+const CategoryLinkContaier = styled.div<ColorProps>`
     transition: background-color ease 0.15s;
 
     position: relative;
@@ -135,7 +136,7 @@ const CategoryLinkContaier = styled.div<{ color: string }>`
     cursor: pointer;
 
     border-radius: ${({ theme }) => theme.bxsm};
-    border-right: 0.25rem solid ${(p) => p.color};
+    border-right: 0.25rem solid ${(p) => p._color};
 
     background-color: ${({ theme }) =>
         `${theme.containerBackgroundColor}${theme.opacity60}`};
@@ -149,11 +150,11 @@ const CategoryLinkContaier = styled.div<{ color: string }>`
         padding: 1rem;
         flex-direction: row-reverse;
         border-right: 0;
-        border-left: 0.25rem solid ${(p) => p.color};
+        border-left: 0.25rem solid ${(p) => p._color};
     }
 `
 
-const CategoryInfoContainer = styled.div<{ color: string }>`
+const CategoryInfoContainer = styled.div<ColorProps>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -161,7 +162,7 @@ const CategoryInfoContainer = styled.div<{ color: string }>`
 
     gap: 0.5rem;
 
-    ${(p) => iconStyle.md({ hoverColor: p.color })};
+    ${(p) => iconStyle.md({ hoverColor: p._color })};
 `
 
 const CategoryDescription = styled.div`
@@ -194,7 +195,7 @@ const CategoryLink = ({
                 {...useMouseInteraction({
                     mouseStateSetter: setIsHover,
                 })}
-                color={categoryColor}
+                _color={categoryColor}
             >
                 <EmojiContainer
                     color={categoryColor}
@@ -216,7 +217,7 @@ const CategoryLink = ({
                 >
                     {emoji}
                 </EmojiContainer>
-                <CategoryInfoContainer color={categoryColor}>
+                <CategoryInfoContainer _color={categoryColor}>
                     <UnderscoreText
                         isHover={isHover}
                         fontSize="lg"

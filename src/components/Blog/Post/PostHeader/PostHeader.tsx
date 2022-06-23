@@ -143,7 +143,7 @@ function PostHeader({
             </Title>
 
             <Link href={`/${category}`} passHref>
-                <PostTag color={color} tagType="category" isLight={isLight}>
+                <PostTag _color={color} tagType="category" isLight={isLight}>
                     <p>{category}</p>
                 </PostTag>
             </Link>
@@ -152,7 +152,7 @@ function PostHeader({
                 {tags.map((tag) => (
                     <PostTag
                         key={tag}
-                        color={color}
+                        _color={color}
                         tagType="tag"
                         isLight={isLight}
                     >

@@ -5,7 +5,7 @@ import { useMemo, useState } from "react"
 import Link from "next/link"
 
 import { CategoryInfoType } from "@typing/category/info"
-import { IsLight } from "@typing/theme"
+import { ColorProps, IsLight } from "@typing/theme"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
@@ -17,9 +17,8 @@ import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
-interface CategoryLinkContainerStyle {
+interface CategoryLinkContainerStyle extends ColorProps {
     isHover: boolean
-    color: string
 }
 const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     transition: box-shadow ease-out 0.25s;
@@ -34,8 +33,8 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     padding: 2.25rem;
 
     border-right: 0.1rem solid
-        ${({ color, theme, isLight }) =>
-            isLight ? `${color}${theme.opacity20}` : color};
+        ${({ _color, theme, isLight }) =>
+            isLight ? `${_color}${theme.opacity20}` : _color};
     border-radius: ${({ theme }) => `7rem ${theme.bxxsm} ${theme.bxxsm} 7rem`};
 
     background: ${(p) =>
@@ -49,7 +48,7 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
 
     &:hover {
         box-shadow: 5px 3.5px 0 0
-            ${({ color, theme }) => `${color}${theme.themeHexOpacity}`};
+            ${({ _color, theme }) => `${_color}${theme.themeHexOpacity}`};
         background: ${(p) => p.theme.containerBackgroundColor};
     }
 
@@ -95,9 +94,7 @@ const CategoryDescription = styled.div`
         line-height: 1rem;
     }
 `
-interface CategoryLinkProps extends CategoryInfoType {
-    color: string
-}
+interface CategoryLinkProps extends CategoryInfoType, ColorProps {}
 function CategoryLink({
     color,
     category,
@@ -115,8 +112,8 @@ function CategoryLink({
                 {...useMouseInteraction({
                     mouseStateSetter: setIsHover,
                 })}
+                _color={isLight ? color : darkModeColor}
                 isHover={isHover}
-                color={isLight ? color : darkModeColor}
                 isLight={isLight}
             >
                 <EmojiContainer

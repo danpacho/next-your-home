@@ -7,7 +7,7 @@ import { useState } from "react"
 
 import Link from "next/link"
 
-import { IsLight } from "@typing/theme"
+import { ColorProps, IsLight } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
 import { useColorSet, useMouseInteraction } from "@hooks/index"
@@ -16,7 +16,7 @@ import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
-const PostSeriesContainer = styled.div<{ color: string }>`
+const PostSeriesContainer = styled.div<ColorProps>`
     transition: border-color 0.1s ease-out;
 
     position: relative;
@@ -35,20 +35,20 @@ const PostSeriesContainer = styled.div<{ color: string }>`
 
     border-width: 0.1rem;
     border-style: solid;
-    border-color: ${({ color, theme }) => `${color}${theme.opacity20}`};
+    border-color: ${({ _color, theme }) => `${_color}${theme.opacity20}`};
     border-radius: ${(p) => p.theme.bsm};
 
     overflow: hidden;
 
     &:hover {
-        border-color: ${(p) => p.color};
+        border-color: ${(p) => p._color};
     }
 
     ${media.widePhone} {
         width: 85%;
 
         margin-top: 1rem;
-        border-color: ${(p) => p.color};
+        border-color: ${(p) => p._color};
 
         padding: 1rem;
     }
@@ -153,15 +153,15 @@ const SeriesLink = styled.li<SeriesLinkStyle & IsLight>`
         font-size: ${(p) => p.theme.sm};
     }
 `
-const Box = styled.div<{ color: string } & IsLight>`
+const Box = styled.div<ColorProps & IsLight>`
     display: flex;
     align-items: center;
     justify-content: center;
 
     height: 2rem;
 
-    background-color: ${({ theme, color, isLight }) =>
-        `${color}${isLight ? theme.opacity10 : theme.opacity30}`};
+    background-color: ${({ theme, _color, isLight }) =>
+        `${_color}${isLight ? theme.opacity10 : theme.opacity30}`};
 
     border-radius: ${(p) => p.theme.bsm};
     border: 0.1rem solid transparent;
@@ -267,15 +267,15 @@ function PostSeries({
 
     return (
         <PostSeriesContainer
-            color={color}
+            _color={color}
             {...useMouseInteraction({
                 mouseStateSetter: setIsHover,
             })}
         >
             <PostSeriesHeader>
                 <TitleContainer>
-                    <SeriesTitle color={color}>{seriesTitle}</SeriesTitle>
-                    <BookmarkBox color={color} isLight={isLight}>
+                    <SeriesTitle>{seriesTitle}</SeriesTitle>
+                    <BookmarkBox _color={color} isLight={isLight}>
                         <BookmarkIcon fill={color} />
                         <p>
                             {numberOfSeries} / {currentOrder + 1}
@@ -283,7 +283,7 @@ function PostSeries({
                     </BookmarkBox>
                 </TitleContainer>
 
-                <ButtonBox color={color} isLight={isLight}>
+                <ButtonBox _color={color} isLight={isLight}>
                     {isPrevExists && (
                         <Link passHref href={seriesInfo[currentOrder].prevUrl!}>
                             <SeriesLinkButton

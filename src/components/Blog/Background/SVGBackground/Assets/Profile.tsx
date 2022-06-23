@@ -24,8 +24,8 @@ const LastPath = styled(SVGPath)`
 const GRADIENT_ID = "PROFILE_PATH_GRADIENT_ID"
 
 const ProfileBackground = (props: SVGBackgroundProps) => {
-    const { isLight, mainColor } = props
-    const { light, dark } = useColorSet(mainColor)
+    const { isLight, _color } = props
+    const { light, dark } = useColorSet(_color)
     return (
         <PostBackgroundContainer
             viewBox="0 0 1440 1024"

@@ -185,6 +185,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
                             {...categoryInfo}
+                            _color={categoryInfo.color}
                             key={categoryInfo.category}
                         />
                     ))}

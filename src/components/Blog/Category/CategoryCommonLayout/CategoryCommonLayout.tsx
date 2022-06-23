@@ -4,6 +4,7 @@ import { scrollBar } from "@styles/utils/scrollBar"
 
 import { useMemo, useState } from "react"
 
+import { ColorProps } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
 import { SeriesInfoType } from "@typing/post/series"
@@ -67,14 +68,14 @@ const CategoryLeftInfoContainer = styled.div`
         width: 100%;
     }
 `
-const CategoryTitle = styled.div<{ categoryColor: string }>`
+const CategoryTitle = styled.div<ColorProps>`
     gap: 0.5rem;
 
     color: ${(p) => p.theme.headerFontColor};
     font-size: ${(p) => p.theme.xtitle};
     font-weight: 900;
     text-shadow: 3.75px 3.75px 0
-        ${({ categoryColor, theme }) => `${categoryColor}${theme.themeOpacity}`};
+        ${({ _color, theme }) => `${_color}${theme.themeOpacity}`};
     text-transform: capitalize;
 
     ::after {
@@ -82,7 +83,7 @@ const CategoryTitle = styled.div<{ categoryColor: string }>`
 
         display: block;
 
-        background-color: ${({ categoryColor }) => categoryColor};
+        background-color: ${({ _color }) => _color};
         margin-top: -0.5rem;
         height: 1rem;
         opacity: ${(p) => p.theme.themeOpacity};
@@ -213,9 +214,7 @@ function CategoryCommonLayout({
                 emoji={categoryEmoji}
             />
             <CategoryLeftInfoContainer>
-                <CategoryTitle
-                    categoryColor={isLight ? categoryColor : darkModeColor}
-                >
+                <CategoryTitle _color={isLight ? categoryColor : darkModeColor}>
                     {pageNumber &&
                         (filteredPostNumber === 0
                             ? `${pageNumber} 페이지 ${categoryEmoji}`
