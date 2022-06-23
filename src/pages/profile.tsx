@@ -8,7 +8,7 @@ import Image from "next/image"
 import { PageType } from "@typing/page/type"
 import { IsLight } from "@typing/theme"
 
-import { getProfileSource } from "@utils/function/blog-contents-loader/contents/getProfile"
+import { getProfileSource } from "@utils/function/blog-contents-loader/profile/getProfile"
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
