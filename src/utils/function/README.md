@@ -15,9 +15,9 @@
         ┃ ┃ ┗ 📔 description.json
         ┃ ┃
         ┣ ┗ 🗂 [catgory-name2]...
-        ┃ ┃
+        ┃
         ┗ 📦 profile
-        ┗ ┗ 📔 description.mdx
+          ┗ 📔 description.mdx
       ```
         1. File names **must follow the structure above**
         2. You can modify the **`blogContentsDirectoryName`** of the `blog.config.ts` file to set the name of the blog directory name
