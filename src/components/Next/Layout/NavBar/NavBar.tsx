@@ -2,11 +2,11 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import Link from "next/link"
+import Image from "next/image"
 
 import { IsLight } from "@typing/theme"
 
 import { ThemeButton } from "@components/UX/ThemeButton"
-import MainLogo from "./MainLogo"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
@@ -51,10 +51,11 @@ const LogoContainer = styled.div`
     justify-content: space-between;
     align-items: center;
 
-    gap: 1rem;
+    gap: 0.5rem;
 
     ${media.widePhone} {
         gap: 0.35rem;
+        margin-left: 0.35rem;
     }
 
     cursor: pointer;
@@ -68,16 +69,6 @@ const LogoTitle = styled.header<IsLight>`
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
         font-weight: 500;
-    }
-`
-
-const MainLogoStyled = styled(MainLogo)`
-    width: 1.5rem;
-    height: 1.5rem;
-
-    ${media.widePhone} {
-        padding: 0.25rem;
-        margin-left: 0.25rem;
     }
 `
 
@@ -144,7 +135,13 @@ function NavBar() {
         <NavContainer>
             <Link href="/" passHref>
                 <LogoContainer>
-                    <MainLogoStyled />
+                    <Image
+                        src={config.author.avatarImageUrl}
+                        alt={`${config.author.name} logo`}
+                        width={20}
+                        height={20}
+                        loading="lazy"
+                    />
                     <LogoTitle isLight={isLight}>
                         {config.author.name}
                     </LogoTitle>
