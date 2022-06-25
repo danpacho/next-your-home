@@ -7,7 +7,7 @@ import {
     BlogFileExtractionError,
 } from "@utils/function/blog-error-handler"
 
-import { bundleMDX } from "mdx-bundler"
+import { bundlePostMDX } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 const getProfileSource = async () => {
     try {
@@ -23,11 +23,7 @@ const getProfileSource = async () => {
                 readingFileName: "profile.mdx",
             })
 
-        return (
-            await bundleMDX({
-                source: profileContent,
-            })
-        ).code
+        return (await bundlePostMDX({ postSource: profileContent })).code
     } catch (err) {
         throw new BlogErrorAdditionalInfo({
             passedError: err,

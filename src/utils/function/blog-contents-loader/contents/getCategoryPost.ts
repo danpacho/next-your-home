@@ -748,6 +748,8 @@ const getCategoryLatestPostMeta = (
 ): PostMetaType[] => categoryPostMeta.slice(0, config.numberOfLatestPost)
 
 export {
+    //* bundle mdx
+    bundlePostMDX,
     //* /category
     getSpecificCategoryPagePostMeta,
     //* /category/[page]
