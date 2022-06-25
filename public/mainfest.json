@@ -1,0 +1,9 @@
+{
+    "name": "YOUR_NAME",
+    "short_name": "YOUR_NAME",
+    "start_url": "/",
+    "display": "standalone",
+    "orientation": "portrait",
+    "theme_color": "#776350",
+    "background_color": "#FFFFFF"
+}
