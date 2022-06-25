@@ -2,12 +2,12 @@
 
 1. `blog-contents-loader`
 
-    - A set of functions that extract categories and posts from a `file structure` and return the processed data
-    - **file structure**
+    - A set of functions that extract categories and posts from a `blog file structure` and return the processed data
+    - **blog file structure**
     - ```bash
         🏠 ${config.blogContentsDirectoryName}
-        ┗ 📦 content
-        ┃ ┗ 🗂 [catgory-name]
+        ┣ 📦 content
+        ┃ ┣ 🗂 [catgory-name]
         ┃ ┃ ┣ 🗂 posts
         ┃ ┃ ┃ ┣ 📔 [post-name].mdx
         ┃ ┃ ┃ ┗...
@@ -21,6 +21,9 @@
       ```
         1. File names **must follow the structure above**
         2. You can modify the **`blogContentsDirectoryName`** of the `blog.config.ts` file to set the name of the blog directory name
+        3. File names is direct routed
+            - Folder structure: ../**`my-category`**/posts/**`first-post`**.mdx
+            - Route result: **`https://YOUR_DEPLOY_URL/my-category/{pagination-number}/first-post`**
     - `NextJs` calls these api functions from `getStaticProps` and `getStaticPaths` to build blog static data
 
 2. `blog-error-handler`
