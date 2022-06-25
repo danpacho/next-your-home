@@ -46,6 +46,7 @@ const ProfileContainer = styled.div`
 
     gap: 1rem;
     width: 70%;
+    min-height: 35rem;
 
     margin-bottom: 3rem;
 
@@ -172,7 +173,7 @@ const ProfileTextContainer = styled.div`
 const Copyright = styled.div`
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
 
     margin-top: 3.5rem;
     margin-bottom: 2rem;
