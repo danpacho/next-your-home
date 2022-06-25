@@ -39,7 +39,7 @@ const authorInfo: AuthorInfoType = {
         linkedin: getAuthorContactHref("linkedin", "your@linedin"),
         twitter: getAuthorContactHref("twitter", "your@twitter")
     },
-    avatarImageUrl: "/logo.png",
+    avatarImageUrl: "/logo.svg",
     bannerImageUrl: "/banner.png",
     faviconUrl: "/favicon.svg",
 }
