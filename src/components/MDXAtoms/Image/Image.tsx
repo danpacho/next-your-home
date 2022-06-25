@@ -48,7 +48,7 @@ function Image({ src, alt, title }: ImageProps) {
                     src={src}
                     alt={filteredAlt}
                     quality={75}
-                    priority
+                    loading="lazy"
                     onContextMenu={(e) => e.preventDefault()}
                 />
             </ImageWrap>
