@@ -6,7 +6,7 @@
 
 2. **`generateSitemap`**
 
-    - Extract blog post information to create a processed `sitemap.xml`
+    - Extract blog post information to generate a processed `sitemap.xml`
 
 3. All scripts are written as `typescript`
    that can work on the `NodeJs`
