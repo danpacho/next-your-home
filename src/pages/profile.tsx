@@ -12,8 +12,6 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/profile/g
 
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
-import MDXBundler from "@components/MDXBundler"
-
 import {
     FacebookIcon,
     GithubIcon,
@@ -24,6 +22,7 @@ import {
     TwitterIcon,
     YoutubeIcon,
 } from "@components/UI/Atoms/Icons"
+import MDXBundler from "@components/MDXBundler"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
@@ -59,7 +58,7 @@ const ProfileContainer = styled.div`
         align-items: center;
         justify-content: center;
 
-        margin-top: 3.5rem;
+        margin-top: 2rem;
 
         width: 100%;
     }
@@ -97,7 +96,7 @@ const ProfileInfoContainer = styled.div`
 const ProfileName = styled.p`
     font-size: ${(p) => p.theme.xlg};
     font-weight: 800;
-    color: ${(p) => p.theme.fontColor};
+    color: ${(p) => p.theme.headerFontColor};
     text-transform: capitalize;
 
     margin-bottom: 0.5rem;
@@ -108,9 +107,9 @@ const ProfileName = styled.p`
     }
 `
 const ProfileDivider = styled.div`
-    height: 1.5px;
-    width: 1.5rem;
-    background-color: ${(p) => p.theme.gray4};
+    height: 1.25px;
+    width: 1rem;
+    background-color: ${(p) => p.theme.containerBorderColor};
 
     margin: 0.25rem 0;
     border-radius: ${(p) => p.theme.bxsm};
@@ -118,13 +117,13 @@ const ProfileDivider = styled.div`
     ${media.widePhone} {
         margin: 0;
         width: 0.75rem;
-        height: 2px;
+        height: 1px;
     }
 `
 const ProfileImageContainer = styled.div`
     transition: all ease-out 0.1s;
     position: relative;
-    width: 7.5rem;
+    width: 6rem;
     aspect-ratio: 1/1;
     filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 25px -5px);
 
@@ -139,7 +138,7 @@ const ProfileImageContainer = styled.div`
 `
 
 const ProfileState = styled.p`
-    color: ${(p) => p.theme.descriptionFontColor};
+    color: ${(p) => p.theme.fontColor};
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
     line-height: 1.15rem;
@@ -200,7 +199,7 @@ function Profile({ profileSource }: ProfileProps) {
                         src={config.author.avatarImageUrl}
                         alt="profile image"
                         layout="fill"
-                        priority
+                        loading="lazy"
                     />
                 </ProfileImageContainer>
                 <ProfileTextContainer>
@@ -227,7 +226,7 @@ Profile.displayName = "Profile" as PageType
 export default Profile
 
 const ProfileButtonContainer = styled.button<IsLight>`
-    transition: transform cubic-bezier(0.075, 0.82, 0.165, 1) 0.2s;
+    transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.5s;
 
     display: flex;
     align-items: center;
@@ -240,23 +239,16 @@ const ProfileButtonContainer = styled.button<IsLight>`
     background-color: ${(p) => p.theme.containerBackgroundColor};
     border: 1.25px solid ${(p) => p.theme.containerBorderColor};
 
-    box-shadow: ${(p) =>
-        p.isLight
-            ? `
-        rgba(0, 0, 0, 0.3) 0px 7px 7px -3px,
-        rgba(0, 0, 0, 0.1) 0px -1.5px 0px inset`
-            : `
-        rgba(0, 0, 0, 0.7) 0px 7px 7px -3px,
-        rgba(0, 0, 0, 0.6) 0px -1.5px 0px inset`};
-
     ${(p) =>
         iconStyle.md({
             color: p.theme.headerFontColor,
         })};
 
     &:hover {
-        transform: scale(1.1);
-        box-shadow: none;
+        background-color: ${(p) => p.theme.headerFontColor};
+        svg {
+            fill: ${(p) => p.theme.containerBackgroundColor};
+        }
     }
 
     &:active {
