@@ -138,8 +138,8 @@ function NavBar() {
                     <Image
                         src={config.author.avatarImageUrl}
                         alt={`${config.author.name} logo`}
-                        width={20}
-                        height={20}
+                        width={25}
+                        height={25}
                         loading="lazy"
                     />
                     <LogoTitle isLight={isLight}>
