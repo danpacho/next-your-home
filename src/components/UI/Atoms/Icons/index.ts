@@ -1,3 +1,4 @@
+export { default as LogoIcon } from "./Logo"
 export { default as LightIcon } from "./Light"
 export { default as StarIcon } from "./Dark"
 export { default as ArrowUpIcon } from "./ArrowUp"
