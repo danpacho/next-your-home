@@ -7,9 +7,12 @@ import {
     BlogFileExtractionError,
 } from "@utils/function/blog-error-handler"
 
+import { memo } from "@utils/function/blog-contents-loader/util"
 import { bundlePostMDX } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-const getProfileSource = async () => {
+import { config } from "blog.config"
+
+const getProfileSource = memo(config.useMemo, async () => {
     try {
         const profileContent = await readFile(
             BLOG_PROFILE_CONTENTS_LOCATION,
@@ -32,6 +35,6 @@ const getProfileSource = async () => {
             customeErrorMessage: `your profile file at:\n\n   ${BLOG_PROFILE_CONTENTS_LOCATION}`,
         })
     }
-}
+})
 
 export { getProfileSource }
