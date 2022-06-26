@@ -11,16 +11,16 @@ const EN = "Hellow"
 ```
 
 1. [What is this?](#what-is-this)
-    - [🏠 Blog](#🏠-blog)
-    - [🛠 Tech stack](#🛠-tech-stack)
+    - [🏠 Blog](#-blog)
+    - [🛠 Tech stack](#-tech-stack)
 2. [Why?](#why)
 
-    - [😀 Easy to start](#😀-easy-to-start)
-    - [🔥 Performance](#🔥-performance)
-    - [😲 Intuitive post grouping](#😲-intuitive-post-grouping)
-    - [📔 Reading focused UI/UX](#📔-reading-focused-uiux)
-    - [🎨 Show your personality with colors](#🎨-show-your-personality-with-colors)
-    - [🍻 Features](#🍻-features)
+    - [😀 Easy to start](#-easy-to-start)
+    - [🔥 Performance](#-performance)
+    - [😲 Intuitive post grouping](#-intuitive-post-grouping)
+    - [📔 Reading focused UI/UX](#-reading-focused-uiux)
+    - [🎨 Show your personality with colors](#-show-your-personality-with-colors)
+    - [🍻 Features](#-features)
 
 3. [How can I start?](#how-can-i-start)
 4. [How can I customize?](#how-can-i-customize)
