@@ -3,7 +3,6 @@ import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
 import { GetStaticProps } from "next"
-import Image from "next/image"
 
 import { PageType } from "@typing/page/type"
 import { IsLight } from "@typing/theme"
@@ -13,6 +12,7 @@ import { getProfileSource } from "@utils/function/blog-contents-loader/profile/g
 import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
 
 import {
+    LogoIcon,
     FacebookIcon,
     GithubIcon,
     HeartIcon,
@@ -120,11 +120,9 @@ const ProfileDivider = styled.div`
         height: 1px;
     }
 `
-const ProfileImageContainer = styled.div`
+const ProfileLogo = styled(LogoIcon)`
     transition: all ease-out 0.1s;
-    position: relative;
-    width: 6rem;
-    aspect-ratio: 1/1;
+
     filter: drop-shadow(rgba(0, 0, 0, 0.1) 0px 0px 25px -5px);
 
     &:hover {
@@ -194,14 +192,8 @@ function Profile({ profileSource }: ProfileProps) {
     return (
         <ProfileContainer>
             <ProfileInfoContainer>
-                <ProfileImageContainer>
-                    <Image
-                        src={config.author.avatarImageUrl}
-                        alt="profile image"
-                        layout="fill"
-                        loading="lazy"
-                    />
-                </ProfileImageContainer>
+                <ProfileLogo width={90} height={90} />
+
                 <ProfileTextContainer>
                     <ProfileName>{config.author.name}</ProfileName>
                     <ProfileDivider />

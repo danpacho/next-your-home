@@ -2,13 +2,14 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import Link from "next/link"
-import Image from "next/image"
 
 import { IsLight } from "@typing/theme"
 
 import { ThemeButton } from "@components/UX/ThemeButton"
 
 import { useAtoms, _slector } from "@lib/jotai"
+
+import { LogoIcon } from "@components/UI/Atoms/Icons"
 
 import { config } from "blog.config"
 
@@ -135,13 +136,7 @@ function NavBar() {
         <NavContainer>
             <Link href="/" passHref>
                 <LogoContainer>
-                    <Image
-                        src={config.author.avatarImageUrl}
-                        alt={`${config.author.name} logo`}
-                        width={25}
-                        height={25}
-                        loading="lazy"
-                    />
+                    <LogoIcon width={25} height={25} />
                     <LogoTitle isLight={isLight}>
                         {config.author.name}
                     </LogoTitle>
