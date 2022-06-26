@@ -26,6 +26,7 @@ const CategoryLinkContainer = styled.div<CategoryLinkContainerStyle & IsLight>`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.5rem;
 
     width: 100%;
     height: 9rem;
@@ -72,13 +73,15 @@ const CategoryInfoContainer = styled.div`
     align-items: flex-start;
     justify-content: space-between;
 
-    max-width: 50%;
+    max-width: 45%;
+    min-width: 5rem;
     height: 6.75rem;
 
     ${media.widePhone} {
         flex: 1;
         height: fit-content;
         max-width: unset;
+        min-width: unset;
 
         gap: 1rem;
     }

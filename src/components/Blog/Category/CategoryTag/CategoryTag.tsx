@@ -88,11 +88,9 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
 
     gap: 0.15rem;
 
-    width: fit-content;
-    min-width: 7.75rem;
-    height: fit-content;
+    min-width: 6.5rem;
 
-    padding: 0.8rem 0.25rem;
+    padding: 0.75rem;
 
     border: 1.75px solid
         ${({ isFiltered, color, theme }) =>
@@ -112,7 +110,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
             : backgroundStyle.noneFiltered(color, isLight)}
 
     ${media.mediumTablet} {
-        min-width: 6.25rem;
+        min-width: 4rem;
 
         font-weight: 700;
         letter-spacing: 0.02rem;
@@ -121,7 +119,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
     ${media.widePhone} {
         min-width: 3rem;
 
-        padding: 0.55rem;
+        padding: 0.5rem;
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 600;
