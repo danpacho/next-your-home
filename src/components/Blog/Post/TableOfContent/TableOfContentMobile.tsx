@@ -132,11 +132,7 @@ const HeaderOrder = styled.div<{ color: string }>`
     }
 `
 
-function TableOfContentMobile({
-    tableOfContents,
-}: {
-    tableOfContents: TableOfContents[]
-}) {
+function TableOfContentMobile({ toc }: { toc: TableOfContents[] }) {
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
     const { focusingPageColorState: color } = useAtoms(
         _atom("focusingPageColor")
@@ -145,7 +141,7 @@ function TableOfContentMobile({
         <TableOfContentContainer color={color}>
             <MobileTocTitle>Before You Read</MobileTocTitle>
 
-            {tableOfContents.map(({ title, href, children }, order) => (
+            {toc.map(({ title, href, children }, order) => (
                 <HeaderContainer key={title}>
                     <LinkContainer href={href}>
                         <H1LinkContainer isLight={isLight}>

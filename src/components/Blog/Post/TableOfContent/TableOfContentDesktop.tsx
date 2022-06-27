@@ -123,11 +123,7 @@ const TITLE_MAX_LENGTH = {
     h2: 15,
 }
 
-function TableOfContentDesktop({
-    tableOfContents,
-}: {
-    tableOfContents: TableOfContents[]
-}) {
+function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
     const { focusTitleState, focusTitleSetState } = useAtoms(
         _atom("focusTitle")
     )
@@ -141,7 +137,7 @@ function TableOfContentDesktop({
                     mouseStateSetter: setIsFocusing,
                 })}
             >
-                {tableOfContents.map(({ title, href, children }, index) => {
+                {toc.map(({ title, href, children }, index) => {
                     const isTitleFocusing = focusTitleState === title
                     return (
                         <LinkContainer key={title} href={href}>
