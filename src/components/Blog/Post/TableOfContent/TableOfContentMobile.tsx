@@ -1,12 +1,14 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { ColorProps, IsLight } from "@typing/theme"
-import { TableOfContents } from "@hooks/useTableOfContent"
+import { IsLight } from "@typing/theme"
+import type { TableOfContents } from "@lib/unified"
 
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
-const TableOfContentContainer = styled.div<ColorProps>`
+import { LinkContainer } from "./common"
+
+const TableOfContentContainer = styled.div<{ color: string }>`
     display: none;
 
     ${media.mediumTablet} {
@@ -22,7 +24,7 @@ const TableOfContentContainer = styled.div<ColorProps>`
         padding: 1.5rem 0;
 
         border-bottom: 0.1rem solid ${(p) => p.theme.containerBorderColor};
-        ${({ theme, _color }) => `${_color}${theme.themeHexOpacity}`};
+        ${({ theme, color }) => `${color}${theme.themeHexOpacity}`};
     }
 
     ${media.widePhone} {
@@ -73,7 +75,7 @@ const H1Link = styled.div`
     }
 `
 
-const H2LinkContainer = styled.div<IsLight & ColorProps>`
+const H2LinkContainer = styled.div<IsLight & { color: string }>`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -85,7 +87,7 @@ const H2LinkContainer = styled.div<IsLight & ColorProps>`
     padding-bottom: 0.6rem;
     margin-left: 0.45rem;
 
-    border-left: 0.125rem solid ${({ _color }) => _color};
+    border-left: 0.125rem solid ${({ color }) => color};
     border-bottom-left-radius: 1px;
 
     ${media.widePhone} {
@@ -106,7 +108,7 @@ const H2Link = styled.div`
     cursor: pointer;
 `
 
-const HeaderOrder = styled.div<ColorProps>`
+const HeaderOrder = styled.div<{ color: string }>`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -118,9 +120,9 @@ const HeaderOrder = styled.div<ColorProps>`
 
     border-radius: ${(p) => p.theme.bsm};
 
-    background-color: ${({ theme, _color }) =>
-        `${_color}${theme.themeHexOpacity}`};
-    box-shadow: -0.1rem 0.125rem 0 0 ${(p) => p._color};
+    background-color: ${({ theme, color }) =>
+        `${color}${theme.themeHexOpacity}`};
+    box-shadow: -0.1rem 0.125rem 0 0 ${(p) => p.color};
 
     ${media.widePhone} {
         width: 1rem;
@@ -140,22 +142,23 @@ function TableOfContentMobile({
         _atom("focusingPageColor")
     )
     return (
-        <TableOfContentContainer _color={color}>
+        <TableOfContentContainer color={color}>
             <MobileTocTitle>Before You Read</MobileTocTitle>
 
-            {tableOfContents.map(({ title, onClick, children }, order) => (
+            {tableOfContents.map(({ title, href, children }, order) => (
                 <HeaderContainer key={title}>
-                    <H1LinkContainer isLight={isLight} onClick={onClick}>
-                        <HeaderOrder _color={color}>{order + 1}</HeaderOrder>
-                        <H1Link>{title}</H1Link>
-                    </H1LinkContainer>
-
+                    <LinkContainer href={href}>
+                        <H1LinkContainer isLight={isLight}>
+                            <HeaderOrder color={color}>{order + 1}</HeaderOrder>
+                            <H1Link>{title}</H1Link>
+                        </H1LinkContainer>
+                    </LinkContainer>
                     {children.length !== 0 && (
-                        <H2LinkContainer isLight={isLight} _color={color}>
-                            {children.map(({ title: childTitle, onClick }) => (
-                                <H2Link key={childTitle} onClick={onClick}>
-                                    {childTitle}
-                                </H2Link>
+                        <H2LinkContainer isLight={isLight} color={color}>
+                            {children.map(({ title: childTitle, href }) => (
+                                <LinkContainer href={href} key={childTitle}>
+                                    <H2Link>{childTitle}</H2Link>
+                                </LinkContainer>
                             ))}
                         </H2LinkContainer>
                     )}

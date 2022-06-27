@@ -4,13 +4,15 @@ import styled from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
+import type { TableOfContents } from "@lib/unified"
+
 import { sliceTextByMaxLength } from "@utils/function/text"
 
 import { useMouseInteraction } from "@hooks/index"
 
 import { useAtoms, _atom } from "@lib/jotai"
 
-import { TableOfContents } from "@hooks/useTableOfContent"
+import { LinkContainer } from "./common"
 
 const TableOfContentPositionContainer = styled.div`
     position: sticky;
@@ -61,10 +63,6 @@ const HeaderLinkCommon = styled.div<LinkStyle>`
         color: ${(p) => p.theme.themePrimaryColor};
     }
 
-    div:nth-child(2) {
-        margin-top: 1rem;
-    }
-
     cursor: pointer;
 `
 
@@ -87,15 +85,10 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
 
     animation-delay: ${({ index }) => index * 85}ms;
 `
-
 const H2Link = styled(HeaderLinkCommon)`
     transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     margin-left: 1.25rem;
-
-    &:first-child {
-        margin-bottom: 1rem;
-    }
 
     color: ${(p) => p.theme.descriptionFontColor};
 
@@ -115,6 +108,14 @@ const H2Link = styled(HeaderLinkCommon)`
     }
 
     font-weight: 400;
+`
+const H2Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+
+    margin-top: 1rem;
 `
 
 const TITLE_MAX_LENGTH = {
@@ -140,14 +141,13 @@ function TableOfContentDesktop({
                     mouseStateSetter: setIsFocusing,
                 })}
             >
-                {tableOfContents.map(
-                    ({ title, onClick: moveToH1, children }, index) => {
-                        const isTitleFocusing = focusTitleState === title
-                        return (
+                {tableOfContents.map(({ title, href, children }, index) => {
+                    const isTitleFocusing = focusTitleState === title
+                    return (
+                        <LinkContainer key={title} href={href}>
                             <H1Link
                                 index={index}
                                 isFocusing={isTitleFocusing || isFocusing}
-                                onClick={moveToH1}
                                 key={title}
                             >
                                 <p>
@@ -157,36 +157,43 @@ function TableOfContentDesktop({
                                         TITLE_MAX_LENGTH.h1
                                     )}
                                 </p>
-                                {children?.map(
-                                    ({
-                                        title: childTitle,
-                                        onClick: moveToH2,
-                                    }) => (
-                                        <H2Link
-                                            isFocusing={
-                                                isTitleFocusing || isFocusing
-                                            }
-                                            onClick={(e) => {
-                                                e.stopPropagation()
-                                                focusTitleSetState(title)
-                                                moveToH2()
-                                            }}
-                                            key={childTitle}
-                                        >
-                                            <p>
-                                                🥛{" "}
-                                                {sliceTextByMaxLength(
-                                                    childTitle,
-                                                    TITLE_MAX_LENGTH.h2
-                                                )}
-                                            </p>
-                                        </H2Link>
-                                    )
+                                {children.length !== 0 && (
+                                    <H2Container>
+                                        {children.map(
+                                            ({ title: childTitle, href }) => (
+                                                <LinkContainer
+                                                    href={href}
+                                                    key={childTitle}
+                                                >
+                                                    <H2Link
+                                                        isFocusing={
+                                                            isTitleFocusing ||
+                                                            isFocusing
+                                                        }
+                                                        onClick={(e) => {
+                                                            e.stopPropagation()
+                                                            focusTitleSetState(
+                                                                title
+                                                            )
+                                                        }}
+                                                    >
+                                                        <p>
+                                                            🥛{" "}
+                                                            {sliceTextByMaxLength(
+                                                                childTitle,
+                                                                TITLE_MAX_LENGTH.h2
+                                                            )}
+                                                        </p>
+                                                    </H2Link>
+                                                </LinkContainer>
+                                            )
+                                        )}
+                                    </H2Container>
                                 )}
                             </H1Link>
-                        )
-                    }
-                )}
+                        </LinkContainer>
+                    )
+                })}
             </TOCContainer>
         </TableOfContentPositionContainer>
     )
