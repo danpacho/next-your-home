@@ -26,7 +26,9 @@ const getProfileSource = memo(config.useMemo, async () => {
                 readingFileName: "profile.mdx",
             })
 
-        return (await bundlePostMDX({ postSource: profileContent })).code
+        return await (
+            await bundlePostMDX({ postSource: profileContent })
+        ).bundledResult.code
     } catch (err) {
         throw new BlogErrorAdditionalInfo({
             passedError: err,

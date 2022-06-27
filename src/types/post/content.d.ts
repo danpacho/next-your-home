@@ -1,4 +1,6 @@
+import { TableOfContents } from "@lib/unified"
 import { PostMetaType } from "./meta"
+
 export interface CategoryPostContentType {
     category: string
     postContentArray: PostContentType[]
@@ -8,6 +10,7 @@ export interface CategoryPostContentType {
 export interface PostContentType {
     postMeta: PostMetaType
     postSource: string
+    toc: TableOfContents[]
 }
 
 export interface SpecificPostContentType extends PostContentType {

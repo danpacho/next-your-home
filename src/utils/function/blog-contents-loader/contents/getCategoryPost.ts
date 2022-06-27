@@ -42,6 +42,7 @@ import remarkMath from "remark-math"
 
 import rehypeKatex from "rehype-katex"
 import rehypePrism from "rehype-prism-plus"
+import { getTableOfContents, rehypeHeaderId } from "@lib/unified"
 
 import { bundleMDX } from "mdx-bundler"
 
@@ -150,13 +151,13 @@ const bundlePostMDX = async <MetaType>({
 }: {
     postSource: string
 }) => {
-    const customePlugin = config.useKatex
+    const customPlugin = config.useKatex
         ? getPlugins({
-              rehypePlugins: [rehypePrism, rehypeKatex],
+              rehypePlugins: [rehypePrism, rehypeKatex, rehypeHeaderId],
               remarkPlugins: [remarkGfm, remarkMath],
           })
         : getPlugins({
-              rehypePlugins: [rehypePrism],
+              rehypePlugins: [rehypePrism, rehypeHeaderId],
               remarkPlugins: [remarkGfm],
           })
 
@@ -184,11 +185,11 @@ const bundlePostMDX = async <MetaType>({
         mdxOptions(options, frontmatter) {
             options.remarkPlugins = [
                 ...(options.remarkPlugins ?? []),
-                ...customePlugin.remarkPlugins,
+                ...customPlugin.remarkPlugins,
             ]
             options.rehypePlugins = [
                 ...(options.rehypePlugins ?? []),
-                ...customePlugin.rehypePlugins,
+                ...customPlugin.rehypePlugins,
             ]
             return options
         },
@@ -202,7 +203,12 @@ const bundlePostMDX = async <MetaType>({
             readingFileName: "❓",
         })
 
-    return bundledResult
+    const toc = getTableOfContents(postSource)
+
+    return {
+        bundledResult,
+        toc,
+    }
 }
 
 const getSeriesInfo = (
@@ -353,8 +359,11 @@ const extractAndTransformAllCategoryPostContent = async (
                                     })
 
                                 const {
-                                    code: bundledPostSource,
-                                    frontmatter: meta,
+                                    bundledResult: {
+                                        code: bundledPostSource,
+                                        frontmatter: meta,
+                                    },
+                                    toc,
                                 } = await bundlePostMDX<MDXPostMetaType>({
                                     postSource,
                                 })
@@ -371,6 +380,7 @@ const extractAndTransformAllCategoryPostContent = async (
                                         {
                                             postMeta,
                                             postSource: bundledPostSource,
+                                            toc,
                                         },
                                     ]
 
@@ -393,9 +403,10 @@ const extractAndTransformAllCategoryPostContent = async (
                                 { postMeta: { update: nextDate } }
                             ) => sortByDate(currDate, nextDate)
                         )
-                        .map(({ postMeta, postSource }, order) => ({
-                            postSource,
+                        .map(({ postMeta, postSource, toc }, order) => ({
                             postMeta: addPostUrlToMeta(postMeta, order),
+                            postSource,
+                            toc,
                         }))
 
                     return {
