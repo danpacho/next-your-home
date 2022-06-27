@@ -12,7 +12,7 @@ import { PageType } from "@typing/page/type"
 import { SeriesInfoType } from "@typing/post/series"
 import { SpecificPostContentType } from "@typing/post/content"
 
-import { useSetFocusingPageColor, useTableOfContent } from "@hooks/index"
+import { useSetFocusingPageColor } from "@hooks/index"
 
 import {
     getSpecificCategoryPostContent,
@@ -44,7 +44,7 @@ interface ParamQuery extends ParsedUrlQuery {
 export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const { category, pageNumber, postTitle } = params as ParamQuery
 
-    const { postController, postMeta, postSource } =
+    const { postController, postMeta, postSource, toc } =
         await getSpecificCategoryPostContent({
             categoryName: category,
             categoryPage: Number(pageNumber),
@@ -64,6 +64,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
             postMeta,
             postSource,
             postSeriesInfo,
+            toc,
         },
     }
 }
@@ -158,15 +159,10 @@ function Post({
     postMeta,
     postSource,
     postSeriesInfo,
+    toc,
 }: PostProps) {
     useSetFocusingPageColor(postMeta.color)
 
-    const documentRef = useRef<HTMLDivElement>(null)
-
-    const { tableOfContents } = useTableOfContent({
-        documentRef,
-        updateTrigger: postMeta.title,
-    })
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     return (
@@ -174,18 +170,16 @@ function Post({
             <PostContainer isLight={isLight}>
                 <PostSEO {...postMeta} />
 
-                <PostContentContainer ref={documentRef}>
+                <PostContentContainer>
                     <PostHeader {...postMeta} postSeriesInfo={postSeriesInfo} />
                     {config.useMobileTOC && (
-                        <PostTableOfContentMobile
-                            tableOfContents={tableOfContents}
-                        />
+                        <PostTableOfContentMobile toc={toc} />
                     )}
                     <MDXBundler mdxSource={postSource} />
                     <PostFooter {...postMeta} />
                 </PostContentContainer>
 
-                <PostTableOfContentDesktop tableOfContents={tableOfContents} />
+                <PostTableOfContentDesktop toc={toc} />
 
                 <PostController
                     categoryURL={`/${postMeta.category}`}
