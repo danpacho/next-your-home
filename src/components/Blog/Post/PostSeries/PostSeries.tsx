@@ -12,6 +12,8 @@ import { SeriesInfoType } from "@typing/post/series"
 
 import { useColorSet, useMouseInteraction } from "@hooks/index"
 
+import { sliceTextByMaxLength } from "@utils/function/text"
+
 import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -177,7 +179,7 @@ const ButtonBox = styled(Box)`
     user-select: none;
 
     &:hover {
-        border-color: ${(p) => p.color};
+        border-color: ${(p) => p._color};
     }
 
     ${media.widePhone} {
@@ -317,7 +319,7 @@ function PostSeries({
                             focusedPost={postTitle === currentTitle}
                         >
                             <p>{order}.</p>
-                            <p>{postTitle}</p>
+                            <p>{sliceTextByMaxLength(postTitle, 60)}</p>
                         </SeriesLink>
                     </Link>
                 ))}

@@ -10,6 +10,8 @@ import Link from "next/link"
 import { ColorProps } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
+import { sliceTextByMaxLength } from "@utils/function/text"
+
 import { useTimeout } from "@hooks/index"
 
 import { BookmarkIcon } from "@components/UI/Atoms/Icons"
@@ -47,6 +49,9 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
     &:hover {
         border-color: ${(p) => p._color};
         background-color: ${(p) => p.theme.containerBackgroundColor};
+    }
+    ${media.mediumTablet} {
+        padding: 0.5rem;
     }
 
     ${media.widePhone} {
@@ -102,6 +107,10 @@ const SeriesBookmarkBox = styled.div<ColorProps>`
     font-size: ${(p) => p.theme.sm};
 
     ${iconStyle.md()};
+
+    ${media.mediumTablet} {
+        padding: 0.3rem;
+    }
 
     ${media.widePhone} {
         gap: 0.15rem;
@@ -166,6 +175,9 @@ const AccordianContainer = styled.div<SeriesLinkContainerStyle>`
 
     max-height: 5.5rem;
     overflow-y: scroll;
+
+    padding-right: 0.5rem;
+
     ${(p) => scrollBar.basic(p._color)};
 
     ${media.widePhone} {
@@ -237,7 +249,9 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                             <SeriesPostOrder>
                                 <p>{SERIES_ORDER_TEXT[order - 1]}</p>
                             </SeriesPostOrder>
-                            <SeriesPostTitle>{postTitle}</SeriesPostTitle>
+                            <SeriesPostTitle>
+                                {sliceTextByMaxLength(postTitle, 50)}
+                            </SeriesPostTitle>
                         </SeriesPostContainer>
                     </Link>
                 ))}
