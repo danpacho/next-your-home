@@ -7,15 +7,19 @@ import Link from "next/link"
 import { CategoryInfoType } from "@typing/category/info"
 import { ColorProps, IsLight } from "@typing/theme"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useMouseInteraction } from "@hooks/index"
+import {
+    useMouseInteraction,
+    useSizedTextByWindowWidth,
+    useWindowWidth,
+} from "@hooks/index"
 
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { useAtoms, _slector } from "@lib/jotai"
+import { sliceTextByMaxLength } from "@utils/function/text"
 
 interface CategoryLinkContainerStyle extends ColorProps {
     isHover: boolean
@@ -105,10 +109,34 @@ function CategoryLink({
     categoryUrl,
     emoji,
 }: CategoryLinkProps) {
-    const [isHover, setIsHover] = useState<boolean>(false)
+    const [isHover, setIsHover] = useState(false)
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
+
+    const { mediaWidth } = useWindowWidth()
+    const sizedDescription = useSizedTextByWindowWidth({
+        text: description,
+        option: {
+            max: 75,
+            wideTablet: 45,
+            mediumTablet: 45,
+            widePhone: 120,
+            mediumPhone: 35,
+        },
+        mediaWidth,
+    })
+    const sizedCategory = useSizedTextByWindowWidth({
+        text: category,
+        option: {
+            max: 15,
+            wideTablet: 11,
+            mediumTablet: 11,
+            widePhone: 15,
+            mediumPhone: 10,
+        },
+        mediaWidth,
+    })
     return (
         <Link href={categoryUrl} passHref>
             <CategoryLinkContainer
@@ -149,10 +177,10 @@ function CategoryLink({
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
-                        {category}
+                        {sizedCategory}
                     </UnderscoreText>
                     <CategoryDescription>
-                        {sliceTextByMaxLength(description, 35)}
+                        {sizedDescription}
                     </CategoryDescription>
                 </CategoryInfoContainer>
             </CategoryLinkContainer>
