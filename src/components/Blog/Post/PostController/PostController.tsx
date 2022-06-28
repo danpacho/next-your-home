@@ -8,9 +8,11 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
-
-import { useScrollDirection } from "@hooks/index"
+import {
+    useScrollDirection,
+    useWindowWidth,
+    useSizedTextByWindowWidth,
+} from "@hooks/index"
 
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
@@ -18,7 +20,7 @@ import { useAtoms, _slector } from "@lib/jotai"
 
 const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 0.6s;
-    width: 30rem;
+    width: 35rem;
     min-width: 4rem;
 
     position: fixed;
@@ -29,7 +31,7 @@ const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 
     background-color: ${(p) => p.theme.containerBackgroundColor};
 
@@ -40,6 +42,8 @@ const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     border: 0.1rem solid ${(p) => p.theme.containerBorderColor};
     border-radius: 10rem;
 
+    animation: ${animation.fadeIn} ease-out 1s;
+
     ${media.widePhone} {
         width: 85%;
         padding: 0.5rem;
@@ -48,7 +52,7 @@ const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
         justify-content: space-between;
         background-color: ${(p) => p.theme.containerBackgroundColor};
 
-        bottom: 0.5rem;
+        bottom: 0.75rem;
         left: 50%;
         transform: translate(-50%, ${(p) => (p.isScrollDown ? "5rem" : 0)});
     }
@@ -107,7 +111,7 @@ const InfoContainer = styled.div`
     align-items: center;
     justify-content: center;
 
-    animation: ${animation.fadeIn} ease-out 1s;
+    gap: 0.5rem;
 
     ${media.widePhone} {
         display: flex;
@@ -146,7 +150,7 @@ const PostTitleText = styled.p<IsLight>`
 
     ${media.widePhone} {
         min-width: unset;
-        width: 5rem;
+        width: 10rem;
 
         font-weight: 400;
 
@@ -155,8 +159,11 @@ const PostTitleText = styled.p<IsLight>`
         border-bottom: none;
     }
 
+    ${media.custom(600)} {
+        width: 5rem;
+    }
+
     ${media.mediumPhone} {
-        min-width: unset;
         width: 3.5rem;
     }
 `
@@ -165,22 +172,35 @@ interface PostControllerProps extends PostControllerPreviewProps {
     categoryURL: string
 }
 
-const TITLE_MAX_LENGTH = 15
-
 function PostController({
     prevPost,
     nextPost,
     categoryURL,
 }: PostControllerProps) {
-    const prevPostTitle = sliceTextByMaxLength(prevPost.title, TITLE_MAX_LENGTH)
-    const nextPostTitle = sliceTextByMaxLength(nextPost.title, TITLE_MAX_LENGTH)
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const { isScrollDown } = useScrollDirection({
         throttleTime: 500,
         responsivenessPixel: 2.5,
     })
 
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+    const { mediaWidth } = useWindowWidth()
+    const prevPostTitle = useSizedTextByWindowWidth({
+        text: prevPost.title,
+        option: {
+            widePhone: 25,
+            mediumPhone: 15,
+        },
+        mediaWidth,
+    })
+    const nextPostTitle = useSizedTextByWindowWidth({
+        text: nextPost.title,
+        option: {
+            widePhone: 20,
+            mediumPhone: 15,
+        },
+        mediaWidth,
+    })
 
     return (
         <ControllerContainer isScrollDown={isScrollDown}>
