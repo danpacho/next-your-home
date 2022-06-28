@@ -7,6 +7,7 @@ const AtomStore = {
     theme: atom<ThemeMode>("dark"),
     focusTitle: atom(""),
     focusingPageColor: atom(pallete.gray4),
+    windowWidth: atom(0),
 } as const
 
 const SlectorAtomStore = {
