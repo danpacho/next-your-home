@@ -14,7 +14,12 @@ import { CategoryInfoType } from "@typing/category/info"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useMouseInteraction, useSetFocusingPageColor } from "@hooks/index"
+import {
+    useMouseInteraction,
+    useSetFocusingPageColor,
+    useSizedTextByWindowWidth,
+    useWindowWidth,
+} from "@hooks/index"
 
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
@@ -193,6 +198,19 @@ const CategoryLink = ({
 
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
     const categoryColor = isLight ? color : darkModeColor
+
+    const sizedCategory = useSizedTextByWindowWidth({
+        text: category,
+        option: {
+            max: 30,
+            wideTablet: 20,
+            mediumTablet: 20,
+            widePhone: 25,
+            mediumPhone: 15,
+        },
+        mediaWidth: useWindowWidth().mediaWidth,
+    })
+
     return (
         <Link passHref href={categoryUrl}>
             <CategoryLinkContaier
@@ -228,7 +246,7 @@ const CategoryLink = ({
                         underscoreColor={categoryColor}
                         fontWeight={400}
                     >
-                        {category} <LeafIcon width="1rem" height="1rem" />
+                        {sizedCategory} <LeafIcon width="1rem" height="1rem" />
                     </UnderscoreText>
 
                     <CategoryDescription>{description}</CategoryDescription>
