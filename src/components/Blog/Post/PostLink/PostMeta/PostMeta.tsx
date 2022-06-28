@@ -1,12 +1,12 @@
 import styled, { css } from "styled-components"
-import media from "@styles/utils/media"
+import media, { MediaType, MEDIA_WIDTH } from "@styles/utils/media"
 
 import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
+import { useSizedTextByWindowWidth, useWindowWidth } from "@hooks/index"
 
 import { LayersAltIcon } from "@components/UI/Atoms/Icons"
 import { useAtoms, _slector } from "@lib/jotai"
@@ -54,7 +54,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
 
     width: max-content;
 
-    padding: 0.15rem 0.65rem;
+    padding: 0.15rem 0.5rem;
 
     background-color: ${({ color, isLight, theme }) =>
         isLight ? color : `${color}${theme.opacity60}`};
@@ -72,7 +72,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
 
     ${media.mediumTablet} {
         font-size: ${(p) => p.theme.xsm};
-        padding: 0.15rem 0.45rem;
+        padding: 0.2rem 0.4rem;
     }
 
     ${media.widePhone} {
@@ -97,8 +97,10 @@ interface PostMetaProps
     isCategoryPage?: boolean
 }
 
-const LAST_TAG_ORDER = 1
-const TAG_NUMBER = 2
+const TAG_NUMBER = {
+    min: 2,
+    max: 3,
+}
 
 function PostMeta({
     author,
@@ -108,30 +110,44 @@ function PostMeta({
     tags,
     isCategoryPage,
 }: PostMetaProps) {
-    const isTagSizeOver = tags.length > 2
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
+    const { mediaWidth, windowWidth } = useWindowWidth()
+    const sizedAuthor = useSizedTextByWindowWidth({
+        text: author,
+        option: {
+            mediumPhone: 7,
+        },
+        mediaWidth,
+    })
+    const sizedCategory = useSizedTextByWindowWidth({
+        text: category,
+        option: {
+            max: 25,
+            mediumTablet: 10,
+            widePhone: 20,
+            mediumPhone: 7,
+        },
+        mediaWidth,
+    })
+    const isContentSizeSmall = windowWidth < MEDIA_WIDTH.mediumTablet
+    const renderTagNumber = isContentSizeSmall ? TAG_NUMBER.min : TAG_NUMBER.max
+
     return (
         <PostMetaTagContainer>
             {isCategoryPage &&
-                tags.slice(0, TAG_NUMBER).map((tag, order) => (
-                    <PostMetaTag
-                        key={tag}
-                        type={order === LAST_TAG_ORDER ? "update" : "category"}
-                        color={color}
-                        isLight={isLight}
-                    >
-                        <p>
-                            #{tag}
-                            {order === LAST_TAG_ORDER && isTagSizeOver && (
-                                <LayersAltIcon
-                                    fill={"white"}
-                                    width=".65rem"
-                                    height=".65rem"
-                                />
-                            )}
-                        </p>
-                    </PostMetaTag>
-                ))}
+                tags
+                    .slice(0, renderTagNumber)
+                    .map((tag, order) => (
+                        <PostMetaTagChild
+                            tag={tag}
+                            color={color}
+                            isFirst={order === 0}
+                            isLast={order === renderTagNumber - 1}
+                            isLight={isLight}
+                            mediaWidth={mediaWidth}
+                            key={tag}
+                        />
+                    ))}
 
             {!isCategoryPage && (
                 <Link href={`/${category}`} passHref>
@@ -140,7 +156,7 @@ function PostMeta({
                         color={color}
                         isLight={isLight}
                     >
-                        {sliceTextByMaxLength(category, 8)}
+                        {sizedCategory}
                     </PostMetaTag>
                 </Link>
             )}
@@ -151,10 +167,56 @@ function PostMeta({
             )}
             <Link href="/profile" passHref>
                 <PostMetaTag type="author" color={color} isLight={isLight}>
-                    {author}
+                    {sizedAuthor}
                 </PostMetaTag>
             </Link>
         </PostMetaTagContainer>
+    )
+}
+
+interface PostMetaTagChildProps extends IsLight {
+    tag: string
+    color: string
+    isFirst: boolean
+    isLast: boolean
+    mediaWidth: MediaType
+}
+const PostMetaTagChild = ({
+    tag,
+    color,
+    isFirst,
+    isLast,
+    isLight,
+    mediaWidth,
+}: PostMetaTagChildProps) => {
+    const sizedTag = useSizedTextByWindowWidth({
+        text: tag,
+        option: {
+            max: 14,
+            wideTablet: 12,
+            mediumTablet: 10,
+            widePhone: 8,
+            mediumPhone: 6,
+        },
+        mediaWidth,
+    })
+    return (
+        <PostMetaTag
+            type={isFirst ? "category" : "update"}
+            color={color}
+            isLight={isLight}
+        >
+            <p>
+                #{sizedTag}
+                {isLast && mediaWidth !== "mediumPhone" && (
+                    <LayersAltIcon
+                        fill={"white"}
+                        width=".65rem"
+                        height=".65rem"
+                    />
+                )}
+            </p>
+        </PostMetaTag>
     )
 }
 

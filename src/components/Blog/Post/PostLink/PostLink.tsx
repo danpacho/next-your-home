@@ -7,9 +7,11 @@ import Link from "next/link"
 
 import { PostMetaType } from "@typing/post/meta"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
-
-import { useMouseInteraction } from "@hooks/index"
+import {
+    useMouseInteraction,
+    useSizedTextByWindowWidth,
+    useWindowWidth,
+} from "@hooks/index"
 
 import PostMeta from "./PostMeta/PostMeta"
 import PostOrderText from "./PostOrderText/PostOrderText"
@@ -144,6 +146,32 @@ function PostLink({
     isCategoryPage,
 }: PostLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
+    const { mediaWidth } = useWindowWidth()
+    const sizedTitle = useSizedTextByWindowWidth({
+        text: title,
+        option: {
+            max: 80,
+            smallScreen: 60,
+            wideTablet: 40,
+            mediumTablet: 27,
+            widePhone: 40,
+            mediumPhone: 20,
+        },
+        mediaWidth,
+    })
+    const sizedPreview = useSizedTextByWindowWidth({
+        text: preview,
+        option: {
+            mediumScreen: 50,
+            smallScreen: 125,
+            wideTablet: 80,
+            mediumTablet: 50,
+            widePhone: 70,
+            mediumPhone: 60,
+        },
+        mediaWidth,
+    })
+
     return (
         <Link href={postUrl} passHref>
             <PostLinkContainer
@@ -162,11 +190,9 @@ function PostLink({
                         fontWeight={400}
                         underscoreColor={color}
                     >
-                        {sliceTextByMaxLength(title, 25)}
+                        {sizedTitle}
                     </UnderscoreText>
-                    <PostPreview>
-                        {sliceTextByMaxLength(preview, 50)}
-                    </PostPreview>
+                    <PostPreview>{sizedPreview}</PostPreview>
                     <PostMeta
                         author={author}
                         category={category}
