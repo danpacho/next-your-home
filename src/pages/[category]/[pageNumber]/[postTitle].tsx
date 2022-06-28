@@ -12,7 +12,7 @@ import { PageType } from "@typing/page/type"
 import { SeriesInfoType } from "@typing/post/series"
 import { SpecificPostContentType } from "@typing/post/content"
 
-import { useSetFocusingPageColor } from "@hooks/index"
+import { useSetFocusingPageColor, useWindowWidth } from "@hooks/index"
 
 import {
     getSpecificCategoryPostContent,
@@ -164,7 +164,11 @@ function Post({
     useSetFocusingPageColor(postMeta.color)
 
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { mediaWidth } = useWindowWidth()
+    const tocMobileRender =
+        mediaWidth === "widePhone" ||
+        mediaWidth === "mediumPhone" ||
+        mediaWidth === "mediumTablet"
     return (
         <>
             <PostContainer isLight={isLight}>
@@ -172,14 +176,14 @@ function Post({
 
                 <PostContentContainer>
                     <PostHeader {...postMeta} postSeriesInfo={postSeriesInfo} />
-                    {config.useMobileTOC && (
+                    {config.useMobileTOC && tocMobileRender && (
                         <PostTableOfContentMobile toc={toc} />
                     )}
                     <MDXBundler mdxSource={postSource} />
                     <PostFooter {...postMeta} />
                 </PostContentContainer>
 
-                <PostTableOfContentDesktop toc={toc} />
+                {!tocMobileRender && <PostTableOfContentDesktop toc={toc} />}
 
                 <PostController
                     categoryURL={`/${postMeta.category}`}

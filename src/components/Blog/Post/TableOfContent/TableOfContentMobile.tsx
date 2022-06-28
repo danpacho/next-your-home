@@ -7,25 +7,22 @@ import type { TableOfContents } from "@lib/unified"
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 import { LinkContainer } from "./common"
+import { memo } from "react"
 
 const TableOfContentContainer = styled.div<{ color: string }>`
-    display: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
 
-    ${media.mediumTablet} {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: flex-start;
+    gap: 1.5rem;
 
-        gap: 1.5rem;
+    width: 100%;
 
-        width: 100%;
+    padding: 1.5rem 0;
 
-        padding: 1.5rem 0;
-
-        border-bottom: 0.1rem solid ${(p) => p.theme.containerBorderColor};
-        ${({ theme, color }) => `${color}${theme.themeHexOpacity}`};
-    }
+    border-bottom: 0.1rem solid ${(p) => p.theme.containerBorderColor};
+    ${({ theme, color }) => `${color}${theme.themeHexOpacity}`};
 
     ${media.widePhone} {
         gap: 1.25rem;
@@ -164,4 +161,4 @@ function TableOfContentMobile({ toc }: { toc: TableOfContents[] }) {
     )
 }
 
-export default TableOfContentMobile
+export default memo(TableOfContentMobile)

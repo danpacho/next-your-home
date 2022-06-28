@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, memo } from "react"
 
 import styled from "styled-components"
 import animation from "@styles/utils/animation"
@@ -26,10 +26,6 @@ const TableOfContentPositionContainer = styled.div`
         min-width: unset;
         margin-right: 0.5rem;
         flex: 1;
-    }
-
-    ${media.mediumTablet} {
-        display: none;
     }
 `
 
@@ -195,4 +191,4 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
     )
 }
 
-export default TableOfContentDesktop
+export default memo(TableOfContentDesktop)
