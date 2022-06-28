@@ -75,7 +75,7 @@ const EN = "Hellow"
 ## 😲 Intuitive post grouping
 
 -   📌 Category based grouping
-    -   And You can describe the category
+    -   And you can describe the category
 -   📌 Category pagination
     -   Configurable
 -   📌 Post series
@@ -98,9 +98,10 @@ const EN = "Hellow"
 -   📌 `Light`/`Dark` mode full support
 -   📌 Intergrate Profile with full feature of `mdx`
 -   📌 Table of content on `desktop`/`mobile` (optional on mobile)
--   📌 Automatic paginated posts
+-   📌 Automatic pagination
 -   📌 Support `sitemap`, `rss` generation on build
 -   📌 Math `katex` support (optional)
+-   📌 Specific `error` informations about blog posts
 -   etc...
 
 # How can I start?
@@ -136,23 +137,23 @@ const EN = "Hellow"
             </strong>
         </summary>
 
-        1. This process save about <code>2.7 kb</code> by not importing <code>next/image</code> from the profile page
-        2. Also, unlike <code>img</code>, <code>svg</code> is rendered immediately
-        3. Even if it's annoying, please do it for faster loading 🥺
-        4. Results: <code>src/components/UI/Atoms/Icons/Logo.tsx</code>
+        1. This process save `bundle size` about `2.7kb` by not importing `next/image` from the profile page
+        2. Also, unlike `img`, `svg` component is rendered immediately
+        3. Even if it's little bit annoying, please do it for faster loading
+        4. Results: `src/components/UI/Atoms/Icons/Logo.tsx`
+           <br />
 
-        ```tsx
-        import * as React from "react"
-        import { SVGProps } from "react"
+            ```tsx
+            import * as React from "react"
+            import { SVGProps } from "react"
 
-        const SvgLogo = (props: SVGProps<SVGSVGElement>) => ({
-            /*... Your Svg Icon ...*/
-        })
+            const SvgLogo = (props: SVGProps<SVGSVGElement>) => ({
+                /*... Your Svg Icon ...*/
+            })
 
-        export default LogoIcon
-        ```
+            export default SvgLogo
+            ```
 
-        <br />
         </details>
 
 6.  **Build test**
@@ -174,7 +175,7 @@ const EN = "Hellow"
     3.  🫡 Just modify the style that you want to
 -   Whole project folder includes `README.md` about **structures** and **description**
 
-# Questions you might have
+# Questions you might have!
 
 <details>
   <summary>
@@ -202,30 +203,29 @@ const EN = "Hellow"
 
 <quote>Visit the [Next Your Home Guide Blog 🎉](https://next-your-home-guide.vercel.app) built with this template!</quote>
 
-1.  Run light house <code>desktop</code> result -> <code>100</code> / <code>100</code> / <code>100</code> / <code>100</code>
+1.  Run [pagespeed test](https://pagespeed.web.dev)
 
-2.  Run light house <code>mobile</code> result -> <code>100</code> / <code>97</code> / <code>100</code> / <code>100</code>
+    -   `desktop` result: `100` / `100` / `100` / `100`
+    -   `mobile` result: `100` / `97` / `100` / `100`
 
-3.  Run performance test on [Webpage Test](https://www.webpagetest.org/) -> <code>pretty good</code>
+2.  Run [Webpage Test](https://www.webpagetest.org/): **pretty good**
 
-4.  Check build <code>bundle size</code> result below
-
-<pre><code>
-Page                                               Size     First Load JS
-┌ ● /                                              1.48 kB        91.8 kB
-├   /_app                                          0 B            76.1 kB
-├ ● /[category]                                    811 B          91.2 kB
-├ ● /[category]/[pageNumber]                       934 B          91.3 kB
-├ ● /[category]/[pageNumber]/[postTitle]           1.71 kB        97.1 kB
-├ ○ /404                                           270 B          76.3 kB
-├ ○ /500                                           269 B          76.3 kB
-├ ● /category                                      2.72 kB        78.8 kB
-└ ● /profile                                       2.04 kB        89.3 kB
-+ First Load JS shared by all                      76.1 kB
-  ├ chunks/main-625f46e484218a7a.js                36.6 kB
-  ├ chunks/pages/_app-ad2adbe0e7716ea1.js          38.6 kB
-  ├ chunks/webpack-3373b0f21806983f.js             827 B
-  └ css/3c1f33eef2e27332.css                       811 B
-</code>
-</pre>
-</details>
+3.  Check build `bundle size` result below
+    ```bash
+    Page                                           Size     First Load JS
+    ┌ ● /                                          1.48 kB        92.2 kB
+    ├   /_app                                      0 B            76.1 kB
+    ├ ● /[category]                                810 B          91.6 kB
+    ├ ● /[category]/[pageNumber]                   932 B          91.7 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.4 kB
+    ├ ○ /404                                       270 B          76.3 kB
+    ├ ○ /500                                       269 B          76.3 kB
+    ├ ● /category                                  2.79 kB        78.8 kB
+    └ ● /profile                                   1.96 kB        89.2 kB
+    + First Load JS shared by all                  76.1 kB
+    ├ chunks/main-625f46e484218a7a.js              36.6 kB
+    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.6 kB
+    ├ chunks/webpack-3373b0f21806983f.js           827 B
+    └ css/3c1f33eef2e27332.css                     811 B
+    ```
+    </details>
