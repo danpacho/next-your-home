@@ -1,5 +1,5 @@
-import { cwd } from "process"
 import path from "path"
+import { cwd } from "process"
 import { readFile, readdir } from "fs/promises"
 
 import {
@@ -140,8 +140,8 @@ const getPlugins = ({
     rehypePlugins,
     remarkPlugins,
 }: {
-    rehypePlugins: import("unified").PluggableList
-    remarkPlugins: import("unified").PluggableList
+    rehypePlugins: any[]
+    remarkPlugins: any[]
 }) => ({
     rehypePlugins,
     remarkPlugins,
