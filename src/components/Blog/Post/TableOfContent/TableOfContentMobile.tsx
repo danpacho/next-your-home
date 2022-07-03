@@ -2,7 +2,7 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-import type { TableOfContents } from "@lib/unified"
+import type { TableOfContents } from "@lib/unified/remark"
 
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 

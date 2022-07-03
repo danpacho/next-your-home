@@ -1,58 +1,83 @@
-import React from "react"
+import styled, { css } from "styled-components"
+import media from "@styles/utils/media"
+
 import NextImage from "next/image"
-import styled from "styled-components"
 
-interface ImageProps {
-    src: string
-    alt: string
-    title: string
+interface IsExternalImage {
+    isExternalImage: boolean
 }
-
-const ImageWrap = styled.span`
+const ImageContainer = styled.span<IsExternalImage>`
     display: flex;
     justify-content: center;
     align-items: center;
 
+    max-width: max(75%, 20rem);
+
+    ${(p) =>
+        p.isExternalImage &&
+        css`
+            position: relative;
+            width: 50vw;
+            max-width: 30rem;
+            aspect-ratio: 1/1;
+
+            ${media.widePhone} {
+                width: 75vw;
+                max-width: unset;
+            }
+        `}
+
     & > span {
-        transition: box-shadow ease-out 0.5s;
-        box-shadow: ${(p) => p.theme.shadowMd};
         border-radius: ${(p) => p.theme.bmd};
-
-        &:hover {
-            box-shadow: ${(p) => p.theme.shadowLg};
-        }
     }
 `
-const NextImageStyled = styled(NextImage)`
-    transition: transform ease-out 0.25s;
 
-    &:hover {
-        transform: scale(1.05) !important;
-    }
-`
 const ImageTitle = styled.span`
     color: ${(p) => p.theme.gray5};
+    font-size: ${(p) => p.theme.xsm};
     text-decoration: underline;
-`
-function Image({ src, alt, title }: ImageProps) {
-    const [filteredAlt, width, height]: string[] = alt
-        .split(":")
-        .map((text) => text.trim())
 
+    margin-top: 0.5rem;
+
+    ${media.widePhone} {
+        display: none;
+    }
+`
+
+interface ImageProps {
+    alt: string
+    src: string
+}
+function Image(props: ImageProps) {
+    const { src, alt } = props
+    const [pureAlt, width, height] = alt.split(":")?.map((text) => text.trim())
+    const isExternalImage = src.startsWith("http")
     return (
         <>
-            <ImageWrap>
-                <NextImageStyled
-                    width={width}
-                    height={height}
-                    src={src}
-                    alt={filteredAlt}
-                    quality={75}
-                    loading="lazy"
-                    onContextMenu={(e) => e.preventDefault()}
-                />
-            </ImageWrap>
-            <ImageTitle>{title}</ImageTitle>
+            <ImageContainer isExternalImage={isExternalImage}>
+                {isExternalImage ? (
+                    <NextImage
+                        {...props}
+                        layout="fill"
+                        quality={75}
+                        loading="lazy"
+                        crossOrigin="anonymous"
+                        onContextMenu={(e) => e.preventDefault()}
+                    />
+                ) : (
+                    <NextImage
+                        {...props}
+                        width={width}
+                        height={height}
+                        alt={pureAlt}
+                        quality={75}
+                        loading="lazy"
+                        crossOrigin="anonymous"
+                        onContextMenu={(e) => e.preventDefault()}
+                    />
+                )}
+            </ImageContainer>
+            <ImageTitle>{pureAlt}</ImageTitle>
         </>
     )
 }

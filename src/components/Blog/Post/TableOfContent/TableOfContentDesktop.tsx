@@ -4,7 +4,7 @@ import styled from "styled-components"
 import animation from "@styles/utils/animation"
 import media from "@styles/utils/media"
 
-import type { TableOfContents } from "@lib/unified"
+import type { TableOfContents } from "@lib/unified/remark"
 
 import { sliceTextByMaxLength } from "@utils/function/text"
 

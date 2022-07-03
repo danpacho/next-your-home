@@ -98,6 +98,8 @@ const EN = "Hellow"
 -   📌 `Light`/`Dark` mode full support
 -   📌 Intergrate Profile with full feature of `mdx`
 -   📌 Table of content on `desktop`/`mobile` (optional on mobile)
+-   📌 Image optimization with `next/image` [(🔎 More info about next/image)](https://nextjs.org/docs/api-reference/next/image)
+-   📌 Automatic image size support for `static`/`external`
 -   📌 Automatic pagination
 -   📌 Support `sitemap`, `rss` generation on build
 -   📌 Math `katex` support (optional)
@@ -217,11 +219,11 @@ const EN = "Hellow"
     ├   /_app                                      0 B            76.1 kB
     ├ ● /[category]                                810 B          91.6 kB
     ├ ● /[category]/[pageNumber]                   932 B          91.7 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.4 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.5 kB
     ├ ○ /404                                       270 B          76.3 kB
     ├ ○ /500                                       269 B          76.3 kB
     ├ ● /category                                  2.79 kB        78.8 kB
-    └ ● /profile                                   1.96 kB        89.2 kB
+    └ ● /profile                                   1.96 kB        89.3 kB
     + First Load JS shared by all                  76.1 kB
     ├ chunks/main-625f46e484218a7a.js              36.6 kB
     ├ chunks/pages/_app-eae174cb1eaf3402.js        38.6 kB
