@@ -13,6 +13,7 @@ type MarkdownElement =
     | "heading"
     | "inlineCode"
     | "thematicBreak"
+    | "image"
 
 export interface MarkdownNodeType {
     type: MarkdownElement
@@ -38,4 +39,3 @@ const findMarkdownElment = (tree: Node, mdElmentArray: MarkdownElement[]) => {
 }
 
 export { findMarkdownElment }
-export * from "./toc"
