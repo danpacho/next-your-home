@@ -4,13 +4,10 @@
         "paths": {
             "@src/*": ["/src*"],
             "@components/*": ["src/components/*"],
-            "@assets/*": ["src/assets/*"],
             "@constants/*": ["src/constants/*"],
             "@hooks/*": ["src/hooks/*"],
             "@utils/*": ["src/utils/*"],
-            "@api/*": ["src/api/*"],
             "@styles/*": ["src/styles/*"],
-            "@atoms/*": ["src/atoms/*"],
             "@typing/*": ["src/types/*"],
             "@lib/*": ["src/lib/*"]
         },
