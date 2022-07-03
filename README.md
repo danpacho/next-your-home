@@ -112,17 +112,26 @@ const EN = "Hellow"
 1.  **Click** `Use this template` button in this page and make own `repo` with **`1commit`**
     -   Get this `repo` to your `local` development env
 2.  **Install packages**
+
     ```bash
-        yarn
+        pnpm i
     ```
+
+    -   this project use `pnpm` for package managing
+    -   if `pnpm` is not installed, visit [pnpm install guide](https://pnpm.io/installation)
+
+        ```bash
+        npm install -g pnpm
+        ```
+
 3.  **Dev test**
     ```bash
-        yarn dev
+        pnpm dev
     ```
     -   port `3000` will be used by default
 4.  **First post**
     ```bash
-        yarn post
+        pnpm post
     ```
 5.  **Replace **`Logo Icon`** with your own Logo**
 
@@ -161,7 +170,7 @@ const EN = "Hellow"
 
 6.  **Build test**
     ```bash
-        yarn build
+        pnpm build
     ```
     -   build result in `.next` folder
 7.  **Deploy** with `vercel`
