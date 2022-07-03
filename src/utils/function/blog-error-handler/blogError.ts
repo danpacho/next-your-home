@@ -128,7 +128,7 @@ class BlogErrorAdditionalInfo extends BlogError {
     }
 }
 
-type ReadingFileFormat = ".json" | ".txt" | ".mdx"
+type ReadingFileFormat = ".json" | ".txt" | ".mdx" | "image"
 interface BlogFileExtractionErrorConstructorProps
     extends Omit<
         BlogErrorConstructorProps,
