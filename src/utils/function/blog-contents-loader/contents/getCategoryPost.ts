@@ -543,64 +543,61 @@ const getCategoryPaginationTag = memo(
  * @return `postSource` 포스트 컴파일 소스
  * @return `postController` 이전포스트 - 현재 - 다음 포스트
  */
-const getSpecificCategoryPostContent = memo(
-    config.useMemo,
-    async ({
-        categoryName,
-        categoryPage,
-        postTitle,
-    }: {
-        categoryName: string
-        postTitle: string
-        categoryPage: number
-    }): Promise<SpecificPostContentType> => {
-        const specificCategoryPostContent = (await getAllCategoryPostContent())
-            .find(({ category }) => category === categoryName)!
-            .postContentArray.reduce<SpecificPostContentType>(
-                (accPostContent, currValue, idx, totPost) => {
-                    if (
-                        currValue.postMeta.postUrl ===
-                        `/${categoryName}/${categoryPage}/${postTitle}`
-                    ) {
-                        const isFirst = idx === 0
-                        const prevPost = isFirst
-                            ? {
-                                  title: `${categoryName} 글 목록으로 돌아가기`,
-                                  postUrl: `/${categoryName}`,
-                              }
-                            : {
-                                  title: totPost[idx - 1].postMeta.title,
-                                  postUrl: totPost[idx - 1].postMeta.postUrl,
-                              }
+const getSpecificCategoryPostContent = async ({
+    categoryName,
+    categoryPage,
+    postTitle,
+}: {
+    categoryName: string
+    postTitle: string
+    categoryPage: number
+}): Promise<SpecificPostContentType> => {
+    const specificCategoryPostContent = (await getAllCategoryPostContent())
+        .find(({ category }) => category === categoryName)!
+        .postContentArray.reduce<SpecificPostContentType>(
+            (accPostContent, currValue, idx, totPost) => {
+                if (
+                    currValue.postMeta.postUrl ===
+                    `/${categoryName}/${categoryPage}/${postTitle}`
+                ) {
+                    const isFirst = idx === 0
+                    const prevPost = isFirst
+                        ? {
+                              title: `${categoryName} 글 목록으로 돌아가기`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx - 1].postMeta.title,
+                              postUrl: totPost[idx - 1].postMeta.postUrl,
+                          }
 
-                        const isLast = idx === totPost.length - 1
-                        const nextPost = isLast
-                            ? {
-                                  title: `${categoryName}의 마지막 글이에요!`,
-                                  postUrl: `/${categoryName}`,
-                              }
-                            : {
-                                  title: totPost[idx + 1].postMeta.title,
-                                  postUrl: totPost[idx + 1].postMeta.postUrl,
-                              }
+                    const isLast = idx === totPost.length - 1
+                    const nextPost = isLast
+                        ? {
+                              title: `${categoryName}의 마지막 글이에요!`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx + 1].postMeta.title,
+                              postUrl: totPost[idx + 1].postMeta.postUrl,
+                          }
 
-                        const postController: PostControllerType = {
-                            prevPost,
-                            nextPost,
-                        }
-                        const specificPostContent: SpecificPostContentType = {
-                            ...currValue,
-                            postController,
-                        }
-                        return specificPostContent
+                    const postController: PostControllerType = {
+                        prevPost,
+                        nextPost,
                     }
-                    return accPostContent
-                },
-                {} as SpecificPostContentType
-            )
-        return specificCategoryPostContent
-    }
-)
+                    const specificPostContent: SpecificPostContentType = {
+                        ...currValue,
+                        postController,
+                    }
+                    return specificPostContent
+                }
+                return accPostContent
+            },
+            {} as SpecificPostContentType
+        )
+    return specificCategoryPostContent
+}
 
 /**
  * @returns 모든 포스트 `meta` 데이터
@@ -733,13 +730,12 @@ const getSpecificCategorySeriesInfo = async (
  * @param categoryName 특정 카테고리
  * @returns 특정 카테고리의 포스트 `meta`p
  */
-const getCategoryPostMeta = memo(
-    config.useMemo,
-    async (categoryName: string): Promise<PostMetaType[]> =>
-        (await getAllPostMeta())
-            .filter(({ category }) => category === categoryName)
-            .map(addPostOrderToMeta)
-)
+const getCategoryPostMeta = async (
+    categoryName: string
+): Promise<PostMetaType[]> =>
+    (await getAllPostMeta())
+        .filter(({ category }) => category === categoryName)
+        .map(addPostOrderToMeta)
 /**
  * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
  * @note `config` **numberOfLatestPost** 참조

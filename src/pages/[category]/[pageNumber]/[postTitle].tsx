@@ -1,10 +1,7 @@
 import styled from "styled-components"
 import media from "@styles/utils/media"
 
-import { useRef } from "react"
-
 import { GetStaticPaths, GetStaticProps } from "next"
-
 import { ParsedUrlQuery } from "querystring"
 
 import { IsLight } from "@typing/theme"
