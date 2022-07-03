@@ -39,10 +39,14 @@ import matter from "gray-matter"
 
 import remarkGfm from "remark-gfm"
 import remarkMath from "remark-math"
+import {
+    getTableOfContents,
+    remarkAutomaticImageSize,
+} from "@lib/unified/remark"
 
 import rehypeKatex from "rehype-katex"
 import rehypePrism from "rehype-prism-plus"
-import { getTableOfContents, rehypeHeaderId } from "@lib/unified"
+import { rehypeHeaderId } from "@lib/unified/rehype"
 
 import { bundleMDX } from "mdx-bundler"
 
@@ -154,11 +158,11 @@ const bundlePostMDX = async <MetaType>({
     const customPlugin = config.useKatex
         ? getPlugins({
               rehypePlugins: [rehypePrism, rehypeKatex, rehypeHeaderId],
-              remarkPlugins: [remarkGfm, remarkMath],
+              remarkPlugins: [remarkAutomaticImageSize, remarkGfm, remarkMath],
           })
         : getPlugins({
               rehypePlugins: [rehypePrism, rehypeHeaderId],
-              remarkPlugins: [remarkGfm],
+              remarkPlugins: [remarkAutomaticImageSize, remarkGfm],
           })
 
     //# ES Build env config: https://www.alaycock.co.uk/2021/03/mdx-bundler#esbuild-executable
