@@ -74,7 +74,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     ${({ type }) => postMetaTagStyle[type]}
 
     ${media.mediumTablet} {
-        max-width: 5rem;
+        max-width: 6.5rem;
         padding: 0.2rem 0.4rem;
 
         font-size: ${(p) => p.theme.xsm};
@@ -136,7 +136,6 @@ function PostMeta({
                             isFirst={order === 0}
                             isLast={order === renderTagNumber - 1}
                             isLight={isLight}
-                            mediaWidth={mediaWidth}
                             key={tag}
                         />
                     ))}
@@ -178,7 +177,6 @@ interface PostMetaTagChildProps extends IsLight {
     color: string
     isFirst: boolean
     isLast: boolean
-    mediaWidth: MediaType
 }
 const PostMetaTagChild = ({
     tag,
@@ -186,7 +184,6 @@ const PostMetaTagChild = ({
     isFirst,
     isLast,
     isLight,
-    mediaWidth,
 }: PostMetaTagChildProps) => {
     return (
         <PostMetaTag
@@ -194,13 +191,12 @@ const PostMetaTagChild = ({
             color={color}
             isLight={isLight}
         >
-            <SizedText
-                defaultLineNumber={1}
-                breakOption="break-all"
-            >{`#${tag}`}</SizedText>
-            {isLast && mediaWidth !== "mediumPhone" && (
-                <LayersAltIcon fill={"white"} width=".65rem" height=".65rem" />
-            )}
+            <SizedText defaultLineNumber={1} breakOption="break-all">
+                {`#${tag}`}
+                {isLast && (
+                    <LayersAltIcon fill={"white"} width="12px" height="12px" />
+                )}
+            </SizedText>
         </PostMetaTag>
     )
 }
