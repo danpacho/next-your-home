@@ -61,7 +61,7 @@ const blogInfo: BlogInfoType = {
     language: "ko",
 }
 
-const blogContentsDirectoryName = "blog-contents" as const
+const blogContentsDirectoryName = "blog" as const
 interface ConfigType extends BlogInfoType {
     blogContentsDirectoryName: `${typeof blogContentsDirectoryName}`
     useTXT: boolean

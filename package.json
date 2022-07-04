@@ -7,7 +7,7 @@
     },
     "description": "cutomizable blog templates with Next.js and MDX.",
     "scripts": {
-        "dev": "next-remote-watch ./blog-contents/",
+        "dev": "next-remote-watch ./blog/",
         "seo": "ts-node -r tsconfig-paths/register --project tsconfig.node.json  ./scripts/seo.ts",
         "next-build": "next build",
         "build": "pnpm next-build && pnpm seo",
