@@ -7,16 +7,13 @@ import Link from "next/link"
 
 import { PostMetaType } from "@typing/post/meta"
 
-import {
-    useMouseInteraction,
-    useSizedTextByWindowWidth,
-    useWindowWidth,
-} from "@hooks/index"
+import { useMouseInteraction } from "@hooks/index"
 
 import PostMeta from "./PostMeta/PostMeta"
 import PostOrderText from "./PostOrderText/PostOrderText"
 
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
+import { SizedText } from "@components/UI/Atoms/SizedText"
 
 const POST_LINK_BORDER_WIDTH = "0.1rem"
 const postLinkContainerStyle = {
@@ -60,6 +57,8 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
+    gap: 1.5rem;
 
     width: 100%;
     min-height: 9rem;
@@ -146,31 +145,6 @@ function PostLink({
     isCategoryPage,
 }: PostLinkProps) {
     const [isHover, setIsHover] = useState<boolean>(false)
-    const { mediaWidth } = useWindowWidth()
-    const sizedTitle = useSizedTextByWindowWidth({
-        text: title,
-        option: {
-            max: 80,
-            smallScreen: 60,
-            wideTablet: 40,
-            mediumTablet: 27,
-            widePhone: 40,
-            mediumPhone: 20,
-        },
-        mediaWidth,
-    })
-    const sizedPreview = useSizedTextByWindowWidth({
-        text: preview,
-        option: {
-            mediumScreen: 50,
-            smallScreen: 125,
-            wideTablet: 80,
-            mediumTablet: 50,
-            widePhone: 70,
-            mediumPhone: 60,
-        },
-        mediaWidth,
-    })
 
     return (
         <Link href={postUrl} passHref>
@@ -190,9 +164,18 @@ function PostLink({
                         fontWeight={400}
                         underscoreColor={color}
                     >
-                        {sizedTitle}
+                        <SizedText defaultLineNumber={1}>{title}</SizedText>
                     </UnderscoreText>
-                    <PostPreview>{sizedPreview}</PostPreview>
+
+                    <PostPreview>
+                        <SizedText
+                            defaultLineNumber={3}
+                            widePhone={3}
+                            mediumPhone={3}
+                        >
+                            {preview}
+                        </SizedText>
+                    </PostPreview>
                     <PostMeta
                         author={author}
                         category={category}

@@ -8,12 +8,9 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
 
-import {
-    useScrollDirection,
-    useWindowWidth,
-    useSizedTextByWindowWidth,
-} from "@hooks/index"
+import { useScrollDirection } from "@hooks/index"
 
+import { SizedText } from "@components/UI/Atoms/SizedText"
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -43,6 +40,7 @@ const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     border-radius: 10rem;
 
     animation: ${animation.fadeIn} ease-out 1s;
+    z-index: ${(p) => p.theme.zModal};
 
     ${media.widePhone} {
         width: 85%;
@@ -124,9 +122,9 @@ const InfoContainer = styled.div`
     }
 `
 
-const PostTitleText = styled.p<IsLight>`
+const PostTitleText = styled.div<IsLight>`
     transition: color, border ease-out 0.25s;
-    min-width: 10rem;
+    width: 10rem;
 
     color: ${(p) => p.theme.gray5};
     font-weight: 600;
@@ -149,8 +147,7 @@ const PostTitleText = styled.p<IsLight>`
     cursor: pointer;
 
     ${media.widePhone} {
-        min-width: unset;
-        width: 10rem;
+        max-width: 10rem;
 
         font-weight: 400;
 
@@ -184,24 +181,6 @@ function PostController({
         responsivenessPixel: 2.5,
     })
 
-    const { mediaWidth } = useWindowWidth()
-    const prevPostTitle = useSizedTextByWindowWidth({
-        text: prevPost.title,
-        option: {
-            widePhone: 25,
-            mediumPhone: 15,
-        },
-        mediaWidth,
-    })
-    const nextPostTitle = useSizedTextByWindowWidth({
-        text: nextPost.title,
-        option: {
-            widePhone: 20,
-            mediumPhone: 15,
-        },
-        mediaWidth,
-    })
-
     return (
         <ControllerContainer isScrollDown={isScrollDown}>
             <Link href={prevPost.postUrl} passHref scroll={false}>
@@ -215,7 +194,9 @@ function PostController({
                         <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
                     <PostTitleText isLight={isLight}>
-                        {prevPostTitle}
+                        <SizedText defaultLineNumber={2}>
+                            {prevPost.title}
+                        </SizedText>
                     </PostTitleText>
                 </InfoContainer>
             </Link>
@@ -234,7 +215,9 @@ function PostController({
             <Link href={nextPost.postUrl} passHref>
                 <InfoContainer>
                     <PostTitleText isLight={isLight}>
-                        {nextPostTitle}
+                        <SizedText defaultLineNumber={2}>
+                            {nextPost.title}
+                        </SizedText>
                     </PostTitleText>
                     <ControllerButton
                         buttonType="next"

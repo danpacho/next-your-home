@@ -6,13 +6,12 @@ import media from "@styles/utils/media"
 
 import type { TableOfContents } from "@lib/unified/remark"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
-
 import { useMouseInteraction } from "@hooks/index"
 
-import { useAtoms, _atom } from "@lib/jotai"
-
+import { SizedText } from "@components/UI/Atoms/SizedText"
 import { LinkContainer } from "./common"
+
+import { useAtoms, _atom } from "@lib/jotai"
 
 const TableOfContentPositionContainer = styled.div`
     position: sticky;
@@ -142,13 +141,9 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                 isFocusing={isTitleFocusing || isFocusing}
                                 key={title}
                             >
-                                <p>
-                                    🍞{" "}
-                                    {sliceTextByMaxLength(
-                                        title,
-                                        TITLE_MAX_LENGTH.h1
-                                    )}
-                                </p>
+                                <SizedText defaultLineNumber={1}>
+                                    🍞 {title}
+                                </SizedText>
                                 {children.length !== 0 && (
                                     <H2Container>
                                         {children.map(
@@ -169,13 +164,13 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                                             )
                                                         }}
                                                     >
-                                                        <p>
-                                                            🥛{" "}
-                                                            {sliceTextByMaxLength(
-                                                                childTitle,
-                                                                TITLE_MAX_LENGTH.h2
-                                                            )}
-                                                        </p>
+                                                        <SizedText
+                                                            defaultLineNumber={
+                                                                1
+                                                            }
+                                                        >
+                                                            🥛 {childTitle}
+                                                        </SizedText>
                                                     </H2Link>
                                                 </LinkContainer>
                                             )

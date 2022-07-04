@@ -12,8 +12,7 @@ import { SeriesInfoType } from "@typing/post/series"
 
 import { useColorSet, useMouseInteraction } from "@hooks/index"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
-
+import { SizedText } from "@components/UI/Atoms/SizedText"
 import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -318,8 +317,9 @@ function PostSeries({
                             isLight={isLight}
                             focusedPost={postTitle === currentTitle}
                         >
-                            <p>{order}.</p>
-                            <p>{sliceTextByMaxLength(postTitle, 60)}</p>
+                            <SizedText defaultLineNumber={1}>
+                                {order}.{postTitle}
+                            </SizedText>
                         </SeriesLink>
                     </Link>
                 ))}

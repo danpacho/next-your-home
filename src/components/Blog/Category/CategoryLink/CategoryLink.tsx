@@ -9,17 +9,13 @@ import { ColorProps, IsLight } from "@typing/theme"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import {
-    useMouseInteraction,
-    useSizedTextByWindowWidth,
-    useWindowWidth,
-} from "@hooks/index"
+import { useMouseInteraction } from "@hooks/index"
 
+import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
 import { useAtoms, _slector } from "@lib/jotai"
-import { sliceTextByMaxLength } from "@utils/function/text"
 
 interface CategoryLinkContainerStyle extends ColorProps {
     isHover: boolean
@@ -114,29 +110,6 @@ function CategoryLink({
 
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
 
-    const { mediaWidth } = useWindowWidth()
-    const sizedDescription = useSizedTextByWindowWidth({
-        text: description,
-        option: {
-            max: 75,
-            wideTablet: 45,
-            mediumTablet: 45,
-            widePhone: 120,
-            mediumPhone: 35,
-        },
-        mediaWidth,
-    })
-    const sizedCategory = useSizedTextByWindowWidth({
-        text: category,
-        option: {
-            max: 15,
-            wideTablet: 11,
-            mediumTablet: 11,
-            widePhone: 15,
-            mediumPhone: 10,
-        },
-        mediaWidth,
-    })
     return (
         <Link href={categoryUrl} passHref>
             <CategoryLinkContainer
@@ -177,10 +150,17 @@ function CategoryLink({
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
-                        {sizedCategory}
+                        <SizedText defaultLineNumber={1}>{category}</SizedText>
                     </UnderscoreText>
                     <CategoryDescription>
-                        {sizedDescription}
+                        <SizedText
+                            defaultLineNumber={4}
+                            wideScreen={4}
+                            widePhone={3}
+                            mediumPhone={2}
+                        >
+                            {description}
+                        </SizedText>
                     </CategoryDescription>
                 </CategoryInfoContainer>
             </CategoryLinkContainer>

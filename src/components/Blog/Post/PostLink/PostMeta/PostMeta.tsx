@@ -6,9 +6,11 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
-import { useSizedTextByWindowWidth, useWindowWidth } from "@hooks/index"
+import { useWindowWidth } from "@hooks/index"
 
 import { LayersAltIcon } from "@components/UI/Atoms/Icons"
+import { SizedText } from "@components/UI/Atoms/SizedText"
+
 import { useAtoms, _slector } from "@lib/jotai"
 
 const PostMetaTagContainer = styled.ul`
@@ -52,7 +54,8 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     align-items: center;
     justify-content: center;
 
-    width: max-content;
+    max-width: 7.5rem;
+    width: fit-content;
 
     padding: 0.15rem 0.5rem;
 
@@ -71,21 +74,23 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     ${({ type }) => postMetaTagStyle[type]}
 
     ${media.mediumTablet} {
-        font-size: ${(p) => p.theme.xsm};
+        max-width: 5rem;
         padding: 0.2rem 0.4rem;
+
+        font-size: ${(p) => p.theme.xsm};
     }
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.xsm};
-        font-weight: 400;
+        max-width: 8rem;
 
         padding: 0.15rem 0.25rem;
 
-        width: auto;
-        display: inline-block;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        font-size: ${(p) => p.theme.xsm};
+        font-weight: 400;
+    }
+
+    ${media.mediumPhone} {
+        max-width: 4rem;
     }
 `
 
@@ -111,25 +116,12 @@ function PostMeta({
     isCategoryPage,
 }: PostMetaProps) {
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
-    const { mediaWidth, windowWidth } = useWindowWidth()
-    const sizedAuthor = useSizedTextByWindowWidth({
-        text: author,
-        option: {
-            mediumPhone: 7,
-        },
-        mediaWidth,
-    })
-    const sizedCategory = useSizedTextByWindowWidth({
-        text: category,
-        option: {
-            max: 25,
-            mediumTablet: 10,
-            widePhone: 20,
-            mediumPhone: 7,
-        },
-        mediaWidth,
-    })
-    const isContentSizeSmall = windowWidth < MEDIA_WIDTH.mediumTablet
+    const { mediaWidth } = useWindowWidth()
+
+    const isContentSizeSmall =
+        mediaWidth !== "smallScreen" &&
+        mediaWidth !== "mediumScreen" &&
+        mediaWidth !== "wideScreen"
     const renderTagNumber = isContentSizeSmall ? TAG_NUMBER.min : TAG_NUMBER.max
 
     return (
@@ -156,18 +148,25 @@ function PostMeta({
                         color={color}
                         isLight={isLight}
                     >
-                        {sizedCategory}
+                        <SizedText
+                            defaultLineNumber={1}
+                            breakOption="break-all"
+                        >
+                            {category}
+                        </SizedText>
                     </PostMetaTag>
                 </Link>
             )}
             {!isCategoryPage && (
                 <PostMetaTag type="update" color={color} isLight={isLight}>
-                    {update}
+                    <SizedText defaultLineNumber={1}>{update}</SizedText>
                 </PostMetaTag>
             )}
             <Link href="/profile" passHref>
                 <PostMetaTag type="author" color={color} isLight={isLight}>
-                    {sizedAuthor}
+                    <SizedText defaultLineNumber={1} breakOption="break-all">
+                        {author}
+                    </SizedText>
                 </PostMetaTag>
             </Link>
         </PostMetaTagContainer>
@@ -189,33 +188,19 @@ const PostMetaTagChild = ({
     isLight,
     mediaWidth,
 }: PostMetaTagChildProps) => {
-    const sizedTag = useSizedTextByWindowWidth({
-        text: tag,
-        option: {
-            max: 14,
-            wideTablet: 12,
-            mediumTablet: 10,
-            widePhone: 8,
-            mediumPhone: 6,
-        },
-        mediaWidth,
-    })
     return (
         <PostMetaTag
             type={isFirst ? "category" : "update"}
             color={color}
             isLight={isLight}
         >
-            <p>
-                #{sizedTag}
-                {isLast && mediaWidth !== "mediumPhone" && (
-                    <LayersAltIcon
-                        fill={"white"}
-                        width=".65rem"
-                        height=".65rem"
-                    />
-                )}
-            </p>
+            <SizedText
+                defaultLineNumber={1}
+                breakOption="break-all"
+            >{`#${tag}`}</SizedText>
+            {isLast && mediaWidth !== "mediumPhone" && (
+                <LayersAltIcon fill={"white"} width=".65rem" height=".65rem" />
+            )}
         </PostMetaTag>
     )
 }

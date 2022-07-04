@@ -10,10 +10,9 @@ import Link from "next/link"
 import { ColorProps } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { sliceTextByMaxLength } from "@utils/function/text"
-
 import { useTimeout } from "@hooks/index"
 
+import { SizedText } from "@components/UI/Atoms/SizedText"
 import { BookmarkIcon } from "@components/UI/Atoms/Icons"
 
 interface SeriesLinkContainerStyle extends ColorProps {
@@ -250,7 +249,9 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                                 <p>{SERIES_ORDER_TEXT[order - 1]}</p>
                             </SeriesPostOrder>
                             <SeriesPostTitle>
-                                {sliceTextByMaxLength(postTitle, 50)}
+                                <SizedText defaultLineNumber={1}>
+                                    {postTitle}
+                                </SizedText>
                             </SeriesPostTitle>
                         </SeriesPostContainer>
                     </Link>
