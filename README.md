@@ -86,6 +86,7 @@ const EN = "Hellow"
 -   📌 Easy navigation with `bottom post controller`
 -   📌 Less vertical scrolling for searching the posts
 -   📌 Intuitive UI Elements
+-   📌 Device width based, sized text content
 
 ## 🎨 Show your personality with colors
 
@@ -226,17 +227,17 @@ const EN = "Hellow"
     ```bash
     Page                                           Size     First Load JS
     ┌ ● /                                          1.48 kB        92.3 kB
-    ├   /_app                                      0 B            76.1 kB
-    ├ ● /[category]                                810 B          91.7 kB
-    ├ ● /[category]/[pageNumber]                   932 B          91.8 kB
+    ├   /_app                                      0 B              76 kB
+    ├ ● /[category]                                810 B          91.6 kB
+    ├ ● /[category]/[pageNumber]                   932 B          91.7 kB
     ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.6 kB
-    ├ ○ /404                                       270 B          76.4 kB
-    ├ ○ /500                                       269 B          76.4 kB
-    ├ ● /category                                  2.79 kB        78.9 kB
-    └ ● /profile                                   1.96 kB        89.4 kB
-    + First Load JS shared by all                  76.1 kB
-    ├ chunks/main-625f46e484218a7a.js              36.6 kB
-    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.6 kB
+    ├ ○ /404                                       270 B          76.3 kB
+    ├ ○ /500                                       269 B          76.3 kB
+    ├ ● /category                                  2.79 kB        79.1 kB
+    └ ● /profile                                   1.96 kB        89.3 kB
+    + First Load JS shared by all                    76 kB
+    ├ chunks/main-625f46e484218a7a.js              36.8 kB
+    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.4 kB
     ├ chunks/webpack-3373b0f21806983f.js           827 B
     └ css/3c1f33eef2e27332.css                     811 B
     ```
