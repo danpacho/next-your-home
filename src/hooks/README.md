@@ -26,5 +26,3 @@
     - Get the color combination set that changes brightness to `dark`/`light` mode for input **# HEX #** color
 13. **`useWindowWidth`**
     - Detect `window` width changes and returns `mediaWidth` string that implies a specific width state
-14. **`useSizedTextByWindowWidth`**
-    - Detect `window` width changes and adjust text length at specific width condition, and return `sized` text
