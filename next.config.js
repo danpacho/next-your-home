@@ -26,6 +26,7 @@ const nextConfig = {
     swcMinify: true,
     compiler: {
         removeConsole: removeConsoleOption,
+        reactStrictMode: true,
         styledComponents: true,
     },
     webpack: (config, { dev, isServer }) => {
