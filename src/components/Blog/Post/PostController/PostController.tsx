@@ -180,7 +180,7 @@ function PostController({
     const { isLightState: isLight } = useAtoms(_slector("isLight"))
 
     const { isScrollDown } = useScrollDirection({
-        throttleTime: 500,
+        throttleTime: 200,
         responsivenessPixel: 2.5,
     })
 
