@@ -155,9 +155,8 @@ function CategoryLink({
                     <CategoryDescription>
                         <SizedText
                             defaultLineNumber={4}
-                            wideScreen={4}
                             widePhone={3}
-                            mediumPhone={2}
+                            mediumPhone={3}
                         >
                             {description}
                         </SizedText>
