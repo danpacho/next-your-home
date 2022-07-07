@@ -55,7 +55,7 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     justify-content: center;
 
     max-width: 7.5rem;
-    width: fit-content;
+    height: 1.15rem;
 
     padding: 0.15rem 0.5rem;
 
