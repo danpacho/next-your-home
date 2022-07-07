@@ -1,5 +1,5 @@
 import styled, { css } from "styled-components"
-import media, { MediaType, MEDIA_WIDTH } from "@styles/utils/media"
+import media from "@styles/utils/media"
 
 import Link from "next/link"
 
