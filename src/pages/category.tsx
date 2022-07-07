@@ -98,6 +98,8 @@ const CategoryContainer = styled.div`
         align-items: flex-start;
 
         gap: 1.25rem;
+
+        width: 100%;
     }
 `
 
@@ -150,10 +152,15 @@ const CategoryLinkContaier = styled.div<ColorProps>`
     }
 
     ${media.widePhone} {
+        flex-direction: row-reverse;
+        justify-content: space-between;
+
         gap: 1.25rem;
 
+        width: 100%;
+
         padding: 1rem;
-        flex-direction: row-reverse;
+
         border-right: 0;
         border-left: 0.25rem solid ${(p) => p._color};
     }
