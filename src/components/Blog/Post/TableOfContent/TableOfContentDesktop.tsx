@@ -29,7 +29,6 @@ const TableOfContentPositionContainer = styled.div`
 `
 
 const TOCContainer = styled.div`
-    min-width: max-content;
     height: fit-content;
 
     display: flex;
@@ -44,7 +43,6 @@ interface LinkStyle {
 }
 
 const HeaderLinkCommon = styled.div<LinkStyle>`
-    width: 100%;
     padding: 0.75rem 0.25rem;
     border-left: 0.1rem solid ${(p) => p.theme.gray2};
 
@@ -81,7 +79,7 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     animation-delay: ${({ index }) => index * 85}ms;
 `
 const H2Link = styled(HeaderLinkCommon)`
-    transition: all 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
 
     margin-left: 1.25rem;
 
@@ -91,11 +89,10 @@ const H2Link = styled(HeaderLinkCommon)`
         border-color: ${(p) => p.theme.themePrimaryColor};
     }
 
-    will-change: transform;
     transform-origin: left;
-    transform: scale(${(p) => (p.isFocusing ? "1" : "0")})
-        translateY(${(p) => (p.isFocusing ? "0" : "-10px")});
+    transform: translateY(${(p) => (p.isFocusing ? "0" : "-15px")});
 
+    opacity: ${(p) => (p.isFocusing ? 1 : 0)};
     visibility: ${(p) => (p.isFocusing ? "visible" : "hidden")};
 
     ${media.mediumTablet} {
@@ -112,11 +109,6 @@ const H2Container = styled.div`
 
     margin-top: 1rem;
 `
-
-const TITLE_MAX_LENGTH = {
-    h1: 17,
-    h2: 15,
-}
 
 function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
     const { focusTitleState, focusTitleSetState } = useAtoms(
@@ -141,7 +133,10 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                 isFocusing={isTitleFocusing || isFocusing}
                                 key={title}
                             >
-                                <SizedText defaultLineNumber={1}>
+                                <SizedText
+                                    defaultLineNumber={1}
+                                    breakOption="break-all"
+                                >
                                     🍞 {title}
                                 </SizedText>
                                 {children.length !== 0 && (
@@ -168,6 +163,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                                             defaultLineNumber={
                                                                 1
                                                             }
+                                                            breakOption="break-all"
                                                         >
                                                             🥛 {childTitle}
                                                         </SizedText>
