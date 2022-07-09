@@ -128,7 +128,7 @@ Category.displayName = "Category" as PageType
 export default Category
 
 const CategoryLinkContaier = styled.div<ColorProps>`
-    transition: background-color ease 0.15s;
+    transition: all ease 0.15s;
 
     position: relative;
 
@@ -142,13 +142,14 @@ const CategoryLinkContaier = styled.div<ColorProps>`
 
     cursor: pointer;
 
-    border-radius: ${({ theme }) => theme.bxsm};
+    border-radius: ${({ theme }) => theme.bxxsm};
     border-right: 0.25rem solid ${(p) => p._color};
 
     background-color: ${({ theme }) =>
         `${theme.containerBackgroundColor}${theme.opacity60}`};
     &:hover {
         background-color: ${({ theme }) => theme.containerBackgroundColor};
+        box-shadow: ${(p) => p.theme.shadowSm};
     }
 
     ${media.widePhone} {
@@ -237,9 +238,9 @@ const CategoryLink = ({
                         underscoreColor={categoryColor}
                         fontWeight={400}
                     >
-                        <SizedText defaultLineNumber={1}>
+                        <SizedText defaultLineNumber={1} lineHeight={1.25}>
                             {category} <LeafIcon width="1rem" height="1rem" />
-                        </SizedText>{" "}
+                        </SizedText>
                     </UnderscoreText>
 
                     <CategoryDescription>{description}</CategoryDescription>

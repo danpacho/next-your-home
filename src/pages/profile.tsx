@@ -136,11 +136,11 @@ const ProfileLogo = styled(LogoIcon)`
 `
 
 const ProfileState = styled.p`
-    color: ${(p) => p.theme.fontColor};
+    color: ${(p) => p.theme.descriptionFontColor};
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
     line-height: 1.15rem;
-    word-break: break-all;
+    word-break: break-word;
 
     padding: 0.35rem 0.5rem;
 
@@ -226,7 +226,7 @@ const ProfileButtonContainer = styled.button<IsLight>`
 
     padding: 0.5rem;
 
-    border-radius: ${(p) => p.theme.bmd};
+    border-radius: ${(p) => p.theme.bsm};
 
     background-color: ${(p) => p.theme.containerBackgroundColor};
     border: 1.25px solid ${(p) => p.theme.containerBorderColor};
