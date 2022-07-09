@@ -167,17 +167,21 @@ const ProfileTextContainer = styled.div`
     }
 `
 
-const Copyright = styled.div`
+const Copyright = styled.a`
+    all: unset;
+
     display: flex;
     align-items: center;
     justify-content: flex-start;
+    gap: 0.1rem;
 
-    margin-top: 3.5rem;
-    margin-bottom: 2rem;
+    margin: 1rem 0;
 
     color: ${(p) => p.theme.descriptionFontColor};
-    font-size: ${(p) => p.theme.md};
-    font-weight: 400;
+    font-size: ${(p) => p.theme.sm};
+    font-weight: 600;
+
+    cursor: pointer;
 
     ${(p) => iconStyle.md({ color: p.theme.red4 })};
 `
@@ -205,9 +209,13 @@ function Profile({ profileSource }: ProfileProps) {
             </ProfileInfoContainer>
             <ProfileContentContainer>
                 <MDXBundler mdxSource={profileSource} />
-                <Copyright>
-                    {config.copyright}{" "}
-                    <HeartIcon width=".75rem" height=".75rem" />
+                <Copyright href={config.author.contacts.github}>
+                    {config.copyright}
+                    <HeartIcon width="14px" height="14px" />
+                </Copyright>
+                <Copyright href="https://github.com/danpa725/next-your-home">
+                    This Blog is powered by next your home
+                    <HeartIcon width="14px" height="14px" />
                 </Copyright>
             </ProfileContentContainer>
         </ProfileContainer>
