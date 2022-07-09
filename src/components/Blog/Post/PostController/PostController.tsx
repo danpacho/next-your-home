@@ -136,7 +136,7 @@ const PostTitleText = styled.div<IsLight>`
 
     margin: 0 0.25rem;
 
-    border-bottom: 0.25rem solid transparent;
+    border-bottom: 0.1rem solid transparent;
 
     &:hover {
         border-color: ${({ theme, isLight }) =>
@@ -194,7 +194,7 @@ function PostController({
                         <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
                     <PostTitleText isLight={isLight}>
-                        <SizedText defaultLineNumber={2}>
+                        <SizedText defaultLineNumber={2} lineHeight={0.85}>
                             {prevPost.title}
                         </SizedText>
                     </PostTitleText>
@@ -215,7 +215,7 @@ function PostController({
             <Link href={nextPost.postUrl} passHref>
                 <InfoContainer>
                     <PostTitleText isLight={isLight}>
-                        <SizedText defaultLineNumber={2}>
+                        <SizedText defaultLineNumber={2} lineHeight={0.85}>
                             {nextPost.title}
                         </SizedText>
                     </PostTitleText>

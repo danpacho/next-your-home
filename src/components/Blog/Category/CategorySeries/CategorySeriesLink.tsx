@@ -249,7 +249,10 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                                 <p>{SERIES_ORDER_TEXT[order - 1]}</p>
                             </SeriesPostOrder>
                             <SeriesPostTitle>
-                                <SizedText defaultLineNumber={1}>
+                                <SizedText
+                                    defaultLineNumber={1}
+                                    lineHeight={0.85}
+                                >
                                     {postTitle}
                                 </SizedText>
                             </SeriesPostTitle>

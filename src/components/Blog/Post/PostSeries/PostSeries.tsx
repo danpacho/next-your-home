@@ -317,7 +317,7 @@ function PostSeries({
                             isLight={isLight}
                             focusedPost={postTitle === currentTitle}
                         >
-                            <SizedText defaultLineNumber={1}>
+                            <SizedText defaultLineNumber={1} lineHeight={1}>
                                 {order}.{postTitle}
                             </SizedText>
                         </SeriesLink>

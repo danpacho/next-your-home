@@ -164,15 +164,13 @@ function PostLink({
                         fontWeight={400}
                         underscoreColor={color}
                     >
-                        <SizedText defaultLineNumber={1}>{title}</SizedText>
+                        <SizedText lineHeight={1.25} defaultLineNumber={1}>
+                            {title}
+                        </SizedText>
                     </UnderscoreText>
 
                     <PostPreview>
-                        <SizedText
-                            defaultLineNumber={3}
-                            widePhone={3}
-                            mediumPhone={3}
-                        >
+                        <SizedText defaultLineNumber={3} lineHeight={1.1}>
                             {preview}
                         </SizedText>
                     </PostPreview>

@@ -43,8 +43,7 @@ interface LinkStyle {
 }
 
 const HeaderLinkCommon = styled.div<LinkStyle>`
-    padding: 0.75rem 0.25rem;
-    border-left: 0.1rem solid ${(p) => p.theme.gray2};
+    border-left: 0.1rem solid ${(p) => p.theme.gray4};
 
     color: ${(p) => p.theme.fontColor};
     font-size: ${({ theme }) => theme.sm};
@@ -71,6 +70,8 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
     height: ${(p) => (p.isFocusing ? "fit-content" : "2.5rem")};
     min-height: 2.5rem;
 
+    padding: 0.75rem 0.25rem;
+
     &:hover {
         background-color: ${({ theme }) => `${theme.containerBackgroundColor}`};
         border-radius: ${(p) => `0 ${p.theme.bmd} ${p.theme.bmd} 0`};
@@ -81,7 +82,9 @@ const H1Link = styled(HeaderLinkCommon)<{ index: number }>`
 const H2Link = styled(HeaderLinkCommon)`
     transition: all 0.4s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-    margin-left: 1.25rem;
+    padding: 0.5rem 0.25rem;
+
+    margin-left: 1rem;
 
     color: ${(p) => p.theme.descriptionFontColor};
 
@@ -136,6 +139,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                 <SizedText
                                     defaultLineNumber={1}
                                     breakOption="break-all"
+                                    lineHeight={1}
                                 >
                                     🍞 {title}
                                 </SizedText>
@@ -164,6 +168,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                                                 1
                                                             }
                                                             breakOption="break-all"
+                                                            lineHeight={1}
                                                         >
                                                             🥛 {childTitle}
                                                         </SizedText>

@@ -55,7 +55,6 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     justify-content: center;
 
     max-width: 7.5rem;
-    height: 1.15rem;
 
     padding: 0.15rem 0.5rem;
 
@@ -74,8 +73,8 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     ${({ type }) => postMetaTagStyle[type]}
 
     ${media.mediumTablet} {
-        max-width: 6.5rem;
-        padding: 0.2rem 0.4rem;
+        max-width: 7rem;
+        padding: 0.15rem 0.4rem;
 
         font-size: ${(p) => p.theme.xsm};
     }
@@ -83,9 +82,8 @@ const PostMetaTag = styled.li<PostMetaTagStyle & IsLight>`
     ${media.widePhone} {
         max-width: 8rem;
 
-        padding: 0.15rem 0.25rem;
+        padding: 0.125rem 0.25rem;
 
-        font-size: ${(p) => p.theme.xsm};
         font-weight: 400;
     }
 
@@ -134,7 +132,10 @@ function PostMeta({
                             tag={tag}
                             color={color}
                             isFirst={order === 0}
-                            isLast={order === renderTagNumber - 1}
+                            isMoreTagExist={
+                                order + 1 === renderTagNumber &&
+                                tags.length !== renderTagNumber
+                            }
                             isLight={isLight}
                             key={tag}
                         />
@@ -148,6 +149,7 @@ function PostMeta({
                         isLight={isLight}
                     >
                         <SizedText
+                            lineHeight={0.85}
                             defaultLineNumber={1}
                             breakOption="break-all"
                         >
@@ -158,12 +160,18 @@ function PostMeta({
             )}
             {!isCategoryPage && (
                 <PostMetaTag type="update" color={color} isLight={isLight}>
-                    <SizedText defaultLineNumber={1}>{update}</SizedText>
+                    <SizedText lineHeight={0.85} defaultLineNumber={1}>
+                        {update}
+                    </SizedText>
                 </PostMetaTag>
             )}
             <Link href="/profile" passHref>
                 <PostMetaTag type="author" color={color} isLight={isLight}>
-                    <SizedText defaultLineNumber={1} breakOption="break-all">
+                    <SizedText
+                        lineHeight={0.85}
+                        defaultLineNumber={1}
+                        breakOption="break-all"
+                    >
                         {author}
                     </SizedText>
                 </PostMetaTag>
@@ -176,13 +184,13 @@ interface PostMetaTagChildProps extends IsLight {
     tag: string
     color: string
     isFirst: boolean
-    isLast: boolean
+    isMoreTagExist: boolean
 }
 const PostMetaTagChild = ({
     tag,
     color,
     isFirst,
-    isLast,
+    isMoreTagExist,
     isLight,
 }: PostMetaTagChildProps) => {
     return (
@@ -191,12 +199,16 @@ const PostMetaTagChild = ({
             color={color}
             isLight={isLight}
         >
-            <SizedText defaultLineNumber={1} breakOption="break-all">
+            <SizedText
+                lineHeight={0.85}
+                defaultLineNumber={1}
+                breakOption="break-all"
+            >
                 {`#${tag}`}
-                {isLast && (
-                    <LayersAltIcon fill={"white"} width="12px" height="12px" />
-                )}
             </SizedText>
+            {isMoreTagExist && (
+                <LayersAltIcon fill={"white"} width="12px" height="12px" />
+            )}
         </PostMetaTag>
     )
 }

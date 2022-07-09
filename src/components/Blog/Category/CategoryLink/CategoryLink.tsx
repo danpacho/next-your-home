@@ -150,13 +150,16 @@ function CategoryLink({
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
-                        <SizedText defaultLineNumber={1}>{category}</SizedText>
+                        <SizedText lineHeight={1.25} defaultLineNumber={1}>
+                            {category}
+                        </SizedText>
                     </UnderscoreText>
                     <CategoryDescription>
                         <SizedText
                             defaultLineNumber={4}
                             widePhone={3}
                             mediumPhone={3}
+                            lineHeight={1.2}
                         >
                             {description}
                         </SizedText>
