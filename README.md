@@ -1,14 +1,16 @@
-<div align="center">
-<h1 style="color:burlywood">🏠 Next Your Home</h1>
+<br />
 
-<strong>🎉 Start your journey 🎉</strong>
+![next your home banner](https://capsule-render.vercel.app/api?type=soft&color=F3ECDA&height=130&animation=ScaleIn&section=header&text=Next%20Your%20Home%20🏠&fontSize=35)
 
-</div>
+<br />
 
 ```ts
+const START = "Your journey 🎉"
 const KR = "안녕하세요"
 const EN = "Hellow"
 ```
+
+<br />
 
 1. [What is this?](#what-is-this)
     - [🏠 Blog](#-blog)
@@ -25,6 +27,9 @@ const EN = "Hellow"
 3. [How can I start?](#how-can-i-start)
 4. [How can I customize?](#how-can-i-customize)
 5. [Questions you might have](#questions-you-might-have)
+6. [LICENSE](#license)
+
+<br />
 
 # What is this?
 
@@ -55,7 +60,9 @@ const EN = "Hellow"
         -   📦 Import pure `react component` in `.mdx` post files
         -   🔎 Visit [mdx-bundler](https://github.com/kentcdodds/mdx-bundler) for more config options
 
-# Why?
+<br />
+
+# Why should I use this?
 
 ## 😀 Easy to start
 
@@ -77,15 +84,15 @@ const EN = "Hellow"
 -   📌 Category based grouping
     -   And you can describe the category
 -   📌 Category pagination
-    -   Configurable
+    -   Configurable with `blog.config.ts`
 -   📌 Post series
     -   Group your post by subtitle
 
 ## 📔 Reading focused UI/UX
 
--   📌 Easy navigation with `bottom post controller`
--   📌 Less vertical scrolling for searching the posts
 -   📌 Intuitive UI Elements
+-   📌 Easy navigation with `post controller`
+-   📌 Less vertical scrolling for searching post
 -   📌 Device width based, sized text content
 
 ## 🎨 Show your personality with colors
@@ -108,6 +115,8 @@ const EN = "Hellow"
 -   📌 Specific `error` informations about blog posts
 -   etc...
 
+<br />
+
 # How can I start?
 
 1.  **Click** `Use this template` button in this page and make own `repo` with **`1commit`**
@@ -125,16 +134,34 @@ const EN = "Hellow"
         npm install -g pnpm
         ```
 
-3.  **Dev test**
+3.  **Update 📜 `blog.config.ts`, 📜 `public/robots.txt`**
+
+    1.  `blog.config.ts`:
+        -   `authorInfo`
+            -   name
+            -   currentState
+            -   currentGoal
+            -   contacts
+        -   `blogInfo`
+            -   url: deploy url
+            -   siteName
+            -   subtitle
+            -   language
+    2.  at `public/robots.txt`:
+        -   update `Sitemap` to your deploy url
+    3.  optional `public/mainfest.json`:
+        -   update `name`, `short_name`
+
+4.  **Dev test**
     ```bash
         pnpm dev
     ```
     -   port `3000` will be used by default
-4.  **First post**
+5.  **First post**
     ```bash
         pnpm post
     ```
-5.  **Replace **`Logo Icon`** with your own Logo**
+6.  **Replace **`Logo Icon`** with your own Logo**
 
     -   Replace **`public/logo.svg`** to your own **`svg`** logo
     -   Run this command in terminal
@@ -169,15 +196,17 @@ const EN = "Hellow"
 
         </details>
 
-6.  **Build test**
+7.  **Build test**
     ```bash
         pnpm build
     ```
     -   build result in `.next` folder
-7.  **Deploy** with `vercel`
-    -   make account
-    -   choose your blog `repo`
-    -   deploy your blog
+8.  **Deploy** with `vercel`
+    1.  make [account](https://vercel.com/login)
+    2.  choose your blog `repo`
+    3.  deploy your blog
+
+<br />
 
 # How can I customize?
 
@@ -187,6 +216,8 @@ const EN = "Hellow"
     2.  🫡 You know `styled-components`
     3.  🫡 Just modify the style that you want to
 -   Whole project folder includes `README.md` about **structures** and **description**
+
+<br />
 
 # Questions you might have!
 
@@ -226,19 +257,25 @@ const EN = "Hellow"
 3.  Check build `bundle size` result below
     ```bash
     Page                                           Size     First Load JS
-    ┌ ● /                                          1.48 kB        92.3 kB
-    ├   /_app                                      0 B              76 kB
-    ├ ● /[category]                                810 B          91.6 kB
-    ├ ● /[category]/[pageNumber]                   932 B          91.7 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.6 kB
-    ├ ○ /404                                       270 B          76.3 kB
-    ├ ○ /500                                       269 B          76.3 kB
-    ├ ● /category                                  2.79 kB        79.1 kB
-    └ ● /profile                                   1.96 kB        89.3 kB
-    + First Load JS shared by all                    76 kB
+    ┌ ● /                                          1.48 kB        92.1 kB
+    ├   /_app                                      0 B            75.8 kB
+    ├ ● /[category]                                810 B          91.4 kB
+    ├ ● /[category]/[pageNumber]                   932 B          91.5 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.4 kB
+    ├ ○ /404                                       270 B          76   kB
+    ├ ○ /500                                       269 B          76   kB
+    ├ ● /category                                  2.79 kB        79   kB
+    └ ● /profile                                   1.96 kB        89   kB
+    + First Load JS shared by all                  75.8 kB
     ├ chunks/main-625f46e484218a7a.js              36.8 kB
-    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.4 kB
+    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.2 kB
     ├ chunks/webpack-3373b0f21806983f.js           827 B
     └ css/3c1f33eef2e27332.css                     811 B
     ```
     </details>
+
+<br />
+
+# LICENSE
+
+[MIT](https://github.com/danpa725/next-your-home/blob/main/LICENSE)
