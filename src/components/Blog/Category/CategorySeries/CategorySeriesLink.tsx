@@ -28,18 +28,17 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
 
     width: 100%;
 
-    gap: 1rem;
+    gap: 0.75rem;
 
-    padding: 0.75rem;
+    padding: 0.5rem;
 
     background-color: ${({ theme }) =>
         `${theme.containerBackgroundColor}${theme.opacity80}`};
-    backdrop-filter: blur(10px);
 
     border-width: 0.1rem;
     border-style: solid;
     border-color: ${(p) => (p.isOpen ? p._color : "transparent")};
-    border-radius: ${(p) => p.theme.bsm};
+    border-radius: ${(p) => p.theme.bxsm};
 
     box-shadow: ${(p) => p.theme.shadowXxsm};
 
@@ -50,13 +49,12 @@ const SeriesLinkContainer = styled.div<SeriesLinkContainerStyle>`
         background-color: ${(p) => p.theme.containerBackgroundColor};
     }
     ${media.mediumTablet} {
-        padding: 0.5rem;
+        padding: 0.4rem;
     }
 
     ${media.widePhone} {
         gap: 0.65rem;
 
-        padding: 0.5rem;
         backdrop-filter: unset;
     }
 `
@@ -80,24 +78,25 @@ const SeriesLinkInfoContainer = styled.div<ColorProps>`
 
 const SeriesTitle = styled.h1`
     color: ${(p) => p.theme.fontColor};
-    font-weight: 700;
+    font-weight: 600;
     font-size: ${(p) => p.theme.md};
 
     ${media.widePhone} {
-        font-weight: 600;
+        font-weight: 500;
     }
 `
 
 const SeriesBookmarkBox = styled.div<ColorProps>`
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 
-    gap: 0.25rem;
+    gap: 0.1rem;
 
-    padding: 0.35rem;
+    padding: 0.25rem;
 
-    border-radius: ${(p) => p.theme.bsm};
+    border-radius: ${(p) => p.theme.bxsm};
     border: 0.1rem solid ${(p) => p._color};
     background-color: ${({ theme, _color }) => `${_color}${theme.opacity20}`};
 
@@ -108,15 +107,15 @@ const SeriesBookmarkBox = styled.div<ColorProps>`
     ${iconStyle.md()};
 
     ${media.mediumTablet} {
-        padding: 0.3rem;
+        padding: 0.2rem;
     }
 
     ${media.widePhone} {
         gap: 0.15rem;
 
-        padding: 0.25rem;
-
         border-radius: ${(p) => p.theme.bxsm};
+
+        font-weight: 500;
     }
 `
 
@@ -126,7 +125,7 @@ const SeriesPostContainer = styled.div`
     align-items: center;
     justify-content: flex-start;
 
-    gap: 1rem;
+    gap: 0.75rem;
 
     padding: 0.2rem;
 
@@ -138,6 +137,10 @@ const SeriesPostContainer = styled.div`
         border-color: ${(p) => p.theme.containerBorderColor};
     }
     cursor: pointer;
+
+    ${media.widePhone} {
+        gap: 0.5rem;
+    }
 `
 const SeriesPostOrder = styled.div`
     display: flex;
@@ -162,8 +165,8 @@ const SeriesPostTitle = styled.div`
     font-size: ${(p) => p.theme.sm};
 `
 
-const AccordianContainer = styled.div<SeriesLinkContainerStyle>`
-    display: ${(p) => (p.isOpen ? "flex" : "none")};
+const SeriesListContainer = styled.div<ColorProps>`
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
@@ -241,25 +244,27 @@ function CategorySeriesLink({ seriesTitle, seriesInfo }: SeriesInfoType) {
                 <SeriesTitle>{seriesTitle}</SeriesTitle>
             </SeriesLinkInfoContainer>
 
-            <AccordianContainer isOpen={isOpen} _color={seriesColor}>
-                {seriesInfo.map(({ postTitle, url, order, color }) => (
-                    <Link passHref href={url} key={postTitle}>
-                        <SeriesPostContainer color={color}>
-                            <SeriesPostOrder>
-                                <p>{SERIES_ORDER_TEXT[order - 1]}</p>
-                            </SeriesPostOrder>
-                            <SeriesPostTitle>
-                                <SizedText
-                                    defaultLineNumber={1}
-                                    lineHeight={0.85}
-                                >
-                                    {postTitle}
-                                </SizedText>
-                            </SeriesPostTitle>
-                        </SeriesPostContainer>
-                    </Link>
-                ))}
-            </AccordianContainer>
+            {isOpen && (
+                <SeriesListContainer _color={seriesColor}>
+                    {seriesInfo.map(({ postTitle, url, order, color }) => (
+                        <Link passHref href={url} key={postTitle}>
+                            <SeriesPostContainer color={color}>
+                                <SeriesPostOrder>
+                                    <p>{SERIES_ORDER_TEXT[order - 1]}</p>
+                                </SeriesPostOrder>
+                                <SeriesPostTitle>
+                                    <SizedText
+                                        defaultLineNumber={1}
+                                        lineHeight={0.85}
+                                    >
+                                        {postTitle}
+                                    </SizedText>
+                                </SeriesPostTitle>
+                            </SeriesPostContainer>
+                        </Link>
+                    ))}
+                </SeriesListContainer>
+            )}
         </SeriesLinkContainer>
     )
 }

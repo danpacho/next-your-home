@@ -44,13 +44,13 @@ const ViewerControllButton = styled.button<{ disabled: boolean }>`
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 0.45rem;
+    padding: 0.3rem;
 
     background-color: ${({ theme }) =>
         `${theme.containerBackgroundColor}${theme.themeHexOpacity}`};
 
     border: 0.1rem solid transparent;
-    border-radius: ${(p) => p.theme.bsm};
+    border-radius: ${(p) => p.theme.bxxsm};
 
     box-shadow: ${(p) => p.theme.shadowXxsm};
 
@@ -91,7 +91,7 @@ const SeriesViewer = styled.div`
     align-items: flex-start;
     justify-content: center;
 
-    gap: 0.5rem;
+    gap: 0.65rem;
 
     width: 100%;
 `
