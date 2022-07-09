@@ -88,7 +88,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
 
     gap: 0.15rem;
 
-    min-width: 6.5rem;
+    min-width: 7rem;
 
     padding: 0.75rem;
 
@@ -110,7 +110,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
             : backgroundStyle.noneFiltered(color, isLight)}
 
     ${media.mediumTablet} {
-        min-width: 4rem;
+        min-width: 6rem;
 
         font-weight: 700;
         letter-spacing: 0.02rem;
@@ -119,7 +119,7 @@ const Tag = styled.li<TagBoxStyle & IsLight>`
     ${media.widePhone} {
         min-width: 3rem;
 
-        padding: 0.5rem;
+        padding: 0.525rem;
 
         font-size: ${(p) => p.theme.xsm};
         font-weight: 600;
@@ -133,7 +133,7 @@ const TagContainer = styled.ul`
 
     gap: 0.75rem;
 
-    width: inherit;
+    width: 90%;
     height: fit-content;
 
     ${media.widePhone} {
@@ -141,6 +141,8 @@ const TagContainer = styled.ul`
         justify-content: center;
 
         gap: 0.5rem;
+
+        width: 100%;
     }
 `
 
