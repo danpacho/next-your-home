@@ -142,7 +142,7 @@ const CategoryLinkContaier = styled.div<ColorProps>`
 
     cursor: pointer;
 
-    border-radius: ${({ theme }) => theme.bxxsm};
+    border-radius: 1px;
     border-right: 0.25rem solid ${(p) => p._color};
 
     background-color: ${({ theme }) =>
