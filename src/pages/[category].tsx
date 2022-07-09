@@ -88,7 +88,7 @@ function Category(categoryProps: CategoryProps) {
                         isLeft
                     >
                         <PrevIcon width="1.15rem" height="1.15rem" />
-                        <p>🏠 돌아가기</p>
+                        <p>🏠 Back</p>
                     </CategoryPaginationButton>
                 </Link>
             }
@@ -99,7 +99,7 @@ function Category(categoryProps: CategoryProps) {
                         aria-label={`read all post about ${categoryProps.category}`}
                         isLight={isLight}
                     >
-                        <p>모든 글 보기</p>
+                        <p>All post</p>
                         <NextIcon width="1.15rem" height="1.15rem" />
                     </CategoryPaginationButton>
                 </Link>

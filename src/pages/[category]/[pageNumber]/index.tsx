@@ -24,6 +24,7 @@ import {
 import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
+import { SizedText } from "@components/UI/Atoms/SizedText"
 
 interface ParamQuery extends ParsedUrlQuery {
     category: string
@@ -107,8 +108,12 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                         isLeft
                     >
                         <PrevIcon width="1.15rem" height="1.15rem" />
-                        {isFirst && `${category}`}
-                        {!isFirst && `${pageNumber - 1} 페이지로`}
+                        {isFirst && (
+                            <SizedText defaultLineNumber={1} lineHeight={1}>
+                                {category}
+                            </SizedText>
+                        )}
+                        {!isFirst && `Page ${pageNumber - 1}`}
                     </CategoryPaginationButton>
                 </Link>
             }
@@ -126,9 +131,9 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                         aria-label={`to the next page: ${pageNumber + 1}`}
                         isLight={isLight}
                     >
-                        {isLast && isFirst && `텅💨 비었군요`}
-                        {isLast && !isFirst && "마지막이에요! 축하드립니다🎉"}
-                        {!isLast && `${pageNumber + 1} 페이지로`}
+                        {isLast && isFirst && `Oops It's Empty💨`}
+                        {isLast && !isFirst && "Thank you! Last page 🎉"}
+                        {!isLast && `Page ${pageNumber + 1}`}
                         <NextIcon width="1.15rem" height="1.15rem" />
                     </CategoryPaginationButton>
                 </Link>
