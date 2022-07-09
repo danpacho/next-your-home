@@ -10,7 +10,7 @@ import {
     BlogFileExtractionError,
 } from "@utils/function/blog-error-handler"
 
-// ------------------------------ remark auto image size ------------------------------
+//* ------------------------------ remark automatic image size ------------------------------
 const sizeOf = promisify(imageSize)
 const getImageSize = async (unProcessedUrl: string) => {
     const STATIC_IMAGE_URL = `public/${unProcessedUrl}`
@@ -97,7 +97,7 @@ const remarkAutomaticImageSize = () => async (tree: Node) => {
     }
 }
 
-// ------------------------------ remark toc object ------------------------------
+//* ------------------------------ remark toc object ------------------------------
 type Concrete<Type> = {
     [Property in keyof Type]-?: Type[Property]
 }
@@ -113,7 +113,7 @@ const extractHeader = (pureMarkdownSource: string) => {
             if (!notFound) headerNode = matchedNode as MarkdownHeader[]
         })
         .process(pureMarkdownSource)
-    return headerNode
+    return headerNode.filter(({ depth }) => depth === 1 || depth === 2)
 }
 
 type HeaderType = "H1" | "H2"
