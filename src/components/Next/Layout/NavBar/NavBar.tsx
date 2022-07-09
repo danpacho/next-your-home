@@ -34,11 +34,11 @@ const NavContainer = styled.nav`
         margin-top: 1.5rem;
 
         background-color: ${(p) =>
-            `${p.theme.containerBackgroundColor}${p.theme.opacity70}`};
+            `${p.theme.containerBackgroundColor}${p.theme.themeHexOpacity}`};
         backdrop-filter: blur(5px);
 
-        border: 1.5px solid ${({ theme }) => theme.themePrimaryColor};
-        border-radius: ${(p) => p.theme.bmd};
+        border: 0.1rem solid ${({ theme }) => theme.themePrimaryColor};
+        border-radius: ${(p) => p.theme.bsm};
 
         box-shadow: ${(p) => p.theme.shadowXxsm};
 
