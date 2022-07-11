@@ -1,6 +1,9 @@
 import "../styles/codeStyle.css"
 
+import { useEffect, useRef } from "react"
+
 import type { AppProps } from "next/app"
+import { useRouter } from "next/router"
 import Head from "next/head"
 
 import { Provider } from "jotai"
@@ -11,8 +14,46 @@ import { PageType } from "@typing/page/type"
 import { DefaultSEO } from "@components/Next/SEO"
 import { Layout } from "@components/Next/Layout"
 
+const useRestorePageScroll = () => {
+    const router = useRouter()
+
+    const savedScrollPosition = useRef(0)
+    const isURLBackwardByRouter = useRef(false)
+
+    useEffect(() => {
+        const beforeHistoryChange = () => {
+            savedScrollPosition.current = window.scrollY
+        }
+
+        const routeChangeComplete = () => {
+            isURLBackwardByRouter.current &&
+                window.scrollTo({
+                    top: savedScrollPosition.current,
+                    behavior: "auto",
+                })
+            isURLBackwardByRouter.current = false
+        }
+
+        router.beforePopState(() => {
+            isURLBackwardByRouter.current = true
+            return true
+        })
+
+        router.events.on("routeChangeComplete", routeChangeComplete)
+        router.events.on("beforeHistoryChange", beforeHistoryChange)
+
+        return () => {
+            router.events.off("routeChangeComplete", routeChangeComplete)
+            router.events.off("beforeHistoryChange", beforeHistoryChange)
+        }
+    }, [router])
+}
+
 function App({ Component, pageProps }: AppProps) {
     const pageType = Component?.displayName as PageType
+
+    useRestorePageScroll()
+
     return (
         <>
             <Head>
