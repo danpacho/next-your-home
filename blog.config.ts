@@ -22,7 +22,7 @@ export interface AuthorInfoType {
     contacts: {
         [key in ContactPlatformType]: string
     }
-    avatarImageUrl: string
+    logoImageUrl: string
     bannerImageUrl: string
     faviconUrl: string
 }
@@ -31,17 +31,17 @@ const authorInfo: AuthorInfoType = {
     currentState: "your current state",
     currentGoal: "your current goal",
     contacts: {
-        email: getAuthorContactHref("email", "your@email.com"),
+        email: getAuthorContactHref("email", "your@email"),
         github: getAuthorContactHref("github", "your@github"),
         youtube: getAuthorContactHref("youtube", "your@youtube"),
         facebook: getAuthorContactHref("facebook", "your@facebook"),
         instagram: getAuthorContactHref("instagram", "your@instagram"),
-        linkedin: getAuthorContactHref("linkedin", "your@linedin"),
-        twitter: getAuthorContactHref("twitter", "your@twitter")
+        linkedin: getAuthorContactHref("linkedin", "your@linkedin"),
+        twitter: getAuthorContactHref("twitter", "your@twitter"),
     },
-    avatarImageUrl: "/logo.svg",
+    logoImageUrl: "/logo.webp",
     bannerImageUrl: "/banner.png",
-    faviconUrl: "/favicon.svg",
+    faviconUrl: "/favicon.png",
 }
 
 interface BlogInfoType {
@@ -74,10 +74,10 @@ interface ConfigType extends BlogInfoType {
     numberOfLatestPost: number
 }
 const config: ConfigType = {
-    useTXT: false,                  // description file format
-    useKatex: true,                 // katex option
-    useMemo: true,                  // memo improves dev speed
-    useMobileTOC: true,             // TOC on mobile
+    useTXT: false,                  // description file format to .txt, not .json
+    useKatex: false,                // katex option
+    useMemo: true,                  // improves dev speed, but require manual refresh except posts
+    useMobileTOC: true,             // table of content on mobile
     blogContentsDirectoryName,      // blog contents directory name
     userPallete,                    // personal pallete
     postPerCategoryPage: 4,
