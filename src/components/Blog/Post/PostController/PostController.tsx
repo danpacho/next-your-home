@@ -131,8 +131,7 @@ const PostTitleText = styled.div<IsLight>`
     font-size: ${(p) => p.theme.xsm};
     text-align: center;
 
-    padding-top: 0.35rem;
-    padding-bottom: 0.1rem;
+    padding: 0.1rem 0;
 
     margin: 0 0.25rem;
 
@@ -183,7 +182,7 @@ function PostController({
 
     return (
         <ControllerContainer isScrollDown={isScrollDown}>
-            <Link href={prevPost.postUrl} passHref scroll={false}>
+            <Link href={prevPost.postUrl} passHref>
                 <InfoContainer>
                     <ControllerButton
                         buttonType="prev"
