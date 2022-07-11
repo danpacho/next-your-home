@@ -2,11 +2,9 @@ import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 
 import Link from "next/link"
-import React from "react"
 
 import { PostMetaType } from "@typing/post/meta"
 import { SeriesInfoType } from "@typing/post/series"
-
 import { IsLight } from "@typing/theme"
 
 import { FlagFillIcon, QuoteIcon } from "@components/UI/Atoms/Icons"
@@ -75,7 +73,7 @@ const TagContainer = styled.div`
     ${media.widePhone} {
         flex-wrap: wrap;
         max-width: 80%;
-        justify-content: flex-start;
+        justify-content: center;
     }
 `
 interface QuoteStyle {
