@@ -73,6 +73,8 @@ interface ControllerButtonType {
 }
 
 const ControllerButton = styled.button<ControllerButtonType & IsLight>`
+    transition: border-color ease-out 0.25s;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -91,7 +93,7 @@ const ControllerButton = styled.button<ControllerButtonType & IsLight>`
     &:hover {
         background-color: ${({ theme, isLight }) =>
             isLight ? theme.gray2 : theme.deepDark};
-        border-color: ${({ theme }) => theme.gray5};
+        border-color: ${({ theme }) => theme.fontColor};
     }
 
     ${({ buttonType }) => ControllerButtonStyle[buttonType]};
@@ -109,7 +111,7 @@ const InfoContainer = styled.div`
     align-items: center;
     justify-content: center;
 
-    gap: 0.5rem;
+    gap: 1.5rem;
 
     ${media.widePhone} {
         display: flex;
@@ -123,13 +125,14 @@ const InfoContainer = styled.div`
 `
 
 const PostTitleText = styled.div<IsLight>`
-    transition: color, border ease-out 0.25s;
-    width: 10rem;
+    transition: all ease-out 0.25s;
 
+    width: 100%;
+
+    font-size: ${(p) => p.theme.sm};
+    font-weight: 500;
     color: ${(p) => p.theme.gray5};
-    font-weight: 600;
-    font-size: ${(p) => p.theme.xsm};
-    text-align: center;
+    letter-spacing: -0.1px;
 
     padding: 0.1rem 0;
 
@@ -138,29 +141,18 @@ const PostTitleText = styled.div<IsLight>`
     border-bottom: 0.1rem solid transparent;
 
     &:hover {
-        border-color: ${({ theme, isLight }) =>
-            isLight ? theme.gray3 : theme.gray5};
-        color: ${({ theme, isLight }) => isLight && theme.gray7};
+        border-color: ${({ theme }) => theme.fontColor};
+        color: ${({ theme }) => theme.fontColor};
     }
 
     cursor: pointer;
 
     ${media.widePhone} {
-        max-width: 10rem;
-
-        font-weight: 400;
+        font-size: ${(p) => p.theme.xsm};
 
         padding: 0;
 
         border-bottom: none;
-    }
-
-    ${media.custom(600)} {
-        width: 5rem;
-    }
-
-    ${media.mediumPhone} {
-        width: 3.5rem;
     }
 `
 
