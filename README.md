@@ -1,14 +1,6 @@
 <br />
 
-![next your home banner](https://capsule-render.vercel.app/api?type=soft&color=F3ECDA&height=130&animation=ScaleIn&section=header&text=Next%20Your%20Home%20🏠&fontSize=35)
-
-<br />
-
-```ts
-const START = "Your journey 🎉"
-const KR = "안녕하세요"
-const EN = "Hellow"
-```
+![next your home banner](/public/banner.png)
 
 <br />
 
@@ -41,6 +33,8 @@ const EN = "Hellow"
 4.  Focus on **Intuitive Layout**
 5.  Focus on **Maintanance**
 6.  Focus on **Customizability**
+
+> Visit [Next Your Home Guide](https://next-your-home-guide.vercel.app) built with this template
 
 ## 🛠 Tech stack
 
@@ -109,6 +103,7 @@ const EN = "Hellow"
 -   📌 Image optimization with `next/image` [(🔎 More info about next/image)](https://nextjs.org/docs/api-reference/next/image)
 -   📌 Automatic image size support for `static`/`external`
 -   📌 Automatic pagination
+-   📌 Recover scroll position when navigating to previous page
 -   📌 Support `sitemap`, `rss` generation on build
 -   📌 Math `katex` support (optional)
 -   📌 Automatic post refreshing in `dev` mode
@@ -124,7 +119,7 @@ const EN = "Hellow"
 2.  **Install packages**
 
     ```bash
-        pnpm i
+    pnpm i
     ```
 
     -   this project use `pnpm` for package managing
@@ -149,62 +144,28 @@ const EN = "Hellow"
             -   language
     2.  at `public/robots.txt`:
         -   update `Sitemap` to your deploy url
-    3.  optional `public/mainfest.json`:
-        -   update `name`, `short_name`
 
 4.  **Dev test**
     ```bash
-        pnpm dev
+    pnpm dev
     ```
-    -   port `3000` will be used by default
+    port `3000` will be used by default
 5.  **First post**
     ```bash
-        pnpm post
+    pnpm post
     ```
-6.  **Replace **`Logo Icon`** with your own Logo**
-
-    -   Replace **`public/logo.svg`** to your own **`svg`** logo
-    -   Run this command in terminal
-
-        ```bash
-        npx @svgr/cli public/logo.svg --out-dir src/components/UI/Atoms/Icons --icon --typescript
-        ```
-
-    -   <details>
-        <summary>
-            <strong>
-            🤔 Why shoud I do this?
-            </strong>
-        </summary>
-
-        1. This process save `bundle size` about `2.7kb` by not importing `next/image` from the profile page
-        2. Also, unlike `img`, `svg` component is rendered immediately
-        3. Even if it's little bit annoying, please do it for faster loading
-        4. Results: `src/components/UI/Atoms/Icons/Logo.tsx`
-           <br />
-
-            ```tsx
-            import * as React from "react"
-            import { SVGProps } from "react"
-
-            const SvgLogo = (props: SVGProps<SVGSVGElement>) => ({
-                /*... Your Svg Icon ...*/
-            })
-
-            export default SvgLogo
-            ```
-
-        </details>
-
-7.  **Build test**
+6.  **Build test**
     ```bash
-        pnpm build
+    pnpm build
     ```
-    -   build result in `.next` folder
-8.  **Deploy** with `vercel`
+    build result in `.next` folder
+7.  **Deploy** with `vercel`
+
     1.  make [account](https://vercel.com/login)
-    2.  choose your blog `repo`
-    3.  deploy your blog
+    2.  choose blog repo
+    3.  follow vercel deploy step or click `deploy` button below
+
+        [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/danpa725/next-your-home)
 
 <br />
 
@@ -245,8 +206,6 @@ const EN = "Hellow"
     </strong>
   </summary>
 
-<quote>Visit the [Next Your Home Guide Blog 🎉](https://next-your-home-guide.vercel.app) built with this template!</quote>
-
 1.  Run [pagespeed test](https://pagespeed.web.dev)
 
     -   `desktop` result: `100` / `100` / `100` / `100`
@@ -256,21 +215,21 @@ const EN = "Hellow"
 
 3.  Check build `bundle size` result below
     ```bash
-    Page                                           Size     First Load JS
-    ┌ ● /                                          1.48 kB        92.1 kB
-    ├   /_app                                      0 B            75.8 kB
-    ├ ● /[category]                                810 B          91.4 kB
-    ├ ● /[category]/[pageNumber]                   932 B          91.5 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]       1.69 kB        97.4 kB
-    ├ ○ /404                                       270 B          76   kB
-    ├ ○ /500                                       269 B          76   kB
-    ├ ● /category                                  2.79 kB        79   kB
-    └ ● /profile                                   1.96 kB        89   kB
-    + First Load JS shared by all                  75.8 kB
-    ├ chunks/main-625f46e484218a7a.js              36.8 kB
-    ├ chunks/pages/_app-eae174cb1eaf3402.js        38.2 kB
-    ├ chunks/webpack-3373b0f21806983f.js           827 B
-    └ css/3c1f33eef2e27332.css                     811 B
+    Page                                         Size     First Load JS
+    ┌ ● /                                        1.48 kB        91.5 kB
+    ├   /_app                                    0 B            75.1 kB
+    ├ ● /[category]                              780 B          90.8 kB
+    ├ ● /[category]/[pageNumber]                 904 B          90.9 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        96.9 kB
+    ├ ○ /404                                     269 B          75.4 kB
+    ├ ○ /500                                     269 B          75.4 kB
+    ├ ● /category                                3.22 kB        78.4 kB
+    └ ● /profile (688 ms)                        2.63 kB        89.3 kB
+    + First Load JS shared by all                75.1 kB
+    ├ chunks/main-be00b42900d433cc.js            36.8 kB
+    ├ chunks/pages/_app-764e610a6d9ea0f7.js      37.6 kB
+    ├ chunks/webpack-3373b0f21806983f.js         827 B
+    └ css/a36597fbcc4c45ff.css                   813 B
     ```
     </details>
 
@@ -278,4 +237,16 @@ const EN = "Hellow"
 
 # LICENSE
 
+```ts
+const LICENSE = "MIT 🎉"
+const KOR = "감사합니다 😎"
+const ENG = "Thanks 😎"
+```
+
+<div align="center">
+
+<img src="/public/favicon.png" width="50" height="50">
+
 [MIT](https://github.com/danpa725/next-your-home/blob/main/LICENSE)
+
+</div>
