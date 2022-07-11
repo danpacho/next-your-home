@@ -9,8 +9,6 @@ import { ThemeButton } from "@components/UX/ThemeButton"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
-import { LogoIcon } from "@components/UI/Atoms/Icons"
-
 import { config } from "blog.config"
 
 const NavContainer = styled.nav`
@@ -46,30 +44,17 @@ const NavContainer = styled.nav`
     }
 `
 
-const LogoContainer = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-
-    gap: 0.5rem;
-
-    ${media.widePhone} {
-        gap: 0.35rem;
-        margin-left: 0.35rem;
-    }
-
-    cursor: pointer;
-`
-
-const LogoTitle = styled.header<IsLight>`
+const BlogTitle = styled.header<IsLight>`
     font-size: ${(p) => p.theme.md};
     font-weight: 400;
     text-transform: capitalize;
 
+    cursor: pointer;
+
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
         font-weight: 500;
+        margin-left: 0.5rem;
     }
 `
 
@@ -135,12 +120,7 @@ function NavBar() {
     return (
         <NavContainer>
             <Link href="/" passHref>
-                <LogoContainer>
-                    <LogoIcon width={25} height={25} />
-                    <LogoTitle isLight={isLight}>
-                        {config.author.name}
-                    </LogoTitle>
-                </LogoContainer>
+                <BlogTitle isLight={isLight}>{config.author.name}</BlogTitle>
             </Link>
             <ButtonContainer>
                 <Link passHref href="/category">
