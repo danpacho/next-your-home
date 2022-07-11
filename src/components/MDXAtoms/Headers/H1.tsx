@@ -13,7 +13,7 @@ import { Tooltip } from "@components/UX/Tooltip"
 import { useAtoms, _atom, _slector } from "@lib/jotai"
 
 const H1Styled = styled.h1<IsLight>`
-    font-size: ${(p) => p.theme.xxlg};
+    font-size: ${(p) => p.theme.title};
     font-weight: 800;
     color: ${(p) => p.theme.headerFontColor};
 
@@ -24,7 +24,7 @@ const H1Styled = styled.h1<IsLight>`
     cursor: pointer;
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.lg};
+        font-size: ${(p) => p.theme.xxlg};
         font-weight: 700;
 
         ::before {

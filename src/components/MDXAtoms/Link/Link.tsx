@@ -1,21 +1,20 @@
 import styled from "styled-components"
 
-const LinkStyled = styled.a`
-    transition: font-weight 0.15s ease-in;
+import { IsLight } from "@typing/theme"
 
+import { useAtoms, _slector } from "@lib/jotai"
+
+const LinkStyled = styled.a<IsLight>`
+    transition: color 0.1s ease-in;
+
+    color: ${({ theme, isLight }) => (isLight ? theme.teal9 : theme.teal6)};
     font-size: ${(props) => props.theme.md};
-    font-weight: 700;
-    color: ${(props) => props.theme.teal7};
+    font-weight: 600;
     text-decoration: none;
 
-    border-bottom: 0.15rem solid ${(props) => props.theme.teal7};
-
-    &:active {
-        color: ${(props) => props.theme.teal10};
-    }
-
     &:hover {
-        color: ${(props) => props.theme.teal10};
+        color: ${({ theme, isLight }) => (isLight ? theme.teal7 : theme.teal4)};
+        text-decoration: underline;
     }
 `
 interface LinkProps {
@@ -25,8 +24,10 @@ interface LinkProps {
 }
 
 function Link({ children: linkText, href, target }: LinkProps) {
+    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+
     return (
-        <LinkStyled href={href} target={target}>
+        <LinkStyled href={href} target={target} isLight={isLight}>
             {linkText}
         </LinkStyled>
     )

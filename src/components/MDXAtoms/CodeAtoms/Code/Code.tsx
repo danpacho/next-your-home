@@ -7,20 +7,27 @@ import { CodeContentBox } from "./CodeCopyButton"
 import { useAtoms, _slector } from "@lib/jotai"
 
 const InlineCode = styled.code<IsLight>`
-    padding: 0.1rem 0.15rem;
+    padding: 0 0.2rem;
     margin: 0 0.1rem;
 
     font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
-    font-weight: 600;
-    color: ${({ theme, isLight }) => (isLight ? theme.red5 : theme.gray2)};
+    font-size: inherit;
+    color: ${({ theme, isLight }) => (isLight ? theme.red6 : theme.teal5)};
+    letter-spacing: 0;
+    word-break: auto;
 
-    border-radius: ${(props) => props.theme.bxsm};
+    border-radius: ${(p) => p.theme.bxsm};
 
-    border: 1.25px solid
-        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.blue6)};
+    border: 1px solid
+        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.teal8)};
 
     background-color: ${({ theme, isLight }) =>
-        isLight ? theme.gray1 : theme.blue9};
+        isLight ? theme.gray1 : theme.trueDeepDark};
+
+    ${media.widePhone} {
+        padding: 0.1rem 0.2rem;
+        font-size: ${(p) => p.theme.sm};
+    }
 `
 
 const CodeFontSizeManager = styled.code`
@@ -36,7 +43,6 @@ const CodeFontSizeManager = styled.code`
     ${media.mediumTablet} {
         font-size: ${(p) => p.theme.sm};
     }
-
     ${media.widePhone} {
         font-size: ${(p) => p.theme.xsm};
     }

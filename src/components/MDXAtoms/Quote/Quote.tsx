@@ -18,58 +18,58 @@ interface QuoteStyles {
     default: StyleProperty
 }
 interface StyleProperty {
-    containerCss: FlattenInterpolation<ThemeProps<DefaultTheme>>
-    iconCss: FlattenInterpolation<ThemeProps<DefaultTheme>>
-    icon: string
+    containerStyle: FlattenInterpolation<ThemeProps<DefaultTheme>>
+    emojiStyle: FlattenInterpolation<ThemeProps<DefaultTheme>>
+    emoji: string
 }
 
 type QuoteStyleType = keyof QuoteStyles
 
 const quoteStyles: QuoteStyles = {
     note: {
-        containerCss: css`
+        containerStyle: css`
             border-color: ${(props) => props.theme.teal6};
         `,
-        iconCss: css`
+        emojiStyle: css`
             background-color: ${(props) => props.theme.teal2};
             border-color: ${(props) => props.theme.teal4};
         `,
         // icon: "🖋",
-        icon: "✒️",
+        emoji: "✒️",
     },
     warning: {
-        containerCss: css`
+        containerStyle: css`
             border-color: ${(props) => props.theme.red4};
         `,
-        iconCss: css`
+        emojiStyle: css`
             background-color: ${(props) => props.theme.red1};
             border-color: ${(props) => props.theme.red3};
         `,
 
-        icon: "🔥",
+        emoji: "🔥",
     },
     question: {
-        containerCss: css`
+        containerStyle: css`
             border-color: ${(props) => props.theme.yellow6};
         `,
-        iconCss: css`
+        emojiStyle: css`
             background-color: ${(props) => props.theme.yellow1};
             border-color: ${(props) => props.theme.yellow3};
         `,
 
-        icon: "🧐",
+        emoji: "🧐",
     },
     default: {
-        containerCss: css`
+        containerStyle: css`
             border-color: ${(props) => props.theme.gray3};
         `,
-        iconCss: css`
+        emojiStyle: css`
             background-color: ${(props) => props.theme.gray1};
             border-color: ${(props) => props.theme.gray3};
         `,
 
         // icon: "🏷",
-        icon: "💡",
+        emoji: "💡",
     },
 }
 
@@ -87,7 +87,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
     width: fit-content;
     height: fit-content;
 
-    padding: 0 0.5rem;
+    padding: 0.75rem;
     padding-right: 1rem;
 
     margin: 1rem 0;
@@ -107,7 +107,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
         font-weight: 500;
     }
 
-    ${({ type }) => quoteStyles[type]?.containerCss};
+    ${({ type }) => quoteStyles[type]?.containerStyle};
 `
 
 const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
@@ -126,7 +126,7 @@ const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
     border-width: 0.175rem;
     border-style: solid;
 
-    ${({ type }) => quoteStyles[type]?.iconCss};
+    ${({ type }) => quoteStyles[type]?.emojiStyle};
 
     ${media.widePhone} {
         width: 1.5rem;
@@ -220,7 +220,7 @@ function Quote(props: QuoteProps) {
     return (
         <QuoteStyled type={quoteType} isLight={isLight}>
             <QuoteIcon type={quoteType} isLight={isLight}>
-                {quoteStyles[quoteType].icon}
+                {quoteStyles[quoteType].emoji}
             </QuoteIcon>
             <div {...fixedProps} />
         </QuoteStyled>

@@ -5,12 +5,20 @@ import { useCallback, useRef, useState } from "react"
 import { useTimeout } from "@hooks/index"
 
 import { CodeCopyButton } from "./Code/CodeCopyButton"
+import media from "@styles/utils/media"
 
 const CodeWrapper = styled.div`
     position: relative;
-    max-width: 100%;
+    width: fit-content;
+    min-width: 50%;
+    max-width: 95%;
 
-    margin: 1rem 0;
+    margin: 2rem 0;
+
+    ${media.widePhone} {
+        min-width: 9rem;
+        max-width: 100%;
+    }
 `
 
 const CodeParentContainer = styled.pre`

@@ -37,7 +37,7 @@ const ImageTitle = styled.span`
     font-size: ${(p) => p.theme.xsm};
     text-decoration: underline;
 
-    margin-top: 0.5rem;
+    margin-top: 0.75rem;
 
     ${media.widePhone} {
         display: none;

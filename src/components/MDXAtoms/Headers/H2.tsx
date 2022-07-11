@@ -6,14 +6,15 @@ import { useRef } from "react"
 import { useScrollToElement } from "@hooks/index"
 
 const H2Styled = styled.h2`
-    font-size: ${(props) => props.theme.xlg};
+    font-size: ${(props) => props.theme.xxlg};
     font-weight: 600;
     color: ${(p) => p.theme.fontColor};
 
     padding: 0.35rem 0;
+    margin: 1.25rem 0;
 
     ${media.widePhone} {
-        font-size: 1.125rem;
+        font-size: ${(props) => props.theme.xlg};
     }
 
     cursor: pointer;

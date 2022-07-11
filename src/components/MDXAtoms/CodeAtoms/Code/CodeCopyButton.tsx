@@ -60,7 +60,7 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     font-size: ${(props) => props.theme.sm};
     font-weight: 600;
 
-    border-radius: ${({ theme }) => theme.bsm};
+    border-radius: ${({ theme }) => theme.bxsm};
     border: 0.1rem solid ${(props) => props.theme.blue6};
 
     &:hover {
@@ -72,7 +72,6 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     }
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.xsm};
         padding-top: 0;
 
         &:active {
