@@ -39,7 +39,7 @@ function PostSEO({
                             alt: `${config.author.name} info card`,
                         },
                         {
-                            url: config.author.avatarImageUrl,
+                            url: config.author.logoImageUrl,
                             alt: config.author.name,
                         },
                     ],
@@ -53,7 +53,7 @@ function PostSEO({
                 datePublished={publishedTime}
                 images={[config.author.bannerImageUrl]}
                 url={fullPostUrl}
-                publisherLogo={config.author.avatarImageUrl}
+                publisherLogo={config.author.logoImageUrl}
             />
         </>
     )

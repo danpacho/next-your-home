@@ -8,6 +8,11 @@ function BaseSEO() {
 
             {/* favicon ICON meta */}
             <link rel="icon" href={config.author.faviconUrl} />
+            <link
+                rel="mask-icon"
+                href={config.author.faviconUrl}
+                color="#000000"
+            />
 
             {/* site basic info meta */}
             <meta
