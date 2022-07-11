@@ -8,7 +8,8 @@ const MainLayout = styled.div`
     flex-direction: column;
 
     flex: 1;
-    min-width: 100%;
+
+    width: 100%;
 
     ${media.widePhone} {
         min-width: auto;
