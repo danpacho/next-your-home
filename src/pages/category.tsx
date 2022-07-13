@@ -238,7 +238,7 @@ const CategoryLink = ({
                         underscoreColor={categoryColor}
                         fontWeight={400}
                     >
-                        <SizedText defaultLineNumber={1} lineHeight={1.25}>
+                        <SizedText defaultLineNumber={1} lineHeight={1.5}>
                             {category} <LeafIcon width="1rem" height="1rem" />
                         </SizedText>
                     </UnderscoreText>
