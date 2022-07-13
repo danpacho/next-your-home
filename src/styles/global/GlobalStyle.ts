@@ -49,6 +49,23 @@ export const GlobalStyle = createGlobalStyle`
       text-size-adjust: none;
       -webkit-text-size-adjust: none;
    
+      details {
+            max-width: 100%;
+            margin-bottom: 1rem;
+
+            summary {
+                  display: block;
+
+                  padding-left: 0.25rem;
+                  border-left: 0.1rem solid gray;
+                  
+                  cursor: pointer;
+            }     
+            summary::-webkit-details-marker {
+                  display: none;
+            }           
+      }
+    
 
       //* disable Katex math slection
       .math {
