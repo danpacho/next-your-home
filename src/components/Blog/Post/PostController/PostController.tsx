@@ -188,7 +188,11 @@ function PostController({
                         <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
                     <PostTitleText isLight={isLight}>
-                        <SizedText defaultLineNumber={2} lineHeight={0.85}>
+                        <SizedText
+                            defaultLineNumber={2}
+                            lineHeight={0.85}
+                            align="center"
+                        >
                             {prevPost.title}
                         </SizedText>
                     </PostTitleText>
@@ -209,7 +213,11 @@ function PostController({
             <Link href={nextPost.postUrl} passHref>
                 <InfoContainer>
                     <PostTitleText isLight={isLight}>
-                        <SizedText defaultLineNumber={2} lineHeight={0.85}>
+                        <SizedText
+                            defaultLineNumber={2}
+                            lineHeight={0.85}
+                            align="center"
+                        >
                             {nextPost.title}
                         </SizedText>
                     </PostTitleText>

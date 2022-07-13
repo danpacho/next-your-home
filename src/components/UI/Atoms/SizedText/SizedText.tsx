@@ -1,4 +1,4 @@
-import styled from "styled-components"
+import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 import type { MediaType } from "@styles/utils/media"
 
@@ -8,6 +8,7 @@ type MediaLineOption = {
     defaultLineNumber: number
     breakOption?: "normal" | "break-all" | "keep-all" | "break-word"
     lineHeight: number
+    align?: "start" | "end" | "left" | "right" | "center" | "justify"
 }
 type SizedTextProps = MediaLineOption & {
     children: React.ReactNode
@@ -26,6 +27,12 @@ const SizedP = styled.p<MediaLineOption>`
     line-height: ${(p) => p.lineHeight}rem;
     max-height: ${({ lineHeight, defaultLineNumber }) =>
         lineHeight * defaultLineNumber}rem;
+
+    ${(p) =>
+        p.align &&
+        css`
+            text-align: ${p.align};
+        `};
 
     ${media.wideScreen} {
         -webkit-line-clamp: ${(p) => p.wideScreen ?? p.defaultLineNumber};
