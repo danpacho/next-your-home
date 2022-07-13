@@ -317,7 +317,7 @@ function Profile({ profileSource }: ProfileProps) {
         <ProfileContainer>
             <ProfileInfoContainer>
                 <ProfileTextContainer>
-                    <ProfileLogo width={110} height={110} />
+                    <ProfileLogo width={100} height={100} />
 
                     <ProfileName>{config.author.name}</ProfileName>
 
