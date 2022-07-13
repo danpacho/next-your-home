@@ -143,7 +143,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                 >
                                     🍞 {title}
                                 </SizedText>
-                                {children.length !== 0 && (
+                                {!!children && (
                                     <H2Container>
                                         {children.map(
                                             ({ title: childTitle, href }) => (

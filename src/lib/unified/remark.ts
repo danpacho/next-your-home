@@ -126,7 +126,7 @@ interface HeaderInfo {
 interface H2Children extends Omit<HeaderInfo, "type"> {}
 
 export interface TableOfContents extends Omit<HeaderInfo, "type"> {
-    children: H2Children[]
+    children: H2Children[] | null
 }
 function transformTableOfContents(source: MarkdownHeader[]): TableOfContents[] {
     if (source.length === 0) return []
@@ -150,12 +150,14 @@ function transformTableOfContents(source: MarkdownHeader[]): TableOfContents[] {
             if (type === "H2") return acc
 
             const nextHeaderIndex = index + 1
-            const nextH1Index = H1IndexArray[H1IndexArray.indexOf(index) + 1]
+            const nextH1Index: number | undefined =
+                H1IndexArray[H1IndexArray.indexOf(index) + 1]
 
-            const isChildrenNotExsist = nextHeaderIndex === nextH1Index
+            const isChildrenNotExsist =
+                nextHeaderIndex === nextH1Index || nextH1Index === undefined
 
             const H1Children = isChildrenNotExsist
-                ? []
+                ? null
                 : headerInfoArray
                       .slice(nextHeaderIndex, nextH1Index)
                       .map<H2Children>(({ href, title }) => ({

@@ -146,7 +146,7 @@ function TableOfContentMobile({ toc }: { toc: TableOfContents[] }) {
                             <H1Link>{title}</H1Link>
                         </H1LinkContainer>
                     </LinkContainer>
-                    {children.length !== 0 && (
+                    {children !== null && (
                         <H2LinkContainer isLight={isLight} color={color}>
                             {children.map(({ title: childTitle, href }) => (
                                 <LinkContainer href={href} key={childTitle}>
