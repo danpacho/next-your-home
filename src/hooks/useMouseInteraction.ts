@@ -1,11 +1,11 @@
 interface UseMouseInteractionProps {
     mouseStateSetter: (state: boolean) => void
-    neverCloseOnTouch?: boolean
+    neverCloseOnTouchEnd?: boolean
 }
 
 function useMouseInteraction({
     mouseStateSetter,
-    neverCloseOnTouch,
+    neverCloseOnTouchEnd: neverCloseOnTouch,
 }: UseMouseInteractionProps): React.HTMLAttributes<HTMLElement> {
     return {
         onPointerEnter: () => mouseStateSetter(true),
