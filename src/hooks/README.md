@@ -32,9 +32,9 @@
 
     Toggle the state of an input array element of length 2
 
-9. **`useMouseInteraction`**
+9. **`usePointerInteraction`**
 
-    Get the common mouse event behavior
+    Get the common pointer enter-leave state (`mouse`, `touch`)
 
 10. **`useSetFocusingPageColor`**
 
