@@ -216,10 +216,10 @@
 3.  Check build `bundle size` result below
     ```bash
     Page                                         Size     First Load JS
-    ┌ ● /                                        1.48 kB        91.6 kB
+    ┌ ● /                                        1.48 kB        91.7 kB
     ├   /_app                                    0 B            75.3 kB
     ├ ● /[category]                              780 B          90.9 kB
-    ├ ● /[category]/[pageNumber]                 904 B          91.1 kB
+    ├ ● /[category]/[pageNumber]                 904 B            91 kB
     ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        97.1 kB
     ├ ○ /404                                     269 B          75.5 kB
     ├ ○ /500                                     269 B          75.5 kB
