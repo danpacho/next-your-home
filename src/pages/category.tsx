@@ -14,7 +14,7 @@ import { CategoryInfoType } from "@typing/category/info"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useMouseInteraction, useSetFocusingPageColor } from "@hooks/index"
+import { usePointerInteraction, useSetFocusingPageColor } from "@hooks/index"
 
 import { LeafIcon } from "@components/UI/Atoms/Icons"
 import { SizedText } from "@components/UI/Atoms/SizedText"
@@ -206,8 +206,8 @@ const CategoryLink = ({
     return (
         <Link passHref href={categoryUrl}>
             <CategoryLinkContaier
-                {...useMouseInteraction({
-                    mouseStateSetter: setIsHover,
+                {...usePointerInteraction({
+                    pointerStateSetter: setIsHover,
                 })}
                 _color={categoryColor}
             >

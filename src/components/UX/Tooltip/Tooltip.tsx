@@ -3,7 +3,7 @@ import media from "@styles/utils/media"
 
 import React, { Dispatch, ReactElement, SetStateAction } from "react"
 
-import { useMouseInteraction } from "@hooks/index"
+import { usePointerInteraction } from "@hooks/index"
 
 const TooltipButtonArea = styled.div`
     position: relative;
@@ -66,8 +66,8 @@ function Tooltip({
 }: TooltipProps) {
     return (
         <TooltipButtonArea
-            {...useMouseInteraction({
-                mouseStateSetter: setActive,
+            {...usePointerInteraction({
+                pointerStateSetter: setActive,
             })}
         >
             {parentContent}

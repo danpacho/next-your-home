@@ -9,7 +9,7 @@ import { ColorProps, IsLight } from "@typing/theme"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { useMouseInteraction } from "@hooks/index"
+import { usePointerInteraction } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
@@ -113,8 +113,8 @@ function CategoryLink({
     return (
         <Link href={categoryUrl} passHref>
             <CategoryLinkContainer
-                {...useMouseInteraction({
-                    mouseStateSetter: setIsHover,
+                {...usePointerInteraction({
+                    pointerStateSetter: setIsHover,
                 })}
                 _color={isLight ? color : darkModeColor}
                 isHover={isHover}

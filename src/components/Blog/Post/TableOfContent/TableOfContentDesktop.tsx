@@ -6,7 +6,7 @@ import media from "@styles/utils/media"
 
 import type { TableOfContents } from "@lib/unified/remark"
 
-import { useMouseInteraction } from "@hooks/index"
+import { usePointerInteraction } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { LinkContainer } from "./common"
@@ -123,8 +123,8 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
     return (
         <TableOfContentPositionContainer>
             <TOCContainer
-                {...useMouseInteraction({
-                    mouseStateSetter: setIsFocusing,
+                {...usePointerInteraction({
+                    pointerStateSetter: setIsFocusing,
                     neverCloseOnTouchEnd: true,
                 })}
             >

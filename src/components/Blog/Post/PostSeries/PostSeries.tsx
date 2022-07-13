@@ -10,7 +10,7 @@ import Link from "next/link"
 import { ColorProps, IsLight } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useColorSet, useMouseInteraction } from "@hooks/index"
+import { useColorSet, usePointerInteraction } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
@@ -269,8 +269,8 @@ function PostSeries({
     return (
         <PostSeriesContainer
             _color={color}
-            {...useMouseInteraction({
-                mouseStateSetter: setIsHover,
+            {...usePointerInteraction({
+                pointerStateSetter: setIsHover,
             })}
         >
             <PostSeriesHeader>

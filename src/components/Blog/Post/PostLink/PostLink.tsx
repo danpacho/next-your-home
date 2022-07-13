@@ -7,7 +7,7 @@ import Link from "next/link"
 
 import { PostMetaType } from "@typing/post/meta"
 
-import { useMouseInteraction } from "@hooks/index"
+import { usePointerInteraction } from "@hooks/index"
 
 import PostMeta from "./PostMeta/PostMeta"
 import PostOrderText from "./PostOrderText/PostOrderText"
@@ -155,8 +155,8 @@ function PostLink({
                 order={order}
                 isFirst={isFirst}
                 isLast={isLast}
-                {...useMouseInteraction({
-                    mouseStateSetter: setIsHover,
+                {...usePointerInteraction({
+                    pointerStateSetter: setIsHover,
                 })}
             >
                 <PostContentContainer>
