@@ -6,35 +6,35 @@ type StringLiteral<Literal> = Literal extends string
         : Literal
     : never
 
-type AtomGetters<ObjectType, KeyName> = {
-    [Property in keyof ObjectType as `${StringLiteral<KeyName>}${Capitalize<
+type AtomGetters<ObjectType, AtomName> = {
+    [Property in keyof ObjectType as `${StringLiteral<AtomName>}${Capitalize<
         string & Property
     >}`]: ObjectType[Property]
 }
 
 type JotaiStateAction<AtomType> = {
-    atom: Atom<AtomType>
     state: AtomType
     setState: (update: SetStateAction<AtomType>) => void
+    atom: Atom<AtomType>
 }
 
-type JotaiStateManager<AtomType, TypeName> = AtomGetters<
+type JotaiStateManager<AtomType, AtomName> = AtomGetters<
     JotaiStateAction<AtomType>,
-    TypeName
+    AtomName
 >
 
-const useAtoms = <AtomType, Name extends string>(atomInfo: {
+const useAtoms = <AtomType, AtomName extends string>(atomInfo: {
     atom: Atom<AtomType>
-    key: Name
-}): JotaiStateManager<AtomType, Name> => {
+    key: AtomName
+}): JotaiStateManager<AtomType, AtomName> => {
     const [state, setState] = useAtom(atomInfo.atom)
-    const jotaiManager: JotaiStateManager<AtomType, Name> = {
-        [`${atomInfo.key}Atom`]: atomInfo.atom,
+    const manager: JotaiStateManager<AtomType, AtomName> = {
         [`${atomInfo.key}State`]: state,
         [`${atomInfo.key}SetState`]: setState,
+        [`${atomInfo.key}Atom`]: atomInfo.atom,
     }
 
-    return jotaiManager
+    return manager
 }
 
 export { useAtoms }
