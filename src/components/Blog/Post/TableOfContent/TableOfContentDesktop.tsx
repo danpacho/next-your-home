@@ -125,6 +125,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
             <TOCContainer
                 {...useMouseInteraction({
                     mouseStateSetter: setIsFocusing,
+                    neverCloseOnTouch: true,
                 })}
             >
                 {toc.map(({ title, href, children }, index) => {
