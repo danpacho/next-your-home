@@ -217,15 +217,15 @@
     ```bash
     Page                                         Size     First Load JS
     ┌ ● /                                        1.48 kB        91.6 kB
-    ├   /_app                                    0 B            75.2 kB
+    ├   /_app                                    0 B            75.3 kB
     ├ ● /[category]                              780 B          90.9 kB
-    ├ ● /[category]/[pageNumber]                 904 B          91   kB
+    ├ ● /[category]/[pageNumber]                 904 B          91.1 kB
     ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        97.1 kB
     ├ ○ /404                                     269 B          75.5 kB
     ├ ○ /500                                     269 B          75.5 kB
     ├ ● /category                                3.25 kB        78.5 kB
     └ ● /profile                                 2.62 kB        89.4 kB
-    + First Load JS shared by all                75.1 kB
+    + First Load JS shared by all                75.3 kB
     ├ chunks/main-be00b42900d433cc.js            36.8 kB
     ├ chunks/pages/_app-764e610a6d9ea0f7.js      37.7 kB
     ├ chunks/webpack-3373b0f21806983f.js         827 B
