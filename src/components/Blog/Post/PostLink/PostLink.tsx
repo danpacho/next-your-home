@@ -97,7 +97,7 @@ const PostLinkContainer = styled.div<PostLinkContainerStyle>`
         }
     }
 `
-const ContentContainer = styled.div`
+const PostContentContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -110,8 +110,10 @@ const ContentContainer = styled.div`
     gap: 0.75rem;
 
     ${media.widePhone} {
-        gap: 0.5rem;
+        gap: 0.8rem;
         max-width: unset;
+        height: 100%;
+        justify-content: center;
     }
 `
 
@@ -157,20 +159,24 @@ function PostLink({
                     mouseStateSetter: setIsHover,
                 })}
             >
-                <ContentContainer>
+                <PostContentContainer>
                     <UnderscoreText
                         isHover={isHover}
                         fontSize="lg"
                         fontWeight={400}
                         underscoreColor={color}
                     >
-                        <SizedText lineHeight={1.25} defaultLineNumber={1}>
+                        <SizedText lineHeight={1.5} defaultLineNumber={1}>
                             {title}
                         </SizedText>
                     </UnderscoreText>
 
                     <PostPreview>
-                        <SizedText defaultLineNumber={3} lineHeight={1.1}>
+                        <SizedText
+                            defaultLineNumber={3}
+                            mediumPhone={2}
+                            lineHeight={1.1}
+                        >
                             {preview}
                         </SizedText>
                     </PostPreview>
@@ -182,7 +188,7 @@ function PostLink({
                         tags={tags}
                         isCategoryPage={isCategoryPage}
                     />
-                </ContentContainer>
+                </PostContentContainer>
                 <PostOrderText order={order} color={color} isHover={isHover} />
             </PostLinkContainer>
         </Link>

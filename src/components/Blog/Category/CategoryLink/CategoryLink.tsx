@@ -83,7 +83,7 @@ const CategoryInfoContainer = styled.div`
         max-width: unset;
         min-width: unset;
 
-        gap: 1rem;
+        gap: 0.8rem;
     }
 `
 
@@ -150,7 +150,7 @@ function CategoryLink({
                         underscoreColor={isLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
-                        <SizedText lineHeight={1.25} defaultLineNumber={1}>
+                        <SizedText lineHeight={1.5} defaultLineNumber={1}>
                             {category}
                         </SizedText>
                     </UnderscoreText>
