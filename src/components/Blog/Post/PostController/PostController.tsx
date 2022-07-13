@@ -47,7 +47,6 @@ const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
         padding: 0.5rem;
         gap: 0.25rem;
 
-        justify-content: space-between;
         background-color: ${(p) => p.theme.containerBackgroundColor};
 
         bottom: 0.75rem;
@@ -127,7 +126,8 @@ const InfoContainer = styled.div`
 const PostTitleText = styled.div<IsLight>`
     transition: all ease-out 0.25s;
 
-    width: 100%;
+    max-width: 10rem;
+    min-width: 10rem;
 
     font-size: ${(p) => p.theme.sm};
     font-weight: 500;
@@ -153,6 +153,9 @@ const PostTitleText = styled.div<IsLight>`
         padding: 0;
 
         border-bottom: none;
+
+        min-width: unset;
+        max-width: 8rem;
     }
 `
 
