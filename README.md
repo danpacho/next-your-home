@@ -4,10 +4,10 @@
 
 <br />
 
-1. [What is this?](#what-is-this)
+1. [What is it?](#what-is-it)
     - [🏠 Blog](#-blog)
     - [🛠 Tech stack](#-tech-stack)
-2. [Why?](#why)
+2. [Why should I use it?](#why-should-i-use-it)
 
     - [😀 Easy to start](#-easy-to-start)
     - [🔥 Performance](#-performance)
@@ -23,7 +23,7 @@
 
 <br />
 
-# What is this?
+# What is it?
 
 ## 🏠 Blog
 
@@ -46,8 +46,8 @@
     -   `styled-components`
 4.  **Markup** 📝
     -   `mdx`
-        -   📌 Rich support over `markdown`
-        -   📌 Use `javascript`
+        -   📌 More than `markdown`, it's rich
+        -   📌 Use `javascript expressions`
         -   📌 Use `JSX`
         -   🔎 Explore more features on [official MDX site](https://mdxjs.com/table-of-components/)
     -   `mdx-bundler`
@@ -56,21 +56,21 @@
 
 <br />
 
-# Why should I use this?
+# Why should I use it?
 
 ## 😀 Easy to start
 
 -   📌 You know `react`
 -   📌 Zero env configuration
--   📌 Easy deploying with `vercel` [(🔎 Power of vercel + NextJs)](https://vercel.com/solutions/nextjs)
--   📦 Easy posting with built in [CLI 📜](https://github.com/danpa725/blog-post-generator) tool
+-   📌 Easy deploying via `vercel` [(Power of vercel + NextJs 🔎)](https://vercel.com/solutions/nextjs)
+-   📦 Easy posting with built in [CLI🎉](https://github.com/danpa725/blog-post-generator) tool
 
 ## 🔥 Performance
 
 -   📌 Light house score `100`
--   📌 SEO support with `next-seo` [(🔎 More info about this package)](https://github.com/garmeeh/next-seo)
+-   📌 SEO support with `next-seo` [(More info about this package 🔎)](https://github.com/garmeeh/next-seo)
 -   📌 Bundle size optimized
-    -   `Preact` on production build (`3kb`) [(🔎 What is Preact?)](https://preactjs.com)
+    -   `Preact` on production build (`3kb`) [(What is Preact? 🔎)](https://preactjs.com)
     -   etc...
 
 ## 😲 Intuitive post grouping
@@ -100,7 +100,7 @@
 -   📌 `Light`/`Dark` mode full support
 -   📌 Intergrate Profile with full feature of `mdx`
 -   📌 Table of content on `desktop`/`mobile` (optional on mobile)
--   📌 Image optimization with `next/image` [(🔎 More info about next/image)](https://nextjs.org/docs/api-reference/next/image)
+-   📌 Image optimization with `next/image` [(More info about next/image 🔎)](https://nextjs.org/docs/api-reference/next/image)
 -   📌 Automatic image size support for `static`/`external`
 -   📌 Automatic pagination
 -   📌 Recover scroll position when navigating to previous page
@@ -173,10 +173,10 @@
 
 -   Check config options in `blog.config.ts`
 -   Easy to customize
-    1.  🫡 You know `react`
-    2.  🫡 You know `styled-components`
-    3.  🫡 Just modify the style that you want to
--   Whole project folder includes `README.md` about **structures** and **description**
+    1. 🙌 You know `react`
+    2. 🙌 You know `styled-components`
+    3. 🙌 Just modify the style that you want to
+-   Whole project includes `README.md` about **structures** and **description**
 
 <br />
 
@@ -216,22 +216,23 @@
 3.  Check build `bundle size` result below
     ```bash
     Page                                         Size     First Load JS
-    ┌ ● /                                        1.48 kB        91.5 kB
-    ├   /_app                                    0 B            75.1 kB
-    ├ ● /[category]                              780 B          90.8 kB
-    ├ ● /[category]/[pageNumber]                 904 B          90.9 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        96.9 kB
-    ├ ○ /404                                     269 B          75.4 kB
-    ├ ○ /500                                     269 B          75.4 kB
-    ├ ● /category                                3.22 kB        78.4 kB
-    └ ● /profile (688 ms)                        2.63 kB        89.3 kB
+    ┌ ● /                                        1.48 kB        91.6 kB
+    ├   /_app                                    0 B            75.2 kB
+    ├ ● /[category]                              780 B          90.9 kB
+    ├ ● /[category]/[pageNumber]                 904 B          91   kB
+    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        97.1 kB
+    ├ ○ /404                                     269 B          75.5 kB
+    ├ ○ /500                                     269 B          75.5 kB
+    ├ ● /category                                3.25 kB        78.5 kB
+    └ ● /profile                                 2.62 kB        89.4 kB
     + First Load JS shared by all                75.1 kB
     ├ chunks/main-be00b42900d433cc.js            36.8 kB
-    ├ chunks/pages/_app-764e610a6d9ea0f7.js      37.6 kB
+    ├ chunks/pages/_app-764e610a6d9ea0f7.js      37.7 kB
     ├ chunks/webpack-3373b0f21806983f.js         827 B
     └ css/a36597fbcc4c45ff.css                   813 B
     ```
-    </details>
+
+</details>
 
 <br />
 
@@ -245,7 +246,7 @@ const ENG = "Thanks 😎"
 
 <div align="center">
 
-<img src="/public/favicon.png" width="50" height="50">
+<img src="/public/favicon.png" width="75" height="75">
 
 [MIT](https://github.com/danpa725/next-your-home/blob/main/LICENSE)
 
