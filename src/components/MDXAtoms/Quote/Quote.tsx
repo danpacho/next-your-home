@@ -108,6 +108,12 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
     }
 
     ${({ type }) => quoteStyles[type]?.containerStyle};
+
+    ${media.widePhone} {
+        p {
+            line-height: 1.5rem;
+        }
+    }
 `
 
 const QuoteIcon = styled.div<QuoteStyleTypeProp & IsLight>`
