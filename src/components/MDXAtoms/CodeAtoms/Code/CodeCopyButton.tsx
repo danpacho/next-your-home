@@ -40,6 +40,7 @@ const CodeContentBox = styled.div`
 
 const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     transition: all cubic-bezier(0.19, 1, 0.22, 1) 0.275s;
+
     visibility: ${(p) => (p.isActivated ? "visible" : "hidden")};
     opacity: ${(p) => (p.isActivated ? 1 : 0)};
 
@@ -51,14 +52,13 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     align-items: center;
     justify-content: center;
 
-    min-width: 2rem;
+    width: 2rem;
     height: 2rem;
-    padding: 0 0.25rem;
+    padding: 0.25rem;
 
     background-color: ${(p) => p.theme.gray10};
 
     font-size: ${(props) => props.theme.sm};
-    font-weight: 600;
 
     border-radius: ${({ theme }) => theme.bxsm};
     border: 0.1rem solid ${(props) => props.theme.blue6};
@@ -72,16 +72,10 @@ const CopyButton = styled.button<IsLight & { isActivated: boolean }>`
     }
 
     ${media.widePhone} {
-        padding-top: 0;
-
         &:active {
             transform: none;
         }
     }
-`
-
-const SuccessP = styled.p`
-    color: ${(p) => p.theme.teal7};
 `
 
 interface CopyContentProp {
@@ -110,8 +104,7 @@ function CodeCopyButton({ code, isActivated }: CopyContentProp) {
             isLight={isLight}
             isActivated={isActivated}
         >
-            <p>{!isCopySuccess && "📝"}</p>
-            <SuccessP>{isCopySuccess && "Copied ✅"}</SuccessP>
+            <p>{isCopySuccess ? "✅" : "📝"}</p>
         </CopyButton>
     )
 }
