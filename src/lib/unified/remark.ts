@@ -153,24 +153,32 @@ function transformTableOfContents(source: MarkdownHeader[]): TableOfContents[] {
             const nextH1Index: number | undefined =
                 H1IndexArray[H1IndexArray.indexOf(index) + 1]
 
-            const isChildrenNotExsist =
-                nextHeaderIndex === nextH1Index || nextH1Index === undefined
+            const isChildrenNotExsist = nextHeaderIndex === nextH1Index
 
-            const H1Children = isChildrenNotExsist
-                ? null
-                : headerInfoArray
-                      .slice(nextHeaderIndex, nextH1Index)
-                      .map<H2Children>(({ href, title }) => ({
-                          href,
-                          title,
-                      }))
+            if (isChildrenNotExsist) {
+                return [
+                    ...acc,
+                    {
+                        href,
+                        title,
+                        children: null,
+                    },
+                ]
+            }
+
+            const H1Children = headerInfoArray
+                .slice(nextHeaderIndex, nextH1Index)
+                .map<H2Children>(({ href, title }) => ({
+                    href,
+                    title,
+                }))
 
             return [
                 ...acc,
                 {
                     href,
                     title,
-                    children: H1Children,
+                    children: H1Children.length === 0 ? null : H1Children,
                 },
             ]
         },
