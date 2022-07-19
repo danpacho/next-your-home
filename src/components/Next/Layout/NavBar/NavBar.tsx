@@ -5,6 +5,7 @@ import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
 
+import { Button } from "@components/UI/Atoms/Button"
 import { ThemeButton } from "@components/UX/ThemeButton"
 
 import { useAtoms, _slector } from "@lib/jotai"
@@ -28,7 +29,7 @@ const NavContainer = styled.nav`
 
     ${media.widePhone} {
         position: static;
-        height: fit-content;
+        height: 2.25rem;
         margin-top: 1.5rem;
 
         background-color: ${(p) =>
@@ -46,13 +47,12 @@ const NavContainer = styled.nav`
 
 const BlogTitle = styled.header<IsLight>`
     font-size: ${(p) => p.theme.md};
-    font-weight: 400;
     text-transform: capitalize;
 
     cursor: pointer;
 
     ${media.widePhone} {
-        font-size: ${(p) => p.theme.xsm};
+        font-size: ${(p) => p.theme.sm};
         font-weight: 500;
         margin-left: 0.5rem;
     }
@@ -64,52 +64,22 @@ const ButtonContainer = styled.div`
     align-items: center;
     justify-content: center;
 
-    gap: 0.35rem;
+    gap: 0.5rem;
 
     ${media.widePhone} {
         gap: 0.25rem;
-    }
-`
-const AllCategoryLinkBtn = styled.button`
-    transition: background-color cubic-bezier(0.075, 0.82, 0.165, 1) 0.35s;
-
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-    gap: 0.5rem;
-
-    padding: 0.5rem 0.65rem;
-
-    color: ${(p) => p.theme.fontColor};
-    font-size: ${(p) => p.theme.sm};
-
-    border-radius: ${({ theme }) => theme.bsm};
-
-    background-color: transparent;
-    &:hover {
-        background-color: ${({ theme }) =>
-            `${theme.containerBackgroundColor}${theme.opacity80}`};
-    }
-
-    ${media.widePhone} {
-        font-weight: 500;
-        font-size: ${(p) => p.theme.xsm};
-
-        &:hover {
-            background-color: transparent;
-        }
+        margin-right: 0.25rem;
     }
 `
 const RowDivider = styled.div`
     display: block;
-    width: 1px;
 
+    width: 1px;
     height: 12px;
-    background-color: ${(p) => p.theme.fontColor};
+
+    background-color: ${(p) => p.theme.headerFontColor};
 
     ${media.widePhone} {
-        width: 1px;
         height: 10px;
     }
 `
@@ -124,12 +94,7 @@ function NavBar() {
             </Link>
             <ButtonContainer>
                 <Link passHref href="/category">
-                    <AllCategoryLinkBtn
-                        type="button"
-                        aria-label="all category button"
-                    >
-                        Category
-                    </AllCategoryLinkBtn>
+                    <Button ariaLabel="all category button">Category</Button>
                 </Link>
                 <RowDivider />
                 <ThemeButton />
