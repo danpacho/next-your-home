@@ -17,15 +17,13 @@ const TableOfContentPositionContainer = styled.div`
     position: sticky;
     top: 6rem;
 
-    min-width: 17.5rem;
-    margin-right: 2rem;
+    width: 100%;
+    max-height: 40rem;
+    overflow-y: scroll;
+
+    margin-right: 1rem;
 
     margin-top: 6rem;
-    ${media.smallScreen} {
-        min-width: unset;
-        margin-right: 0.5rem;
-        flex: 1;
-    }
 `
 
 const TOCContainer = styled.div`
