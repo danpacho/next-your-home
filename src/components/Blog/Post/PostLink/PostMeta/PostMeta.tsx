@@ -149,7 +149,7 @@ function PostMeta({
                         isLight={isLight}
                     >
                         <SizedText
-                            lineHeight={0.85}
+                            lineHeight={1}
                             defaultLineNumber={1}
                             breakOption="break-all"
                         >
@@ -160,7 +160,7 @@ function PostMeta({
             )}
             {!isCategoryPage && (
                 <PostMetaTag type="update" color={color} isLight={isLight}>
-                    <SizedText lineHeight={0.85} defaultLineNumber={1}>
+                    <SizedText lineHeight={1} defaultLineNumber={1}>
                         {update}
                     </SizedText>
                 </PostMetaTag>
@@ -168,7 +168,7 @@ function PostMeta({
             <Link href="/profile" passHref>
                 <PostMetaTag type="author" color={color} isLight={isLight}>
                     <SizedText
-                        lineHeight={0.85}
+                        lineHeight={1}
                         defaultLineNumber={1}
                         breakOption="break-all"
                     >
@@ -200,7 +200,7 @@ const PostMetaTagChild = ({
             isLight={isLight}
         >
             <SizedText
-                lineHeight={0.85}
+                lineHeight={1}
                 defaultLineNumber={1}
                 breakOption="break-all"
             >

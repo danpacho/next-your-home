@@ -154,8 +154,8 @@ const PostTitleText = styled.div<IsLight>`
 
         border-bottom: none;
 
+        max-width: 5rem;
         min-width: unset;
-        max-width: 8rem;
     }
 `
 
