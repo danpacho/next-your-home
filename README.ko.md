@@ -7,7 +7,7 @@
 1. [이건 무엇인가요?](#이건-무엇인가요)
     - [🏠 블로그](#-블로그)
     - [🛠 무엇으로 만들어졌나요?](#-무엇으로-만들어졌나요)
-2. [왜 이걸 사용해야하죠?](#왜-이걸-사용해야하죠)
+2. [왜 이걸 사용해야하나요?](#왜-이걸-사용해야하죠)
 
     - [😀 손쉬운 시작](#-손쉬운-시작)
     - [🔥 성능](#-성능)
@@ -36,7 +36,7 @@
 
     **집중한 `블로그 템플릿` 입니다**
 
-> 위 템플릿으로 제작된 [Next Your Home Guide](https://next-your-home-guide.vercel.app)에 방문해보세요!
+> 위 템플릿으로 제작된 [Next Your Home Guide](https://next-your-home-guide.vercel.app)에 방문해보세요
 
 ## 🛠 무엇으로 만들어졌나요?
 
@@ -48,52 +48,52 @@
     -   `styled-components`
 4.  **마크업** 📝
     -   `mdx`
-        -   📌 `markdown` 이상의 풍부한 기능을 제공하죠
-        -   📌 `JSX`와 `javascript expressions`이 사용가능 하죠
-        -   🔎 더 많은 기능을 [공식 MDX 사이트](https://mdxjs.com/table-of-components/)에서 알아보세요
+        -   📌 `markdown` 이상의 풍부한 기능 제공합니다
+        -   📌 `JSX`와 `javascript expressions`을 사용해보세요
+        -   🔎 [공식 MDX 사이트](https://mdxjs.com/table-of-components/)에서 더 많은 기능을 볼 수 있습니다
     -   `mdx-bundler`
-        -   📦 순수 `react component`를 `.mdx` 포스팅 파일에서 불러올 수 있어요
-        -   🔎 더 많은 설정 옵션을 [mdx-bundler](https://github.com/kentcdodds/mdx-bundler)에서 알아보세요
+        -   📦 순수 `react component`를 `.mdx` 포스팅 파일에서 불러올 수 있습니다
+        -   🔎 설정 옵션을 [mdx-bundler](https://github.com/kentcdodds/mdx-bundler)에서 알아보세요
 
 <br />
 
-# 왜 이걸 사용해야하죠?
+# 왜 이걸 사용해야하나요?
 
 ## 😀 손쉬운 시작
 
 -   📌 `React`입니다
--   📌 환경 설정, 필요 없어요
+-   📌 환경 설정, 필요 없습니다
 -   📌 `vercel`과 함께라면 배포는 일도 아니죠[(vercel + NextJs의 강력함 알아보기 🔎)](https://vercel.com/solutions/nextjs)
--   📦 [CLI🎉](https://github.com/danpa725/blog-post-generator) 포스트 생성기로 터미널에서 쉽게 글을 만들수 있어요
+-   📦 [CLI🎉](https://github.com/danpa725/blog-post-generator) 포스트 생성기로 터미널에서 쉽게 글을 만들수 있습니다
 
 ## 🔥 성능
 
 -   📌 Light house, `100`점
--   📌 `next-seo` 덕분에 SEO도 완벽합니다 [(next-seo 알아보기 🔎)](https://github.com/garmeeh/next-seo)
--   📌 `bundle size` 신경썼습니다
+-   📌 `next-seo`와 함께 SEO도 완벽합니다 [(next-seo 알아보기 🔎)](https://github.com/garmeeh/next-seo)
+-   📌 `bundle size`, 더욱 작게
     -   빌드 시 `Preact`로 `React`를 대체합니다 (`3kb`) [(Preact가 무엇인가요? 🔎)](https://preactjs.com)
 -   등등...
 
 ## 😲 직관적인 글 조직
 
 -   📌 카테고리로 글의 큰 뿌리를 나눕니다
-    -   더불어 각 카테고리에 대한 설명을 적을 수 있어요
+    -   더불어 각 카테고리에 대한 설명을 적을 수 있습니다
 -   📌 카테고리 페이지는 pagination 됩니다
-    -   태그로 페이지에 있는 글을 빠르게 탐색할 수 있죠
+    -   태그로 페이지에 있는 글을 빠르게 탐색할 수 있습니다
     -   또한 `blog.config.ts`로 보여질 글의 갯수를 조정할 수 있습니다
--   📌 공통된 흐름을 가진 글은 시리즈로 묶어봐요
+-   📌 공통된 흐름을 가진 글은 시리즈로 묶을 수 있습니다
 
 ## 📔 사용자 중심의 읽기 경험 제공
 
 -   📌 UI는 읽기에 직관적이죠
--   📌 `post controller`로 쉽게 글을 탐색할 수 있어요
--   📌 더욱 적은 수직 스크롤로 글을 찾는 수고를 덜 수 있어요
+-   📌 `post controller`로 쉽게 글을 탐색할 수 있습니다
+-   📌 더욱 적은 수직 스크롤로 글을 찾는 수고를 덜 수 있습니다
 -   📌 창 크기에따라 자동으로 말줄임표가 적용되는 매직
 
 ## 🎨 색과 함께 나만의 감성 뽐내기
 
--   📌 각 카테고리와 글은 색을 정할 수 있어요
--   📌 `personal color`로 블로그를 멋지게 꾸며보세요
+-   📌 각 카테고리와 글은 색을 정할 수 있습니다
+-   📌 `personal color`로 블로그를 멋지게 꾸며봅시다
 -   📌 페이지마다 색다르지만, 일관된 `UI`를 선사합니다
 
 ## 🍻 풍부한 기능
@@ -102,21 +102,21 @@
 -   📌 `mdx`의 강력한 기능은 덤입니다
 -   📌 글의 목차는 `desktop`/`mobile` 독자에게 큰 도움이 됩니다! (`mobile` 선택)
 -   📌 `next/image`와 함께 이미지는 자동으로 최적화 됩니다[(next/image 톱아보기 🔎)](https://nextjs.org/docs/api-reference/next/image)
--   📌 또한 `static`/`external` 이미지는 별 설정 없이 사이즈가 조절되죠
+-   📌 또한 `static`/`external` 이미지는 별 설정 없이 사이즈가 조절됩니다
 -   📌 pagination, 기본이죠
--   📌 이전 글로 되돌아가면 스크롤 위치는 그대로입니다
--   📌 `sitemap`과 `rss`, 까먹으면 안되죠
--   📌 `katex`와 함께 화끈한 수식도 보여주세요 (선택)
+-   📌 이전 글로 되돌아가면 스크롤 위치는 그대로!
+-   📌 `sitemap`과 `rss`는 빌드시 생성됩니다
+-   📌 `katex`와 함께 화끈한 수식도 보여줍시다 (선택)
 -   📌 `dev` 모드에서 글을 수정하면 자동으로 새로고침합니다
--   📌 `error`는 최대한 상세하게! 무엇이 잘못되었는지 쉽게 알 수 있어요
--   📌 예쁜 `code` 블럭은 개발자의 낭만아닌가요? 복사 기능도 있죠 💁‍♂️
+-   📌 `error`는 최대한 상세하게! 무엇이 잘못되었는지 쉽게 알 수 있습니다
+-   📌 코드 복사기능을 곁들인 예쁜 `code` 블럭은 개발자의 낭만아니였나요
 -   등등...
 
 <br />
 
 # 어떻게 시작하나요?
 
-1.  `Use this template` 버튼을 **클릭**하여 **`1commit`** 으로 자신만의 블로그 `repo`를 만드세요
+1.  `Use this template` 버튼을 **클릭**하여 **`1commit`** 으로 자신만의 블로그 `repo`를 만듭니다
     -   블로그 `repo` 를 나의 컴퓨터로 가져옵시다
 2.  **패키지 설치**
 
@@ -164,8 +164,8 @@
 7.  **`vercel`** 과 함께 세상으로 **배포**
 
     1.  [계정만들기](https://vercel.com/login)
-    2.  블로그 `repo`를 선택하세요
-    3.  `vercel`배포 과정을 따라가거나, `deploy` 버튼을 통해 쉽게 시작할 수 있어요
+    2.  블로그 `repo`를 선택합니다
+    3.  `vercel`배포 과정을 따라가거나, `deploy` 버튼을 통해 쉽게 시작할 수 있습니다
 
         [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/danpa725/next-your-home)
 
@@ -177,8 +177,8 @@
 -   커스터마이즈는 쉽습니다
     1. 🙌 `react`, 알고있죠?
     2. 🙌 `styled-components`, 알고있죠?
-    3. 🙌 더욱 멋진 디자인으로 수정할 수 있을겁니다
--   프로젝트 폴더는 **구조 설명**에 관한 `README.md`를 포함하고 있어요! 잘 읽어보시고 맘에 안드는 부분은 고쳐봅시다!
+    3. 🙌 더욱 멋진 디자인으로 수정할 수 있습니다
+-   프로젝트 폴더는 **구조 설명**에 관한 `README.md`를 포함하고 있습니다. 마음껏 바꿔봅시다!
 
 <br />
 
@@ -192,12 +192,12 @@
   </summary>
 
 1.  <code>NextJs</code>보다 제한적입니다
-2.  글을 불러오는데 <code>graphql</code>을 사용해야해요
+2.  글을 불러오는데 <code>graphql</code>을 사용해야합니다
 
     -   <code>typescript</code>만 사용합시다
-    -   <code>graphql</code>몰라도 쉽게!(제가 모르죠)
+    -   <code>graphql</code>몰라도 쉽게! (_~~제가 모르는건 비🤫~~_)
 
-3.  몇몇 기능을 도입하기 위해 <code>gatsby</code> 커뮤니티에 의존해야 하기도 하죠
+3.  몇몇 기능을 도입하기 위해 <code>gatsby</code> 커뮤니티에 의존해야 하기도 합니다
 <br />
 </details>
 
@@ -215,21 +215,21 @@
 
 2.  [Webpage Test](https://www.webpagetest.org/): **좋은 평가를 받았어요**
 
-3.  빌드 `bundle size`를 확인 해보세요
+3.  빌드 `bundle size`를 확인 해봅시다
     ```bash
     Page                                         Size     First Load JS
-    ┌ ● /                                        1.48 kB        91.6 kB
-    ├   /_app                                    0 B            75.2 kB
-    ├ ● /[category]                              780 B          90.9 kB
-    ├ ● /[category]/[pageNumber]                 904 B          91   kB
-    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        97.1 kB
-    ├ ○ /404                                     269 B          75.5 kB
-    ├ ○ /500                                     269 B          75.5 kB
-    ├ ● /category                                3.25 kB        78.5 kB
-    └ ● /profile                                 2.62 kB        89.4 kB
-    + First Load JS shared by all                75.1 kB
+    ┌ ● /                                        1.48 kB        90.8 kB
+    ├   /_app                                    0 B            70   kB
+    ├ ● /[category]                              780 B          90.1 kB
+    ├ ● /[category]/[pageNumber]                 904 B          90.2 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        96.5 kB
+    ├ ○ /404                                     269 B          70.2 kB
+    ├ ○ /500                                     269 B          70.2 kB
+    ├ ● /category                                3.25 kB        77.7 kB
+    └ ● /profile                                 2.62 kB        88.6 kB
+    + First Load JS shared by all                70   kB
     ├ chunks/main-be00b42900d433cc.js            36.8 kB
-    ├ chunks/pages/_app-764e610a6d9ea0f7.js      37.7 kB
+    ├ chunks/pages/_app-764e610a6d9ea0f7.js      32.4 kB
     ├ chunks/webpack-3373b0f21806983f.js         827 B
     └ css/a36597fbcc4c45ff.css                   813 B
     ```
