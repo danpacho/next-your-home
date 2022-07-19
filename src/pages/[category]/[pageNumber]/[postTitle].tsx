@@ -80,7 +80,7 @@ const PostContainer = styled.div<IsLight>`
     align-items: flex-start;
     justify-content: space-between;
 
-    width: 69.5%;
+    width: 70%;
 
     background-color: ${({ theme, isLight }) =>
         isLight
@@ -88,21 +88,19 @@ const PostContainer = styled.div<IsLight>`
             : `${theme.containerBackgroundColor}${theme.opacity90}`};
 
     box-shadow: ${(p) =>
-        p.isLight ? p.theme.shadowSm : `0px 0px 2px 0px ${p.theme.gray7}`};
+        p.isLight ? p.theme.shadowSm : `0px 0px 0.1rem 0px ${p.theme.gray7}`};
 
-    border-radius: ${(p) => p.theme.blg};
+    border-radius: ${(p) => p.theme.bsm};
 
     padding: 0.25rem 0.5rem;
 
     margin-bottom: 1.5rem;
 
-    ${media.wideTablet} {
-        padding-right: 1.5rem;
-    }
-
     ${media.mediumTablet} {
-        width: 83.5%;
-        padding-right: 0;
+        width: 85%;
+
+        padding: 0;
+
         justify-content: center;
     }
 
@@ -111,7 +109,6 @@ const PostContainer = styled.div<IsLight>`
 
         background-color: transparent;
 
-        padding: 0;
         box-shadow: none;
     }
 `
@@ -122,26 +119,27 @@ const PostContentContainer = styled.div`
     align-items: flex-start;
     flex-direction: column;
 
-    min-width: 60%;
-    max-width: 67.5%;
-
+    width: 65%;
+    min-width: 65%;
     min-height: max-content;
-    height: fit-content;
+
     margin: 2.5rem 2rem;
 
     ${media.wideTablet} {
-        max-width: 57.5%;
+        max-width: 55%;
     }
 
     ${media.mediumTablet} {
+        width: 85%;
         min-width: unset;
         max-width: unset;
-        width: 85%;
     }
 
     ${media.widePhone} {
-        flex: none;
         width: 100%;
+
+        flex: none;
+
         margin-top: 1.5rem;
         margin-bottom: 3.5rem;
     }
