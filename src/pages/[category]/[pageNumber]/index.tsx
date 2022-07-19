@@ -16,15 +16,12 @@ import {
 import { getSpecificCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
-import {
-    CategoryCommonLayout,
-    CategoryPaginationButton,
-} from "@components/Blog/Category"
+import { Button } from "@components/UI/Atoms/Button"
+import { CategoryCommonLayout } from "@components/Blog/Category"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
-import { SizedText } from "@components/UI/Atoms/SizedText"
 
 interface ParamQuery extends ParsedUrlQuery {
     category: string
@@ -101,20 +98,13 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                             : `${categoryUrl}/${pageNumber - 1}`
                     }
                 >
-                    <CategoryPaginationButton
-                        type="button"
-                        aria-label={`to the previous page: ${pageNumber - 1}`}
-                        isLight={isLight}
-                        isLeft
+                    <Button
+                        ariaLabel={`to the previous page: ${pageNumber - 1}`}
                     >
-                        <PrevIcon width="1.15rem" height="1.15rem" />
-                        {isFirst && (
-                            <SizedText defaultLineNumber={1} lineHeight={1}>
-                                {category}
-                            </SizedText>
-                        )}
+                        <PrevIcon />
+                        {isFirst && <>{category}</>}
                         {!isFirst && `Page ${pageNumber - 1}`}
-                    </CategoryPaginationButton>
+                    </Button>
                 </Link>
             }
             nextPageComponent={
@@ -126,16 +116,12 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
                     }
                     passHref
                 >
-                    <CategoryPaginationButton
-                        type="button"
-                        aria-label={`to the next page: ${pageNumber + 1}`}
-                        isLight={isLight}
-                    >
+                    <Button ariaLabel={`to the next page: ${pageNumber + 1}`}>
                         {isLast && isFirst && `Oops It's Empty💨`}
                         {isLast && !isFirst && "Thank you! Last page 🎉"}
                         {!isLast && `Page ${pageNumber + 1}`}
-                        <NextIcon width="1.15rem" height="1.15rem" />
-                    </CategoryPaginationButton>
+                        <NextIcon />
+                    </Button>
                 </Link>
             }
         />

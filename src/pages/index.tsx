@@ -149,18 +149,13 @@ const CategoryLinkContainer = styled.div`
 
 const ContainerTitle = styled.div<IsLight>`
     font-size: ${(p) => p.theme.sm};
-    font-weight: 400;
     color: ${({ theme }) => theme.themePrimaryColor};
-
-    padding: 0.15rem 0.3rem;
 
     user-select: none;
 
     ${media.widePhone} {
         font-size: ${(p) => p.theme.sm};
         font-weight: 500;
-
-        padding: 0;
     }
 `
 
@@ -200,7 +195,10 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
                             {...latestPost}
                             order={order}
                             isFirst={order === 0}
-                            isLast={order === latestPostArray.length - 1}
+                            isLast={
+                                order === latestPostArray.length - 1 &&
+                                order !== 0
+                            }
                             key={latestPost.title}
                         />
                     ))}

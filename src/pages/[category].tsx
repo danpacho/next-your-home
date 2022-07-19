@@ -18,11 +18,9 @@ import {
     getCategoryPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import {
-    CategoryCommonLayout,
-    CategoryPaginationButton,
-} from "@components/Blog/Category"
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
+import { Button } from "@components/UI/Atoms/Button"
+import { CategoryCommonLayout } from "@components/Blog/Category"
 
 import { useAtoms, _slector } from "@lib/jotai"
 
@@ -81,27 +79,20 @@ function Category(categoryProps: CategoryProps) {
             {...categoryProps}
             prevPageComponent={
                 <Link href={"/"} passHref>
-                    <CategoryPaginationButton
-                        type="button"
-                        aria-label="back to home"
-                        isLight={isLight}
-                        isLeft
-                    >
+                    <Button ariaLabel="back to home">
                         <PrevIcon width="1.15rem" height="1.15rem" />
                         <p>🏠 Back</p>
-                    </CategoryPaginationButton>
+                    </Button>
                 </Link>
             }
             nextPageComponent={
                 <Link href={`${categoryProps.categoryUrl}/1`} passHref>
-                    <CategoryPaginationButton
-                        type="button"
-                        aria-label={`read all post about ${categoryProps.category}`}
-                        isLight={isLight}
+                    <Button
+                        ariaLabel={`read all post about ${categoryProps.category}`}
                     >
                         <p>All post</p>
                         <NextIcon width="1.15rem" height="1.15rem" />
-                    </CategoryPaginationButton>
+                    </Button>
                 </Link>
             }
         />
