@@ -1,5 +1,3 @@
-export { default as LightIcon } from "./Light"
-export { default as StarIcon } from "./Dark"
 export { default as ArrowUpIcon } from "./ArrowUp"
 export { default as DeleteIcon } from "./Delete"
 export { default as EditIcon } from "./Edit"
