@@ -1,6 +1,8 @@
-import { useAtoms, _slector } from "@lib/jotai"
-import { IsLight } from "@typing/theme"
 import styled from "styled-components"
+
+import { IsLight } from "@typing/theme"
+
+import useThemeMode from "@hooks/useThemeMode"
 
 const DividerStyled = styled.hr<IsLight>`
     width: 100%;
@@ -14,8 +16,7 @@ const DividerStyled = styled.hr<IsLight>`
 `
 
 function Divider() {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return <DividerStyled isLight={isLight} />
 }
 

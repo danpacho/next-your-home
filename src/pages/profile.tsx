@@ -9,7 +9,7 @@ import { IsLight } from "@typing/theme"
 
 import { getProfileSource } from "@utils/function/blog-contents-loader/profile/getProfile"
 
-import useSetFocusingPageColor from "@hooks/useSetFocusingPageColor"
+import { useSetFocusingPageColor, useThemeMode } from "@hooks/index"
 
 import {
     FacebookIcon,
@@ -21,8 +21,6 @@ import {
     YoutubeIcon,
 } from "@components/UI/Atoms/Icons"
 import MDXBundler from "@components/MDXBundler"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 import { AuthorInfoType, config } from "blog.config"
 
@@ -132,8 +130,7 @@ const ProfileContactLink = styled.a`
     all: unset;
 `
 const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <ProfileContactContainer>
             {Object.entries(contacts).map((contact) => {

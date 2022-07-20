@@ -4,8 +4,9 @@ import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
 
+import { useThemeMode } from "@hooks/index"
+
 import { DeleteIcon, FlagFillIcon } from "@components/UI/Atoms/Icons"
-import { useAtoms, _slector } from "@lib/jotai"
 
 const borderStyle = {
     topLeftBottomRight: css`
@@ -170,8 +171,7 @@ const CategoryTag = ({
 }: CategoryTagProps) => {
     const resetFilteredTagArray = () => setFilteredTagArray([])
 
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <TagContainer>
             {categoryTagArray?.map((categoryTag, order) => {

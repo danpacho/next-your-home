@@ -3,7 +3,8 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-import { useAtoms, _slector } from "@lib/jotai"
+
+import useThemeMode from "@hooks/useThemeMode"
 
 const TableStyled = styled.table<IsLight>`
     thead {
@@ -27,8 +28,7 @@ const TableStyled = styled.table<IsLight>`
 `
 
 const Table = (props: any) => {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return <TableStyled {...props} isLight={isLight} />
 }
 

@@ -2,7 +2,8 @@ import styled, { css } from "styled-components"
 import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
-import { useAtoms, _slector } from "@lib/jotai"
+
+import { useThemeMode } from "@hooks/index"
 
 const SHADOW_PROPERTY = {
     default: {
@@ -75,8 +76,7 @@ interface OrderTextProp {
 
 const ORDER_TEXT = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 function PostOrderText({ order, color, isHover }: OrderTextProp) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <OrderTextStyled
             isLight={isLight}

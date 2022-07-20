@@ -9,7 +9,11 @@ import { PageType } from "@typing/page/type"
 import { SeriesInfoType } from "@typing/post/series"
 import { SpecificPostContentType } from "@typing/post/content"
 
-import { useSetFocusingPageColor, useWindowWidth } from "@hooks/index"
+import {
+    useSetFocusingPageColor,
+    useWindowWidth,
+    useThemeMode,
+} from "@hooks/index"
 
 import {
     getSpecificCategoryPostContent,
@@ -158,7 +162,7 @@ function Post({
 }: PostProps) {
     useSetFocusingPageColor(postMeta.color)
 
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+    const { isLight } = useThemeMode()
     const { mediaWidth } = useWindowWidth()
     const tocMobileRender =
         mediaWidth === "widePhone" ||

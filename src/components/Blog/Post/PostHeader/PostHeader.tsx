@@ -11,7 +11,7 @@ import { FlagFillIcon, QuoteIcon } from "@components/UI/Atoms/Icons"
 import PostSeries from "../PostSeries/PostSeries"
 import PostTag from "../PostTag/PostTag"
 
-import { useAtoms, _slector } from "@lib/jotai"
+import { useThemeMode } from "@hooks/index"
 
 const HeaderContainer = styled.div<IsLight>`
     width: 100%;
@@ -130,8 +130,7 @@ function PostHeader({
     category,
     postSeriesInfo,
 }: PostHeaderProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <HeaderContainer isLight={isLight}>
             <Title>

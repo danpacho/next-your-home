@@ -18,11 +18,11 @@ import {
     getCategoryPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
+import { useThemeMode } from "@hooks/index"
+
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 import { Button } from "@components/UI/Atoms/Button"
 import { CategoryCommonLayout } from "@components/Blog/Category"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
 
@@ -72,8 +72,7 @@ interface CategoryProps extends CategoryInfoType {
 }
 
 function Category(categoryProps: CategoryProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <CategoryCommonLayout
             {...categoryProps}

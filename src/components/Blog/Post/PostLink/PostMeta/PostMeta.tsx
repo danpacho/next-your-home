@@ -6,12 +6,10 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
-import { useWindowWidth } from "@hooks/index"
+import { useWindowWidth, useThemeMode } from "@hooks/index"
 
 import { LayersAltIcon } from "@components/UI/Atoms/Icons"
 import { SizedText } from "@components/UI/Atoms/SizedText"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 const PostMetaTagContainer = styled.ul`
     display: flex;
@@ -113,7 +111,7 @@ function PostMeta({
     tags,
     isCategoryPage,
 }: PostMetaProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+    const { isLight } = useThemeMode()
     const { mediaWidth } = useWindowWidth()
 
     const isContentSizeSmall =

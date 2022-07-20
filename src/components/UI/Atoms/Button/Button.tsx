@@ -3,7 +3,8 @@ import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
-import { useAtoms, _slector } from "@lib/jotai"
+
+import useThemeMode from "@hooks/useThemeMode"
 
 const ButtonStyled = styled.button<IsLight>`
     transition: all ease-out 0.1s;
@@ -54,8 +55,7 @@ function Button({
     ariaLabel,
     type = "button",
 }: ButtonProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <ButtonStyled
             onClick={onClick}

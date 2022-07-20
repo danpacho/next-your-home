@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { IsLight } from "@typing/theme"
 
-import { useAtoms, _slector } from "@lib/jotai"
+import useThemeMode from "@hooks/useThemeMode"
 
 const LinkStyled = styled.a<IsLight>`
     transition: color 0.1s ease-in;
@@ -24,8 +24,7 @@ interface LinkProps {
 }
 
 function Link({ children: linkText, href, target }: LinkProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <LinkStyled href={href} target={target} isLight={isLight}>
             {linkText}

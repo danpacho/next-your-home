@@ -4,7 +4,8 @@ import media from "@styles/utils/media"
 import { IsLight } from "@typing/theme"
 import type { TableOfContents } from "@lib/unified/remark"
 
-import { useAtoms, _atom, _slector } from "@lib/jotai"
+import { useThemeMode } from "@hooks/index"
+import { useAtoms, _atom } from "@lib/jotai"
 
 import { LinkContainer } from "./common"
 import { memo } from "react"
@@ -130,7 +131,7 @@ const HeaderOrder = styled.div<{ color: string }>`
 `
 
 function TableOfContentMobile({ toc }: { toc: TableOfContents[] }) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
+    const { isLight } = useThemeMode()
     const { focusingPageColorState: color } = useAtoms(
         _atom("focusingPageColor")
     )

@@ -8,12 +8,10 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
 
-import { useScrollDirection } from "@hooks/index"
+import { useScrollDirection, useThemeMode } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 0.6s;
@@ -168,8 +166,7 @@ function PostController({
     nextPost,
     categoryURL,
 }: PostControllerProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     const { isScrollDown } = useScrollDirection({
         throttleTime: 200,
         responsivenessPixel: 2.5,

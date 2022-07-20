@@ -9,7 +9,7 @@ import { ColorProps, IsLight } from "@typing/theme"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { usePointerInteraction } from "@hooks/index"
+import { usePointerInteraction, useThemeMode } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
@@ -106,8 +106,7 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState(false)
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
 
     return (

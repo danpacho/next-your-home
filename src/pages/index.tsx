@@ -13,10 +13,10 @@ import { IsLight } from "@typing/theme"
 import { getLatestCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
+import { useThemeMode } from "@hooks/index"
+
 import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
 
@@ -165,8 +165,7 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <MainPageLayoutContainer>
             <NextSeo

@@ -9,7 +9,7 @@ import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useSetFocusingPageColor } from "@hooks/index"
+import { useSetFocusingPageColor, useThemeMode } from "@hooks/index"
 import useFilteredPost from "./useFilteredPost"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
@@ -195,8 +195,7 @@ function CategoryCommonLayout({
         () => shadeColor(categoryColor, 35),
         [categoryColor]
     )
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     const postNumber = categoryPostArray?.length
 
     const filteredPostNumber = filteredCategoryPostArray?.length

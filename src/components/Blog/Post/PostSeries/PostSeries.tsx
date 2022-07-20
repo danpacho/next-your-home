@@ -10,12 +10,10 @@ import Link from "next/link"
 import { ColorProps, IsLight } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useColorSet, usePointerInteraction } from "@hooks/index"
+import { useColorSet, usePointerInteraction, useThemeMode } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 const PostSeriesContainer = styled.div<ColorProps>`
     transition: border-color 0.1s ease-out;
@@ -251,8 +249,7 @@ function PostSeries({
     seriesTitle,
     seriesInfo,
 }: PostSeriesProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     const [isHover, setIsHover] = useState(false)
 
     const currentOrder = seriesInfo.findIndex(

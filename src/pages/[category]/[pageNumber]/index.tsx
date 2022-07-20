@@ -15,11 +15,11 @@ import {
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 import { getSpecificCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 
+import { useThemeMode } from "@hooks/index"
+
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 import { Button } from "@components/UI/Atoms/Button"
 import { CategoryCommonLayout } from "@components/Blog/Category"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
 
@@ -83,8 +83,7 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
     const { isLast, categoryUrl, category } = props
     const isFirst = pageNumber === 1
 
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <CategoryCommonLayout
             {...props}

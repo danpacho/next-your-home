@@ -3,8 +3,9 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
+import { useThemeMode } from "@hooks/index"
+
 import { CodeContentBox } from "./CodeCopyButton"
-import { useAtoms, _slector } from "@lib/jotai"
 
 const InlineCode = styled.code<IsLight>`
     padding: 0 0.2rem;
@@ -54,8 +55,7 @@ interface CodeProps {
     className?: string
 }
 function Code(props: CodeProps) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     if (!props.className) return <InlineCode isLight={isLight} {...props} />
 
     const language = props.className.split(" ")[0].replace("language-", "")

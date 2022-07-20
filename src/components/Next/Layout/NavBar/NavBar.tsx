@@ -5,10 +5,10 @@ import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
 
+import useThemeMode from "@hooks/useThemeMode"
+
 import { Button } from "@components/UI/Atoms/Button"
 import { ThemeButton } from "@components/UX/ThemeButton"
-
-import { useAtoms, _slector } from "@lib/jotai"
 
 import { config } from "blog.config"
 
@@ -85,8 +85,7 @@ const RowDivider = styled.div`
 `
 
 function NavBar() {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     return (
         <NavContainer>
             <Link href="/" passHref>

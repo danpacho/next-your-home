@@ -8,6 +8,8 @@ import Link from "next/link"
 import { ColorProps } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
+import { useThemeMode } from "@hooks/index"
+
 import { ArrowUpIcon, EditIcon, LeafIcon } from "@components/UI/Atoms/Icons"
 import PostTag from "../PostTag/PostTag"
 
@@ -65,8 +67,7 @@ function PostFooter({
     update,
     reference: referenceArray,
 }: Pick<PostMetaType, "color" | "author" | "update" | "reference">) {
-    const { isLightState: isLight } = useAtoms(_slector("isLight"))
-
+    const { isLight } = useThemeMode()
     const replaceUpateDate = `${update
         .replace("/", "년 ")
         .replace("/", "월 ")}일`
