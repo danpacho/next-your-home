@@ -1,44 +1,49 @@
 {
     "name": "next-your-home",
-    "version": "0.1.0",
+    "version": "1.0.0",
     "author": {
         "name": "danpacho",
-        "url": "https://github.com/danpa725"
+        "url": "https://github.com/danpacho"
     },
-    "description": "cutomizable blog templates with Next.js and MDX.",
+    "description": "cutomizable blog, powered by NextJs",
+    "keywords": [
+        "NextJs",
+        "mdx",
+        "blog"
+    ],
+    "license": "MIT",
     "scripts": {
         "dev": "next-remote-watch ./blog/",
-        "seo": "ts-node -r tsconfig-paths/register --project tsconfig.node.json  ./scripts/seo.ts",
+        "seo": "ts-node -r tsconfig-paths/register --project tsconfig.node.json ./scripts/seo.ts",
         "next-build": "next build",
         "build": "pnpm next-build && pnpm seo",
         "start": "next start",
         "lint": "next lint",
         "post": "npx -y @danpacho/post-generator",
-        "test": "lt --port 3000",
-        "analyze": "ANALYZE=true pnpm build"
+        "analyze": "ANALYZE=true pnpm next-build"
     },
     "dependencies": {
-        "esbuild": "^0.14.39",
-        "fast-memoize": "^2.5.2",
-        "gray-matter": "^4.0.3",
-        "image-size": "^1.0.1",
-        "jotai": "^1.7.0",
-        "mdx-bundler": "^9.0.1",
         "next": "12.1.6",
-        "next-compose-plugins": "^2.2.1",
         "next-seo": "^5.4.0",
-        "preact": "^10.7.2",
+        "next-compose-plugins": "^2.2.1",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
+        "preact": "^10.7.2",
+        "mdx-bundler": "^9.0.1",
+        "esbuild": "^0.14.39",
+        "jotai": "^1.7.0",
         "rehype-katex": "^6.0.2",
         "rehype-prism-plus": "^1.4.1",
         "remark": "^14.0.2",
         "remark-gfm": "^3.0.1",
         "remark-math": "^5.1.1",
-        "sharp": "^0.30.5",
         "styled-components": "^5.3.3",
         "styled-reset": "^4.4.1",
-        "unist-util-visit": "^4.1.0"
+        "gray-matter": "^4.0.3",
+        "sharp": "^0.30.5",
+        "image-size": "^1.0.1",
+        "unist-util-visit": "^4.1.0",
+        "fast-memoize": "^2.5.2"
     },
     "devDependencies": {
         "@next/bundle-analyzer": "^12.1.6",
@@ -49,12 +54,12 @@
         "@types/react-dom": "^17.0.3",
         "@types/styled-components": "^5.1.25",
         "@types/unist": "^2.0.6",
-        "eslint": "^8.16.0",
-        "eslint-config-next": "12.1.6",
         "next-remote-watch": "^1.0.0",
-        "ts-node": "^10.8.0",
+        "typescript": "4.7.2",
         "tsconfig-paths": "^4.0.0",
+        "ts-node": "^10.8.0",
         "tslib": "^2.4.0",
-        "typescript": "4.7.2"
+        "eslint": "^8.16.0",
+        "eslint-config-next": "12.1.6"
     }
 }
