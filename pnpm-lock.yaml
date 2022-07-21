@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@builder.io/partytown': ^0.6.2
   '@next/bundle-analyzer': ^12.1.6
   '@types/mdx': ^2.0.2
   '@types/mdx-js__react': ^1.5.5
@@ -39,6 +40,7 @@ specifiers:
   unist-util-visit: ^4.1.0
 
 dependencies:
+  '@builder.io/partytown': 0.6.2
   esbuild: 0.14.48
   fast-memoize: 2.5.2
   gray-matter: 4.0.3
@@ -206,6 +208,11 @@ packages:
     dependencies:
       '@babel/helper-validator-identifier': 7.18.6
       to-fast-properties: 2.0.0
+    dev: false
+
+  /@builder.io/partytown/0.6.2:
+    resolution: {integrity: sha512-2wSTB7v3176Mzfu+gTGm+I7MAALeOpvATQ5qf+NUMLfeuvVEX/eWxcJPrrIy7UcoQyT3Mm6Tsb2sfBqJy4R4EQ==}
+    hasBin: true
     dev: false
 
   /@cspotcode/source-map-support/0.8.1:
