@@ -106,6 +106,7 @@
 -   📌 Automatic image size support for `static`/`external`
 -   📌 Automatic pagination
 -   📌 Recover scroll position when navigating to previous page
+-   📌 Analyze visitors with `Google Analytics`! Run it on the `partytown🎉` thread and get the performance
 -   📌 Support `sitemap`, `rss` generation on build
 -   📌 Math `katex` support (optional)
 -   📌 Automatic post refreshing in `dev` mode
@@ -219,18 +220,18 @@
 3.  Check build `bundle size` result below
     ```bash
     Page                                         Size     First Load JS
-    ┌ ● /                                        1.48 kB        90.7 kB
-    ├   /_app                                    0 B            70   kB
-    ├ ● /[category]                              780 B          90   kB
-    ├ ● /[category]/[pageNumber]                 904 B          90.1 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]     1.69 kB        96.4 kB
-    ├ ○ /404                                     269 B          70.2 kB
-    ├ ○ /500                                     269 B          70.2 kB
-    ├ ● /category                                3.25 kB        77.7 kB
-    └ ● /profile                                 2.62 kB        88.6 kB
-    + First Load JS shared by all                70   kB
+    ┌ ● /                                        1.48 kB        91.1 kB
+    ├   /_app                                    0 B            70.3 kB
+    ├ ● /[category]                              748 B          90.4 kB
+    ├ ● /[category]/[pageNumber]                 832 B          90.5 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]     1.64 kB        96.8 kB
+    ├ ○ /404                                     269 B          70.6 kB
+    ├ ○ /500                                     269 B          70.6 kB
+    ├ ● /category                                3.23 kB        78.1 kB
+    └ ● /profile                                 2.6  kB        88.9 kB
+    + First Load JS shared by all                70.3 kB
     ├ chunks/main-be00b42900d433cc.js            36.8 kB
-    ├ chunks/pages/_app-764e610a6d9ea0f7.js      32.4 kB
+    ├ chunks/pages/_app-764e610a6d9ea0f7.js      32.8 kB
     ├ chunks/webpack-3373b0f21806983f.js         827 B
     └ css/a36597fbcc4c45ff.css                   813 B
     ```
