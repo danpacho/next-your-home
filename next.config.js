@@ -22,6 +22,9 @@ const nextConfig = {
             exclude: ["error"],
         },
     },
+    experimental: {
+        nextScriptWorkers: true,
+    },
     webpack: (config, { dev, isServer }) => {
         // Replace React with Preact in production build
         if (!dev && !isServer) {
