@@ -2,6 +2,8 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 import { iconStyle } from "@styles/utils/icon.style"
 
+import React from "react"
+
 import { IsLight } from "@typing/theme"
 
 import useThemeMode from "@hooks/useThemeMode"
@@ -49,23 +51,21 @@ interface ButtonProps {
     type?: "button" | "submit" | "reset" | undefined
     ariaLabel: string
 }
-function Button({
-    onClick,
-    children,
-    ariaLabel,
-    type = "button",
-}: ButtonProps) {
-    const { isLight } = useThemeMode()
-    return (
-        <ButtonStyled
-            onClick={onClick}
-            isLight={isLight}
-            aria-label={ariaLabel}
-            type={type}
-        >
-            {children}
-        </ButtonStyled>
-    )
-}
+const Button = React.forwardRef<React.RefObject<HTMLElement>, ButtonProps>(
+    ({ onClick, children, ariaLabel, type = "button" }, ref) => {
+        const { isLight } = useThemeMode()
+        return (
+            <ButtonStyled
+                onClick={onClick}
+                isLight={isLight}
+                aria-label={ariaLabel}
+                type={type}
+            >
+                {children}
+            </ButtonStyled>
+        )
+    }
+)
 
+Button.displayName = "button"
 export default Button
