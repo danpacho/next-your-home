@@ -19,12 +19,6 @@
         "importHelpers": true,
         "typeRoots": ["./types", "./node_modules/@types"]
     },
-    "include": [
-        "next-env.d.ts",
-        "**/*.ts",
-        "**/*.tsx",
-        "mdx.d.ts",
-        "blog.config.ts"
-    ],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "blog.config.ts"],
     "exclude": ["dist", ".next", "next.config.js", "node_modules"]
 }

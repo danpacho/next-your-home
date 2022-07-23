@@ -14,6 +14,9 @@ import { PageType } from "@typing/page/type"
 import { DefaultSEO } from "@components/Next/SEO"
 import { Layout } from "@components/Next/Layout"
 
+import { GoogleAnalytics } from "@lib/GoogleAnalytics"
+import { config } from "blog.config"
+
 const useRestorePageScroll = () => {
     const router = useRouter()
 
@@ -62,6 +65,9 @@ function App({ Component, pageProps }: AppProps) {
                     content="width=device-width, initial-scale=1"
                 />
             </Head>
+
+            {config.googleAnalytics.actiavte && <GoogleAnalytics />}
+
             <DefaultSEO />
 
             <GlobalStyle />

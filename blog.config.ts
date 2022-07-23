@@ -50,6 +50,10 @@ interface BlogInfoType {
     subtitle: string
     copyright: string
     language: string
+    googleAnalytics: {
+        ID: string
+        actiavte: true | false
+    }
 }
 const blogInfo: BlogInfoType = {
     url: "your DEPLOY URL",
@@ -59,6 +63,10 @@ const blogInfo: BlogInfoType = {
         authorInfo.name
     }© All rights reserved ${new Date().getFullYear()}.`,
     language: "ko",
+    googleAnalytics: {
+        actiavte: false,
+        ID: "",
+    },
 }
 
 const blogContentsDirectoryName = "blog" as const
@@ -74,12 +82,12 @@ interface ConfigType extends BlogInfoType {
     numberOfLatestPost: number
 }
 const config: ConfigType = {
-    useTXT: false,                  // description file format to .txt, not .json
-    useKatex: false,                // katex option
-    useMemo: true,                  // improves dev speed, but require manual refresh except posts
-    useMobileTOC: true,             // table of content on mobile
-    blogContentsDirectoryName,      // blog contents directory name
-    userPallete,                    // personal pallete
+    useTXT: false, // description file format to .txt, not .json
+    useKatex: false, // katex option
+    useMemo: true, // improves dev speed, but require manual refresh except posts
+    useMobileTOC: true, // table of content on mobile
+    blogContentsDirectoryName, // blog contents directory name
+    userPallete, // personal pallete
     postPerCategoryPage: 4,
     numberOfLatestPost: 5,
     author: {
