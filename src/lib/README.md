@@ -1,6 +1,12 @@
 # Lib 📦
 
-1. **`jotai`**
+1. **`GoogleAnalytics`**
+
+    - Activate Google analytics
+    - Run on `partytown🎉` thread, not `main` thread
+        - get performance
+
+2. **`jotai`**
 
     - Manage global state through `jotai`
     - **Small bundle size**
@@ -25,7 +31,7 @@
 
 ---
 
-2. **`unified`**
+3. **`unified`**
 
     - Markdown preprocessing utility function using `unified` package
     - Running on build time means serverside excute, not clientside
