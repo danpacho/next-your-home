@@ -28,16 +28,20 @@ const NavContainer = styled.nav`
     }
 
     ${media.widePhone} {
-        position: static;
-        height: 2.25rem;
+        position: sticky;
+        top: 0.75rem;
         margin-top: 1.5rem;
+
+        height: fit-content;
+        padding: 0.1rem 0;
 
         background-color: ${(p) =>
             `${p.theme.containerBackgroundColor}${p.theme.themeHexOpacity}`};
         backdrop-filter: blur(5px);
 
         border: 0.1rem solid ${({ theme }) => theme.themePrimaryColor};
-        border-radius: ${(p) => p.theme.bsm};
+        border-radius: ${({ theme }) =>
+            `${theme.bxsm} ${theme.bmd} ${theme.bxsm} ${theme.bmd}`};
 
         box-shadow: ${(p) => p.theme.shadowXxsm};
 
