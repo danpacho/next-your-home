@@ -93,14 +93,7 @@ const PROFILE_BUTTON = (
     width: string,
     height: string
 ): {
-    [key in
-        | "twitter"
-        | "github"
-        | "email"
-        | "linkedin"
-        | "instagram"
-        | "facebook"
-        | "youtube"]: React.ReactNode
+    [key in keyof typeof config.author.contacts]: React.ReactNode
 } => ({
     email: <SendIcon width={width} height={height} />,
     facebook: <FacebookIcon width={width} height={height} />,
@@ -118,9 +111,11 @@ const ProfileContactContainer = styled.div`
     justify-content: center;
     flex-wrap: wrap;
 
-    margin-top: 1rem;
-    width: 75%;
     gap: 0.5rem;
+
+    width: 75%;
+
+    margin-top: 1rem;
 
     ${media.widePhone} {
         width: 70%;
@@ -163,8 +158,10 @@ const ProfileContainer = styled.div`
     justify-content: space-between;
 
     gap: 1rem;
+
     width: 70%;
-    min-height: 35rem;
+    height: 100%;
+    min-height: 80vh;
 
     margin-bottom: 3rem;
 
@@ -185,12 +182,23 @@ const ProfileContainer = styled.div`
 
 const ProfileContentContainer = styled.div`
     width: 100%;
+    height: 100%;
+    min-height: inherit;
 
     flex: 5;
 
     ${media.widePhone} {
         flex: unset;
     }
+`
+
+const ColumnFlex = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    height: 100%;
+    min-height: inherit;
 `
 
 const ProfileInfoContainer = styled.div`
@@ -274,16 +282,19 @@ const ProfileTextContainer = styled.div`
     }
 `
 
-const CopyrightContainer = styled.div`
+const FooterContainer = styled.footer`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    gap: 1rem;
+
+    gap: 0.5rem;
 
     width: 100%;
 
-    margin: 2rem 0 0.5rem 0;
+    padding-top: 1rem;
+    border-top: 1px solid ${(p) => p.theme.containerBorderColor};
+    margin-top: 2rem;
 
     color: ${(p) => p.theme.descriptionFontColor};
     font-size: ${(p) => p.theme.sm};
@@ -328,17 +339,23 @@ function Profile({ profileSource }: ProfileProps) {
                     <ProfileContact contacts={config.author.contacts} />
                 </ProfileTextContainer>
             </ProfileInfoContainer>
+
             <ProfileContentContainer>
-                <MDXBundler mdxSource={profileSource} />
-                <CopyrightContainer>
-                    <p>{config.copyright}</p>
-                    <p>
-                        This Blog is powered by{" "}
-                        <Copyright href="https://github.com/danpa725/next-your-home">
-                            next your home 🏠
-                        </Copyright>
-                    </p>
-                </CopyrightContainer>
+                <ColumnFlex>
+                    <div>
+                        <MDXBundler mdxSource={profileSource} />
+                    </div>
+
+                    <FooterContainer>
+                        <p>{config.copyright}</p>
+                        <p>
+                            This Blog is powered by{" "}
+                            <Copyright href="https://github.com/danpa725/next-your-home">
+                                next your home 🏠
+                            </Copyright>
+                        </p>
+                    </FooterContainer>
+                </ColumnFlex>
             </ProfileContentContainer>
         </ProfileContainer>
     )
