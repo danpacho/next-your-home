@@ -1,13 +1,16 @@
-import { config } from "blog.config"
 import Script from "next/script"
 
-const GoogleAnalytics = () => (
+const GoogleAnalytics = ({
+    googleAnalyticsID,
+}: {
+    googleAnalyticsID: string
+}) => (
     <>
         {process.env.NODE_ENV === "production" && (
             <>
                 <Script
                     strategy="worker"
-                    src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalytics.ID}`}
+                    src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
                 />
                 <script
                     data-partytown-config
@@ -29,7 +32,7 @@ const GoogleAnalytics = () => (
                             gtag('js', new Date());
                             gtag(
                                 'config', 
-                                '${config.googleAnalytics.ID}',
+                                '${googleAnalyticsID}',
                                 {
                                     page_path: window.location.pathname,
                                 }

@@ -66,7 +66,9 @@ function App({ Component, pageProps }: AppProps) {
                 />
             </Head>
 
-            {config.googleAnalytics.actiavte && <GoogleAnalytics />}
+            {config.googleAnalyticsID && (
+                <GoogleAnalytics googleAnalyticsID={config.googleAnalyticsID} />
+            )}
 
             <DefaultSEO />
 
