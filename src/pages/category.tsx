@@ -25,8 +25,6 @@ import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
-import { useAtoms, _slector } from "@lib/jotai"
-
 import { config } from "blog.config"
 
 export const getStaticProps: GetStaticProps<CategoryProps> = async () => {
@@ -115,7 +113,7 @@ function Category({ allCategory }: CategoryProps) {
 
     return (
         <CategoryPageLayoutContainer>
-            <CategoryPageTitle>All Category 🔎</CategoryPageTitle>
+            <CategoryPageTitle>All Category</CategoryPageTitle>
             <CategoryContainer>
                 {allCategory.map((categoryInfo) => (
                     <CategoryLink
@@ -127,7 +125,7 @@ function Category({ allCategory }: CategoryProps) {
         </CategoryPageLayoutContainer>
     )
 }
-Category.displayName = "Category" as PageType
+Category.displayName = "Home" as PageType
 
 export default Category
 
@@ -153,7 +151,6 @@ const CategoryLinkContaier = styled.div<ColorProps>`
         `${theme.containerBackgroundColor}${theme.opacity60}`};
     &:hover {
         background-color: ${({ theme }) => theme.containerBackgroundColor};
-        box-shadow: ${(p) => p.theme.shadowSm};
     }
 
     ${media.widePhone} {
