@@ -16,7 +16,7 @@ const InlineCode = styled.code<IsLight>`
     color: ${({ theme, isLight }) => (isLight ? theme.red6 : theme.teal5)};
     letter-spacing: 0;
     word-spacing: -2px;
-    word-break: auto;
+    word-break: break-word;
 
     border-radius: ${(p) => p.theme.bxsm};
 
