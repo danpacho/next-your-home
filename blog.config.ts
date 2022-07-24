@@ -32,12 +32,12 @@ const authorInfo: AuthorInfoType = {
     currentGoal: "your current goal",
     contacts: {
         email: getAuthorContactHref("email", "your@email"),
-        github: getAuthorContactHref("github", "your@github"),
-        youtube: getAuthorContactHref("youtube", "your@youtube"),
-        facebook: getAuthorContactHref("facebook", "your@facebook"),
-        instagram: getAuthorContactHref("instagram", "your@instagram"),
-        linkedin: getAuthorContactHref("linkedin", "your@linkedin"),
-        twitter: getAuthorContactHref("twitter", "your@twitter"),
+        github: getAuthorContactHref("github", "githubID"),
+        youtube: getAuthorContactHref("youtube", "youtubeID"),
+        facebook: getAuthorContactHref("facebook", "facebookID"),
+        instagram: getAuthorContactHref("instagram", "instagramID"),
+        linkedin: getAuthorContactHref("linkedin", "linkedinID"),
+        twitter: getAuthorContactHref("twitter", "twitterID"),
     },
     logoImageUrl: "/logo.webp",
     bannerImageUrl: "/banner.png",
@@ -50,10 +50,7 @@ interface BlogInfoType {
     subtitle: string
     copyright: string
     language: string
-    googleAnalytics: {
-        ID: string
-        actiavte: true | false
-    }
+    googleAnalyticsID?: string
 }
 const blogInfo: BlogInfoType = {
     url: "your DEPLOY URL",
@@ -63,31 +60,27 @@ const blogInfo: BlogInfoType = {
         authorInfo.name
     }© All rights reserved ${new Date().getFullYear()}.`,
     language: "ko",
-    googleAnalytics: {
-        actiavte: false,
-        ID: "",
-    },
 }
 
 const blogContentsDirectoryName = "blog" as const
 interface ConfigType extends BlogInfoType {
-    blogContentsDirectoryName: `${typeof blogContentsDirectoryName}`
-    useTXT: boolean
-    useKatex: boolean
-    useMemo: boolean
-    userPallete: UserPalleteType
-    useMobileTOC: boolean
+    useTXT: boolean // description file format to .txt, not .json
+    useKatex: boolean // katex option
+    useMemo: boolean // improves dev speed, but require manual refresh except posts
+    useMobileTOC: boolean // table of content on mobile
+    userPallete: UserPalleteType // personal pallete
+    blogContentsDirectoryName: `${typeof blogContentsDirectoryName}` // blog contents directory name
     author: AuthorInfoType
     postPerCategoryPage: number
     numberOfLatestPost: number
 }
 const config: ConfigType = {
-    useTXT: false, // description file format to .txt, not .json
-    useKatex: false, // katex option
-    useMemo: true, // improves dev speed, but require manual refresh except posts
-    useMobileTOC: true, // table of content on mobile
-    blogContentsDirectoryName, // blog contents directory name
-    userPallete, // personal pallete
+    useTXT: false,
+    useKatex: false,
+    useMemo: true,
+    useMobileTOC: true,
+    userPallete,
+    blogContentsDirectoryName,
     postPerCategoryPage: 4,
     numberOfLatestPost: 5,
     author: {
