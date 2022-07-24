@@ -4,11 +4,7 @@ import { iconStyle } from "@styles/utils/icon.style"
 
 import React from "react"
 
-import { IsLight } from "@typing/theme"
-
-import useThemeMode from "@hooks/useThemeMode"
-
-const ButtonStyled = styled.button<IsLight>`
+const ButtonStyled = styled.button`
     transition: all ease-out 0.1s;
 
     display: flex;
@@ -16,14 +12,14 @@ const ButtonStyled = styled.button<IsLight>`
     align-items: center;
     justify-content: center;
 
-    padding: 0.3rem 0.4rem;
+    padding: 0.3rem 0.5rem;
 
     color: ${(p) => p.theme.fontColor};
     font-size: ${(p) => p.theme.sm};
 
     border-radius: ${(p) => p.theme.bxsm};
-    border: transparent solid 1px;
 
+    border: 1px solid transparent;
     background-color: transparent;
 
     gap: 0.35rem;
@@ -32,14 +28,16 @@ const ButtonStyled = styled.button<IsLight>`
     cursor: pointer;
 
     &:hover {
-        border-color: ${({ isLight, theme }) =>
-            isLight ? "transparent" : theme.fontColor};
-        text-decoration: ${(p) => p.isLight && "underline"};
+        background-color: ${({ theme }) =>
+            `${theme.containerBackgroundColor}${theme.themeHexOpacity}`};
+        border-color: ${(p) => p.theme.containerBorderColor};
     }
 
     ${media.widePhone} {
-        border: none;
+        padding: 0.3rem;
         gap: 0.2rem;
+
+        background-color: transparent;
     }
 
     ${iconStyle.md()};
@@ -48,19 +46,13 @@ const ButtonStyled = styled.button<IsLight>`
 interface ButtonProps {
     onClick?: (...arg: any[]) => any
     children: React.ReactNode
-    type?: "button" | "submit" | "reset" | undefined
+    type?: "button" | "submit" | "reset"
     ariaLabel: string
 }
 const Button = React.forwardRef<React.RefObject<HTMLElement>, ButtonProps>(
     ({ onClick, children, ariaLabel, type = "button" }, ref) => {
-        const { isLight } = useThemeMode()
         return (
-            <ButtonStyled
-                onClick={onClick}
-                isLight={isLight}
-                aria-label={ariaLabel}
-                type={type}
-            >
+            <ButtonStyled onClick={onClick} aria-label={ariaLabel} type={type}>
                 {children}
             </ButtonStyled>
         )
