@@ -11,7 +11,7 @@ const ImageContainer = styled.span<IsExternalImage>`
     justify-content: center;
     align-items: center;
 
-    max-width: max(75%, 20rem);
+    max-width: max(85%, 25rem);
 
     ${(p) =>
         p.isExternalImage &&
@@ -28,7 +28,7 @@ const ImageContainer = styled.span<IsExternalImage>`
         `}
 
     & > span {
-        border-radius: ${(p) => p.theme.bmd};
+        border-radius: ${(p) => p.theme.bsm};
     }
 `
 
@@ -36,8 +36,6 @@ const ImageTitle = styled.span`
     color: ${(p) => p.theme.gray5};
     font-size: ${(p) => p.theme.xsm};
     text-decoration: underline;
-
-    margin-top: 0.75rem;
 
     ${media.widePhone} {
         display: none;
