@@ -7,17 +7,22 @@ import { IsLight } from "@typing/theme"
 import useThemeMode from "@hooks/useThemeMode"
 
 const ThStyled = styled.th<IsLight>`
-    padding: 0.75rem 1rem;
-    color: ${(p) => p.theme.headerFontColor};
-    border-bottom: 1.5px solid
-        ${({ theme, isLight }) => (isLight ? theme.gray3 : theme.gray6)};
+    padding: 0.65rem;
+
+    border-bottom: 1px solid ${({ theme }) => theme.containerBorderColor};
+
     background-color: ${({ theme, isLight }) =>
-        isLight ? theme.gray2 : theme.gray8};
+        isLight ? theme.gray2 : theme.trueDeepDark};
+
+    color: ${(p) => p.theme.headerFontColor};
+    font-size: ${(p) => p.theme.md};
     text-align: center;
+    text-transform: capitalize;
 
     ${media.widePhone} {
-        padding: 0.75rem 0.5rem;
         font-size: ${(p) => p.theme.sm};
+
+        padding: 0.5rem;
     }
 `
 const TH = (props: any) => {
