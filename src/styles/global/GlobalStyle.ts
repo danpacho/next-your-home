@@ -50,8 +50,8 @@ export const GlobalStyle = createGlobalStyle`
       -webkit-text-size-adjust: none;
    
       details {
+            width: 100%;
             max-width: 100%;
-            margin-bottom: 1rem;
 
             summary {
                   display: block;
