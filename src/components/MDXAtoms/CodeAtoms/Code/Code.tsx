@@ -5,7 +5,7 @@ import { IsLight } from "@typing/theme"
 
 import { useThemeMode } from "@hooks/index"
 
-import { CodeContentBox } from "./CodeCopyButton"
+import { CodeContentBox } from "./CodeUtil"
 
 const InlineCode = styled.code<IsLight>`
     padding: 0 0.2rem;

@@ -17,12 +17,11 @@ const CodeContentBox = styled.div`
     align-items: center;
     justify-content: center;
 
-    padding: 0.35rem 0.5rem;
-    height: 1.75rem;
+    padding: 0.1rem 0.5rem;
 
     background-color: ${({ theme }) => `${theme.blue5}${theme.opacity20}`};
 
-    border-radius: ${({ theme }) => `${theme.bmd} 0 ${theme.bsm} 0`};
+    border-radius: ${({ theme }) => `${theme.bxsm} 0 ${theme.bsm} 0`};
 
     color: ${(props) => props.theme.white};
     font-weight: 800;
