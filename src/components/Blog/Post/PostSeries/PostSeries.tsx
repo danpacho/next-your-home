@@ -80,7 +80,6 @@ const TitleContainer = styled.div`
 const SeriesTitle = styled.div`
     font-weight: 600;
     font-size: ${(p) => p.theme.xlg};
-    font-style: italic;
 
     color: ${(p) => p.theme.fontColor};
 
@@ -134,7 +133,6 @@ const SeriesLink = styled.li<SeriesLinkStyle & IsLight>`
     color: ${(p) => p.theme.fontColor};
     font-size: ${(p) => p.theme.md};
     font-weight: ${(p) => (p.focusedPost ? 600 : 400)};
-    font-style: italic;
 
     background-color: ${({ focusedPost, theme, color, isLight }) =>
         focusedPost
@@ -315,7 +313,7 @@ function PostSeries({
                             focusedPost={postTitle === currentTitle}
                         >
                             <SizedText defaultLineNumber={1} lineHeight={1}>
-                                {order}.{postTitle}
+                                {order}. {postTitle}
                             </SizedText>
                         </SeriesLink>
                     </Link>
