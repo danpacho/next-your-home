@@ -64,7 +64,7 @@
 -   📌 `React`입니다
 -   📌 환경 설정, 필요 없습니다
 -   📌 `vercel`과 함께라면 배포는 일도 아니죠[(vercel + NextJs의 강력함 알아보기 🔎)](https://vercel.com/solutions/nextjs)
--   📦 [CLI🎉](https://github.com/danpa725/blog-post-generator) 포스트 생성기로 터미널에서 쉽게 글을 만들수 있습니다
+-   📦 [CLI 포스트 생성기](https://github.com/danpa725/blog-post-generator)로 터미널에서 쉽게 글을 만들수 있습니다
 
 ## 🔥 성능
 
@@ -105,7 +105,7 @@
 -   📌 또한 `static`/`external` 이미지는 별 설정 없이 사이즈가 조절됩니다
 -   📌 pagination, 기본이죠
 -   📌 이전 글로 되돌아가면 스크롤 위치는 그대로!
--   📌 `google analytics`로 방문자 기록을 살펴봅시다! `partytown🎉` 스레드에서 실행하면서 성능도 잡았죠 [(partytown🎉? 🔎)](https://partytown.builder.io)
+-   📌 `google analytics`로 방문자 기록을 살펴봅시다! `partytown🎉` 스레드에서 실행하면서 성능도 잡았죠 [(partytown 알아보기 🔎)](https://partytown.builder.io)
 -   📌 `sitemap`과 `rss`는 빌드시 생성됩니다
 -   📌 `katex`와 함께 화끈한 수식도 보여줍시다 (선택)
 -   📌 `dev` 모드에서 글을 수정하면 자동으로 새로고침합니다
@@ -146,7 +146,7 @@
             -   subtitle
             -   language
     2.  `public/robots.txt`:
-        -   `Sitemap`을 배로 url로 바꿔주세요
+        -   `Sitemap`을 배포 url로 바꿔주세요
 
 4.  **개발 테스트**
     ```bash

@@ -106,7 +106,7 @@
 -   📌 Automatic image size support for `static`/`external`
 -   📌 Automatic pagination
 -   📌 Recover scroll position when navigating to previous page
--   📌 Analyze visitors with `Google Analytics`! Run it on the `partytown🎉` thread and get the performance
+-   📌 Analyze visitors with `Google Analytics`! Run it on the `partytown🎉` thread and get the performance [(partytown? 🔎)](https://partytown.builder.io)
 -   📌 Support `sitemap`, `rss` generation on build
 -   📌 Math `katex` support (optional)
 -   📌 Automatic post refreshing in `dev` mode
