@@ -7,7 +7,7 @@ import { useScrollToElement } from "@hooks/index"
 
 const H2Styled = styled.h2`
     font-size: ${(props) => props.theme.xxlg};
-    font-weight: 600;
+    font-weight: 700;
     color: ${(p) => p.theme.fontColor};
 
     padding: 0.35rem 0;

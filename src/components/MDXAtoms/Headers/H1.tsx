@@ -90,7 +90,7 @@ const H1 = (props: H1Props) => {
             tooltipElement={
                 <LineScroll
                     fontWeight={600}
-                    fontSize="xlg"
+                    fontSize="xxlg"
                     scrollRef={headerRef}
                 >
                     #
@@ -98,7 +98,7 @@ const H1 = (props: H1Props) => {
             }
             isUnvisibleElementClickAbled
             left={-28}
-            bottom={28}
+            bottom={30}
         >
             <H1Styled
                 {...props}
