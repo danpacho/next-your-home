@@ -2,17 +2,17 @@ import styled from "styled-components"
 import media from "@styles/utils/media"
 
 const UlStyled = styled.ul`
-    max-width: 100%;
+    width: 90%;
 
     margin-top: 0.2rem;
-    margin-bottom: 0.5rem;
-    margin-left: 1.5rem;
+    margin-bottom: 0.65rem;
+    margin-left: 1.35rem;
 
     line-height: 1.75rem;
     list-style-type: disc;
 
     ${media.widePhone} {
-        margin-left: 1rem;
+        margin-left: 1.2rem;
         line-height: 1.55rem;
     }
 `
