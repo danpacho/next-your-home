@@ -47,3 +47,7 @@
 12. **`useWindowWidth`**
 
     Detect `window` width changes and returns `mediaWidth` string that implies a specific width state
+
+13. **`useThemeMode`**
+
+    Get current theme mode from jotai `isLight` slector atom state
