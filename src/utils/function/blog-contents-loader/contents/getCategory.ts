@@ -291,7 +291,7 @@ const readAllCategoryJSONFile = async (
                 const categoryInfo = {
                     description,
                     color: getValidateColor(color),
-                    emoji: emojiExec[0],
+                    emoji,
                     category,
                     categoryUrl: `/${category}`,
                 }
