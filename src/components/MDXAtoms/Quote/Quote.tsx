@@ -105,6 +105,7 @@ const QuoteStyled = styled.blockquote<QuoteStyleTypeProp & IsLight>`
 
     p {
         font-weight: 500;
+        margin: 0;
     }
 
     ${({ type }) => quoteStyles[type]?.containerStyle};
