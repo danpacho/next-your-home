@@ -93,7 +93,7 @@ function NavBar() {
     return (
         <NavContainer>
             <Link href="/" passHref>
-                <BlogTitle isLight={isLight}>{config.author.name}</BlogTitle>
+                <BlogTitle isLight={isLight}>{config.siteName}</BlogTitle>
             </Link>
             <ButtonContainer>
                 <Link passHref href="/category">
