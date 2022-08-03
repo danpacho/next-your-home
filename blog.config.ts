@@ -40,8 +40,8 @@ const authorInfo: AuthorInfoType = {
         twitter: getAuthorContactHref("twitter", "twitterID"),
     },
     logoImageUrl: "/logo.webp",
-    bannerImageUrl: "/banner.png",
-    faviconUrl: "/favicon.png",
+    bannerImageUrl: "/banner.webp",
+    faviconUrl: "/favicon.webp",
 }
 
 interface BlogInfoType {
