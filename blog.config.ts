@@ -39,9 +39,9 @@ const authorInfo: AuthorInfoType = {
         linkedin: getAuthorContactHref("linkedin", "linkedinID"),
         twitter: getAuthorContactHref("twitter", "twitterID"),
     },
-    logoImageUrl: "/logo.webp",
-    bannerImageUrl: "/banner.webp",
-    faviconUrl: "/favicon.webp",
+    logoImageUrl: "/logo.png",
+    bannerImageUrl: "/banner.png",
+    faviconUrl: "/favicon.png",
 }
 
 interface BlogInfoType {
