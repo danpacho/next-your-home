@@ -9,7 +9,8 @@
             "@utils/*": ["src/utils/*"],
             "@styles/*": ["src/styles/*"],
             "@typing/*": ["src/types/*"],
-            "@lib/*": ["src/lib/*"]
+            "@lib/*": ["src/lib/*"],
+            "@atom/*": ["src/atom/*"]
         },
         "importHelpers": true,
         "forceConsistentCasingInFileNames": true,
