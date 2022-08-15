@@ -1,7 +1,7 @@
 import { TableOfContents } from "@lib/unified"
 import { PostMetaType } from "./meta"
 
-export interface CategoryPostContentType {
+export interface PostType {
     category: string
     postContentArray: PostContentType[]
     postNumber: number

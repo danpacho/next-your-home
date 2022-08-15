@@ -1,3 +1,6 @@
+/**
+ * meta of pure mdx string
+ */
 export interface MDXPostMetaType {
     title: string
     preview: string
@@ -14,6 +17,9 @@ export interface PostSeriesMetaType {
     seriesTitle: string
     order: number
 }
+/**
+ * total post meta property with {@link MDXPostMetaType} and {@link PostSeriesMetaType}
+ */
 export interface PostMetaType {
     title: string
     preview: string
