@@ -20,8 +20,7 @@ import {
 import { config } from "blog.config"
 
 /**
- * @returns 카테고리의 이름(=`파일 이름`) 반환
- * @exception `MacOs` remove `.DS_Store`
+ * category name = category file name, extract all category file names
  */
 const getAllCategoryName = async () => {
     try {
@@ -54,8 +53,8 @@ const getAllCategoryName = async () => {
 }
 
 /**
- * @note 카테고리 이름에 url notation 추가
- * @returns `/{category}` 반환
+ * add URL notaition to category names
+ * @returns `/{category}`
  */
 const getAllCategoryPath = memo(config.useMemo, async (): Promise<string[]> => {
     const categoryPathArray: string[] = await (
@@ -64,13 +63,14 @@ const getAllCategoryPath = memo(config.useMemo, async (): Promise<string[]> => {
     return categoryPathArray
 })
 
-const DESCRIPTION_FILE_NAME = "description"
+const DESCRIPTION_FILE_NAME = "description" as const
 const FILE_FORMAT = {
     TXT: ".txt",
     JSON: ".json",
-}
+} as const
+
 /**
- * @returns 카테고리 `description.txt` 파일을 읽어 반환
+ * Read category `description.txt` files
  */
 const readCategoryTXTFileArray = async (pureCategoryArray: string[]) => {
     const descriptionArray = await Promise.all(
@@ -111,16 +111,14 @@ interface ExtractCategoryInfo {
     color: string
     emoji: string
 }
-const NOT_FOUND = "NOT_FOUND"
+const NOT_FOUND = "NOT_FOUND" as const
 
 /**
- * @note **카테고리** `description.txt` 가공
- * ---
- * @note `desciprition`: `color: ...`, `emoji: ...` 를 제외한 텍스트
- * @note `color`: HEX or rgb or rgba
- * @note `emoji`: One Emoji
- * @param categoryTXTFile `description.txt`파일 추출 결과 대입
- * @returns `color`, `description`, `emoji`
+ * used on `.txt` format
+ * @returns `desciprition`: remove `color: ...`, `emoji: ...` from txt files
+ * @returns `color`: HEX or rgb or rgba
+ * @returns `emoji`: Only one emoji
+ * @param categoryTXTFile `description.txt` file
  */
 const extractCategoryDescriptionAndColorAndEmoji = (
     categoryTXTFile: string
@@ -218,13 +216,12 @@ const extractCategoryDescriptionAndColorAndEmoji = (
 }
 
 /**
- * @note `.txt`파일, 전체 카테고리 설명 반환
- * ---
- * @return `category`: 해당 카테고리 이름
- * @return `description`: 해당 카테고리 설명
- * @return `categoryUrl`: 해당 카테고리 링크 URL
- * @return `color`: 해당 카테고리 색
- * @return `emoji`: 해당 카테고리 이모지
+ * used on `.txt` format
+ * @returns `category`: category name
+ * @returns `description`: category description
+ * @returns `categoryUrl`: category link
+ * @returns `color`: category color
+ * @returns `emoji`: category emoji
  */
 const getAllCategoryInfoByTXT = async (): Promise<CategoryInfoType[]> => {
     const categoryArray = await getAllCategoryName()
@@ -249,10 +246,6 @@ const getAllCategoryInfoByTXT = async (): Promise<CategoryInfoType[]> => {
     return allCategoryInfo
 }
 
-/**
- * @note `.json`파일, 전체 카테고리 설명 반환
- * @param allCategoryName 전체 카테고리 이름
- */
 const readAllCategoryJSONFile = async (
     allCategoryName: string[]
 ): Promise<CategoryInfoType[]> => {
@@ -317,23 +310,20 @@ const readAllCategoryJSONFile = async (
 }
 
 /**
- * @note `.json`파일, 전체 카테고리 설명 반환
- * ---
- * @return `category`: 해당 카테고리 이름
- * @return `description`: 해당 카테고리 설명
- * @return `categoryUrl`: 해당 카테고리 링크 URL
- * @return `color`: 해당 카테고리 색
- * @return `emoji`: 해당 카테고리 이모지
+ * used on `.json` format
+ * @returns `category`: category name
+ * @returns `description`: category description
+ * @returns `categoryUrl`: category link
+ * @returns `color`: category color
+ * @returns `emoji`: category emoji
  */
 const getAllCategoryInfoByJSON = async () =>
     await readAllCategoryJSONFile(await getAllCategoryName())
 
 const LATEST_CATEGORY_NUMBER = 3
 /**
- * @note 최신 카테고리 정보 추출
- * @param useTXT true  `description.txt`
- * @param useTXT false  `description.json`
- * @returns `LATEST_CATEGORY_NUMBER` 개 카테고리 반환
+ * @param useTXT true ? `description.txt` : `description.json`, default false
+ * @returns `LATEST_CATEGORY_NUMBER(=3)` category
  */
 const getLatestCategoryInfo = memo(
     config.useMemo,
@@ -347,7 +337,7 @@ const getLatestCategoryInfo = memo(
 )
 
 /**
- * @returns 최신 카테고리 속 포스트에 포함된 태그 추출
+ * tag list of latest category's posts
  */
 const getLatestCategoryTagArray = memo(
     config.useMemo,
@@ -360,8 +350,7 @@ const getLatestCategoryTagArray = memo(
     }
 )
 /**
- * @param useTXT true `description.txt` 추출
- * @returns 전체 카테고리 정보 반환
+ * @param useTXT if `true` extract description from `description.txt`
  */
 const getAllCategoryInfo = async ({ useTXT }: { useTXT: boolean }) => {
     const allCategoryInfo = useTXT
@@ -371,12 +360,11 @@ const getAllCategoryInfo = async ({ useTXT }: { useTXT: boolean }) => {
 }
 
 /**
- * @note 특정 카테고리의 정보 반환
- * @return `category`: 해당 카테고리 이름
- * @return `description`: 해당 카테고리 설명
- * @return `categoryUrl`: 해당 카테고리 링크 URL
- * @return `color`: 해당 카테고리 색
- * @return `emoji`: 해당 카테고리 이모지
+ * @returns `category`: category name
+ * @returns `description`: category description
+ * @returns `categoryUrl`: category link
+ * @returns `color`: category color
+ * @returns `emoji`: category emoji
  */
 const getSpecificCategoryInfo = memo(
     config.useMemo,
@@ -401,14 +389,13 @@ const getSpecificCategoryInfo = memo(
 )
 
 export {
-    //* category path & name
+    //* path | name
     getAllCategoryPath,
     getAllCategoryName,
-    //* categoryInfo
+    //* info
     getAllCategoryInfo,
-    //* specific category - info & tag
-    getSpecificCategoryInfo,
-    getLatestCategoryTagArray,
-    //* categoryInfo - latest
     getLatestCategoryInfo,
+    getSpecificCategoryInfo,
+    //* tag
+    getLatestCategoryTagArray,
 }
