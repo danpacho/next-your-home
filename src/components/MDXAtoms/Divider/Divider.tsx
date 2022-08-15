@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
+import { $, useStore } from "@atom/index"
 
 const DividerStyled = styled.hr<IsLight>`
     width: 100%;
@@ -16,8 +16,8 @@ const DividerStyled = styled.hr<IsLight>`
 `
 
 function Divider() {
-    const { isLight } = useThemeMode()
-    return <DividerStyled isLight={isLight} />
+    const { IsLight } = useStore($("isLight"))
+    return <DividerStyled isLight={IsLight} />
 }
 
 export default Divider

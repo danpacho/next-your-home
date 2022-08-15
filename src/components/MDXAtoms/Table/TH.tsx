@@ -4,7 +4,7 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
+import { useStore, $ } from "@atom/index"
 
 const ThStyled = styled.th<IsLight>`
     padding: 0.65rem;
@@ -26,8 +26,8 @@ const ThStyled = styled.th<IsLight>`
     }
 `
 const TH = (props: any) => {
-    const { isLight } = useThemeMode()
-    return <ThStyled {...props} isLight={isLight} />
+    const { IsLight } = useStore($("isLight"))
+    return <ThStyled {...props} isLight={IsLight} />
 }
 
 export default TH

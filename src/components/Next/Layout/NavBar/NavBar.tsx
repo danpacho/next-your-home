@@ -5,10 +5,10 @@ import Link from "next/link"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
-
 import { Button } from "@components/UI/Atoms/Button"
 import { ThemeButton } from "@components/UX/ThemeButton"
+
+import { useStore, $ } from "@atom/index"
 
 import { config } from "blog.config"
 
@@ -89,11 +89,11 @@ const RowDivider = styled.div`
 `
 
 function NavBar() {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
         <NavContainer>
             <Link href="/" passHref>
-                <BlogTitle isLight={isLight}>{config.siteName}</BlogTitle>
+                <BlogTitle isLight={IsLight}>{config.siteName}</BlogTitle>
             </Link>
             <ButtonContainer>
                 <Link passHref href="/category">

@@ -9,7 +9,7 @@ import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useSetFocusingPageColor, useThemeMode } from "@hooks/index"
+import { useSetFocusingPageColor } from "@hooks/index"
 import useFilteredPost from "./useFilteredPost"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
@@ -18,7 +18,7 @@ import { CategorySEO } from "@components/Next/SEO"
 import { PostLink } from "@components/Blog/Post"
 import { CategorySeriesViewer, CategoryTag } from "@components/Blog/Category"
 
-import { useAtoms, _atom, _slector } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 //* Layout
 const LayoutContainer = styled.div`
@@ -195,7 +195,7 @@ function CategoryCommonLayout({
         () => shadeColor(categoryColor, 35),
         [categoryColor]
     )
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const postNumber = categoryPostArray?.length
 
     const filteredPostNumber = filteredCategoryPostArray?.length
@@ -213,7 +213,7 @@ function CategoryCommonLayout({
                 emoji={categoryEmoji}
             />
             <CategoryLeftInfoContainer>
-                <CategoryTitle _color={isLight ? categoryColor : darkModeColor}>
+                <CategoryTitle _color={IsLight ? categoryColor : darkModeColor}>
                     {pageNumber &&
                         (filteredPostNumber === 0
                             ? `${pageNumber} 페이지 ${categoryEmoji}`
@@ -234,7 +234,7 @@ function CategoryCommonLayout({
                         categoryTagArray={categoryTagArray}
                         filteredTagArray={filteredTagArray}
                         setFilteredTagArray={setFilteredTagArray}
-                        categoryColor={isLight ? categoryColor : darkModeColor}
+                        categoryColor={IsLight ? categoryColor : darkModeColor}
                     />
                 )}
             </CategoryLeftInfoContainer>

@@ -9,8 +9,7 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
-
+import { useStore, $ } from "@atom/index"
 interface QuoteStyles {
     note: StyleProperty
     warning: StyleProperty
@@ -222,10 +221,10 @@ function Quote(props: QuoteProps) {
     const quoteType = getQuoteType(lastChildren)
     const fixedProps = getQuoteProp(quoteType, props)
 
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
-        <QuoteStyled type={quoteType} isLight={isLight}>
-            <QuoteIcon type={quoteType} isLight={isLight}>
+        <QuoteStyled type={quoteType} isLight={IsLight}>
+            <QuoteIcon type={quoteType} isLight={IsLight}>
                 {quoteStyles[quoteType].emoji}
             </QuoteIcon>
             <div {...fixedProps} />

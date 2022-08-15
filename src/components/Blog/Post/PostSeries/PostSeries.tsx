@@ -10,10 +10,12 @@ import Link from "next/link"
 import { ColorProps, IsLight } from "@typing/theme"
 import { SeriesInfoType } from "@typing/post/series"
 
-import { useColorSet, usePointerInteraction, useThemeMode } from "@hooks/index"
+import { useColorSet, usePointerInteraction } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { BookmarkIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
+
+import { $, useStore } from "@atom/index"
 
 const PostSeriesContainer = styled.div<ColorProps>`
     transition: border-color 0.1s ease-out;
@@ -247,7 +249,7 @@ function PostSeries({
     seriesTitle,
     seriesInfo,
 }: PostSeriesProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const [isHover, setIsHover] = useState(false)
 
     const currentOrder = seriesInfo.findIndex(
@@ -271,7 +273,7 @@ function PostSeries({
             <PostSeriesHeader>
                 <TitleContainer>
                     <SeriesTitle>{seriesTitle}</SeriesTitle>
-                    <BookmarkBox _color={color} isLight={isLight}>
+                    <BookmarkBox _color={color} isLight={IsLight}>
                         <BookmarkIcon fill={color} />
                         <p>
                             {numberOfSeries} / {currentOrder + 1}
@@ -279,7 +281,7 @@ function PostSeries({
                     </BookmarkBox>
                 </TitleContainer>
 
-                <ButtonBox _color={color} isLight={isLight}>
+                <ButtonBox _color={color} isLight={IsLight}>
                     {isPrevExists && (
                         <Link passHref href={seriesInfo[currentOrder].prevUrl!}>
                             <SeriesLinkButton
@@ -309,7 +311,7 @@ function PostSeries({
                     <Link passHref href={url} key={postTitle}>
                         <SeriesLink
                             color={color}
-                            isLight={isLight}
+                            isLight={IsLight}
                             focusedPost={postTitle === currentTitle}
                         >
                             <SizedText defaultLineNumber={1} lineHeight={1}>
@@ -327,8 +329,8 @@ function PostSeries({
                     left: "-1.5rem",
                 }}
                 radius={3}
-                startColor={isLight ? light.middle : dark.middle}
-                endColor={isLight ? light.low : dark.low}
+                startColor={IsLight ? light.middle : dark.middle}
+                endColor={IsLight ? light.low : dark.low}
                 gradientDegree={30}
                 transformationOnHover="scaleX(1.75) scaleY(1.5)"
             />
@@ -340,8 +342,8 @@ function PostSeries({
                 }}
                 radius={5}
                 gradientDegree={135}
-                startColor={isLight ? light.low : dark.low}
-                endColor={isLight ? light.high : dark.high}
+                startColor={IsLight ? light.low : dark.low}
+                endColor={IsLight ? light.high : dark.high}
                 transformationOnHover="scale(2.5)"
             />
         </PostSeriesContainer>

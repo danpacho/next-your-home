@@ -7,8 +7,7 @@ import {
     ProfileBackground,
 } from "./SVGBackground/Assets"
 
-import { useThemeMode } from "@hooks/index"
-import { useAtoms, _atom } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 const BACKGROUND_SVG: {
     [key in PageType]: (color: string, isLight: boolean) => React.ReactNode
@@ -38,9 +37,9 @@ interface MainTransformBackgroundProps {
     pageType: PageType
 }
 function Background({ pageType }: MainTransformBackgroundProps) {
-    const { focusingPageColorState } = useAtoms(_atom("focusingPageColor"))
-    const { isLight } = useThemeMode()
-    return <>{BACKGROUND_SVG[pageType](focusingPageColorState, isLight)}</>
+    const { FocusingPageColor } = useStore($("focusingPageColor"))
+    const { IsLight } = useStore($("isLight"))
+    return <>{BACKGROUND_SVG[pageType](FocusingPageColor, IsLight)}</>
 }
 
 export default Background
