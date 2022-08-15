@@ -8,7 +8,7 @@ import {
 } from "@utils/function/blog-error-handler"
 
 import { memo } from "@utils/function/blog-contents-loader/util"
-import { bundlePostMDX } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
+import { bundlePost } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { config } from "blog.config"
 
@@ -27,7 +27,7 @@ const getProfileSource = memo(config.useMemo, async () => {
             })
 
         return await (
-            await bundlePostMDX({ postSource: profileContent })
+            await bundlePost({ postSource: profileContent })
         ).bundledResult.code
     } catch (err) {
         throw new BlogErrorAdditionalInfo({
