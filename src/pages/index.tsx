@@ -13,10 +13,10 @@ import { IsLight } from "@typing/theme"
 import { getLatestCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { getLatestPostMeta } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
-import { useThemeMode } from "@hooks/index"
-
 import { PostLink } from "@components/Blog/Post"
 import { CategoryLink } from "@components/Blog/Category"
+
+import { useStore, $ } from "@atom/index"
 
 import { config } from "blog.config"
 
@@ -165,7 +165,7 @@ interface MainPageProps {
 }
 
 function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
         <MainPageLayoutContainer>
             <NextSeo
@@ -174,7 +174,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
                 description={config.subtitle}
             />
             <CategoryContainer>
-                <ContainerTitle isLight={isLight}>Top Category</ContainerTitle>
+                <ContainerTitle isLight={IsLight}>Top Category</ContainerTitle>
                 <CategoryLinkContainer>
                     {categoryInfoArray.map((categoryInfo) => (
                         <CategoryLink
@@ -187,7 +187,7 @@ function MainPage({ latestPostArray, categoryInfoArray }: MainPageProps) {
             </CategoryContainer>
 
             <LatestPostContainer>
-                <ContainerTitle isLight={isLight}>Latest Post</ContainerTitle>
+                <ContainerTitle isLight={IsLight}>Latest Post</ContainerTitle>
                 <LatestPostLinkContainer>
                     {latestPostArray.map((latestPost, order) => (
                         <PostLink

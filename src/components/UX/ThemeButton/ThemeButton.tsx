@@ -5,7 +5,8 @@ import { ThemeMode } from "@typing/theme"
 import { useToggle, useWindowTheme } from "@hooks/index"
 
 import { Button } from "@components/UI/Atoms/Button"
-import { useAtoms, _atom } from "@lib/jotai"
+
+import { useStore, $ } from "@atom/index"
 
 function ThemeButton() {
     const windowTheme = useWindowTheme()
@@ -14,20 +15,20 @@ function ThemeButton() {
         windowTheme
     )
 
-    const { themeState, themeSetState } = useAtoms(_atom("theme"))
+    const { Theme, setTheme } = useStore($("theme"))
 
     useEffect(() => {
-        themeSetState(toggleValue)
-    }, [toggleValue, themeSetState])
+        setTheme(toggleValue)
+    }, [toggleValue, setTheme])
 
     useEffect(() => {
-        themeSetState(windowTheme)
-    }, [windowTheme, themeSetState])
+        setTheme(windowTheme)
+    }, [windowTheme, setTheme])
 
     return (
         <Button ariaLabel="theme button" onClick={() => setToggle()}>
-            {themeState === "light" && <p>Light</p>}
-            {themeState === "dark" && <p>Dark</p>}
+            {Theme === "light" && <p>Light</p>}
+            {Theme === "dark" && <p>Dark</p>}
         </Button>
     )
 }

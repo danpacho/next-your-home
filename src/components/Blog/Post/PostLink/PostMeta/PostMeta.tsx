@@ -6,10 +6,12 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
-import { useWindowWidth, useThemeMode } from "@hooks/index"
+import { useWindowWidth } from "@hooks/index"
 
 import { LayersAltIcon } from "@components/UI/Atoms/Icons"
 import { SizedText } from "@components/UI/Atoms/SizedText"
+
+import { $, useStore } from "@atom/index"
 
 const PostMetaTagContainer = styled.ul`
     display: flex;
@@ -111,7 +113,7 @@ function PostMeta({
     tags,
     isCategoryPage,
 }: PostMetaProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const { mediaWidth } = useWindowWidth()
 
     const isContentSizeSmall =
@@ -134,7 +136,7 @@ function PostMeta({
                                 order + 1 === renderTagNumber &&
                                 tags.length !== renderTagNumber
                             }
-                            isLight={isLight}
+                            isLight={IsLight}
                             key={tag}
                         />
                     ))}
@@ -144,7 +146,7 @@ function PostMeta({
                     <PostMetaTag
                         type="category"
                         color={color}
-                        isLight={isLight}
+                        isLight={IsLight}
                     >
                         <SizedText
                             lineHeight={1}
@@ -157,14 +159,14 @@ function PostMeta({
                 </Link>
             )}
             {!isCategoryPage && (
-                <PostMetaTag type="update" color={color} isLight={isLight}>
+                <PostMetaTag type="update" color={color} isLight={IsLight}>
                     <SizedText lineHeight={1} defaultLineNumber={1}>
                         {update}
                     </SizedText>
                 </PostMetaTag>
             )}
             <Link href="/profile" passHref>
-                <PostMetaTag type="author" color={color} isLight={isLight}>
+                <PostMetaTag type="author" color={color} isLight={IsLight}>
                     <SizedText
                         lineHeight={1}
                         defaultLineNumber={1}

@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
+import { useStore, $ } from "@atom/index"
 
 const LinkStyled = styled.a<IsLight>`
     transition: color 0.1s ease-in;
@@ -24,9 +24,9 @@ interface LinkProps {
 }
 
 function Link({ children: linkText, href, target }: LinkProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
-        <LinkStyled href={href} target={target} isLight={isLight}>
+        <LinkStyled href={href} target={target} isLight={IsLight}>
             {linkText}
         </LinkStyled>
     )

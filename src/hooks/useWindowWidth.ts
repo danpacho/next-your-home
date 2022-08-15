@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import { useAtoms, _atom } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 import {
     MediaType,
@@ -23,23 +23,21 @@ function useWindowWidth(): {
     mediaWidth: MediaType
     windowWidth: number
 } {
-    const { windowWidthState, windowWidthSetState } = useAtoms(
-        _atom("windowWidth")
-    )
+    const { WindowWidth, setWindowWidth } = useStore($("windowWidth"))
     useEffect(() => {
-        windowWidthSetState(window.innerWidth)
-    }, [windowWidthSetState])
+        setWindowWidth(window.innerWidth)
+    }, [setWindowWidth])
 
     useEffect(() => {
-        const updateWindowWidth = () => windowWidthSetState(window.innerWidth)
+        const updateWindowWidth = () => setWindowWidth(window.innerWidth)
         window.addEventListener("resize", updateWindowWidth)
 
         return () => window.removeEventListener("resize", updateWindowWidth)
-    }, [windowWidthSetState])
+    }, [setWindowWidth])
 
     return {
-        mediaWidth: determineMediaWidth(windowWidthState),
-        windowWidth: windowWidthState,
+        mediaWidth: determineMediaWidth(WindowWidth),
+        windowWidth: WindowWidth,
     }
 }
 

@@ -15,10 +15,8 @@ import {
 import {
     getCategorySeriesInfo,
     getCategoryLatestPostMeta,
-    getCategoryPostMeta,
+    getCategoryAllPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
-
-import { useThemeMode } from "@hooks/index"
 
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 import { Button } from "@components/UI/Atoms/Button"
@@ -35,7 +33,7 @@ export const getStaticProps: GetStaticProps<CategoryProps> = async ({
 }) => {
     const { category } = params as ParamQuery
 
-    const categoryPostMeta = await getCategoryPostMeta(category)
+    const categoryPostMeta = await getCategoryAllPostMeta(category)
 
     const specificCategoryInfo = await getSpecificCategoryInfo({
         category,
@@ -72,7 +70,6 @@ interface CategoryProps extends CategoryInfoType {
 }
 
 function Category(categoryProps: CategoryProps) {
-    const { isLight } = useThemeMode()
     return (
         <CategoryCommonLayout
             {...categoryProps}

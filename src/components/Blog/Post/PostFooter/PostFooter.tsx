@@ -8,12 +8,10 @@ import Link from "next/link"
 import { ColorProps } from "@typing/theme"
 import { PostMetaType } from "@typing/post/meta"
 
-import { useThemeMode } from "@hooks/index"
-
 import { ArrowUpIcon, EditIcon, LeafIcon } from "@components/UI/Atoms/Icons"
 import PostTag from "../PostTag/PostTag"
 
-import { useAtoms, _slector } from "@lib/jotai"
+import { $, useStore } from "@atom/index"
 
 const FooterContainer = styled.div`
     display: flex;
@@ -67,7 +65,7 @@ function PostFooter({
     update,
     reference: referenceArray,
 }: Pick<PostMetaType, "color" | "author" | "update" | "reference">) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const replaceUpateDate = `${update
         .replace("/", "년 ")
         .replace("/", "월 ")}일`
@@ -76,18 +74,18 @@ function PostFooter({
         <FooterContainer>
             <TagContainer>
                 <Link href="/profile" passHref>
-                    <PostTag _color={color} tagType="tag" isLight={isLight}>
+                    <PostTag _color={color} tagType="tag" isLight={IsLight}>
                         <EditIcon />
                         <p>{author}</p>
                     </PostTag>
                 </Link>
                 <TagDivider _color={color}>•</TagDivider>
-                <PostTag _color={color} tagType="tag" isLight={isLight}>
+                <PostTag _color={color} tagType="tag" isLight={IsLight}>
                     <ArrowUpIcon />
                     <p>{replaceUpateDate}</p>
                 </PostTag>
                 <TagDivider _color={color}>•</TagDivider>
-                <PostTag _color={color} tagType="tag" isLight={isLight}>
+                <PostTag _color={color} tagType="tag" isLight={IsLight}>
                     <LeafIcon />
                     <p>Thanks For Reading !</p>
                 </PostTag>
@@ -99,7 +97,7 @@ function PostFooter({
                         <PostTag
                             _color={color}
                             tagType="info"
-                            isLight={isLight}
+                            isLight={IsLight}
                         >
                             <EditIcon />
                             <ReferenceLink

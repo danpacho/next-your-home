@@ -10,7 +10,7 @@ import { useElementObserver, useScrollToElement } from "@hooks/index"
 import { LineScroll } from "@components/UX/LineScroll"
 import { Tooltip } from "@components/UX/Tooltip"
 
-import { useAtoms, _atom, _slector } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 const H1Styled = styled.h1<IsLight>`
     font-size: ${(p) => p.theme.title};
@@ -45,8 +45,8 @@ interface H1Props {
 }
 
 const H1 = (props: H1Props) => {
-    const { isLightState } = useAtoms(_slector("isLight"))
-    const { focusTitleSetState } = useAtoms(_atom("focusTitle"))
+    const { IsLight } = useStore($("isLight"))
+    const { setFocusingTitle } = useStore($("focusingTitle"))
     const [active, setActive] = useState(false)
 
     const headerRef = useRef<HTMLHeadingElement>(null)
@@ -59,11 +59,11 @@ const H1 = (props: H1Props) => {
                     top <= HEADER_UPDATE_CONSTANTS.top &&
                     top >= HEADER_UPDATE_CONSTANTS.bottom
                 ) {
-                    focusTitleSetState(headerRef.current?.textContent!)
+                    setFocusingTitle(headerRef.current?.textContent!)
                 }
             })
         },
-        [focusTitleSetState]
+        [setFocusingTitle]
     )
 
     useElementObserver<HTMLHeadingElement>({
@@ -103,7 +103,7 @@ const H1 = (props: H1Props) => {
             <H1Styled
                 {...props}
                 ref={headerRef}
-                isLight={isLightState}
+                isLight={IsLight}
                 onClick={scrollToElement}
             />
         </Tooltip>

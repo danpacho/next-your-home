@@ -9,17 +9,13 @@ import { PageType } from "@typing/page/type"
 import { SeriesInfoType } from "@typing/post/series"
 import { SpecificPostContentType } from "@typing/post/content"
 
-import {
-    useSetFocusingPageColor,
-    useWindowWidth,
-    useThemeMode,
-} from "@hooks/index"
+import { useSetFocusingPageColor, useWindowWidth } from "@hooks/index"
 
 import {
-    getSpecificCategoryPostContent,
-    getAllCategoryPostContentPath,
+    getSpecificCategoryPost,
+    getAllCategoryPostPath,
     getSpecificCategorySeriesInfo,
-    getCategoryPostMeta,
+    getCategoryAllPostMeta,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 
 import { PostSEO } from "@components/Next/SEO"
@@ -33,7 +29,7 @@ import {
 import KatexStyleLoader from "@components/Blog/Post/KatexStyleLoader"
 import MDXBundler from "@components/MDXBundler"
 
-import { useAtoms, _atom, _slector } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 import { config } from "blog.config"
 
@@ -46,7 +42,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const { category, pageNumber, postTitle } = params as ParamQuery
 
     const { postController, postMeta, postSource, toc } =
-        await getSpecificCategoryPostContent({
+        await getSpecificCategoryPost({
             categoryName: category,
             categoryPage: Number(pageNumber),
             postTitle,
@@ -55,7 +51,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
     const postSeriesInfo = postMeta.series
         ? await getSpecificCategorySeriesInfo(
               postMeta.series.seriesTitle,
-              await getCategoryPostMeta(category)
+              await getCategoryAllPostMeta(category)
           )
         : null
 
@@ -71,7 +67,7 @@ export const getStaticProps: GetStaticProps<PostProps> = async ({ params }) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const paths = await getAllCategoryPostContentPath()
+    const paths = await getAllCategoryPostPath()
     return {
         paths,
         fallback: false,
@@ -162,7 +158,7 @@ function Post({
 }: PostProps) {
     useSetFocusingPageColor(postMeta.color)
 
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const { mediaWidth } = useWindowWidth()
     const tocMobileRender =
         mediaWidth === "widePhone" ||
@@ -170,7 +166,7 @@ function Post({
         mediaWidth === "mediumTablet"
     return (
         <>
-            <PostContainer isLight={isLight}>
+            <PostContainer isLight={IsLight}>
                 <PostSEO {...postMeta} />
 
                 <PostContentContainer>

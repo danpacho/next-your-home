@@ -4,11 +4,12 @@ import { darkTheme, lightTheme } from "@styles/utils/CustomeTheme"
 
 import { PageType } from "@typing/page/type"
 
-import useThemeMode from "@hooks/useThemeMode"
-
 import { Background } from "@components/Blog/Background"
+
 import Main from "./Main/Main"
 import NavBar from "./NavBar/NavBar"
+
+import { useStore, $ } from "@atom/index"
 
 const Layout = styled.main`
     display: flex;
@@ -31,9 +32,10 @@ interface LayoutProp {
 }
 
 function MainLayout({ children, pageType }: LayoutProp) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
+    console.log(IsLight)
     return (
-        <ThemeProvider theme={isLight ? lightTheme : darkTheme}>
+        <ThemeProvider theme={IsLight ? lightTheme : darkTheme}>
             <Layout>
                 <NavBar />
                 <Main>{children}</Main>

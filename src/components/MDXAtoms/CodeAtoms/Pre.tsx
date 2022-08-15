@@ -2,11 +2,13 @@ import styled from "styled-components"
 
 import { useCallback, useRef, useState } from "react"
 
-import { useThemeMode, useTimeout } from "@hooks/index"
+import { useTimeout } from "@hooks/index"
 
 import { IsLight } from "@typing/theme"
 
 import { CodeCopyButton } from "./Code/CodeUtil"
+
+import { $, useStore } from "@atom/index"
 
 const CodeWrapper = styled.div`
     position: relative;
@@ -39,7 +41,7 @@ function Pre(props: any) {
         setIsCodeCopyVisible(true)
     }, [])
 
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
         <CodeWrapper
             ref={codeRef}
@@ -48,7 +50,7 @@ function Pre(props: any) {
             onMouseLeave={() => setIsHover(false)}
             onTouchEnd={() => setIsHover(false)}
         >
-            <CodeParentContainer isLight={isLight} {...props} />
+            <CodeParentContainer isLight={IsLight} {...props} />
             {codeRef.current?.textContent && (
                 <CodeCopyButton
                     code={codeRef.current.textContent}

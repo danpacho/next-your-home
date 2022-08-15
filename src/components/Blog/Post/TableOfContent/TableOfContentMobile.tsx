@@ -4,8 +4,7 @@ import media from "@styles/utils/media"
 import { IsLight } from "@typing/theme"
 import type { TableOfContents } from "@lib/unified/remark"
 
-import { useThemeMode } from "@hooks/index"
-import { useAtoms, _atom } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 import { LinkContainer } from "./common"
 import { memo } from "react"
@@ -131,24 +130,27 @@ const HeaderOrder = styled.div<{ color: string }>`
 `
 
 function TableOfContentMobile({ toc }: { toc: TableOfContents[] }) {
-    const { isLight } = useThemeMode()
-    const { focusingPageColorState: color } = useAtoms(
-        _atom("focusingPageColor")
-    )
+    const { IsLight } = useStore($("isLight"))
+    const { FocusingPageColor } = useStore($("focusingPageColor"))
     return (
-        <TableOfContentContainer color={color}>
+        <TableOfContentContainer color={FocusingPageColor}>
             <MobileTocTitle>Before You Read</MobileTocTitle>
 
             {toc.map(({ title, href, children }, order) => (
                 <HeaderContainer key={title}>
                     <LinkContainer href={href}>
-                        <H1LinkContainer isLight={isLight}>
-                            <HeaderOrder color={color}>{order + 1}</HeaderOrder>
+                        <H1LinkContainer isLight={IsLight}>
+                            <HeaderOrder color={FocusingPageColor}>
+                                {order + 1}
+                            </HeaderOrder>
                             <H1Link>{title}</H1Link>
                         </H1LinkContainer>
                     </LinkContainer>
                     {children !== null && (
-                        <H2LinkContainer isLight={isLight} color={color}>
+                        <H2LinkContainer
+                            isLight={IsLight}
+                            color={FocusingPageColor}
+                        >
                             {children.map(({ title: childTitle, href }) => (
                                 <LinkContainer href={href} key={childTitle}>
                                     <H2Link>{childTitle}</H2Link>

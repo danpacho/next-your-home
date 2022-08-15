@@ -2,7 +2,7 @@ import styled from "styled-components"
 
 import { IsLight } from "@typing/theme"
 
-import useThemeMode from "@hooks/useThemeMode"
+import { useStore, $ } from "@atom/index"
 
 const TableStyled = styled.table<IsLight>`
     thead {
@@ -27,8 +27,8 @@ const TableStyled = styled.table<IsLight>`
 `
 
 const Table = (props: any) => {
-    const { isLight } = useThemeMode()
-    return <TableStyled {...props} isLight={isLight} />
+    const { IsLight } = useStore($("isLight"))
+    return <TableStyled {...props} isLight={IsLight} />
 }
 
 export default Table

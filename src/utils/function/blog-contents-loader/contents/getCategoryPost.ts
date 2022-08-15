@@ -9,7 +9,7 @@ import {
 } from "@typing/post/meta"
 
 import {
-    CategoryPostContentType,
+    PostType,
     PostContentType,
     PostControllerType,
     SpecificPostContentType,
@@ -42,6 +42,7 @@ import remarkMath from "remark-math"
 import {
     getTableOfContents,
     remarkAutomaticImageSize,
+    TableOfContents,
 } from "@lib/unified/remark"
 
 import rehypeKatex from "rehype-katex"
@@ -52,6 +53,12 @@ import { bundleMDX } from "mdx-bundler"
 
 import { config } from "blog.config"
 
+//* ----------------------------- 🔥 utils 🔥 -----------------------------
+/**
+ * @param currDate `YYYY/MM/DD`
+ * @param nextDate `YYYY/MM/DD`
+ * @returns sort ascending
+ */
 const sortByDate = (currDate: string, nextDate: string) => {
     const nextDateNumber = Number(nextDate.replace(/\//g, ""))
     const currDateNumber = Number(currDate.replace(/\//g, ""))
@@ -65,7 +72,7 @@ const splitStringByComma = (text: string) =>
     text.split(",").map((text) => text.trim())
 
 /**
- * @param tags `[post-file-name].mdx`에서 추출된 `tags` meta
+ * @param tags extracted from `postFileName.mdx` at tags` meta
  * @returns transform `tags` to `string[]`
  */
 const getTagArray = (tags: string, postFileName: string): string[] => {
@@ -82,27 +89,102 @@ const getTagArray = (tags: string, postFileName: string): string[] => {
     return splitStringByComma(tags)
 }
 
-const addPostUrlToMeta = (postMeta: PostMetaType, order: number) => ({
+//* ----------------------------- 🔥 serializer 🔥 -----------------------------
+
+const updatePostUrlForPagination = (postMeta: PostMetaType, order: number) => ({
     ...postMeta,
     postUrl: `/${postMeta.category}/${Math.floor(
         order / config.postPerCategoryPage + 1
     )}/${removeFileFormat(postMeta.postFileName, "mdx")}`,
 })
 
-const addPostOrderToMeta = (
+const updatePostOrder = (
     postMeta: PostMetaType,
     order: number
 ): PostMetaType => ({ ...postMeta, postOrder: order })
+
+/**
+ * serialize by date
+ * serialize by pagination
+ * check `config.postPerCategoryPage` option for pagination
+ * @param categoryPostFileNameArray `extractCategoryPostFileArray()`
+ */
+const serializeAllPost = async (
+    categoryPostFileNameArray: CategoryPostFileNameType[]
+): Promise<PostType[]> => {
+    const serializeAllPost: PostType[] = await Promise.all(
+        categoryPostFileNameArray.map(
+            async ({ category, categoryPostFileNameArray }) => {
+                const extractedAllPost = (
+                    await categoryPostFileNameArray.reduce<
+                        Promise<PostContentType[]>
+                    >(async (acc, postFileName) => {
+                        const postPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
+
+                        try {
+                            const { bundledSource, meta, toc } =
+                                await getPostInfo({
+                                    category,
+                                    path: postPath,
+                                    fileName: postFileName,
+                                })
+                            if (meta)
+                                return [
+                                    ...(await acc),
+                                    {
+                                        postMeta: meta,
+                                        postSource: bundledSource,
+                                        toc,
+                                    },
+                                ]
+
+                            return await acc
+                        } catch (err) {
+                            throw new BlogErrorAdditionalInfo({
+                                passedError: err,
+                                errorNameDescription:
+                                    "Might be post meta info 🔎 incorrections",
+                                message:
+                                    "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ author  : Post author name\n      ✅ update  : [ yyyy/mm/dd ]\n                 : [🚨WARNING: SHOULD FOLLOW FORMAT]\n      ✅ color   : Post main color, HEX | RGB | RGBA\n                 : [🚨WARNING: WRAP YOUR COLOR WITH colon or semi-colon]\n      ✅ tags    : tag1, tag2, tag3, ...\n                 : [🚨WARNING: DIVIDE TAG WITH comma ,]\n",
+                                customeErrorMessage: `your post meta info at:\n\n   ${postPath}`,
+                            })
+                        }
+                    }, Promise.resolve([] as PostContentType[]))
+                )
+                    .sort(
+                        (
+                            { postMeta: { update: currDate } },
+                            { postMeta: { update: nextDate } }
+                        ) => sortByDate(currDate, nextDate)
+                    )
+                    .map(({ postMeta, postSource, toc }, order) => ({
+                        postMeta: updatePostUrlForPagination(postMeta, order), //* update property for pagination
+                        postSource,
+                        toc,
+                    }))
+
+                return {
+                    category,
+                    postContentArray: extractedAllPost,
+                    postNumber: extractedAllPost.length,
+                }
+            }
+        )
+    )
+
+    return serializeAllPost
+}
+
+//* ----------------------------- 🔥 extract file 🔥 -----------------------------
 
 interface CategoryPostFileNameType {
     category: string
     categoryPostFileNameArray: string[]
 }
 /**
- * @param categoryNameArray 전체 카테고리 이름
- * @returns `category` 카테고리 이름
- * @returns `categoryPostFileNameArray` 해당 카테고리 속 포스트 파일 이름
- * @exception `MacOs` remove `.DS_Store`
+ * @param categoryNameArray all category name
+ * @returns `category`: category name
+ * @returns `categoryPostFileNameArray`: `postFileName` of category
  */
 const extractAllCategoryPostFileName = async (
     categoryNameArray: string[]
@@ -132,11 +214,11 @@ const extractAllCategoryPostFileName = async (
     )
     return dirPostInfo
 }
-
+//* ----------------------------- 🔥 bundler 🔥 -----------------------------
 /**
  * remark & rehype plugins
  */
-const getPlugins = ({
+const definePlugins = ({
     rehypePlugins,
     remarkPlugins,
 }: {
@@ -146,26 +228,22 @@ const getPlugins = ({
     rehypePlugins,
     remarkPlugins,
 })
-
 /**
- * bundling MDX source
+ * bundling MDX source with mdx-bundler
  */
-const bundlePostMDX = async <MetaType>({
-    postSource,
-}: {
-    postSource: string
-}) => {
+const bundlePost = async <MetaType>({ postSource }: { postSource: string }) => {
+    //* plugin of blog
     const customPlugin = config.useKatex
-        ? getPlugins({
+        ? definePlugins({
               rehypePlugins: [rehypePrism, rehypeKatex, rehypeHeaderId],
               remarkPlugins: [remarkAutomaticImageSize, remarkGfm, remarkMath],
           })
-        : getPlugins({
+        : definePlugins({
               rehypePlugins: [rehypePrism, rehypeHeaderId],
               remarkPlugins: [remarkAutomaticImageSize, remarkGfm],
           })
 
-    //# ES Build env config: https://www.alaycock.co.uk/2021/03/mdx-bundler#esbuild-executable
+    //* ES Build env config: https://www.alaycock.co.uk/2021/03/mdx-bundler#esbuild-executable
     if (process.platform === "win32") {
         process.env.ESBUILD_BINARY_PATH = path.join(
             process.cwd(),
@@ -207,14 +285,181 @@ const bundlePostMDX = async <MetaType>({
             readingFileName: "❓",
         })
 
-    const toc = getTableOfContents(postSource)
+    const toc = getTableOfContents(postSource) //* toc on server-side
 
     return {
         bundledResult,
         toc,
     }
 }
+//* ----------------------------- 🔥 post 🔥 -----------------------------
 
+const getPostInfo = async ({
+    category,
+    fileName,
+    path,
+}: {
+    category: string
+    fileName: string
+    path: string
+}): Promise<{
+    bundledSource: string
+    meta: void | PostMetaType
+    toc: TableOfContents[]
+}> => {
+    const postSource = await readFile(path, "utf-8")
+    if (!postSource)
+        throw new BlogFileExtractionError({
+            errorNameDescription: "post file extraction error occured",
+            readingFileFormat: ".mdx",
+            readingFileLocation: path,
+            readingFileName: fileName,
+        })
+
+    const {
+        bundledResult: { code: bundledSource, frontmatter: extractedMeta },
+        toc,
+    } = await bundlePost<MDXPostMetaType>({
+        postSource,
+    })
+
+    const meta = generatePostMeta({
+        extractedMeta,
+        category,
+        postFileName: fileName,
+    })
+
+    return {
+        bundledSource,
+        meta,
+        toc,
+    }
+}
+
+/**
+ * get specific post {@link SpecificPostContentType}
+ */
+const getSpecificCategoryPost = async ({
+    categoryName,
+    categoryPage,
+    postTitle,
+}: {
+    categoryName: string
+    categoryPage: number
+    postTitle: string
+}): Promise<SpecificPostContentType> => {
+    const post = (await getAllCategoryPost())
+        .find(({ category }) => category === categoryName)! //* It is definitely exsists, non-nullable
+        .postContentArray.reduce<SpecificPostContentType>(
+            (post, currPost, idx, totPost) => {
+                if (
+                    currPost.postMeta.postUrl ===
+                    `/${categoryName}/${categoryPage}/${postTitle}`
+                ) {
+                    const isFirst = idx === 0
+                    const isLast = idx === totPost.length - 1
+
+                    const prevPost = isFirst
+                        ? {
+                              title: `Return to ${categoryName}`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx - 1].postMeta.title,
+                              postUrl: totPost[idx - 1].postMeta.postUrl,
+                          }
+                    const nextPost = isLast
+                        ? {
+                              title: `Last post of ${categoryName}!`,
+                              postUrl: `/${categoryName}`,
+                          }
+                        : {
+                              title: totPost[idx + 1].postMeta.title,
+                              postUrl: totPost[idx + 1].postMeta.postUrl,
+                          }
+
+                    const postController: PostControllerType = {
+                        prevPost,
+                        nextPost,
+                    }
+                    const specificPostContent: SpecificPostContentType = {
+                        ...currPost,
+                        postController,
+                    }
+                    return specificPostContent
+                }
+                return post
+            },
+            {} as SpecificPostContentType
+        )
+    return post
+}
+
+const getAllCategoryPost = async (): Promise<PostType[]> =>
+    await serializeAllPost(
+        await extractAllCategoryPostFileName(await getAllCategoryName())
+    )
+
+//* ----------------------------- 🔥 path 🔥 -----------------------------
+
+const getAllCategoryPostPath = memo(config.useMemo, async () =>
+    (await getAllPostMeta()).map(({ postUrl }) => postUrl)
+)
+
+const getAllCategoryPaginationPath = memo(config.useMemo, async () =>
+    (
+        await Promise.all(
+            (
+                await getAllCategoryName()
+            ).map(async (category) => {
+                const specificCategoryPaginationPath = Array.from(
+                    {
+                        length: await getPageNumberOfCategory(category),
+                    },
+                    (_, i) => i + 1
+                ).map((pageNumber) =>
+                    addPathNotation(`${category}/${pageNumber}`)
+                )
+                return specificCategoryPaginationPath
+            })
+        )
+    ).flat()
+)
+
+//* ----------------------------- 🔥 page number 🔥 -----------------------------
+
+const getPageNumberOfCategory = memo(config.useMemo, async (category: string) =>
+    Math.ceil(
+        (await (
+            await readdir(
+                `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}`,
+                "utf-8"
+            )
+        ).length) / config.postPerCategoryPage
+    )
+)
+//* ----------------------------- 🔥 tag 🔥 -----------------------------
+
+const getTagOfSpecificCategoryPage = memo(
+    config.useMemo,
+    (specificPageCategoryPostContent: PostMetaType[]) => {
+        const deduplicatedSpecificCategoryPageTagArray = [
+            ...new Set(
+                specificPageCategoryPostContent.flatMap(({ tags }) => tags)
+            ),
+        ].sort()
+
+        return deduplicatedSpecificCategoryPageTagArray
+    }
+)
+
+//* ----------------------------- 🔥 series 🔥 -----------------------------
+/**
+ * @param pureSeriesString `{seriesTitle}-{order}`, should follow this format
+ * @param postFileName file name of post
+ * @returns `seriesTitle`
+ * @returns `order`
+ */
 const getSeriesInfo = (
     pureSeriesString: string,
     postFileName: string
@@ -251,6 +496,126 @@ const getSeriesInfo = (
     return postSeriesMeta
 }
 
+const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
+    const seriesMetaArray = getAllCategorySeriesMeta(categoryPostMeta)
+
+    const seriesInfo = seriesMetaArray
+        .map((seriesMeta) =>
+            seriesMeta.reduce<SeriesInfoObjectType[]>(
+                (acc, curr, order, tot) => {
+                    if (curr.series === null) return acc
+
+                    const updatedCurr = {
+                        ...curr.series,
+                        postTitle: curr.title,
+                        color: curr.color,
+                        url: curr.postUrl,
+                        prevUrl: tot[order - 1]?.postUrl ?? null,
+                        nextUrl: tot[order + 1]?.postUrl ?? null,
+                    }
+                    return [...acc, updatedCurr]
+                },
+                []
+            )
+        )
+        .map((seriesInfo) =>
+            seriesInfo.reduce<SeriesInfoType>(
+                (__, { seriesTitle }, _, seriesInfo) => ({
+                    seriesTitle,
+                    seriesInfo,
+                }),
+                {} as SeriesInfoType
+            )
+        )
+        .filter(({ seriesInfo }) => seriesInfo.length !== 1) //* number of series is more than 2
+        .sort(
+            (
+                { seriesTitle: firstSeriesTitle },
+                { seriesTitle: secondSeriesTitle }
+            ) => firstSeriesTitle.localeCompare(secondSeriesTitle, ["ko", "en"])
+        )
+    return seriesInfo
+}
+
+interface ExtractedSeriesData
+    extends Pick<PostMetaType, "color" | "postUrl" | "title"> {
+    series: PostSeriesMetaType
+}
+const getAllCategorySeriesMeta = (categoryPostMeta: PostMetaType[]) => {
+    const filteredBySeriesExsistance = categoryPostMeta.reduce<
+        ExtractedSeriesData[]
+    >((acc, { series, color, title, postUrl }) => {
+        if (series === null) return acc
+        return [
+            ...acc,
+            {
+                series,
+                color,
+                title,
+                postUrl,
+            },
+        ]
+    }, [])
+    const seriesTitle = [
+        ...new Set(
+            filteredBySeriesExsistance.map(
+                ({ series: { seriesTitle } }) => seriesTitle
+            )
+        ),
+    ]
+    const seriesMeta = seriesTitle.map((title) =>
+        filteredBySeriesExsistance
+            .filter(({ series: { seriesTitle } }) => seriesTitle === title)
+            .sort((a, b) => a.series.order - b.series.order)
+    )
+
+    return seriesMeta
+}
+
+const getCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) =>
+    transformCategorySeriesInfo(categoryPostMeta)
+
+const getSpecificCategorySeriesInfo = async (
+    postSeriesTitle: string,
+    categoryPostMeta: PostMetaType[]
+) => {
+    const seriesInfo = (await getCategorySeriesInfo(categoryPostMeta)).find(
+        ({ seriesTitle }) => seriesTitle === postSeriesTitle
+    )
+    return seriesInfo ?? null
+}
+
+//* ----------------------------- 🔥 meta 🔥 -----------------------------
+/**
+ * extract pure meta from `{postFileName}.mdx`
+ */
+const extractPostMeta = async ({
+    category,
+    postFileName,
+}: {
+    category: string
+    postFileName: string
+}) => {
+    const postUrl = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
+    const postSource = await readFile(postUrl, "utf-8")
+    if (!postSource)
+        throw new BlogFileExtractionError({
+            errorNameDescription: "post file",
+            readingFileFormat: ".mdx",
+            readingFileLocation: postUrl,
+            readingFileName: postFileName,
+        })
+
+    const extractedMeta = matter(postSource).data as MDXPostMetaType
+    const postMeta = generatePostMeta({
+        extractedMeta,
+        category,
+        postFileName,
+    })
+
+    return postMeta
+}
+
 const generatePostMeta = ({
     extractedMeta,
     category,
@@ -259,15 +624,15 @@ const generatePostMeta = ({
     extractedMeta: MDXPostMetaType
     category: string
     postFileName: string
-}) => {
-    if (Boolean(extractedMeta.postpone) === true) return
+}): PostMetaType | void => {
+    if (Boolean(extractedMeta.postpone) === true) return //* don't have to generate meta when postpone === true
 
     const postMeta = {
         ...extractedMeta,
         category,
         postFileName,
-        postUrl: "",
-        postOrder: 0,
+        postUrl: "", //* temporary set empty string for pagination
+        postOrder: 0, //* temporary set 0 for pagination
         tags: getTagArray(extractedMeta.tags, postFileName),
         postpone: false,
         reference: extractedMeta?.reference
@@ -301,304 +666,6 @@ const generatePostMeta = ({
 
     return postMeta
 }
-
-const extractPostMeta = async ({
-    category,
-    postFileName,
-}: {
-    category: string
-    postFileName: string
-}) => {
-    const postUrl = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${postFileName}`
-    const postSource = await readFile(postUrl, "utf-8")
-    if (!postSource)
-        throw new BlogFileExtractionError({
-            errorNameDescription: "post file",
-            readingFileFormat: ".mdx",
-            readingFileLocation: postUrl,
-            readingFileName: postFileName,
-        })
-
-    const extractedMeta = matter(postSource).data as MDXPostMetaType
-    const postMeta = generatePostMeta({
-        extractedMeta,
-        category,
-        postFileName,
-    })
-
-    return postMeta
-}
-
-/**
- * @param categoryPostFileNameArray `extractCategoryPostFileArray()`
- * @returns 각 카테고리 포스트, `PostContent`형식으로 변환
- * @returns 전체 포스트, 최신 날짜 순 정렬 후 반환
- * @note `config` **postPerCategoryPage** 참조
- */
-const extractAndTransformAllCategoryPostContent = async (
-    categoryPostFileNameArray: CategoryPostFileNameType[]
-): Promise<CategoryPostContentType[]> => {
-    const CategoryPostContentArray: CategoryPostContentType[] =
-        await Promise.all(
-            categoryPostFileNameArray.map(
-                async ({ category, categoryPostFileNameArray }) => {
-                    const postContentArray = (
-                        await categoryPostFileNameArray.reduce<
-                            Promise<PostContentType[]>
-                        >(async (acc, categoryPostFileName) => {
-                            const postContentPath = `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}/${categoryPostFileName}`
-
-                            try {
-                                const postSource = await readFile(
-                                    postContentPath,
-                                    "utf-8"
-                                )
-                                if (!postSource)
-                                    throw new BlogFileExtractionError({
-                                        errorNameDescription:
-                                            "post file extraction error occured",
-                                        readingFileFormat: ".mdx",
-                                        readingFileLocation: postContentPath,
-                                        readingFileName: categoryPostFileName,
-                                    })
-
-                                const {
-                                    bundledResult: {
-                                        code: bundledPostSource,
-                                        frontmatter: meta,
-                                    },
-                                    toc,
-                                } = await bundlePostMDX<MDXPostMetaType>({
-                                    postSource,
-                                })
-
-                                const postMeta = generatePostMeta({
-                                    extractedMeta: meta,
-                                    category,
-                                    postFileName: categoryPostFileName,
-                                })
-
-                                if (postMeta)
-                                    return [
-                                        ...(await acc),
-                                        {
-                                            postMeta,
-                                            postSource: bundledPostSource,
-                                            toc,
-                                        },
-                                    ]
-
-                                return await acc
-                            } catch (err) {
-                                throw new BlogErrorAdditionalInfo({
-                                    passedError: err,
-                                    errorNameDescription:
-                                        "Might be post meta info 🔎 incorrections",
-                                    message:
-                                        "Post Should include\n\n      🔒 All Value Common RULE: [ NOT empty string: '' ]\n\n      ✅ title   : Post's Title\n      ✅ preview : Post's Preview\n      ✅ author  : Post author name\n      ✅ update  : [ yyyy/mm/dd ]\n                 : [🚨WARNING: SHOULD FOLLOW FORMAT]\n      ✅ color   : Post main color, HEX | RGB | RGBA\n                 : [🚨WARNING: WRAP YOUR COLOR WITH colon or semi-colon]\n      ✅ tags    : tag1, tag2, tag3, ...\n                 : [🚨WARNING: DIVIDE TAG WITH comma ,]\n",
-                                    customeErrorMessage: `your post meta info at:\n\n   ${postContentPath}`,
-                                })
-                            }
-                        }, Promise.resolve([] as PostContentType[]))
-                    )
-                        .sort(
-                            (
-                                { postMeta: { update: currDate } },
-                                { postMeta: { update: nextDate } }
-                            ) => sortByDate(currDate, nextDate)
-                        )
-                        .map(({ postMeta, postSource, toc }, order) => ({
-                            postMeta: addPostUrlToMeta(postMeta, order),
-                            postSource,
-                            toc,
-                        }))
-
-                    return {
-                        category,
-                        postContentArray,
-                        postNumber: postContentArray.length,
-                    }
-                }
-            )
-        )
-
-    return CategoryPostContentArray
-}
-
-/**
- * @returns 각 카테고리의 모든 포스팅 정보를 가공 한 후, 반환
- */
-const getAllCategoryPostContent = async (): Promise<
-    CategoryPostContentType[]
-> =>
-    await extractAndTransformAllCategoryPostContent(
-        await extractAllCategoryPostFileName(await getAllCategoryName())
-    )
-
-/**
- * @returns 전체 포스트 링크 url 반환
- */
-const getAllCategoryPostContentPath = memo(config.useMemo, async () =>
-    (await getAllPostMeta()).map(({ postUrl }) => postUrl)
-)
-
-/**
- * @note **`pagination`** function
- * ---
- * @param category 포스트 meta 추출 카테고리
- * @param pageNumber 포스트 meta 추출 page
- * @return `page` param에 따라 반환하는 포스트
- * @note `config` **postPerCategoryPage** 참조
- */
-const getSpecificCategoryPagePostMeta = memo(
-    config.useMemo,
-    async ({
-        category,
-        pageNumber,
-    }: {
-        category: string
-        pageNumber: number
-    }): Promise<PostMetaType[]> =>
-        await (
-            await getCategoryPostMeta(category)
-        ).slice(
-            (pageNumber - 1) * config.postPerCategoryPage,
-            pageNumber * config.postPerCategoryPage
-        )
-)
-
-/**
- * @note **`pagination`** function
- * ---
- * @returns 특정 카테고리 포스팅 `page` 갯수
- * @note `config` **postPerCategoryPage** 참조
- */
-const getCategoryTotalPaginationNumber = memo(
-    config.useMemo,
-    async (category: string) =>
-        Math.ceil(
-            (await (
-                await readdir(
-                    `${blogContentsDirectory}/${category}/${POST_DIRECTORY_NAME}`,
-                    "utf-8"
-                )
-            ).length) / config.postPerCategoryPage
-        )
-)
-
-/**
- * @note **`pagination`** function
- * ---
- * @returns 모든 카테고리 pagination 링크 url
- */
-const getAllCategoryPaginationPath = memo(config.useMemo, async () =>
-    (
-        await Promise.all(
-            (
-                await getAllCategoryName()
-            ).map(async (category) => {
-                const specificCategoryPaginationPath = Array.from(
-                    {
-                        length: await getCategoryTotalPaginationNumber(
-                            category
-                        ),
-                    },
-                    (_, i) => i + 1
-                ).map((pageNumber) =>
-                    addPathNotation(`${category}/${pageNumber}`)
-                )
-                return specificCategoryPaginationPath
-            })
-        )
-    ).flat()
-)
-
-/**
- * @note **`pagination`** function
- * ---
- * @param specificPageCategoryPostContent 특정 `page`의 포스트
- * @returns 특정 `page`의 포스트 태그
- */
-const getCategoryPaginationTag = memo(
-    config.useMemo,
-    (specificPageCategoryPostContent: PostMetaType[]) => {
-        const deduplicatedSpecificCategoryPageTagArray = [
-            ...new Set(
-                specificPageCategoryPostContent.flatMap(({ tags }) => tags)
-            ),
-        ].sort()
-
-        return deduplicatedSpecificCategoryPageTagArray
-    }
-)
-
-/**
- * @note 특정 포스트 정보를 가져오는 함수
- *
- * @param categoryName 추출할 카테고리 이름
- * @param postTitle 추출할 포스트 이름
- * @param categoryPage 해당 포스트가 속한 카테고리의 page
- *
- * @return `postMeta` 포스트 meta 데이터
- * @return `postSource` 포스트 컴파일 소스
- * @return `postController` 이전포스트 - 현재 - 다음 포스트
- */
-const getSpecificCategoryPostContent = async ({
-    categoryName,
-    categoryPage,
-    postTitle,
-}: {
-    categoryName: string
-    postTitle: string
-    categoryPage: number
-}): Promise<SpecificPostContentType> => {
-    const specificCategoryPostContent = (await getAllCategoryPostContent())
-        .find(({ category }) => category === categoryName)!
-        .postContentArray.reduce<SpecificPostContentType>(
-            (accPostContent, currValue, idx, totPost) => {
-                if (
-                    currValue.postMeta.postUrl ===
-                    `/${categoryName}/${categoryPage}/${postTitle}`
-                ) {
-                    const isFirst = idx === 0
-                    const prevPost = isFirst
-                        ? {
-                              title: `${categoryName} 글 목록으로 돌아가기`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx - 1].postMeta.title,
-                              postUrl: totPost[idx - 1].postMeta.postUrl,
-                          }
-
-                    const isLast = idx === totPost.length - 1
-                    const nextPost = isLast
-                        ? {
-                              title: `${categoryName}의 마지막 글이에요!`,
-                              postUrl: `/${categoryName}`,
-                          }
-                        : {
-                              title: totPost[idx + 1].postMeta.title,
-                              postUrl: totPost[idx + 1].postMeta.postUrl,
-                          }
-
-                    const postController: PostControllerType = {
-                        prevPost,
-                        nextPost,
-                    }
-                    const specificPostContent: SpecificPostContentType = {
-                        ...currValue,
-                        postController,
-                    }
-                    return specificPostContent
-                }
-                return accPostContent
-            },
-            {} as SpecificPostContentType
-        )
-    return specificCategoryPostContent
-}
-
 /**
  * @returns 모든 포스트 `meta` 데이터
  * @note `postpone` 포스트 제거
@@ -612,12 +679,13 @@ const extractAllPostMeta = async (
                 ({ category, categoryPostFileNameArray }) =>
                     categoryPostFileNameArray.reduce<Promise<PostMetaType[]>>(
                         async (acc, postFileName) => {
-                            const postMeta = await extractPostMeta({
+                            const purePostMeta = await extractPostMeta({
                                 category,
                                 postFileName,
                             })
+                            if (purePostMeta)
+                                return [...(await acc), purePostMeta]
 
-                            if (postMeta) return [...(await acc), postMeta]
                             return await acc
                         },
                         Promise.resolve([] as PostMetaType[])
@@ -625,10 +693,11 @@ const extractAllPostMeta = async (
             )
         )
     )
-        .map((objects) =>
-            objects
-                .sort((prev, curr) => sortByDate(prev.update, curr.update))
-                .map(addPostUrlToMeta)
+        .map(
+            (unUpdatedAllPostMeta) =>
+                unUpdatedAllPostMeta
+                    .sort((prev, curr) => sortByDate(prev.update, curr.update)) //* update: sort by date
+                    .map(updatePostUrlForPagination) //* update: pagination
         )
         .flat()
 
@@ -639,143 +708,67 @@ const getAllPostMeta = async () =>
     await extractAllPostMeta(
         await extractAllCategoryPostFileName(await getAllCategoryName())
     )
-interface ExtractedSeriesData
-    extends Pick<PostMetaType, "color" | "postUrl" | "title"> {
-    series: PostSeriesMetaType
-}
-const getCategorySeriesMetaArray = (categoryPostMeta: PostMetaType[]) => {
-    const filteredBySeriesExsistance = categoryPostMeta.reduce<
-        ExtractedSeriesData[]
-    >((acc, { series, color, title, postUrl }) => {
-        if (series === null) return acc
-        return [
-            ...acc,
-            {
-                series,
-                color,
-                title,
-                postUrl,
-            },
-        ]
-    }, [])
-    const seriesTitle = [
-        ...new Set(
-            filteredBySeriesExsistance.map(
-                ({ series: { seriesTitle } }) => seriesTitle
-            )
-        ),
-    ]
-    const seriesMeta = seriesTitle.map((title) =>
-        filteredBySeriesExsistance
-            .filter(({ series: { seriesTitle } }) => seriesTitle === title)
-            .sort((a, b) => a.series.order - b.series.order)
-    )
 
-    return seriesMeta
-}
-
-const transformCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) => {
-    const seriesMetaArray = getCategorySeriesMetaArray(categoryPostMeta)
-    const seriesInfo = seriesMetaArray
-        .map((seriesMeta) =>
-            seriesMeta.reduce<SeriesInfoObjectType[]>(
-                (acc, curr, order, tot) => {
-                    if (curr.series === null) return acc
-                    const updatedCurr = {
-                        ...curr.series,
-                        postTitle: curr.title,
-                        color: curr.color,
-                        url: curr.postUrl,
-                        prevUrl: tot[order - 1]?.postUrl ?? null,
-                        nextUrl: tot[order + 1]?.postUrl ?? null,
-                    }
-                    return [...acc, updatedCurr]
-                },
-                []
-            )
-        )
-        .map((seriesInfo) =>
-            seriesInfo.reduce<SeriesInfoType>(
-                (__, { seriesTitle }, _, seriesInfo) => ({
-                    seriesTitle,
-                    seriesInfo,
-                }),
-                {} as SeriesInfoType
-            )
-        )
-        .filter(({ seriesInfo }) => seriesInfo.length !== 1) // only one series is not regarded as series post
-        .sort(
-            (
-                { seriesTitle: firstSeriesTitle },
-                { seriesTitle: secondSeriesTitle }
-            ) => firstSeriesTitle.localeCompare(secondSeriesTitle, ["ko", "en"])
-        )
-    return seriesInfo
-}
-
-const getCategorySeriesInfo = (categoryPostMeta: PostMetaType[]) =>
-    transformCategorySeriesInfo(categoryPostMeta)
-
-const getSpecificCategorySeriesInfo = async (
-    postSeriesTitle: string,
-    categoryPostMeta: PostMetaType[]
-) => {
-    const seriesInfo = (await getCategorySeriesInfo(categoryPostMeta)).find(
-        ({ seriesTitle }) => seriesTitle === postSeriesTitle
-    )
-    return seriesInfo ?? null
-}
-
-/**
- * @param categoryName 특정 카테고리
- * @returns 특정 카테고리의 포스트 `meta`p
- */
-const getCategoryPostMeta = async (
-    categoryName: string
-): Promise<PostMetaType[]> =>
-    (await getAllPostMeta())
-        .filter(({ category }) => category === categoryName)
-        .map(addPostOrderToMeta)
-/**
- * @returns 모든 포스트 중, 최신 포스트의 `meta` 데이터
- * @note `config` **numberOfLatestPost** 참조
- */
 const getLatestPostMeta = memo(
     config.useMemo,
     async (): Promise<PostMetaType[]> =>
         (await getAllPostMeta())
             .sort((prev, current) => sortByDate(prev.update, current.update))
             .slice(0, config.numberOfLatestPost)
-            .map(addPostOrderToMeta)
+            .map(updatePostOrder)
 )
 
-/**
- * @param categoryName 특정 카테고리
- * @returns 특정 카테고리 최신 포스트 `meta` 데이터
- * @note `config` **numberOfLatestPost** 참조
- */
 const getCategoryLatestPostMeta = (
     categoryPostMeta: PostMetaType[]
 ): PostMetaType[] => categoryPostMeta.slice(0, config.numberOfLatestPost)
 
+const getCategoryAllPostMeta = async (
+    categoryName: string
+): Promise<PostMetaType[]> =>
+    (await getAllPostMeta())
+        .filter(({ category }) => category === categoryName)
+        .map(updatePostOrder)
+
+/**
+ * @param category meta extraction category
+ * @param pageNumber meta extraction page-number
+ */
+const getSpecificPostMeta = memo(
+    config.useMemo,
+    async ({
+        category,
+        pageNumber,
+    }: {
+        category: string
+        pageNumber: number
+    }): Promise<PostMetaType[]> =>
+        await (
+            await getCategoryAllPostMeta(category)
+        ).slice(
+            (pageNumber - 1) * config.postPerCategoryPage,
+            pageNumber * config.postPerCategoryPage
+        )
+)
+
+//* ----------------------------- 🔥 export 🔥 -----------------------------
 export {
-    //* bundle mdx
-    bundlePostMDX,
-    //* /category
-    getSpecificCategoryPagePostMeta,
-    //* /category/[page]
-    getCategoryTotalPaginationNumber,
-    getAllCategoryPaginationPath,
-    getCategoryPaginationTag,
-    //* /category/[page]/[postTitle]
-    getSpecificCategoryPostContent,
-    //* meta - total | category | category of latest
+    //* bundleMDX
+    bundlePost,
+    //* pagination
+    getPageNumberOfCategory,
+    //* post
+    getSpecificCategoryPost,
+    //* tag
+    getTagOfSpecificCategoryPage,
+    //* meta
     getLatestPostMeta,
-    getCategoryPostMeta,
     getCategoryLatestPostMeta,
-    //* post link url
-    getAllCategoryPostContentPath,
+    getCategoryAllPostMeta,
+    getSpecificPostMeta,
     //* series
     getCategorySeriesInfo,
     getSpecificCategorySeriesInfo,
+    //* getStaticPath
+    getAllCategoryPaginationPath,
+    getAllCategoryPostPath,
 }

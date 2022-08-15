@@ -8,10 +8,12 @@ import Link from "next/link"
 import { IsLight } from "@typing/theme"
 import { PostControllerType as PostControllerPreviewProps } from "@typing/post/content"
 
-import { useScrollDirection, useThemeMode } from "@hooks/index"
+import { useScrollDirection } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { HomeIcon, NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
+
+import { $, useStore } from "@atom/index"
 
 const ControllerContainer = styled.div<{ isScrollDown: boolean }>`
     transition: transform cubic-bezier(0.39, 0.575, 0.565, 1) 0.6s;
@@ -166,7 +168,7 @@ function PostController({
     nextPost,
     categoryURL,
 }: PostControllerProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const { isScrollDown } = useScrollDirection({
         throttleTime: 200,
         responsivenessPixel: 2.5,
@@ -180,11 +182,11 @@ function PostController({
                         buttonType="prev"
                         type="button"
                         aria-label="previous post"
-                        isLight={isLight}
+                        isLight={IsLight}
                     >
                         <PrevIcon width="18px" height="18px" />
                     </ControllerButton>
-                    <PostTitleText isLight={isLight}>
+                    <PostTitleText isLight={IsLight}>
                         <SizedText
                             defaultLineNumber={2}
                             lineHeight={0.85}
@@ -201,7 +203,7 @@ function PostController({
                     buttonType="category"
                     type="button"
                     aria-label="back to category"
-                    isLight={isLight}
+                    isLight={IsLight}
                 >
                     <HomeIcon width="18px" height="18px" />
                 </ControllerButton>
@@ -209,7 +211,7 @@ function PostController({
 
             <Link href={nextPost.postUrl} passHref>
                 <InfoContainer>
-                    <PostTitleText isLight={isLight}>
+                    <PostTitleText isLight={IsLight}>
                         <SizedText
                             defaultLineNumber={2}
                             lineHeight={0.85}
@@ -222,7 +224,7 @@ function PostController({
                         buttonType="next"
                         type="button"
                         aria-label="next post"
-                        isLight={isLight}
+                        isLight={IsLight}
                     >
                         <NextIcon width="18px" height="18px" />
                     </ControllerButton>

@@ -11,7 +11,7 @@ import { usePointerInteraction } from "@hooks/index"
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { LinkContainer } from "./common"
 
-import { useAtoms, _atom } from "@lib/jotai"
+import { useStore, $ } from "@atom/index"
 
 const TableOfContentPositionContainer = styled.div`
     position: sticky;
@@ -112,9 +112,7 @@ const H2Container = styled.div`
 `
 
 function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
-    const { focusTitleState, focusTitleSetState } = useAtoms(
-        _atom("focusTitle")
-    )
+    const { FocusingTitle, setFocusingTitle } = useStore($("focusingTitle"))
 
     const [isFocusing, setIsFocusing] = useState(false)
 
@@ -127,7 +125,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                 })}
             >
                 {toc.map(({ title, href, children }, index) => {
-                    const isTitleFocusing = focusTitleState === title
+                    const isTitleFocusing = FocusingTitle === title
                     return (
                         <LinkContainer key={title} href={href}>
                             <H1Link
@@ -157,7 +155,7 @@ function TableOfContentDesktop({ toc }: { toc: TableOfContents[] }) {
                                                         }
                                                         onClick={(e) => {
                                                             e.stopPropagation()
-                                                            focusTitleSetState(
+                                                            setFocusingTitle(
                                                                 title
                                                             )
                                                         }}

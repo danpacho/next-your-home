@@ -4,9 +4,9 @@ import { iconStyle } from "@styles/utils/icon.style"
 
 import { IsLight } from "@typing/theme"
 
-import { useThemeMode } from "@hooks/index"
-
 import { DeleteIcon, FlagFillIcon } from "@components/UI/Atoms/Icons"
+
+import { $, useStore } from "@atom/index"
 
 const borderStyle = {
     topLeftBottomRight: css`
@@ -171,7 +171,7 @@ const CategoryTag = ({
 }: CategoryTagProps) => {
     const resetFilteredTagArray = () => setFilteredTagArray([])
 
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
         <TagContainer>
             {categoryTagArray?.map((categoryTag, order) => {
@@ -189,7 +189,7 @@ const CategoryTag = ({
                         color={categoryColor}
                         isFiltered={isFiltered}
                         order={order % 4}
-                        isLight={isLight}
+                        isLight={IsLight}
                         key={categoryTag}
                     >
                         {isFiltered ? <FlagFillIcon /> : <p>#</p>}
@@ -203,7 +203,7 @@ const CategoryTag = ({
                     isFiltered={true}
                     onClick={resetFilteredTagArray}
                     color={categoryColor}
-                    isLight={isLight}
+                    isLight={IsLight}
                 >
                     <DeleteIcon />
                 </Tag>

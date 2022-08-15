@@ -9,13 +9,13 @@ import { ColorProps, IsLight } from "@typing/theme"
 
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import { usePointerInteraction, useThemeMode } from "@hooks/index"
+import { usePointerInteraction } from "@hooks/index"
 
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
 
-import { useAtoms, _slector } from "@lib/jotai"
+import { $, useStore } from "@atom/index"
 
 interface CategoryLinkContainerStyle extends ColorProps {
     isHover: boolean
@@ -106,7 +106,7 @@ function CategoryLink({
     emoji,
 }: CategoryLinkProps) {
     const [isHover, setIsHover] = useState(false)
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
 
     return (
@@ -115,12 +115,12 @@ function CategoryLink({
                 {...usePointerInteraction({
                     pointerStateSetter: setIsHover,
                 })}
-                _color={isLight ? color : darkModeColor}
+                _color={IsLight ? color : darkModeColor}
                 isHover={isHover}
-                isLight={isLight}
+                isLight={IsLight}
             >
                 <EmojiContainer
-                    color={isLight ? color : darkModeColor}
+                    color={IsLight ? color : darkModeColor}
                     isHover={isHover}
                     desk={{
                         padding: 0,
@@ -146,7 +146,7 @@ function CategoryLink({
                         isHover={isHover}
                         fontWeight={400}
                         fontSize="lg"
-                        underscoreColor={isLight ? color : darkModeColor}
+                        underscoreColor={IsLight ? color : darkModeColor}
                         transformOrigin="left"
                     >
                         <SizedText lineHeight={1.5} defaultLineNumber={1}>

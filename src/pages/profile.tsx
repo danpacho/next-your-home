@@ -9,7 +9,7 @@ import { IsLight } from "@typing/theme"
 
 import { getProfileSource } from "@utils/function/blog-contents-loader/profile/getProfile"
 
-import { useSetFocusingPageColor, useThemeMode } from "@hooks/index"
+import { useSetFocusingPageColor } from "@hooks/index"
 
 import {
     FacebookIcon,
@@ -21,6 +21,8 @@ import {
     YoutubeIcon,
 } from "@components/UI/Atoms/Icons"
 import MDXBundler from "@components/MDXBundler"
+
+import { useStore, $ } from "@atom/index"
 
 import { AuthorInfoType, config } from "blog.config"
 
@@ -125,7 +127,7 @@ const ProfileContactLink = styled.a`
     all: unset;
 `
 const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
         <ProfileContactContainer>
             {Object.entries(contacts).map((contact) => {
@@ -139,7 +141,7 @@ const ProfileContact = ({ contacts }: Pick<AuthorInfoType, "contacts">) => {
                             <ProfileButtonContainer
                                 type="button"
                                 aria-label={`${config.author.name} ${key} link`}
-                                isLight={isLight}
+                                isLight={IsLight}
                             >
                                 {PROFILE_BUTTON("1.1rem", "1.1rem")[key]}
                             </ProfileButtonContainer>

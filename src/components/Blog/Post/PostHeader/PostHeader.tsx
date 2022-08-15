@@ -11,7 +11,7 @@ import { FlagFillIcon, QuoteIcon } from "@components/UI/Atoms/Icons"
 import PostSeries from "../PostSeries/PostSeries"
 import PostTag from "../PostTag/PostTag"
 
-import { useThemeMode } from "@hooks/index"
+import { $, useStore } from "@atom/index"
 
 const HeaderContainer = styled.div<IsLight>`
     width: 100%;
@@ -130,9 +130,9 @@ function PostHeader({
     category,
     postSeriesInfo,
 }: PostHeaderProps) {
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     return (
-        <HeaderContainer isLight={isLight}>
+        <HeaderContainer isLight={IsLight}>
             <Title>
                 <TitleQuote type="start" fill={color} />
                 {title}
@@ -140,7 +140,7 @@ function PostHeader({
             </Title>
 
             <Link href={`/${category}`} passHref>
-                <PostTag _color={color} tagType="category" isLight={isLight}>
+                <PostTag _color={color} tagType="category" isLight={IsLight}>
                     <p>{category}</p>
                 </PostTag>
             </Link>
@@ -151,7 +151,7 @@ function PostHeader({
                         key={tag}
                         _color={color}
                         tagType="tag"
-                        isLight={isLight}
+                        isLight={IsLight}
                     >
                         <FlagFillIcon />
                         <p>{tag}</p>

@@ -3,9 +3,9 @@ import media from "@styles/utils/media"
 
 import { IsLight } from "@typing/theme"
 
-import { useThemeMode } from "@hooks/index"
-
 import { CodeContentBox } from "./CodeUtil"
+
+import { $, useStore } from "@atom/index"
 
 const InlineCode = styled.code<IsLight>`
     padding: 0 0.2rem;
@@ -55,8 +55,8 @@ interface CodeProps {
     className?: string
 }
 function Code(props: CodeProps) {
-    const { isLight } = useThemeMode()
-    if (!props.className) return <InlineCode isLight={isLight} {...props} />
+    const { IsLight } = useStore($("isLight"))
+    if (!props.className) return <InlineCode isLight={IsLight} {...props} />
 
     const language = props.className.split(" ")[0].replace("language-", "")
 
