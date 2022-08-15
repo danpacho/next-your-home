@@ -14,16 +14,14 @@ import { CategoryInfoType } from "@typing/category/info"
 import { getAllCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
 import { shadeColor } from "@utils/function/color/shadeColor"
 
-import {
-    usePointerInteraction,
-    useSetFocusingPageColor,
-    useThemeMode,
-} from "@hooks/index"
+import { usePointerInteraction, useSetFocusingPageColor } from "@hooks/index"
 
 import { LeafIcon } from "@components/UI/Atoms/Icons"
 import { SizedText } from "@components/UI/Atoms/SizedText"
 import { EmojiContainer } from "@components/UI/Atoms/EmojiContainer"
 import { UnderscoreText } from "@components/UI/Atoms/UnderscoreText"
+
+import { useStore, $ } from "@atom/index"
 
 import { config } from "blog.config"
 
@@ -199,9 +197,9 @@ const CategoryLink = ({
 }: CategoryInfoType) => {
     const [isHover, setIsHover] = useState<boolean>(false)
 
-    const { isLight } = useThemeMode()
+    const { IsLight } = useStore($("isLight"))
     const darkModeColor = useMemo(() => shadeColor(color, 50), [color])
-    const categoryColor = isLight ? color : darkModeColor
+    const categoryColor = IsLight ? color : darkModeColor
 
     return (
         <Link passHref href={categoryUrl}>

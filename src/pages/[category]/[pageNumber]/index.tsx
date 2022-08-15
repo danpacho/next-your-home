@@ -8,14 +8,12 @@ import { PostMetaType } from "@typing/post/meta"
 import { CategoryInfoType } from "@typing/category/info"
 
 import {
-    getCategoryTotalPaginationNumber,
-    getSpecificCategoryPagePostMeta,
+    getPageNumberOfCategory,
+    getSpecificPostMeta,
     getAllCategoryPaginationPath,
-    getCategoryPaginationTag,
+    getTagOfSpecificCategoryPage,
 } from "@utils/function/blog-contents-loader/contents/getCategoryPost"
 import { getSpecificCategoryInfo } from "@utils/function/blog-contents-loader/contents/getCategory"
-
-import { useThemeMode } from "@hooks/index"
 
 import { NextIcon, PrevIcon } from "@components/UI/Atoms/Icons"
 import { Button } from "@components/UI/Atoms/Button"
@@ -38,16 +36,16 @@ export const getStaticProps: GetStaticProps<CategoryPostPerPageProps> = async ({
         useTXT: config.useTXT,
     })
 
-    const specificPageCategoryPostMeta = await getSpecificCategoryPagePostMeta({
+    const specificPageCategoryPostMeta = await getSpecificPostMeta({
         category,
         pageNumber: Number(pageNumber),
     })
 
-    const spcificPageCategoryPostTagArray = getCategoryPaginationTag(
+    const spcificPageCategoryPostTagArray = getTagOfSpecificCategoryPage(
         specificPageCategoryPostMeta
     )
 
-    const endPageNumber = await getCategoryTotalPaginationNumber(category)
+    const endPageNumber = await getPageNumberOfCategory(category)
 
     return {
         props: {
@@ -83,7 +81,6 @@ function CategoryPostPerPage(props: CategoryPostPerPageProps) {
     const { isLast, categoryUrl, category } = props
     const isFirst = pageNumber === 1
 
-    const { isLight } = useThemeMode()
     return (
         <CategoryCommonLayout
             {...props}
