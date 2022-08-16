@@ -219,18 +219,18 @@
 3.  빌드 `bundle size`를 확인 해봅시다
     ```bash
     Page                                         Size     First Load JS
-    ┌ ● /                                        1.46 kB        91.6 kB
-    ├   /_app                                    0 B            70.8 kB
-    ├ ● /[category]                              748 B          90.9 kB
-    ├ ● /[category]/[pageNumber]                 832 B          91.0 kB
-    ├ ● /[category]/[pageNumber]/[postTitle]     1.64 kB        97.3 kB
-    ├ ○ /404                                     269 B          71.1 kB
-    ├ ○ /500                                     269 B          71.1 kB
-    ├ ● /category                                3.23 kB        78.6 kB
-    └ ● /profile                                 2.69  kB       89.5 kB
-    + First Load JS shared by all                70.8 kB
+    ┌ ● /                                        1.46 kB        91   kB
+    ├   /_app                                    0 B            70.7 kB
+    ├ ● /[category]                              748 B          90.3 kB
+    ├ ● /[category]/[pageNumber]                 832 B          90.4 kB
+    ├ ● /[category]/[pageNumber]/[postTitle]     1.64 kB        96.5 kB
+    ├ ○ /404                                     269 B          71   kB
+    ├ ○ /500                                     269 B          71   kB
+    ├ ● /category                                3.23 kB        78.4 kB
+    └ ● /profile                                 2.69  kB       89   kB
+    + First Load JS shared by all                70.7 kB
     ├ chunks/main-be00b42900d433cc.js            37.1 kB
-    ├ chunks/pages/_app-764e610a6d9ea0f7.js      32.9 kB
+    ├ chunks/pages/_app-764e610a6d9ea0f7.js      32.8 kB
     ├ chunks/webpack-3373b0f21806983f.js         827 B
     └ css/a36597fbcc4c45ff.css                   801 B
     ```
