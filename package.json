@@ -15,12 +15,12 @@
     "scripts": {
         "dev": "next-remote-watch ./blog/",
         "seo": "ts-node -r tsconfig-paths/register --project tsconfig.node.json ./scripts/seo.ts",
-        "next-build": "next build",
-        "build": "pnpm next-build && pnpm seo",
+        "next:build": "next build",
+        "build": "pnpm next:build && pnpm seo",
         "start": "next start",
         "lint": "next lint",
         "post": "npx -y @danpacho/post-generator",
-        "analyze": "ANALYZE=true pnpm next-build"
+        "analyze": "ANALYZE=true pnpm next:build"
     },
     "dependencies": {
         "@builder.io/partytown": "^0.6.4",
