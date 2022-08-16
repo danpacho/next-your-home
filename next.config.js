@@ -10,14 +10,11 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
     enabled: process.env.ANALYZE === "true",
 })
 
-//* next default config ------------------------------
-const nextConfig = {
-    pageExtensions: ["mdx", "tsx", "ts"],
+module.exports = withPlugins([withBundleAnalyzer], {
     reactStrictMode: true,
+    pageExtensions: ["mdx", "tsx", "ts"],
     swcMinify: true,
     compiler: {
-        reactStrictMode: true,
-        styledComponents: true,
         removeConsole: {
             exclude: ["error"],
         },
@@ -26,17 +23,16 @@ const nextConfig = {
         nextScriptWorkers: true,
     },
     webpack: (config, { dev, isServer }) => {
-        // Replace React with Preact in production build
+        //* Replace React with Preact in production build
         if (!dev && !isServer) {
             Object.assign(config.resolve.alias, {
-                react: "preact/compat",
                 "react-dom": "preact/compat",
+                react: "preact/compat",
+                "react/jsx-runtime.js": "preact/compat/jsx-runtime",
                 "react-dom/test-utils": "preact/test-utils",
             })
         }
 
         return config
     },
-}
-
-module.exports = withPlugins([withBundleAnalyzer], nextConfig)
+})
